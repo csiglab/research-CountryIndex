@@ -1,0 +1,97 @@
+{
+  "firms": [
+    {
+      "id": 1,
+      "name": "República Dominicana 2.0",
+      "category": "Arbitristae",
+      "icon": "fa-flask",
+      "description": "Focuses on research and development, conducting experiments and innovation in science and technology.",
+      "location": "Santo Domingo",
+      "employees": "2,500+",
+      "revenue": "$850M",
+      "link": "https://bremontix.xyz/lab/research/rd20/"
+    },
+    {
+      "id": 2,
+      "name": "República Dominicana 1.0",
+      "category": "Arbitristae",
+      "icon": "fa-dollar-sign",
+      "description": "Supports startups and new ventures by providing resources, mentorship, and funding opportunities.",
+      "location": "Santo Domingo",
+      "employees": "850",
+      "revenue": "$2.1B",
+      "link": "https://bremontix.xyz/lab/research/rd10/"
+    },
+    {
+      "id": 4,
+      "name": "Laboratorium Arbitristae",
+      "category": "Laboratory",
+      "icon": "fa-network-wired",
+      "description": "Espacio para prototipar ideas, investigando y diseñando estrategias para la grandeza tecnológica y productiva de la República Dominicana. Escudo de Armas - Laboratorio Arbitrista",
+      "location": "Santiago",
+      "employees": "1,100",
+      "revenue": "$950M",
+      "link": "https://www.bremontix.xyz/lab/ar"
+    },
+    {
+      "id": 5,
+      "parent": 6,
+      "name": "Laboratorium Productivum et Mercatorum",
+      "category": "Laboratory",
+      "icon": "fa-briefcase",
+      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
+      "location": "Santiago",
+      "employees": "1,100",
+      "revenue": "$950M",
+      "link": "https://www.bremontix.xyz/lab/pro/"
+    },
+    {
+      "id": 6,
+      "parent": 6,
+      "name": "Laboratorium Maius Legalis",
+      "category": "Laboratory",
+      "icon": "fa-scale-balanced",
+      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
+      "location": "Santiago",
+      "employees": "1,100",
+      "revenue": "$950M",
+      "link": "https://www.bremontix.xyz/lab/legal/"
+    },
+    {
+      "id": 7,
+      "parent": 6,
+      "name": "Laboratorium Maius Studiorum Hispanicorum",
+      "category": "Laboratory",
+      "icon": "fa-scroll",
+      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
+      "location": "Santiago",
+      "employees": "1,100",
+      "revenue": "$950M",
+      "link": "https://www.bremontix.xyz/lab/hispan/"
+    },
+    {
+      "id": 8,
+      "parent": 6,
+      "name": "Laboratorium Maius Salutis Productorum",
+      "category": "Laboratory",
+      "icon": "fa-user-doctor",
+      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
+      "location": "Santiago",
+      "employees": "1,100",
+      "revenue": "$950M",
+      "link": "https://www.bremontix.xyz/lab/salud/"
+    },
+    {
+      "id": 9,
+      "parent": 6,
+      "name": "Laboratorium Maius Technicorum",
+      "category": "Laboratory",
+      "icon": "fa-robot",
+      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
+      "location": "Santiago",
+      "employees": "1,100",
+      "revenue": "$950M",
+      "link": "https://www.bremontix.xyz/lab/tecne/"
+    }
+  ]
+}
