@@ -4,4 +4,4 @@
 
 ## Build & Install
 
-- ./build
+- `./build.sh`
