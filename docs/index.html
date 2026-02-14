@@ -38,11 +38,7 @@
             --shadow-strong: 0 25px 50px rgba(0, 0, 0, 0.2);
         }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
             min-height: 100vh;
@@ -59,10 +55,7 @@
         body::before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             background-image:
                 radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
                 radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
@@ -86,50 +79,11 @@
             z-index: 10;
         }
 
-        header {
-            text-align: center;
-            margin-bottom: 3.5rem;
-            padding-top: 2rem;
-        }
-
-        /* Coat of Arms Styles */
-        .coat-of-arms {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .coat-image {
-            width: 120px;
-            height: 120px;
-            object-fit: contain;
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-            transition: transform 0.3s ease, filter 0.3s ease;
-            margin-bottom: 0.5rem;
-        }
-
-        .coat-image:hover {
-            transform: scale(1.05);
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
-        }
-
-        body.theme-corporate .coat-image {
-            filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1));
-        }
-
-        body.theme-corporate .coat-image:hover {
-            filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.15));
-        }
-
-        .coat-caption {
-            color: var(--text-medium);
-            font-size: 0.85rem;
-            font-style: italic;
-            opacity: 0.9;
-            max-width: 200px;
-            text-align: center;
-        }
+        header { text-align: center; margin-bottom: 3.5rem; padding-top: 2rem; }
+        .coat-of-arms { display: flex; flex-direction: column; align-items: center; margin-bottom: 1.5rem; }
+        .coat-image { width: 120px; height: 120px; object-fit: contain; filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2)); transition: transform 0.3s ease; }
+        .coat-image:hover { transform: scale(1.05); }
+        body.theme-corporate .coat-image { filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.1)); }
 
         h1 {
             color: var(--text-white);
@@ -137,51 +91,26 @@
             font-weight: 800;
             margin-bottom: 0.5rem;
             letter-spacing: -1px;
-            text-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
             position: relative;
             display: inline-block;
         }
-
         h1::after {
             content: '';
             position: absolute;
-            bottom: -8px;
-            left: 50%;
+            bottom: -8px; left: 50%;
             transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
+            width: 80px; height: 3px;
             background: var(--accent);
             opacity: 0.8;
         }
 
-        h2 {
-            color: var(--text-medium);
-            font-size: 1.6rem;
-            font-weight: 600;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.5px;
-        }
-
-        .subtitle {
-            color: var(--text-medium);
-            font-size: 1.1rem;
-            font-weight: 400;
-            max-width: 700px;
-            margin: 0 auto 1rem;
-            line-height: 1.8;
-        }
+        h2 { color: var(--text-medium); font-size: 1.6rem; font-weight: 600; margin-bottom: 1.5rem; }
+        .subtitle { color: var(--text-medium); font-size: 1.1rem; max-width: 700px; margin: 0 auto 1rem; line-height: 1.8; }
 
         /* Theme Switcher */
-        .theme-switcher {
-            position: absolute;
-            top: 2rem;
-            right: 2rem;
-            z-index: 100;
-        }
-
+        .theme-switcher { position: absolute; top: 2rem; right: 2rem; z-index: 100; }
         .theme-toggle {
-            width: 60px;
-            height: 30px;
+            width: 60px; height: 30px;
             background: var(--bg-card);
             border: 1px solid var(--accent);
             border-radius: 50px;
@@ -190,40 +119,21 @@
             transition: var(--transition);
             box-shadow: var(--shadow-soft);
         }
-
-        .theme-toggle:hover {
-            transform: scale(1.05);
-        }
-
+        .theme-toggle:hover { transform: scale(1.05); }
         .theme-toggle-slider {
             position: absolute;
-            top: 2px;
-            left: 2px;
-            width: 22px;
-            height: 22px;
+            top: 2px; left: 2px;
+            width: 22px; height: 22px;
             background: var(--text-white);
             border-radius: 50%;
             transition: var(--transition);
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
         }
+        body.theme-corporate .theme-toggle-slider { transform: translateX(28px); }
+        .theme-toggle i { font-size: 12px; color: var(--bg-dark); }
 
-        body.theme-corporate .theme-toggle-slider {
-            transform: translateX(28px);
-        }
-
-        .theme-toggle i {
-            font-size: 12px;
-            color: var(--bg-dark);
-        }
-
-        .search-container {
-            max-width: 700px;
-            margin: 0 auto 3.5rem;
-            position: relative;
-        }
-
+        /* --- Enhanced Search UX --- */
+        .search-container { max-width: 700px; margin: 0 auto 3.5rem; position: relative; z-index: 20; }
         .search-box {
             width: 100%;
             padding: 1.1rem 4.2rem 1.1rem 1.8rem;
@@ -235,8 +145,10 @@
             box-shadow: var(--shadow-soft);
             transition: var(--transition);
             font-weight: 600;
+            position: relative;
+            z-index: 21;
         }
-
+        .search-box::placeholder { color: var(--text-light); opacity: 0.7; }
         .search-box:focus {
             outline: none;
             border-color: var(--accent);
@@ -245,151 +157,94 @@
             border-bottom-left-radius: 0;
             border-bottom-right-radius: 0;
         }
-
-        body.theme-corporate .search-box:focus {
-            box-shadow: 0 0 0 4px rgba(33, 37, 41, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1);
-        }
+        body.theme-corporate .search-box:focus { box-shadow: 0 0 0 4px rgba(33, 37, 41, 0.1), 0 6px 20px rgba(0, 0, 0, 0.1); }
 
         .search-icon {
             position: absolute;
-            right: 1.8rem;
-            top: 50%;
+            right: 1.8rem; top: 50%;
             transform: translateY(-50%);
             color: var(--text-medium);
             font-size: 1.3rem;
-            transition: var(--transition);
+            z-index: 22;
+            pointer-events: none;
         }
+        .search-box:focus + .search-icon { color: var(--accent); }
 
-        .search-box:focus+.search-icon {
-            color: var(--accent);
-        }
-
-        /* Search Suggestions Dropdown */
+        /* Autocomplete Dropdown */
         .search-suggestions {
             position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
+            top: 100%; left: 0; right: 0;
             background: var(--bg-card);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+            border: 1px solid var(--accent);
             border-top: none;
             border-radius: 0 0 50px 50px;
             box-shadow: var(--shadow-medium);
-            max-height: 300px;
+            max-height: 400px;
             overflow-y: auto;
             display: none;
-            z-index: 50;
-            margin-top: 0;
+            z-index: 20;
+            animation: slideDown 0.2s ease-out;
         }
-
-        .search-suggestions.active {
-            display: block;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        body.theme-corporate .search-suggestions {
-            border-color: rgba(33, 37, 41, 0.1);
-        }
+        @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+        .search-suggestions.active { display: block; }
 
         .suggestion-item {
             padding: 0.9rem 2rem;
             cursor: pointer;
             transition: var(--transition);
             border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            gap: 0.8rem;
+            display: flex; align-items: center; gap: 0.8rem;
+            color: var(--text-medium);
         }
-
-        body.theme-corporate .suggestion-item {
-            border-color: rgba(33, 37, 41, 0.05);
-        }
-
-        .suggestion-item:last-child {
-            border-bottom: none;
-            border-bottom-left-radius: 50px;
-            border-bottom-right-radius: 50px;
-        }
-
-        .suggestion-item:hover {
-            background: var(--bg-card-light);
-            transform: translateX(5px);
-        }
-
-        .suggestion-item.selected {
-            background: rgba(255, 255, 255, 0.1);
-        }
-
-        body.theme-corporate .suggestion-item.selected {
-            background: rgba(33, 37, 41, 0.1);
-        }
+        .suggestion-item:last-child { border-bottom: none; padding-bottom: 1.2rem; }
+        .suggestion-item:first-child { padding-top: 1.2rem; }
+        .suggestion-item:hover, .suggestion-item.selected { background: var(--bg-card-light); transform: translateX(5px); }
 
         .suggestion-icon {
+            width: 32px; height: 32px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
             font-size: 1.2rem;
-            color: var(--text-medium);
+            color: var(--text-white);
+            flex-shrink: 0;
         }
-
-        .suggestion-text {
-            color: var(--text-medium);
-            font-weight: 600;
-            flex: 1;
-        }
-
-        .suggestion-type {
-            color: var(--text-light);
+        .suggestion-content { display: flex; flex-direction: column; gap: 0.2rem; flex: 1; overflow: hidden; }
+        .suggestion-text { font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        
+        /* New style for description snippets */
+        .suggestion-snippet {
             font-size: 0.85rem;
-            padding: 0.2rem 0.6rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-        }
-
-        body.theme-corporate .suggestion-type {
-            background: rgba(33, 37, 41, 0.1);
+            color: var(--text-light);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            font-style: italic;
         }
 
         .suggestion-match {
-            color: var(--text-white);
-            font-weight: 800;
-            background: rgba(255, 255, 255, 0.1);
-            padding: 0 2px;
-            border-radius: 2px;
-        }
-
-        body.theme-corporate .suggestion-match {
-            background: rgba(33, 37, 41, 0.1);
-        }
-
-        .no-suggestions {
-            padding: 1rem 2rem;
-            color: var(--text-light);
-            font-style: italic;
-            text-align: center;
-        }
-
-        /* Highlight matched text in cards */
-        .highlight {
             background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
             color: var(--text-white);
             padding: 0.1rem 0.3rem;
             border-radius: 3px;
+            font-weight: 800;
+        }
+        body.theme-corporate .suggestion-match { background: rgba(33, 37, 41, 0.15); }
+
+        .suggestion-type {
+            color: var(--text-light);
+            font-size: 0.7rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
             font-weight: 700;
+            text-transform: uppercase;
+            align-self: flex-start;
         }
+        .no-suggestions { padding: 2rem; text-align: center; color: var(--text-light); font-style: italic; }
 
-        body.theme-corporate .highlight {
-            background: linear-gradient(135deg, rgba(33, 37, 41, 0.2), rgba(33, 37, 41, 0.1));
-        }
-
-        .filter-chips {
-            display: flex;
-            justify-content: center;
-            gap: 0.9rem;
-            margin-bottom: 4.5rem;
-            flex-wrap: wrap;
-        }
-
+        /* Filter Chips */
+        .filter-chips { display: flex; justify-content: center; gap: 0.9rem; margin-bottom: 4.5rem; flex-wrap: wrap; }
         .chip {
             padding: 0.7rem 1.8rem;
             background: var(--bg-card);
@@ -400,17 +255,9 @@
             transition: var(--transition);
             font-size: 0.95rem;
             font-weight: 600;
-            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
             user-select: none;
         }
-
-        .chip:hover {
-            transform: translateY(-3px);
-            box-shadow: var(--shadow-medium);
-            background: var(--bg-card-light);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
+        .chip:hover { transform: translateY(-3px); box-shadow: var(--shadow-medium); background: var(--bg-card-light); }
         .chip.active {
             background: var(--accent);
             color: var(--bg-dark);
@@ -419,12 +266,8 @@
             transform: translateY(-2px);
         }
 
-        /* Cards Container with Pagination */
-        .cards-wrapper {
-            position: relative;
-            margin-bottom: 3rem;
-        }
-
+        /* Cards Container */
+        .cards-wrapper { position: relative; margin-bottom: 3rem; }
         .cards-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
@@ -434,20 +277,11 @@
             transform: translateY(20px);
             transition: opacity 0.4s ease, transform 0.4s ease;
         }
-
-        .cards-grid.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .cards-grid.active { opacity: 1; transform: translateY(0); }
 
         .firm-card {
-            max-width: 100%;
-            min-height: 24rem;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            align-items: center;
+            max-width: 100%; min-height: 24rem; width: 100%;
+            display: flex; flex-direction: column; justify-content: space-between; align-items: center;
             text-align: center;
             position: relative;
             box-shadow: var(--shadow-medium);
@@ -457,52 +291,18 @@
             overflow: hidden;
             background: linear-gradient(145deg, var(--bg-card), #16161c);
         }
-
-        body.theme-corporate .firm-card {
-            background: linear-gradient(145deg, var(--bg-card), #f1f3f5);
-        }
-
-        .firm-card:hover {
-            transform: translateY(-12px) scale(1.02);
-            box-shadow: var(--shadow-strong);
-            background: linear-gradient(145deg, #1a1a22, #16161c);
-        }
-
-        body.theme-corporate .firm-card:hover {
-            background: linear-gradient(145deg, #e9ecef, #f1f3f5);
-        }
-
+        body.theme-corporate .firm-card { background: linear-gradient(145deg, var(--bg-card), #f1f3f5); }
+        .firm-card:hover { transform: translateY(-12px) scale(1.02); box-shadow: var(--shadow-strong); }
         .firm-card::before {
-            position: absolute;
-            content: "";
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border-radius: var(--border-radius);
-            z-index: -1;
+            position: absolute; content: ""; top: 0; left: 0; width: 100%; height: 100%;
+            border-radius: var(--border-radius); z-index: -1;
             border: 0.155rem solid rgba(255, 255, 255, 0.1);
             -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
             -webkit-mask-composite: destination-out;
             mask-composite: exclude;
-            transition: opacity 0.4s, transform 0.4s;
         }
 
-        .firm-card:hover::before {
-            opacity: 1;
-            transform: scale(1.01);
-            border-color: rgba(255, 255, 255, 0.2);
-        }
-
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1.5rem 1.5rem 0.5rem;
-            width: 100%;
-            z-index: 2;
-        }
-
+        .card-header { display: flex; justify-content: space-between; align-items: center; padding: 1.5rem 1.5rem 0.5rem; width: 100%; z-index: 2; }
         .firm-category {
             color: var(--text-medium);
             font-size: 0.85rem;
@@ -513,17 +313,11 @@
             padding: 0.25rem 0.7rem;
             border-radius: 10px;
         }
-
-        body.theme-corporate .firm-category {
-            background: rgba(33, 37, 41, 0.1);
-        }
+        body.theme-corporate .firm-category { background: rgba(33, 37, 41, 0.1); }
 
         .card-icon {
-            width: 3.5rem;
-            height: 3.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 3.5rem; height: 3.5rem;
+            display: flex; align-items: center; justify-content: center;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             color: var(--text-white);
@@ -531,115 +325,41 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
             transition: var(--transition);
         }
+        body.theme-corporate .card-icon { background: rgba(33, 37, 41, 0.1); box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); }
+        .firm-card:hover .card-icon { transform: rotate(5deg) scale(1.05); }
 
-        body.theme-corporate .card-icon {
-            background: rgba(33, 37, 41, 0.1);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        }
-
-        .firm-card:hover .card-icon {
-            transform: rotate(5deg) scale(1.05);
-            background: rgba(255, 255, 255, 0.15);
-        }
-
-        body.theme-corporate .firm-card:hover .card-icon {
-            background: rgba(33, 37, 41, 0.15);
-        }
-
-        .card-body {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 1.2rem 2rem;
-            width: 100%;
-            z-index: 2;
-        }
-
-        .firm-name {
-            color: var(--text-white);
-            font-size: 1.9rem;
-            margin-bottom: 0.8rem;
-            font-weight: 800;
-            text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-            letter-spacing: -0.5px;
-        }
-
-        .firm-description {
-            color: var(--text-medium);
-            font-size: 1rem;
-            line-height: 1.65;
-            margin-top: 0.6rem;
-            max-width: 90%;
-            text-align: center;
-            font-weight: 400;
-        }
+        .card-body { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 1.2rem 2rem; width: 100%; z-index: 2; }
+        .firm-name { color: var(--text-white); font-size: 1.9rem; margin-bottom: 0.8rem; font-weight: 800; letter-spacing: -0.5px; }
+        .firm-description { color: var(--text-medium); font-size: 1rem; line-height: 1.65; margin-top: 0.6rem; max-width: 90%; font-weight: 400; }
 
         .card-footer {
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
+            display: flex; justify-content: space-around; align-items: center;
             padding: 1.2rem 1rem;
             background: rgba(0, 0, 0, 0.6);
             border-bottom-left-radius: var(--border-radius);
             border-bottom-right-radius: var(--border-radius);
             width: 100%;
         }
-
-        body.theme-corporate .card-footer {
-            background: rgba(33, 37, 41, 0.1);
-        }
-
-        .footer-item {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .footer-icon {
-            color: var(--text-medium);
-            font-size: 1.1rem;
-            transition: var(--transition);
-        }
-
-        .footer-value {
-            color: var(--text-white);
-            font-size: 1rem;
-            font-weight: 700;
-        }
+        body.theme-corporate .card-footer { background: rgba(33, 37, 41, 0.1); }
+        .footer-item { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
+        .footer-icon { color: var(--text-medium); font-size: 1.1rem; }
+        .footer-value { color: var(--text-white); font-size: 1rem; font-weight: 700; }
 
         .link-overlay {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center;
             background: rgba(0, 0, 0, 0.8);
             opacity: 0;
             transition: opacity 0.4s ease;
             border-radius: var(--border-radius);
             z-index: 4;
         }
-
-        body.theme-corporate .link-overlay {
-            background: rgba(33, 37, 41, 0.8);
-        }
-
-        .firm-card:hover .link-overlay {
-            opacity: 1;
-        }
+        body.theme-corporate .link-overlay { background: rgba(33, 37, 41, 0.8); }
+        .firm-card:hover .link-overlay { opacity: 1; }
 
         .link-icon {
-            width: 4.2rem;
-            height: 4.2rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 4.2rem; height: 4.2rem;
+            display: flex; align-items: center; justify-content: center;
             background: rgba(255, 255, 255, 0.1);
             border-radius: 50%;
             color: var(--text-white);
@@ -647,423 +367,118 @@
             cursor: pointer;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
+        .link-icon:hover { transform: scale(1.1); background: var(--accent); color: var(--bg-dark); }
+        .link-icon i { font-size: 1.8rem; }
 
-        .link-icon:hover {
-            transform: scale(1.1);
-            background: var(--accent);
-            color: var(--bg-dark);
-            box-shadow: 0 6px 20px rgba(33, 37, 41, 0.3);
-        }
-
-        .link-icon i {
-            font-size: 1.8rem;
-        }
-
-        .link-icon:focus-visible {
-            outline: 2px solid var(--accent);
-            outline-offset: 2px;
-        }
-
-        /* World-Class Pagination Styles */
-        .pagination-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2rem;
-            margin-top: 5rem;
-            padding: 2rem 0;
-            position: relative;
-        }
-
-        .pagination-divider {
-            width: 60px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--text-light), transparent);
-            opacity: 0.3;
-            margin-bottom: 0.5rem;
-        }
-
+        /* Pagination */
+        .pagination-container { display: flex; flex-direction: column; align-items: center; gap: 1.5rem; margin-top: 5rem; padding: 2rem 0; }
         .pagination-controls {
-            display: flex;
-            align-items: center;
-            gap: 2rem;
-            position: relative;
+            display: flex; align-items: center; gap: 1rem;
+            background: var(--bg-card);
+            padding: 0.5rem;
+            border-radius: 50px;
+            box-shadow: var(--shadow-medium);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
+        body.theme-corporate .pagination-controls { border-color: rgba(0,0,0,0.05); }
 
-        /* Elegant Navigation Buttons */
         .nav-button {
-            width: 44px;
-            height: 44px;
+            height: 40px;
+            padding: 0 1.2rem;
+            border-radius: 25px;
+            background: transparent;
+            border: none;
+            color: var(--text-medium);
+            cursor: pointer;
+            display: flex; align-items: center; gap: 0.5rem;
+            transition: all 0.3s;
+            font-size: 0.9rem;
+            font-weight: 700;
+            font-family: 'Nunito', sans-serif;
+        }
+        .nav-button:not(:disabled):hover { background: var(--accent); color: var(--bg-dark); }
+        .nav-button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .nav-button i { font-size: 0.85rem; }
+
+        .dots-track { display: flex; align-items: center; gap: 4px; padding: 0 0.5rem; }
+        .pagination-dot {
+            width: 10px; height: 10px;
             border-radius: 50%;
             background: transparent;
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            color: var(--text-medium);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            font-size: 0.85rem;
-            position: relative;
-            overflow: hidden;
-        }
-
-        body.theme-corporate .nav-button {
-            border-color: rgba(33, 37, 41, 0.15);
-        }
-
-        .nav-button::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: var(--accent);
-            opacity: 0;
-            transform: scale(0.8);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border-radius: 50%;
-        }
-
-        .nav-button:hover:not(:disabled) {
-            border-color: var(--accent);
-            color: var(--bg-dark);
-            transform: translateY(-2px);
-            box-shadow: 0 4px 20px rgba(255, 255, 255, 0.1);
-        }
-
-        body.theme-corporate .nav-button:hover:not(:disabled) {
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        }
-
-        .nav-button:hover:not(:disabled)::before {
-            opacity: 1;
-            transform: scale(1);
-        }
-
-        .nav-button:disabled {
-            opacity: 0.2;
-            cursor: not-allowed;
-            border-color: transparent;
-        }
-
-        .nav-button i {
-            position: relative;
-            z-index: 1;
-            transition: transform 0.2s ease;
-        }
-
-        .nav-button:hover:not(:disabled) i {
-            transform: translateX(-2px);
-        }
-
-        .nav-button.next:hover:not(:disabled) i {
-            transform: translateX(2px);
-        }
-
-        /* Sophisticated Dot Pagination */
-        .dots-track {
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.5rem;
-            position: relative;
-        }
-
-        .pagination-dot {
-            width: 8px;
-            height: 8px;
-            border-radius: 50%;
-            background: var(--text-light);
-            opacity: 0.25;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
             border: none;
             padding: 0;
-            transform: scale(1);
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
         }
-
-        .pagination-dot:hover {
-            opacity: 0.6;
-            transform: scale(1.2);
-        }
-
-        .pagination-dot.active {
-            opacity: 1;
-            background: var(--accent);
-            transform: scale(1.5);
-            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
-        }
-
-        body.theme-corporate .pagination-dot.active {
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-        }
-
-        /* Active Dot Ring Animation */
-        .pagination-dot.active::after {
+        .pagination-dot::before {
             content: '';
             position: absolute;
-            inset: -4px;
-            border: 1px solid var(--accent);
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 6px; height: 6px;
+            background: var(--text-light);
             border-radius: 50%;
-            opacity: 0.4;
-            animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-
-        @keyframes pulse-ring {
-            0%, 100% { transform: scale(1); opacity: 0.4; }
-            50% { transform: scale(1.3); opacity: 0; }
-        }
-
-        /* Page Indicator Text */
-        .page-indicator {
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: var(--text-medium);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            opacity: 0.7;
-            font-variant-numeric: tabular-nums;
-        }
-
-        .page-indicator span {
-            color: var(--text-white);
-            font-weight: 700;
-        }
-
-        /* Loading State */
-        .loading-state {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem 2rem;
-            color: var(--text-medium);
-        }
-
-        .loading-spinner {
-            width: 50px;
-            height: 50px;
-            border: 3px solid rgba(255, 255, 255, 0.1);
-            border-top-color: var(--accent);
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-            margin-bottom: 1rem;
-        }
-
-        body.theme-corporate .loading-spinner {
-            border-color: rgba(33, 37, 41, 0.1);
-            border-top-color: var(--accent);
-        }
-
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-
-        /* Empty State */
-        .empty-state {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 4rem 2rem;
-            color: var(--text-medium);
-            text-align: center;
-        }
-
-        .empty-state.active {
-            display: flex;
-        }
-
-        .empty-icon {
-            font-size: 4rem;
-            color: var(--text-light);
-            margin-bottom: 1.5rem;
             opacity: 0.5;
+            transition: all 0.3s ease;
         }
-
-        .empty-title {
-            color: var(--text-white);
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.8rem;
+        .pagination-dot:hover::before { opacity: 1; transform: translate(-50%, -50%) scale(1.5); }
+        .pagination-dot.active::before {
+            opacity: 1;
+            width: 24px; height: 8px;
+            border-radius: 4px;
+            background: var(--accent);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+            animation: pillGrow 0.3s forwards;
         }
+        @keyframes pillGrow { from { width: 6px; height: 6px; border-radius: 50%; } to { width: 24px; height: 8px; border-radius: 4px; } }
 
-        .empty-message {
-            font-size: 1rem;
-            max-width: 400px;
-            opacity: 0.8;
-        }
+        .pagination-ellipsis { color: var(--text-light); font-weight: 700; padding: 0 4px; user-select: none; font-size: 0.8rem; }
+        .page-indicator { font-size: 0.85rem; color: var(--text-light); letter-spacing: 0.05em; }
+        .page-indicator span { color: var(--text-white); font-weight: 700; }
 
-        /* Footer */
-        footer {
-            margin-top: 4rem;
-            padding-top: 3rem;
-            padding-bottom: 2rem;
-            border-top: 1px solid rgba(255, 255, 255, 0.1);
-            text-align: center;
-        }
+        /* Loading & Empty States */
+        .loading-state, .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; color: var(--text-medium); text-align: center; }
+        .empty-state { display: none; }
+        .empty-state.active { display: flex; }
+        .loading-spinner { width: 50px; height: 50px; border: 3px solid rgba(255, 255, 255, 0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 1rem; }
+        @keyframes spin { to { transform: rotate(360deg); } }
 
-        body.theme-corporate footer {
-            border-top-color: rgba(33, 37, 41, 0.1);
-        }
+        footer { margin-top: 4rem; padding-top: 3rem; padding-bottom: 2rem; border-top: 1px solid rgba(255, 255, 255, 0.1); text-align: center; }
+        body.theme-corporate footer { border-top-color: rgba(33, 37, 41, 0.1); }
+        .footer-content { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+        .footer-links { display: flex; gap: 2rem; flex-wrap: wrap; justify-content: center; }
+        .footer-link { color: var(--text-medium); text-decoration: none; font-size: 0.95rem; transition: var(--transition); font-weight: 600; }
+        .footer-link:hover { color: var(--text-white); }
+        .footer-copyright { color: var(--text-light); font-size: 0.9rem; opacity: 0.8; margin-top: 1rem; }
 
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
-
-        .footer-link {
-            color: var(--text-medium);
-            text-decoration: none;
-            font-size: 0.95rem;
-            transition: var(--transition);
-            font-weight: 600;
-        }
-
-        .footer-link:hover {
-            color: var(--text-white);
-            transform: translateY(-2px);
-        }
-
-        .footer-copyright {
-            color: var(--text-light);
-            font-size: 0.9rem;
-            opacity: 0.8;
-            margin-top: 1rem;
-        }
-
-        @keyframes fadeIn {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
         @media (max-width: 992px) {
-            .theme-switcher {
-                position: static;
-                margin-bottom: 1rem;
-                text-align: center;
-            }
-
-            .cards-grid {
-                grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-                gap: 2.2rem;
-            }
-
-            h1 {
-                font-size: 2.5rem;
-            }
-
-            .subtitle {
-                font-size: 1.05rem;
-            }
-
-            .search-box {
-                padding: 1rem 3.5rem 1rem 1.5rem;
-                font-size: 1rem;
-            }
-
-            .filter-chips {
-                gap: 0.7rem;
-            }
-
-            .chip {
-                padding: 0.6rem 1.5rem;
-            }
-
-            .firm-card {
-                min-height: 22rem;
-            }
-
-            .coat-image {
-                width: 100px;
-                height: 100px;
-            }
-
-            .pagination-controls {
-                gap: 1.5rem;
-            }
-
-            .nav-button {
-                width: 40px;
-                height: 40px;
-            }
+            .theme-switcher { position: static; margin-bottom: 1rem; text-align: center; }
+            h1 { font-size: 2.5rem; }
+            .cards-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2.2rem; }
+            .nav-text { display: none; }
         }
-
         @media (max-width: 576px) {
-            .cards-grid {
-                grid-template-columns: 1fr;
-                gap: 2.5rem;
-            }
-
-            .container {
-                padding: 1.2rem;
-            }
-
-            .firm-card {
-                min-height: 20rem;
-            }
-
-            .coat-image {
-                width: 80px;
-                height: 80px;
-            }
-
-            .pagination-container {
-                margin-top: 3rem;
-                gap: 1.5rem;
-            }
-
-            .pagination-controls {
-                gap: 1rem;
-            }
-
-            .dots-track {
-                gap: 0.4rem;
-            }
-
-            .pagination-dot {
-                width: 6px;
-                height: 6px;
-            }
-
-            .pagination-dot.active {
-                transform: scale(1.4);
-            }
+            .container { padding: 1.2rem; }
+            .pagination-controls { width: 100%; justify-content: space-between; border-radius: 16px; }
+            .dots-track { position: absolute; left: 50%; transform: translateX(-50%); }
         }
     </style>
 </head>
 
 <body>
     <div class="container">
-
-        
         <header>
             <div class="coat-of-arms">
-                <img src="logo.png" alt="Laboratorium Laboratorium Coat of Arms" class="coat-image">
-                <!-- <p class="coat-caption">Symbol of Courage & Authority</p> -->
+                <img src="logo.png" alt="Laboratorium Coat of Arms" class="coat-image">
             </div>
             <h1>Index Gentium</h1>
             <h2>Laboratorium Arbitristae </h2>
             <p class="subtitle"> A comprehensive catalog of country representations, evolving to facilitate understanding, exploration, and comparison. </p>
         </header>
 
-        <!-- Theme Switcher -->
         <div class="theme-switcher">
             <div class="theme-toggle" id="themeToggle">
                 <div class="theme-toggle-slider">
@@ -1073,46 +488,41 @@
         </div>
 
         <div class="search-container">
-            <input type="text" class="search-box" placeholder="Search research by name, laboratory, ..."
-                aria-label="Search research  by name, description, ..." autocomplete="off">
+            <input type="text" class="search-box" id="searchInput" placeholder="Search by name, description, category..."
+                aria-label="Search research" autocomplete="off">
             <i class="fas fa-search search-icon"></i>
             <div class="search-suggestions" id="searchSuggestions"></div>
         </div>
 
         <div class="filter-chips" role="tablist">
             <div class="chip active" role="tab" aria-selected="true" data-tag="">All Countries</div>
-            <!-- Filter chips will be dynamically generated based on tags in catalog.json -->
         </div>
 
-        <!-- Loading State -->
         <div class="loading-state" id="loadingState">
             <div class="loading-spinner"></div>
             <p>Loading research data...</p>
         </div>
 
-        <!-- Empty State -->
         <div class="empty-state" id="emptyState">
             <i class="fas fa-search empty-icon"></i>
             <h3 class="empty-title">No Results Found</h3>
-            <p class="empty-message">Try adjusting your search terms or filter selection to find what you're looking for.</p>
+            <p class="empty-message">Try adjusting your search terms or filter selection.</p>
         </div>
 
         <div class="cards-wrapper">
-            <div class="cards-grid" id="cardsGrid">
-                <!-- Cards will be dynamically generated here -->
-            </div>
+            <div class="cards-grid" id="cardsGrid"></div>
             
-            <!-- World-Class Dot Pagination -->
             <div class="pagination-container" id="paginationContainer" style="display: none;">
-                <div class="pagination-divider"></div>
                 <div class="pagination-controls">
                     <button class="nav-button prev" id="prevArrow" aria-label="Previous page">
                         <i class="fas fa-arrow-left"></i>
+                        <span class="nav-text">Prev</span>
                     </button>
                     
                     <div class="dots-track" id="dotsContainer"></div>
                     
                     <button class="nav-button next" id="nextArrow" aria-label="Next page">
+                        <span class="nav-text">Next</span>
                         <i class="fas fa-arrow-right"></i>
                     </button>
                 </div>
@@ -1127,17 +537,14 @@
                 <a href="#" class="footer-link">About</a>
                 <a href="#" class="footer-link">Documentation</a>
                 <a href="#" class="footer-link">Contact</a>
-                <a href="#" class="footer-link">GitHub</a>
             </div>
-            <p class="footer-copyright">© <span id="currentYear"></span> Laboratorium Arbitristae. All rights reserved.</p>
+            <p class="footer-copyright">© <span id="currentYear"></span> Laboratorium Arbitristae.</p>
         </div>
     </footer>
 
     <script>
-        // Set current year in footer
         document.getElementById('currentYear').textContent = new Date().getFullYear();
 
-        // Show loading state initially
         const loadingState = document.getElementById('loadingState');
         const emptyState = document.getElementById('emptyState');
         const cardsGrid = document.getElementById('cardsGrid');
@@ -1146,91 +553,57 @@
         const pageIndicator = document.getElementById('pageIndicator');
         const prevArrow = document.getElementById('prevArrow');
         const nextArrow = document.getElementById('nextArrow');
+        const searchInput = document.getElementById('searchInput');
+        const searchSuggestions = document.getElementById('searchSuggestions');
 
-        // Pagination state
         let currentPage = 1;
         let itemsPerPage = 6;
         let totalPages = 1;
         let filteredFirms = [];
         let allFirms = [];
+        let selectedSuggestionIndex = -1;
 
-        function loadFirmsData() {
-            return fetch("catalog.json").then(response => response.json());
-        }
-
-        loadFirmsData().then(data => {
-            console.log(data);
+        fetch("catalog.json").then(response => response.json()).then(data => {
             allFirms = data.firms;
             filteredFirms = [...allFirms];
-            
-            // Hide loading state, show cards
             loadingState.style.display = 'none';
             cardsGrid.style.display = 'grid';
-            
-            display(data);
+            initializeApp(data);
         }).catch(error => {
-            console.error('Error loading data:', error);
-            loadingState.innerHTML = '<p>Error loading data. Please refresh the page.</p>';
+            console.error(error);
+            loadingState.innerHTML = '<p>Error loading data.</p>';
         });
 
-        function display(firmsData) {
-
+        function initializeApp(firmsData) {
             // Theme Switcher
             const themeToggle = document.getElementById('themeToggle');
             const body = document.body;
             const themeIcon = document.querySelector('.theme-toggle-slider i');
-
-            // Check for saved theme preference
             const savedTheme = localStorage.getItem('theme') || 'techno';
             if (savedTheme === 'corporate') {
                 body.classList.add('theme-corporate');
-                themeIcon.classList.remove('fa-moon');
-                themeIcon.classList.add('fa-sun');
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
             }
-
-            // Toggle theme
             themeToggle.addEventListener('click', () => {
                 body.classList.toggle('theme-corporate');
-
-                // Update icon
-                if (body.classList.contains('theme-corporate')) {
-                    themeIcon.classList.remove('fa-moon');
-                    themeIcon.classList.add('fa-sun');
-                } else {
-                    themeIcon.classList.remove('fa-sun');
-                    themeIcon.classList.add('fa-moon');
-                }
-
-                // Save theme preference
-                if (body.classList.contains('theme-corporate')) {
-                    localStorage.setItem('theme', 'corporate');
-                } else {
-                    localStorage.setItem('theme', 'techno');
-                }
+                const isCorporate = body.classList.contains('theme-corporate');
+                themeIcon.className = isCorporate ? 'fas fa-sun' : 'fas fa-moon';
+                localStorage.setItem('theme', isCorporate ? 'corporate' : 'techno');
             });
 
-            // Function to generate filter chips dynamically based on unique tags
-            function generateFilterChips() {
-                const filterChipsContainer = document.querySelector('.filter-chips');
-                
-                // Get unique tags from all firms
-                const uniqueTags = [...new Set(firmsData.firms.map(firm => firm.tags))];
-                
-                // Keep the "All Countries" chip and add tag-based chips
-                const allCountriesChip = filterChipsContainer.querySelector('.chip');
-                
-                uniqueTags.forEach(tag => {
-                    const chip = document.createElement('div');
-                    chip.className = 'chip';
-                    chip.role = 'tab';
-                    chip.setAttribute('aria-selected', 'false');
-                    chip.dataset.tag = tag;
-                    chip.textContent = tag;
-                    filterChipsContainer.appendChild(chip);
-                });
-            }
+            // Generate Chips
+            const uniqueTags = [...new Set(firmsData.firms.map(firm => firm.tags))];
+            const filterChipsContainer = document.querySelector('.filter-chips');
+            uniqueTags.forEach(tag => {
+                const chip = document.createElement('div');
+                chip.className = 'chip';
+                chip.setAttribute('role', 'tab');
+                chip.dataset.tag = tag;
+                chip.textContent = tag;
+                filterChipsContainer.appendChild(chip);
+            });
 
-            // Calculate items per page based on screen size
+            // Responsive Items
             function calculateItemsPerPage() {
                 const width = window.innerWidth;
                 if (width <= 576) return 3;
@@ -1238,453 +611,207 @@
                 return 6;
             }
 
-            // Generate pagination dots
-            function generatePaginationDots() {
-                dotsContainer.innerHTML = '';
-                totalPages = Math.ceil(filteredFirms.length / itemsPerPage);
+            // --- Enhanced Search UX Logic ---
+            
+            // 1. Helper to highlight text
+            function highlightText(text, term) {
+                if (!term) return text;
+                const lcText = text.toLowerCase();
+                const lcTerm = term.toLowerCase();
+                const index = lcText.indexOf(lcTerm);
                 
-                if (totalPages <= 1) {
-                    paginationContainer.style.display = 'none';
-                    return;
-                }
+                if (index === -1) return text;
                 
-                paginationContainer.style.display = 'flex';
-                
-                for (let i = 1; i <= totalPages; i++) {
-                    const dot = document.createElement('button');
-                    dot.className = 'pagination-dot';
-                    dot.setAttribute('aria-label', `Page ${i}`);
-                    dot.setAttribute('data-page', i);
-                    
-                    if (i === currentPage) {
-                        dot.classList.add('active');
-                    }
-                    
-                    dot.addEventListener('click', () => {
-                        goToPage(i);
-                    });
-                    
-                    dotsContainer.appendChild(dot);
-                }
-                
-                updatePageIndicator();
-                updateArrowButtons();
+                return text.substring(0, index) + 
+                       `<span class="suggestion-match">${text.substring(index, index + term.length)}</span>` + 
+                       text.substring(index + term.length);
             }
 
-            // Update page indicator text
-            function updatePageIndicator() {
-                pageIndicator.innerHTML = `Page <span>${currentPage}</span> of <span>${totalPages}</span>`;
+            // 2. Helper to get snippet from description
+            function getDescriptionSnippet(text, term) {
+                const lcText = text.toLowerCase();
+                const lcTerm = term.toLowerCase();
+                const index = lcText.indexOf(lcTerm);
+                
+                if (index === -1) return null;
+
+                // Extract context around the match
+                const startPos = Math.max(0, index - 20);
+                const endPos = Math.min(text.length, index + term.length + 20);
+                
+                let snippet = (startPos > 0 ? "..." : "") + text.substring(startPos, endPos) + (endPos < text.length ? "..." : "");
+                return highlightText(snippet, term);
             }
 
-            // Update arrow button states
-            function updateArrowButtons() {
-                prevArrow.disabled = currentPage === 1;
-                nextArrow.disabled = currentPage === totalPages;
-            }
-
-            // Navigate to specific page
-            function goToPage(page) {
-                if (page < 1 || page > totalPages) return;
-                
-                currentPage = page;
-                
-                // Update dots with smooth transition
-                document.querySelectorAll('.pagination-dot').forEach((dot, index) => {
-                    if (index + 1 === currentPage) {
-                        dot.classList.add('active');
-                    } else {
-                        dot.classList.remove('active');
-                    }
-                });
-                
-                renderCurrentPage();
-                updatePageIndicator();
-                updateArrowButtons();
-                
-                // Smooth scroll to cards
-                cardsGrid.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-            }
-
-            // Render cards for current page
-            function renderCurrentPage() {
-                cardsGrid.classList.remove('active');
-                
-                setTimeout(() => {
-                    const start = (currentPage - 1) * itemsPerPage;
-                    const end = start + itemsPerPage;
-                    const pageFirms = filteredFirms.slice(start, end);
-                    
-                    generateFirmCards(pageFirms);
-                    cardsGrid.classList.add('active');
-                }, 150);
-            }
-
-            // Function to generate firm cards
-            function generateFirmCards(firms) {
-                cardsGrid.innerHTML = ''; // Clear existing cards
-
-                firms.forEach((firm, index) => {
-                    const card = document.createElement('div');
-                    card.className = 'firm-card';
-                    card.dataset.tags = firm.tags;
-                    card.style.animationDelay = `${index * 0.1}s`;
-
-                    card.innerHTML = `
-                    <div class="card-header">
-                        <div class="firm-category">${firm.tags}</div>
-                        <div class="card-icon" aria-label="${firm.tags} icon">
-                            ${firm.icon}
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="firm-name">${firm.name}</h3>
-                        <p class="firm-description">${firm.description}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="footer-item">
-                            <i class="fas fa-globe footer-icon"></i>
-                            <span class="footer-value">Research</span>
-                        </div>
-                        <div class="footer-item">
-                            <i class="fas fa-flask footer-icon"></i>
-                            <span class="footer-value">Lab</span>
-                        </div>
-                    </div>
-                    <div class="link-overlay">
-                        <div class="link-icon" role="button" aria-label="View ${firm.name} profile" data-link="${firm.link}">
-                            <i class="fas fa-external-link-alt"></i>
-                        </div>
-                    </div>
-                `;
-
-                    cardsGrid.appendChild(card);
-                });
-
-                // Add event listeners to the newly created link icons
-                addLinkIconListeners();
-            }
-
-            // Function to add event listeners to link icons
-            function addLinkIconListeners() {
-                const linkIcons = document.querySelectorAll('.link-icon');
-                linkIcons.forEach(icon => {
-                    icon.addEventListener('click', (e) => {
-                        e.stopPropagation();
-                        const link = icon.dataset.link;
-                        window.open(link, '_blank');
-                    });
-                });
-            }
-
-            // Arrow button event listeners
-            prevArrow.addEventListener('click', () => {
-                if (currentPage > 1) {
-                    goToPage(currentPage - 1);
-                }
-            });
-
-            nextArrow.addEventListener('click', () => {
-                if (currentPage < totalPages) {
-                    goToPage(currentPage + 1);
-                }
-            });
-
-            // Handle window resize
-            window.addEventListener('resize', () => {
-                const newItemsPerPage = calculateItemsPerPage();
-                if (newItemsPerPage !== itemsPerPage) {
-                    itemsPerPage = newItemsPerPage;
-                    currentPage = 1;
-                    generatePaginationDots();
-                    renderCurrentPage();
-                }
-            });
-
-            // Generate filter chips based on tags in catalog.json
-            generateFilterChips();
-
-            // Initialize pagination
-            itemsPerPage = calculateItemsPerPage();
-            generatePaginationDots();
-            renderCurrentPage();
-
-            // Search and Filter Logic
-            const searchBox = document.querySelector('.search-box');
-            const searchSuggestions = document.getElementById('searchSuggestions');
-            let activeTag = '';
-            let selectedSuggestionIndex = -1;
-
-            // Fuzzy search algorithm
-            function fuzzyMatch(term, text) {
-                const searchTerm = term.toLowerCase();
-                const searchTarget = text.toLowerCase();
-                
-                if (searchTerm === '') return { match: true, score: 1, highlights: [] };
-                
-                if (searchTarget.includes(searchTerm)) {
-                    const startIndex = searchTarget.indexOf(searchTerm);
-                    return {
-                        match: true,
-                        score: 1,
-                        highlights: [[startIndex, startIndex + searchTerm.length]]
-                    };
-                }
-
-                const firstCharMatches = searchTarget.includes(searchTerm[0]);
-                if (!firstCharMatches) {
-                    return { match: false, score: 0, highlights: [] };
-                }
-
-                let score = 0;
-                let searchIndex = 0;
-                let highlights = [];
-                let currentHighlight = null;
-                let consecutiveMatches = 0;
-                let maxConsecutive = 0;
-
-                for (let i = 0; i < searchTarget.length && searchIndex < searchTerm.length; i++) {
-                    if (searchTarget[i] === searchTerm[searchIndex]) {
-                        score++;
-                        consecutiveMatches++;
-                        maxConsecutive = Math.max(maxConsecutive, consecutiveMatches);
-                        searchIndex++;
-                        if (currentHighlight === null) {
-                            currentHighlight = [i, i + 1];
-                        } else {
-                            currentHighlight[1] = i + 1;
-                        }
-                    } else {
-                        consecutiveMatches = 0;
-                        if (currentHighlight !== null) {
-                            highlights.push(currentHighlight);
-                            currentHighlight = null;
-                        }
-                    }
-                }
-
-                if (currentHighlight !== null) {
-                    highlights.push(currentHighlight);
-                }
-
-                const matchPercentage = score / searchTerm.length;
-                const minMatchPercentage = 0.8;
-                const hasSignificantMatch = maxConsecutive >= 3;
-                const coverageRatio = score / searchTarget.length;
-                const coveragePenalty = coverageRatio < 0.3 ? 0.3 : 1;
-                const lengthPenalty = searchTarget.length < searchTerm.length ? 0.2 : 1;
-                const finalScore = (score / searchTarget.length) * lengthPenalty * coveragePenalty;
-
-                return {
-                    match: matchPercentage >= minMatchPercentage && hasSignificantMatch,
-                    score: finalScore,
-                    highlights: highlights
-                };
-            }
-
-            // Generate search suggestions
-            function generateSuggestions(searchTerm) {
-                if (!searchTerm || searchTerm.length < 1) {
+            // 3. Generate Suggestions with Fuzzy Description Match
+            function updateSuggestions(term) {
+                if (!term) {
                     searchSuggestions.classList.remove('active');
-                    searchSuggestions.innerHTML = '';
-                    selectedSuggestionIndex = -1;
                     return [];
                 }
 
                 const suggestions = [];
+                const terms = term.toLowerCase().split(' ').filter(t => t.length > 0);
+                
+                // Simple scoring mechanism
+                allFirms.forEach(firm => {
+                    let score = 0;
+                    let matchType = null;
+                    let snippet = null;
 
-                firmsData.firms.forEach(firm => {
-                    if (searchTerm.length >= 3) {
-                        const nameMatch = fuzzyMatch(searchTerm, firm.name);
-                        if (nameMatch.match) {
-                            suggestions.push({
-                                type: 'Country',
-                                text: firm.name,
-                                tag: firm.tags,
-                                icon: firm.icon,
-                                score: nameMatch.score,
-                                highlights: nameMatch.highlights,
-                                firm: firm
-                            });
-                        }
+                    // Check Name (Highest Priority)
+                    const nameMatch = terms.every(t => firm.name.toLowerCase().includes(t));
+                    if (nameMatch) {
+                        score = 100;
+                        matchType = 'Name';
+                    }
 
-                        const descMatch = fuzzyMatch(searchTerm, firm.description);
-                        if (descMatch.match && descMatch.score > 0.6) {
-                            suggestions.push({
-                                type: 'Description',
-                                text: firm.description.substring(0, 60) + (firm.description.length > 60 ? '...' : ''),
-                                tag: firm.tags,
-                                icon: firm.icon,
-                                score: descMatch.score * 0.5,
-                                highlights: descMatch.highlights,
-                                firm: firm
-                            });
-                        }
+                    // Check Tags (Medium Priority)
+                    const tagMatch = terms.every(t => firm.tags.toLowerCase().includes(t));
+                    if (tagMatch && score === 0) {
+                        score = 50;
+                        matchType = 'Category';
+                    }
 
-                        const tagMatch = fuzzyMatch(searchTerm, firm.tags);
-                        if (tagMatch.match && tagMatch.score > 0.6) {
-                            suggestions.push({
-                                type: 'Category',
-                                text: firm.tags,
-                                tag: firm.tags,
-                                icon: firm.icon,
-                                score: tagMatch.score * 0.7,
-                                highlights: tagMatch.highlights,
-                                firm: firm
-                            });
+                    // Check Description (Fuzzy/Snippet) (Lower Priority but important)
+                    // We check if ANY term is in description, or ALL terms?
+                    // For "fuzzy" feel, let's check if the whole phrase exists first, then individual words.
+                    const descIndex = firm.description.toLowerCase().indexOf(term.toLowerCase());
+                    if (descIndex !== -1 && score === 0) {
+                        score = 30;
+                        matchType = 'Description';
+                        snippet = getDescriptionSnippet(firm.description, term);
+                    } else if (score === 0) {
+                        // Check individual words in description
+                        const wordMatch = terms.find(t => firm.description.toLowerCase().includes(t));
+                        if (wordMatch) {
+                            score = 20;
+                            matchType = 'Description';
+                            snippet = getDescriptionSnippet(firm.description, wordMatch);
                         }
-                    } else {
-                        if (firm.name.toLowerCase().includes(searchTerm)) {
-                            suggestions.push({
-                                type: 'Country',
-                                text: firm.name,
-                                tag: firm.tags,
-                                icon: firm.icon,
-                                score: 1,
-                                highlights: [[firm.name.toLowerCase().indexOf(searchTerm), firm.name.toLowerCase().indexOf(searchTerm) + searchTerm.length]],
-                                firm: firm
-                            });
-                        }
+                    }
+
+                    if (score > 0) {
+                        suggestions.push({
+                            firm: firm,
+                            type: matchType,
+                            snippet: snippet, // HTML string
+                            score: score
+                        });
                     }
                 });
 
-                const uniqueSuggestions = suggestions.filter((suggestion, index, self) =>
-                    index === self.findIndex((s) => s.text === suggestion.text && s.type === suggestion.type)
-                );
-
-                return uniqueSuggestions.sort((a, b) => b.score - a.score).slice(0, 8);
+                // Sort by score
+                suggestions.sort((a, b) => b.score - a.score);
+                
+                renderSuggestions(suggestions.slice(0, 6));
+                return suggestions;
             }
 
-            // Highlight matched text
-            function highlightText(text, highlights) {
-                if (!highlights || highlights.length === 0) return text;
-
-                let highlightedText = '';
-                let lastIndex = 0;
-
-                highlights.forEach(([start, end]) => {
-                    highlightedText += text.substring(lastIndex, start);
-                    highlightedText += `<span class="suggestion-match">${text.substring(start, end)}</span>`;
-                    lastIndex = end;
-                });
-
-                highlightedText += text.substring(lastIndex);
-                return highlightedText;
-            }
-
-            // Render suggestions dropdown
+            // 4. Render Dropdown
             function renderSuggestions(suggestions) {
                 if (suggestions.length === 0) {
-                    searchSuggestions.innerHTML = '<div class="no-suggestions">No suggestions found</div>';
+                    searchSuggestions.innerHTML = `<div class="no-suggestions">No results found</div>`;
                 } else {
-                    searchSuggestions.innerHTML = suggestions.map((suggestion, index) => `
-                        <div class="suggestion-item" data-index="${index}" data-name="${suggestion.firm.name}">
-                            <span class="suggestion-icon">${suggestion.icon}</span>
-                            <span class="suggestion-text">${highlightText(suggestion.text, suggestion.highlights)}</span>
-                            <span class="suggestion-type">${suggestion.type}</span>
-                        </div>
-                    `).join('');
+                    searchSuggestions.innerHTML = suggestions.map((s, i) => {
+                        const nameHtml = highlightText(s.firm.name, searchInput.value);
+                        
+                        let contentHtml = `<div class="suggestion-text">${nameHtml}</div>`;
+                        if (s.type === 'Description' && s.snippet) {
+                            contentHtml += `<div class="suggestion-snippet">${s.snippet}</div>`;
+                        }
 
-                    document.querySelectorAll('.suggestion-item').forEach(item => {
-                        item.addEventListener('click', () => {
-                            searchBox.value = item.dataset.name;
-                            searchSuggestions.classList.remove('active');
-                            filterCards();
-                        });
-                    });
+                        return `
+                        <div class="suggestion-item ${i === selectedSuggestionIndex ? 'selected' : ''}" data-index="${i}" data-name="${s.firm.name}">
+                            <div class="suggestion-icon">${s.firm.icon}</div>
+                            <div class="suggestion-content">
+                                ${contentHtml}
+                            </div>
+                            <div class="suggestion-type">${s.type}</div>
+                        </div>`;
+                    }).join('');
                 }
-
                 searchSuggestions.classList.add('active');
+                
+                document.querySelectorAll('.suggestion-item').forEach(item => {
+                    item.addEventListener('click', () => {
+                        searchInput.value = item.dataset.name;
+                        searchSuggestions.classList.remove('active');
+                        filterCards();
+                    });
+                });
+            }
+
+            searchInput.addEventListener('input', (e) => {
                 selectedSuggestionIndex = -1;
-            }
+                updateSuggestions(e.target.value);
+                filterCards(); 
+            });
 
-            // Debounce function for performance
-            function debounce(func, wait) {
-                let timeout;
-                return function executedFunction(...args) {
-                    const later = () => {
-                        clearTimeout(timeout);
-                        func(...args);
-                    };
-                    clearTimeout(timeout);
-                    timeout = setTimeout(later, wait);
-                };
-            }
+            searchInput.addEventListener('focus', () => {
+                if(searchInput.value) updateSuggestions(searchInput.value);
+            });
 
-            // Handle search input with debouncing
-            const debouncedSearch = debounce((searchTerm) => {
-                const suggestions = generateSuggestions(searchTerm);
-                renderSuggestions(suggestions);
-            }, 200);
-
-            // Close suggestions when clicking outside
             document.addEventListener('click', (e) => {
                 if (!e.target.closest('.search-container')) {
                     searchSuggestions.classList.remove('active');
                 }
             });
 
-            // Keyboard navigation for suggestions
-            searchBox.addEventListener('keydown', (e) => {
-                const suggestions = document.querySelectorAll('.suggestion-item');
+            searchInput.addEventListener('keydown', (e) => {
+                const items = document.querySelectorAll('.suggestion-item');
+                if (!searchSuggestions.classList.contains('active') || items.length === 0) return;
 
                 if (e.key === 'ArrowDown') {
                     e.preventDefault();
-                    selectedSuggestionIndex = Math.min(selectedSuggestionIndex + 1, suggestions.length - 1);
-                    updateSelectedSuggestion(suggestions);
+                    selectedSuggestionIndex = Math.min(selectedSuggestionIndex + 1, items.length - 1);
+                    updateSelection(items);
                 } else if (e.key === 'ArrowUp') {
                     e.preventDefault();
-                    selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, -1);
-                    updateSelectedSuggestion(suggestions);
-                } else if (e.key === 'Enter' && selectedSuggestionIndex >= 0) {
-                    e.preventDefault();
-                    const selected = suggestions[selectedSuggestionIndex];
-                    if (selected) {
-                        searchBox.value = selected.dataset.name;
-                        searchSuggestions.classList.remove('active');
-                        filterCards();
+                    selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, 0);
+                    updateSelection(items);
+                } else if (e.key === 'Enter') {
+                    if (selectedSuggestionIndex > -1) {
+                        e.preventDefault();
+                        items[selectedSuggestionIndex].click();
                     }
                 } else if (e.key === 'Escape') {
                     searchSuggestions.classList.remove('active');
-                    selectedSuggestionIndex = -1;
-                    suggestions.forEach(s => s.classList.remove('selected'));
                 }
             });
 
-            function updateSelectedSuggestion(suggestions) {
-                suggestions.forEach(s => s.classList.remove('selected'));
-                if (selectedSuggestionIndex >= 0) {
-                    suggestions[selectedSuggestionIndex].classList.add('selected');
-                    suggestions[selectedSuggestionIndex].scrollIntoView({ block: 'nearest' });
+            function updateSelection(items) {
+                items.forEach((item, i) => {
+                    item.classList.toggle('selected', i === selectedSuggestionIndex);
+                });
+                if(selectedSuggestionIndex > -1) {
+                    items[selectedSuggestionIndex].scrollIntoView({ block: 'nearest' });
                 }
             }
 
-            // Function to filter cards based on search term and active chip
+            // --- Core Logic ---
+
             const filterCards = () => {
-                const searchTerm = searchBox.value.toLowerCase();
+                const searchTerm = searchInput.value.toLowerCase();
+                const activeTag = document.querySelector('.chip.active').dataset.tag;
                 
-                // Filter firms based on search and tag
+                // Multi-term search
+                const terms = searchTerm.split(' ').filter(t => t.length > 0);
+
                 filteredFirms = allFirms.filter(firm => {
-                    const firmName = firm.name;
-                    const firmDesc = firm.description;
-                    const cardTags = firm.tags;
-                    
-                    const nameMatch = fuzzyMatch(searchTerm, firmName);
-                    const descMatch = fuzzyMatch(searchTerm, firmDesc);
-                    const tagMatch = fuzzyMatch(searchTerm, cardTags);
+                    const matchesTag = !activeTag || firm.tags === activeTag;
+                    if (!matchesTag) return false;
+                    if (terms.length === 0) return true;
 
-                    const matchesSearch = searchTerm === '' || 
-                                        nameMatch.match || 
-                                        descMatch.match || 
-                                        tagMatch.match;
-                    const matchesTag = activeTag === '' || cardTags === activeTag;
-
-                    return matchesSearch && matchesTag;
+                    // Check if ALL terms exist in Name OR Tags OR Description
+                    return terms.every(term => 
+                        firm.name.toLowerCase().includes(term) || 
+                        firm.tags.toLowerCase().includes(term) ||
+                        firm.description.toLowerCase().includes(term)
+                    );
                 });
 
-                // Reset to first page
                 currentPage = 1;
-                
-                // Update pagination and render
                 generatePaginationDots();
                 
                 if (filteredFirms.length === 0) {
@@ -1698,32 +825,120 @@
                 }
             };
 
-            // Search functionality event listener
-            searchBox.addEventListener('input', (e) => {
-                debouncedSearch(e.target.value);
-                filterCards();
-            });
-
-            // Filter functionality event listeners
             document.querySelector('.filter-chips').addEventListener('click', (e) => {
                 const clickedChip = e.target.closest('.chip');
                 if (!clickedChip) return;
 
-                const chips = document.querySelectorAll('.chip');
-                chips.forEach(c => {
-                    c.classList.remove('active');
-                    c.setAttribute('aria-selected', 'false');
-                });
-
+                document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
                 clickedChip.classList.add('active');
-                clickedChip.setAttribute('aria-selected', 'true');
-
-                activeTag = clickedChip.dataset.tag;
-
-                searchBox.value = '';
+                
+                searchInput.value = '';
                 searchSuggestions.classList.remove('active');
                 filterCards();
             });
+
+            // --- Pagination Logic ---
+
+            function generatePaginationDots() {
+                dotsContainer.innerHTML = '';
+                totalPages = Math.ceil(filteredFirms.length / itemsPerPage);
+                if (totalPages <= 1) { paginationContainer.style.display = 'none'; return; }
+                paginationContainer.style.display = 'flex';
+
+                const maxVisible = 5;
+                let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
+                let end = Math.min(totalPages, start + maxVisible - 1);
+                if (end - start + 1 < maxVisible) start = Math.max(1, end - maxVisible + 1);
+
+                if (start > 1) { createDot(1); if (start > 2) createEllipsis(); }
+                for (let i = start; i <= end; i++) createDot(i);
+                if (end < totalPages) { if (end < totalPages - 1) createEllipsis(); createDot(totalPages); }
+
+                updatePageIndicator();
+                updateArrowButtons();
+            }
+
+            function createDot(p) {
+                const d = document.createElement('button');
+                d.className = 'pagination-dot' + (p === currentPage ? ' active' : '');
+                d.addEventListener('click', () => goToPage(p));
+                dotsContainer.appendChild(d);
+            }
+
+            function createEllipsis() {
+                const e = document.createElement('span');
+                e.className = 'pagination-ellipsis';
+                e.textContent = '...';
+                dotsContainer.appendChild(e);
+            }
+            
+            function updatePageIndicator() {
+                pageIndicator.innerHTML = `Page <span>${currentPage}</span> of <span>${totalPages}</span>`;
+            }
+
+            function updateArrowButtons() {
+                prevArrow.disabled = currentPage === 1;
+                nextArrow.disabled = currentPage === totalPages;
+            }
+
+            function goToPage(p) {
+                if (p < 1 || p > totalPages) return;
+                currentPage = p;
+                generatePaginationDots();
+                renderCurrentPage();
+                cardsGrid.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+            }
+
+            function renderCurrentPage() {
+                cardsGrid.classList.remove('active');
+                setTimeout(() => {
+                    const start = (currentPage - 1) * itemsPerPage;
+                    generateFirmCards(filteredFirms.slice(start, start + itemsPerPage));
+                    cardsGrid.classList.add('active');
+                }, 150);
+            }
+
+            function generateFirmCards(firms) {
+                cardsGrid.innerHTML = '';
+                firms.forEach((firm, i) => {
+                    const card = document.createElement('div');
+                    card.className = 'firm-card';
+                    card.style.animationDelay = `${i * 0.08}s`;
+                    card.innerHTML = `
+                        <div class="card-header">
+                            <div class="firm-category">${firm.tags}</div>
+                            <div class="card-icon">${firm.icon}</div>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="firm-name">${firm.name}</h3>
+                            <p class="firm-description">${firm.description}</p>
+                        </div>
+                        <div class="card-footer">
+                            <div class="footer-item"><i class="fas fa-globe footer-icon"></i><span class="footer-value">Research</span></div>
+                            <div class="footer-item"><i class="fas fa-flask footer-icon"></i><span class="footer-value">Lab</span></div>
+                        </div>
+                        <div class="link-overlay">
+                            <div class="link-icon" onclick="window.open('${firm.link}', '_blank')"><i class="fas fa-external-link-alt"></i></div>
+                        </div>`;
+                    cardsGrid.appendChild(card);
+                });
+            }
+
+            prevArrow.addEventListener('click', () => goToPage(currentPage - 1));
+            nextArrow.addEventListener('click', () => goToPage(currentPage + 1));
+            
+            window.addEventListener('resize', () => {
+                const newItems = calculateItemsPerPage();
+                if (newItems !== itemsPerPage) {
+                    itemsPerPage = newItems;
+                    goToPage(1);
+                }
+            });
+
+            // Init
+            itemsPerPage = calculateItemsPerPage();
+            generatePaginationDots();
+            renderCurrentPage();
         }
     </script>
 </body>
