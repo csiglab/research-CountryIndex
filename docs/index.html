@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bremontix Laboratorium</title>
+    <title>Laboratorium Arbitristae · Investigaciones</title>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
@@ -135,7 +135,7 @@
             color: var(--text-white);
             font-size: 3.5rem;
             font-weight: 800;
-            margin-bottom: 0.75rem;
+            margin-bottom: 0.5rem;
             letter-spacing: -1px;
             text-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
             position: relative;
@@ -154,13 +154,21 @@
             opacity: 0.8;
         }
 
+        h2 {
+            color: var(--text-medium);
+            font-size: 1.6rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            letter-spacing: 0.5px;
+        }
+
         .subtitle {
             color: var(--text-medium);
-            font-size: 1.2rem;
+            font-size: 1.1rem;
             font-weight: 400;
             max-width: 700px;
-            margin: 0 auto;
-            line-height: 1.7;
+            margin: 0 auto 1rem;
+            line-height: 1.8;
         }
 
         /* Theme Switcher */
@@ -234,6 +242,8 @@
             border-color: var(--accent);
             box-shadow: 0 0 0 4px rgba(33, 37, 41, 0.1), 0 6px 20px rgba(0, 0, 0, 0.3);
             background: var(--bg-card-light);
+            border-bottom-left-radius: 0;
+            border-bottom-right-radius: 0;
         }
 
         body.theme-corporate .search-box:focus {
@@ -252,6 +262,124 @@
 
         .search-box:focus+.search-icon {
             color: var(--accent);
+        }
+
+        /* Search Suggestions Dropdown */
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-card);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: none;
+            border-radius: 0 0 50px 50px;
+            box-shadow: var(--shadow-medium);
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+            z-index: 50;
+            margin-top: 0;
+        }
+
+        .search-suggestions.active {
+            display: block;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        body.theme-corporate .search-suggestions {
+            border-color: rgba(33, 37, 41, 0.1);
+        }
+
+        .suggestion-item {
+            padding: 0.9rem 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        body.theme-corporate .suggestion-item {
+            border-color: rgba(33, 37, 41, 0.05);
+        }
+
+        .suggestion-item:last-child {
+            border-bottom: none;
+            border-bottom-left-radius: 50px;
+            border-bottom-right-radius: 50px;
+        }
+
+        .suggestion-item:hover {
+            background: var(--bg-card-light);
+            transform: translateX(5px);
+        }
+
+        .suggestion-item.selected {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        body.theme-corporate .suggestion-item.selected {
+            background: rgba(33, 37, 41, 0.1);
+        }
+
+        .suggestion-icon {
+            font-size: 1.2rem;
+            color: var(--text-medium);
+        }
+
+        .suggestion-text {
+            color: var(--text-medium);
+            font-weight: 600;
+            flex: 1;
+        }
+
+        .suggestion-type {
+            color: var(--text-light);
+            font-size: 0.85rem;
+            padding: 0.2rem 0.6rem;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        body.theme-corporate .suggestion-type {
+            background: rgba(33, 37, 41, 0.1);
+        }
+
+        .suggestion-match {
+            color: var(--text-white);
+            font-weight: 800;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0 2px;
+            border-radius: 2px;
+        }
+
+        body.theme-corporate .suggestion-match {
+            background: rgba(33, 37, 41, 0.1);
+        }
+
+        .no-suggestions {
+            padding: 1rem 2rem;
+            color: var(--text-light);
+            font-style: italic;
+            text-align: center;
+        }
+
+        /* Highlight matched text in cards */
+        .highlight {
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.1));
+            color: var(--text-white);
+            padding: 0.1rem 0.3rem;
+            border-radius: 3px;
+            font-weight: 700;
+        }
+
+        body.theme-corporate .highlight {
+            background: linear-gradient(135deg, rgba(33, 37, 41, 0.2), rgba(33, 37, 41, 0.1));
         }
 
         .filter-chips {
@@ -523,6 +651,117 @@
             outline-offset: 2px;
         }
 
+        /* Loading State */
+        .loading-state {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            color: var(--text-medium);
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.1);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-bottom: 1rem;
+        }
+
+        body.theme-corporate .loading-spinner {
+            border-color: rgba(33, 37, 41, 0.1);
+            border-top-color: var(--accent);
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Empty State */
+        .empty-state {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem 2rem;
+            color: var(--text-medium);
+            text-align: center;
+        }
+
+        .empty-state.active {
+            display: flex;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            color: var(--text-light);
+            margin-bottom: 1.5rem;
+            opacity: 0.5;
+        }
+
+        .empty-title {
+            color: var(--text-white);
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.8rem;
+        }
+
+        .empty-message {
+            font-size: 1rem;
+            max-width: 400px;
+            opacity: 0.8;
+        }
+
+        /* Footer */
+        footer {
+            margin-top: 4rem;
+            padding-top: 3rem;
+            padding-bottom: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            text-align: center;
+        }
+
+        body.theme-corporate footer {
+            border-top-color: rgba(33, 37, 41, 0.1);
+        }
+
+        .footer-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .footer-link {
+            color: var(--text-medium);
+            text-decoration: none;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            font-weight: 600;
+        }
+
+        .footer-link:hover {
+            color: var(--text-white);
+            transform: translateY(-2px);
+        }
+
+        .footer-copyright {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-top: 1rem;
+        }
+
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -609,11 +848,10 @@
                 <img src="logo.png" alt="Laboratorium Laboratorium Coat of Arms" class="coat-image">
                 <!-- <p class="coat-caption">Symbol of Courage & Authority</p> -->
             </div>
-            <h1>Investigaciones</h1>
-            <h2>Bremontix Laboratorium</h2>
-            <p class="subtitle">Generando conocimiento al servicio del bien común.</p>
+            <h1>Index Gentium</h1>
+            <h2>Laboratorium Arbitristae </h2>
+            <p class="subtitle"> A comprehensive catalog of country representations, evolving to facilitate understanding, exploration, and comparison. </p>
         </header>
-
 
         <!-- Theme Switcher -->
         <div class="theme-switcher">
@@ -626,37 +864,74 @@
 
         <div class="search-container">
             <input type="text" class="search-box" placeholder="Search research by name, laboratory, ..."
-                aria-label="Search research by name, laboratory, ...">
+                aria-label="Search research  by name, description, ..." autocomplete="off">
             <i class="fas fa-search search-icon"></i>
+            <div class="search-suggestions" id="searchSuggestions"></div>
         </div>
 
         <div class="filter-chips" role="tablist">
-            <div class="chip active" role="tab" aria-selected="true" data-category="">All Labs</div>
-            
-            <div class="chip" role="tab" aria-selected="false" data-category="Laboratory">Laboratorium</div>
-            <div class="chip" role="tab" aria-selected="false" data-category="Arbitristae">Laboratorium Arbitristae</div>
-            <div class="chip" role="tab" aria-selected="false" data-category="Negotialis">Laboratorium Maior Negotialis </div>
-            <div class="chip" role="tab" aria-selected="false" data-category="Hispanologia">Laboratorio Mayor de Estudios Hispánicos </div>
+            <div class="chip active" role="tab" aria-selected="true" data-tag="">All Countries</div>
+            <!-- Filter chips will be dynamically generated based on tags in catalog.json -->
         </div>
 
-        <div class="cards-grid" id="cardsGrid">
+        <!-- Loading State -->
+        <div class="loading-state" id="loadingState">
+            <div class="loading-spinner"></div>
+            <p>Loading research data...</p>
+        </div>
+
+        <!-- Empty State -->
+        <div class="empty-state" id="emptyState">
+            <i class="fas fa-search empty-icon"></i>
+            <h3 class="empty-title">No Results Found</h3>
+            <p class="empty-message">Try adjusting your search terms or filter selection to find what you're looking for.</p>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid" style="display: none;">
             <!-- Cards will be dynamically generated here -->
         </div>
     </div>
 
+    <footer>
+        <div class="footer-content">
+            <div class="footer-links">
+                <a href="#" class="footer-link">About</a>
+                <a href="#" class="footer-link">Documentation</a>
+                <a href="#" class="footer-link">Contact</a>
+                <a href="#" class="footer-link">GitHub</a>
+            </div>
+            <p class="footer-copyright">© <span id="currentYear"></span> Laboratorium Arbitristae. All rights reserved.</p>
+        </div>
+    </footer>
+
     <script>
+        // Set current year in footer
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Show loading state initially
+        const loadingState = document.getElementById('loadingState');
+        const emptyState = document.getElementById('emptyState');
+        const cardsGrid = document.getElementById('cardsGrid');
+
         function loadFirmsData() {
             return fetch("catalog.json")
                 .then(response => response.json());
         }
 
         loadFirmsData().then(data => {
-            console.log(data)
-            display(data)
+            console.log(data);
+            
+            // Hide loading state, show cards
+            loadingState.style.display = 'none';
+            cardsGrid.style.display = 'grid';
+            
+            display(data);
+        }).catch(error => {
+            console.error('Error loading data:', error);
+            loadingState.innerHTML = '<p>Error loading data. Please refresh the page.</p>';
         });
 
         function display(firmsData) {
-            console.log("I Enter Here");
 
             // Theme Switcher
             const themeToggle = document.getElementById('themeToggle');
@@ -692,6 +967,27 @@
                 }
             });
 
+            // Function to generate filter chips dynamically based on unique tags
+            function generateFilterChips() {
+                const filterChipsContainer = document.querySelector('.filter-chips');
+                
+                // Get unique tags from all firms
+                const uniqueTags = [...new Set(firmsData.firms.map(firm => firm.tags))];
+                
+                // Keep the "All Countries" chip and add tag-based chips
+                const allCountriesChip = filterChipsContainer.querySelector('.chip');
+                
+                uniqueTags.forEach(tag => {
+                    const chip = document.createElement('div');
+                    chip.className = 'chip';
+                    chip.role = 'tab';
+                    chip.setAttribute('aria-selected', 'false');
+                    chip.dataset.tag = tag;
+                    chip.textContent = tag;
+                    filterChipsContainer.appendChild(chip);
+                });
+            }
+
             // Function to generate firm cards from JSON data
             function generateFirmCards() {
                 const cardsGrid = document.getElementById('cardsGrid');
@@ -700,33 +996,19 @@
                 firmsData.firms.forEach((firm, index) => {
                     const card = document.createElement('div');
                     card.className = 'firm-card';
-                    card.dataset.category = firm.category;
+                    card.dataset.tags = firm.tags;
                     card.style.animationDelay = `${index * 0.1}s`;
 
                     card.innerHTML = `
                     <div class="card-header">
-                        <div class="firm-category">${firm.category}</div>
-                        <div class="card-icon" aria-label="${firm.category} icon">
-                            <i class="fas ${firm.icon}"></i>
+                        <div class="firm-category">${firm.tags}</div>
+                        <div class="card-icon" aria-label="${firm.tags} icon">
+                            ${firm.icon}
                         </div>
                     </div>
                     <div class="card-body">
                         <h3 class="firm-name">${firm.name}</h3>
                         <p class="firm-description">${firm.description}</p>
-                    </div>
-                    <div class="card-footer">
-                        <div class="footer-item">
-                            <i class="fas fa-globe footer-icon"></i>
-                            <div class="footer-value">${firm.location}</div>
-                        </div>
-                        <div class="footer-item">
-                            <i class="fas fa-users footer-icon"></i>
-                            <div class="footer-value">${firm.employees}</div>
-                        </div>
-                        <div class="footer-item">
-                            <i class="fas fa-chart-line footer-icon"></i>
-                            <div class="footer-value">${firm.revenue}</div>
-                        </div>
                     </div>
                     <div class="link-overlay">
                         <div class="link-icon" role="button" aria-label="View ${firm.name} profile">
@@ -759,55 +1041,360 @@
                 });
             }
 
+            // Generate filter chips based on tags in catalog.json
+            generateFilterChips();
+            
+            // Generate firm cards
+            generateFirmCards();
+
             // Search and Filter Logic
             const searchBox = document.querySelector('.search-box');
-            const chips = document.querySelectorAll('.chip');
-            let activeCategory = '';
+            const searchSuggestions = document.getElementById('searchSuggestions');
+            let activeTag = '';
+            let selectedSuggestionIndex = -1;
+
+            // Fuzzy search algorithm - much stricter to avoid false positives
+            function fuzzyMatch(term, text) {
+                const searchTerm = term.toLowerCase();
+                const searchTarget = text.toLowerCase();
+                
+                if (searchTerm === '') return { match: true, score: 1, highlights: [] };
+                
+                // Direct substring match - highest priority
+                if (searchTarget.includes(searchTerm)) {
+                    const startIndex = searchTarget.indexOf(searchTerm);
+                    return {
+                        match: true,
+                        score: 1,
+                        highlights: [[startIndex, startIndex + searchTerm.length]]
+                    };
+                }
+
+                // For fuzzy matching, apply very strict criteria
+                // CRITICAL: Only consider fuzzy matching if the first character matches somewhere in the target
+                // This prevents completely different words from matching
+                const firstCharMatches = searchTarget.includes(searchTerm[0]);
+                if (!firstCharMatches) {
+                    return { match: false, score: 0, highlights: [] };
+                }
+
+                let score = 0;
+                let searchIndex = 0;
+                let highlights = [];
+                let currentHighlight = null;
+                let consecutiveMatches = 0;
+                let maxConsecutive = 0;
+
+                for (let i = 0; i < searchTarget.length && searchIndex < searchTerm.length; i++) {
+                    if (searchTarget[i] === searchTerm[searchIndex]) {
+                        score++;
+                        consecutiveMatches++;
+                        maxConsecutive = Math.max(maxConsecutive, consecutiveMatches);
+                        searchIndex++;
+                        if (currentHighlight === null) {
+                            currentHighlight = [i, i + 1];
+                        } else {
+                            currentHighlight[1] = i + 1;
+                        }
+                    } else {
+                        consecutiveMatches = 0;
+                        if (currentHighlight !== null) {
+                            highlights.push(currentHighlight);
+                            currentHighlight = null;
+                        }
+                    }
+                }
+
+                if (currentHighlight !== null) {
+                    highlights.push(currentHighlight);
+                }
+
+                // Very strict matching criteria
+                const matchPercentage = score / searchTerm.length;
+                
+                // Require at least 80% match AND must have at least 3 consecutive characters matching
+                const minMatchPercentage = 0.8;
+                const hasSignificantMatch = maxConsecutive >= 3;
+                
+                // Additional penalty if the matched portion is a small fraction of the target
+                const coverageRatio = score / searchTarget.length;
+                const coveragePenalty = coverageRatio < 0.3 ? 0.3 : 1;
+                
+                // Penalize heavily if the matched text is much shorter than search term
+                const lengthPenalty = searchTarget.length < searchTerm.length ? 0.2 : 1;
+                
+                const finalScore = (score / searchTarget.length) * lengthPenalty * coveragePenalty;
+
+                return {
+                    match: matchPercentage >= minMatchPercentage && hasSignificantMatch,
+                    score: finalScore,
+                    highlights: highlights
+                };
+            }
+
+            // Generate search suggestions
+            function generateSuggestions(searchTerm) {
+                if (!searchTerm || searchTerm.length < 1) {
+                    searchSuggestions.classList.remove('active');
+                    searchSuggestions.innerHTML = '';
+                    selectedSuggestionIndex = -1;
+                    return [];
+                }
+
+                const suggestions = [];
+                const searchTermLower = searchTerm.toLowerCase();
+
+                // Search through all firms
+                firmsData.firms.forEach(firm => {
+                    // Only show country name matches for short search terms (less than 3 chars)
+                    if (searchTerm.length >= 3) {
+                        const nameMatch = fuzzyMatch(searchTerm, firm.name);
+                        if (nameMatch.match) {
+                            suggestions.push({
+                                type: 'Country',
+                                text: firm.name,
+                                tag: firm.tags,
+                                icon: firm.icon,
+                                score: nameMatch.score,
+                                highlights: nameMatch.highlights,
+                                firm: firm
+                            });
+                        }
+
+                        // Description matches require very high score (only show if very similar)
+                        const descMatch = fuzzyMatch(searchTerm, firm.description);
+                        if (descMatch.match && descMatch.score > 0.6) {
+                            suggestions.push({
+                                type: 'Description',
+                                text: firm.description.substring(0, 60) + (firm.description.length > 60 ? '...' : ''),
+                                tag: firm.tags,
+                                icon: firm.icon,
+                                score: descMatch.score * 0.5,
+                                highlights: descMatch.highlights,
+                                firm: firm
+                            });
+                        }
+
+                        // Tag matches require very high score
+                        const tagMatch = fuzzyMatch(searchTerm, firm.tags);
+                        if (tagMatch.match && tagMatch.score > 0.6) {
+                            suggestions.push({
+                                type: 'Category',
+                                text: firm.tags,
+                                tag: firm.tags,
+                                icon: firm.icon,
+                                score: tagMatch.score * 0.7,
+                                highlights: tagMatch.highlights,
+                                firm: firm
+                            });
+                        }
+                    } else {
+                        // For short terms (1-2 chars), only match exact or near-exact name matches
+                        if (firm.name.toLowerCase().includes(searchTerm)) {
+                            suggestions.push({
+                                type: 'Country',
+                                text: firm.name,
+                                tag: firm.tags,
+                                icon: firm.icon,
+                                score: 1,
+                                highlights: [[firm.name.toLowerCase().indexOf(searchTerm), firm.name.toLowerCase().indexOf(searchTerm) + searchTerm.length]],
+                                firm: firm
+                            });
+                        }
+                    }
+                });
+
+                // Remove duplicates and sort by score
+                const uniqueSuggestions = suggestions.filter((suggestion, index, self) =>
+                    index === self.findIndex((s) => s.text === suggestion.text && s.type === suggestion.type)
+                );
+
+                return uniqueSuggestions.sort((a, b) => b.score - a.score).slice(0, 8);
+            }
+
+            // Highlight matched text
+            function highlightText(text, highlights) {
+                if (!highlights || highlights.length === 0) return text;
+
+                let highlightedText = '';
+                let lastIndex = 0;
+
+                highlights.forEach(([start, end]) => {
+                    highlightedText += text.substring(lastIndex, start);
+                    highlightedText += `<span class="suggestion-match">${text.substring(start, end)}</span>`;
+                    lastIndex = end;
+                });
+
+                highlightedText += text.substring(lastIndex);
+                return highlightedText;
+            }
+
+            // Render suggestions dropdown
+            function renderSuggestions(suggestions) {
+                if (suggestions.length === 0) {
+                    searchSuggestions.innerHTML = '<div class="no-suggestions">No suggestions found</div>';
+                } else {
+                    searchSuggestions.innerHTML = suggestions.map((suggestion, index) => `
+                        <div class="suggestion-item" data-index="${index}" data-name="${suggestion.firm.name}">
+                            <span class="suggestion-icon">${suggestion.icon}</span>
+                            <span class="suggestion-text">${highlightText(suggestion.text, suggestion.highlights)}</span>
+                            <span class="suggestion-type">${suggestion.type}</span>
+                        </div>
+                    `).join('');
+
+                    document.querySelectorAll('.suggestion-item').forEach(item => {
+                        item.addEventListener('click', () => {
+                            searchBox.value = item.dataset.name;
+                            searchSuggestions.classList.remove('active');
+                            filterCards();
+                        });
+                    });
+                }
+
+                searchSuggestions.classList.add('active');
+                selectedSuggestionIndex = -1;
+            }
+
+            // Debounce function for performance
+            function debounce(func, wait) {
+                let timeout;
+                return function executedFunction(...args) {
+                    const later = () => {
+                        clearTimeout(timeout);
+                        func(...args);
+                    };
+                    clearTimeout(timeout);
+                    timeout = setTimeout(later, wait);
+                };
+            }
+
+            // Handle search input with debouncing
+            const debouncedSearch = debounce((searchTerm) => {
+                const suggestions = generateSuggestions(searchTerm);
+                renderSuggestions(suggestions);
+            }, 200);
+
+            // Close suggestions when clicking outside
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) {
+                    searchSuggestions.classList.remove('active');
+                }
+            });
+
+            // Keyboard navigation for suggestions
+            searchBox.addEventListener('keydown', (e) => {
+                const suggestions = document.querySelectorAll('.suggestion-item');
+
+                if (e.key === 'ArrowDown') {
+                    e.preventDefault();
+                    selectedSuggestionIndex = Math.min(selectedSuggestionIndex + 1, suggestions.length - 1);
+                    updateSelectedSuggestion(suggestions);
+                } else if (e.key === 'ArrowUp') {
+                    e.preventDefault();
+                    selectedSuggestionIndex = Math.max(selectedSuggestionIndex - 1, -1);
+                    updateSelectedSuggestion(suggestions);
+                } else if (e.key === 'Enter' && selectedSuggestionIndex >= 0) {
+                    e.preventDefault();
+                    const selected = suggestions[selectedSuggestionIndex];
+                    if (selected) {
+                        searchBox.value = selected.dataset.name;
+                        searchSuggestions.classList.remove('active');
+                        filterCards();
+                    }
+                } else if (e.key === 'Escape') {
+                    searchSuggestions.classList.remove('active');
+                    selectedSuggestionIndex = -1;
+                    suggestions.forEach(s => s.classList.remove('selected'));
+                }
+            });
+
+            function updateSelectedSuggestion(suggestions) {
+                suggestions.forEach(s => s.classList.remove('selected'));
+                if (selectedSuggestionIndex >= 0) {
+                    suggestions[selectedSuggestionIndex].classList.add('selected');
+                    suggestions[selectedSuggestionIndex].scrollIntoView({ block: 'nearest' });
+                }
+            }
 
             // Function to filter cards based on search term and active chip
             const filterCards = () => {
                 const searchTerm = searchBox.value.toLowerCase();
                 const cards = document.querySelectorAll('.firm-card');
+                let visibleCardsCount = 0;
 
                 cards.forEach(card => {
-                    const content = card.textContent.toLowerCase();
-                    const cardCategory = card.dataset.category;
+                    const firmName = card.querySelector('.firm-name').textContent;
+                    const firmDesc = card.querySelector('.firm-description').textContent;
+                    const cardTags = card.dataset.tags;
+                    const fullContent = `${firmName} ${firmDesc} ${cardTags}`.toLowerCase();
 
-                    const matchesSearch = content.includes(searchTerm);
-                    const matchesCategory = activeCategory === '' || cardCategory === activeCategory;
+                    // Use fuzzy matching for search
+                    const nameMatch = fuzzyMatch(searchTerm, firmName);
+                    const descMatch = fuzzyMatch(searchTerm, firmDesc);
+                    const tagMatch = fuzzyMatch(searchTerm, cardTags);
 
-                    if (matchesSearch && matchesCategory) {
+                    const matchesSearch = searchTerm === '' || 
+                                        nameMatch.match || 
+                                        descMatch.match || 
+                                        tagMatch.match;
+                    const matchesTag = activeTag === '' || cardTags === activeTag;
+
+                    if (matchesSearch && matchesTag) {
                         card.style.display = 'block';
+                        visibleCardsCount++;
+                        
+                        // Highlight matched text in card
+                        const nameElement = card.querySelector('.firm-name');
+                        if (nameMatch.highlights.length > 0) {
+                            nameElement.innerHTML = highlightText(firmName, nameMatch.highlights);
+                        } else {
+                            nameElement.innerHTML = firmName;
+                        }
                     } else {
                         card.style.display = 'none';
                     }
                 });
+
+                // Show empty state if no cards are visible
+                if (visibleCardsCount === 0 && searchTerm !== '') {
+                    emptyState.classList.add('active');
+                    cardsGrid.style.display = 'none';
+                } else {
+                    emptyState.classList.remove('active');
+                    cardsGrid.style.display = 'grid';
+                }
             };
 
             // Search functionality event listener
-            searchBox.addEventListener('input', filterCards);
-
-            // Filter functionality event listeners
-            chips.forEach(chip => {
-                chip.addEventListener('click', () => {
-                    chips.forEach(c => {
-                        c.classList.remove('active');
-                        c.setAttribute('aria-selected', 'false');
-                    });
-
-                    chip.classList.add('active');
-                    chip.setAttribute('aria-selected', 'true');
-
-                    activeCategory = chip.dataset.category;
-
-                    searchBox.value = '';
-
-                    filterCards();
-                });
+            searchBox.addEventListener('input', (e) => {
+                debouncedSearch(e.target.value);
+                filterCards();
             });
 
-            generateFirmCards();
+            // Filter functionality event listeners
+            document.querySelector('.filter-chips').addEventListener('click', (e) => {
+                const clickedChip = e.target.closest('.chip');
+                if (!clickedChip) return;
+
+                const chips = document.querySelectorAll('.chip');
+                chips.forEach(c => {
+                    c.classList.remove('active');
+                    c.setAttribute('aria-selected', 'false');
+                });
+
+                clickedChip.classList.add('active');
+                clickedChip.setAttribute('aria-selected', 'true');
+
+                activeTag = clickedChip.dataset.tag;
+
+                searchBox.value = '';
+                searchSuggestions.classList.remove('active');
+                filterCards();
+            });
         }
+    </script>
+</body>
+</html> 
     </script>
 </body>
 </html>

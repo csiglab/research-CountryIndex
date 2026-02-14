@@ -2,96 +2,59 @@
   "firms": [
     {
       "id": 1,
-      "name": "República Dominicana 2.0",
-      "category": "Arbitristae",
-      "icon": "fa-flask",
-      "description": "Focuses on research and development, conducting experiments and innovation in science and technology.",
-      "location": "Santo Domingo",
-      "employees": "2,500+",
-      "revenue": "$850M",
+      "name": "New Zealand",
+      "tags": "Arbitristae",
+      "icon": "🇳🇿",
+      "description": "A developed island nation in the South Pacific known for its strong agricultural exports, high human development, and stable political institutions.",
       "link": "https://bremontix.xyz/lab/research/rd20/"
     },
     {
       "id": 2,
-      "name": "República Dominicana 1.0",
-      "category": "Arbitristae",
-      "icon": "fa-dollar-sign",
-      "description": "Supports startups and new ventures by providing resources, mentorship, and funding opportunities.",
-      "location": "Santo Domingo",
-      "employees": "850",
-      "revenue": "$2.1B",
-      "link": "https://bremontix.xyz/lab/research/rd10/"
+      "name": "Uruguay",
+      "tags": "Arbitristae",
+      "icon": "🇺🇾",
+      "description": "A small South American country with a robust social welfare system, diversified economy, and a history of political stability and institutional strength.",
+      "link": "https://bremontix.xyz/lab/research/rd20/"
+    },
+    {
+      "id": 3,
+      "name": "Netherlands",
+      "tags": "Arbitristae",
+      "icon": "🇳🇱",
+      "description": "A European country with a highly developed economy, notable for its trade, infrastructure, and liberal social policies.",
+      "link": "https://bremontix.xyz/lab/research/rd20/"
     },
     {
       "id": 4,
-      "name": "Laboratorium Arbitristae",
-      "category": "Laboratory",
-      "icon": "fa-network-wired",
-      "description": "Espacio para prototipar ideas, investigando y diseñando estrategias para la grandeza tecnológica y productiva de la República Dominicana. Escudo de Armas - Laboratorio Arbitrista",
-      "location": "Santiago",
-      "employees": "1,100",
-      "revenue": "$950M",
-      "link": "https://www.bremontix.xyz/lab/ar"
+      "name": "England",
+      "tags": "Arbitristae",
+      "icon": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
+      "description": "A country in the United Kingdom with a historical industrial and commercial influence, strong institutions, and significant cultural and economic impact globally.",
+      "link": "https://bremontix.xyz/lab/research/rd20/"
     },
     {
       "id": 5,
-      "parent": 6,
-      "name": "Laboratorium Productivum et Mercatorum",
-      "category": "Laboratory",
-      "icon": "fa-briefcase",
-      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
-      "location": "Santiago",
-      "employees": "1,100",
-      "revenue": "$950M",
-      "link": "https://www.bremontix.xyz/lab/pro/"
+      "name": "South Korea",
+      "tags": "Arbitristae",
+      "icon": "🇰🇷",
+      "description": "An East Asian nation known for rapid industrialization, technological innovation, and strong institutions, with global cultural influence through K-pop and cinema.",
+      "link": "https://bremontix.xyz/lab/research/rd20/"
     },
     {
       "id": 6,
-      "parent": 6,
-      "name": "Laboratorium Maius Legalis",
-      "category": "Laboratory",
-      "icon": "fa-scale-balanced",
-      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
-      "location": "Santiago",
-      "employees": "1,100",
-      "revenue": "$950M",
-      "link": "https://www.bremontix.xyz/lab/legal/"
+      "name": "Ireland",
+      "tags": "Arbitristae",
+      "icon": "🇮🇪",
+      "description": "An island nation in Europe recognized for its high-tech economy, strong institutions, and significant contributions to finance, pharmaceuticals, and cultural industries.",
+      "link": "https://bremontix.xyz/lab/research/rd20/"
     },
     {
       "id": 7,
-      "parent": 6,
-      "name": "Laboratorium Maius Studiorum Hispanicorum",
-      "category": "Laboratory",
-      "icon": "fa-scroll",
-      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
-      "location": "Santiago",
-      "employees": "1,100",
-      "revenue": "$950M",
-      "link": "https://www.bremontix.xyz/lab/hispan/"
-    },
-    {
-      "id": 8,
-      "parent": 6,
-      "name": "Laboratorium Maius Salutis Productorum",
-      "category": "Laboratory",
-      "icon": "fa-user-doctor",
-      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
-      "location": "Santiago",
-      "employees": "1,100",
-      "revenue": "$950M",
-      "link": "https://www.bremontix.xyz/lab/salud/"
-    },
-    {
-      "id": 9,
-      "parent": 6,
-      "name": "Laboratorium Maius Technicorum",
-      "category": "Laboratory",
-      "icon": "fa-robot",
-      "description": "Characterize productive systems, design convergence plans with the most sophisticated productive systems, and experiment with new forms of production and business at the frontier.",
-      "location": "Santiago",
-      "employees": "1,100",
-      "revenue": "$950M",
-      "link": "https://www.bremontix.xyz/lab/tecne/"
+      "name": "Malaysia",
+      "tags": "Arbitristae",
+      "icon": "🇲🇾",
+      "description": "A Southeast Asian country known for its diverse economy, rapid industrial development, strategic trade position, and multi-ethnic cultural landscape.",
+      "link": "https://bremontix.xyz/lab/research/rd20/"
     }
   ]
 }
