@@ -2,25 +2,25 @@
 
 echo "Building the project..."
 
-## Set up the environment
+# Check if the virtual environment exists
 if [ ! -d ".venv" ]; then
-    uv init .venv
-    source .venv/bin/activate
+    echo "Virtual environment not found. Running uv sync..."
     uv sync
 fi
 
-## Activate the virtual environment
+# Activate the virtual environment
 source .venv/bin/activate
 
-## Updating Repository
+# Updating Repository
 git pull origin main
 
 # Build the project
-cd web
+cd web || { echo "Failed to enter web directory"; exit 1; }
 mkdocs build
 cd ..
 
-## Deactivate the virtual environment
+# Deactivate the virtual environment
 deactivate
+
 echo "Build complete."
 exit 0
