@@ -127,7 +127,7 @@
     .delay-4 { animation-delay: 250ms; }
     .delay-5 { animation-delay: 350ms; }
 
-    @media (prefers-reduced-motion: reduce) {
+    @media (prefers-rereduced-motion: reduce) {
       .animate-entrance {
         animation: none;
         opacity: 1;
@@ -611,7 +611,7 @@
       width: 6px;
     }
 
-    ::-webkit-scrollbar-track {
+    ::-webkit-scrollbar.track {
       background: transparent;
     }
 
@@ -624,7 +624,7 @@
       background: var(--muted);
     }
 
-    /* Footer links */
+    /* Footer styles */
     .footer-link {
       text-decoration: none;
       color: #B8C5D4;
@@ -634,6 +634,14 @@
       text-decoration: underline;
       text-underline-offset: 4px;
       color: #E8EDF3;
+    }
+
+    .footer-meta-label {
+      color: #5A7089;
+    }
+
+    .footer-meta-value {
+      color: #B8C5D4;
     }
 
     /* Screen reader only */
@@ -674,7 +682,7 @@
       <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
     </svg>
     <svg class="icon-sun w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-      <path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/>
+      <path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0a3.75 3.75 0 017.5 0z"/>
     </svg>
   </button>
 
@@ -885,15 +893,66 @@
 
   </div>
 
+  <!-- [10] Footer — Institutional Layer -->
   <footer class="site-footer py-14 md:py-20 lg:py-24 px-6" style="background-color: #0B1A2B;">
     <div class="max-w-6xl mx-auto">
-      <p class="font-display text-xl md:text-2xl tracking-widest text-center mb-10 md:mb-12" style="color: #E8EDF3;">ARBITRISTAE</p>
-      <nav class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-10 mb-10 md:mb-12" aria-label="Footer navigation">
-        <a href="#" class="footer-link text-sm">About</a>
-        <a href="#" class="footer-link text-sm">Methodology</a>
-        <a href="#" class="footer-link text-sm">Contact</a>
-      </nav>
-      <p class="font-mono text-xs tracking-wide text-center" style="color: #5A7089;">MMXXIV</p>
+      
+      <!-- Three-column grid layout -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-12 mb-12 md:mb-16">
+        
+        <!-- Column I: Wordmark + Descriptor -->
+        <div class="text-center md:text-left">
+          <p class="font-display text-xl md:text-2xl tracking-[0.2em] mb-4" style="color: #E8EDF3; font-variant: small-caps;">ARBITRISTAE</p>
+          <p class="font-display text-sm leading-relaxed max-w-xs mx-auto md:mx-0" style="color: #8A9DB0;">
+            A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems and institutional regimes.
+          </p>
+        </div>
+        
+        <!-- Column II: Navigation -->
+        <div class="text-center">
+          <p class="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style="color: #5A7089;">Navigation</p>
+          <nav class="flex flex-col items-center gap-3" aria-label="Footer navigation">
+            <a href="#" class="footer-link text-sm">About</a>
+            <a href="#" class="footer-link text-sm">Methodology</a>
+            <a href="#" class="footer-link text-sm">Research Notes</a>
+            <a href="#" class="footer-link text-sm">Contact</a>
+          </nav>
+        </div>
+        
+        <!-- Column III: Registry Metadata -->
+        <div class="text-center md:text-right">
+          <p class="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style="color: #5A7089;">Registry Status</p>
+          <div class="space-y-2 text-sm">
+            <div class="flex justify-center md:justify-end gap-2">
+              <span class="footer-meta-label">Entities Indexed:</span>
+              <span class="footer-meta-value font-medium" id="footerEntityCount">—</span>
+            </div>
+            <div class="flex justify-center md:justify-end gap-2">
+              <span class="footer-meta-label">Classifications:</span>
+              <span class="footer-meta-value font-medium" id="footerClassificationCount">—</span>
+            </div>
+            <div class="flex justify-center md:justify-end gap-2">
+              <span class="footer-meta-label">Regions Represented:</span>
+              <span class="footer-meta-value font-medium" id="footerRegionCount">—</span>
+            </div>
+            <div class="flex justify-center md:justify-end gap-2">
+              <span class="footer-meta-label">Last Revision:</span>
+              <span class="footer-meta-value font-mono text-xs" id="footerLastRevision">—</span>
+            </div>
+            <div class="flex justify-center md:justify-end gap-2">
+              <span class="footer-meta-label">Version:</span>
+              <span class="footer-meta-value font-mono text-xs" id="footerVersion">v1.0</span>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+      
+      <!-- Motto Line -->
+      <div class="pt-8 border-t text-center" style="border-color: rgba(90, 112, 137, 0.25);">
+        <p class="font-display text-sm italic tracking-wide" style="color: #5A7089;">Ordo ex comparatione.</p>
+      </div>
+      
     </div>
   </footer>
 
@@ -985,6 +1044,12 @@
     const tagScrollRight = document.getElementById('tagScrollRight');
     const tagFadeLeft = document.getElementById('tagFadeLeft');
     const tagFadeRight = document.getElementById('tagFadeRight');
+
+    // Footer elements
+    const footerEntityCount = document.getElementById('footerEntityCount');
+    const footerClassificationCount = document.getElementById('footerClassificationCount');
+    const footerRegionCount = document.getElementById('footerRegionCount');
+    const footerLastRevision = document.getElementById('footerLastRevision');
 
     // Tag scroll functionality
     function updateTagScrollState() {
@@ -1108,6 +1173,26 @@
       }
     }
 
+    function updateFooterMetadata() {
+      // Entity count
+      footerEntityCount.textContent = entities.length;
+      
+      // Classification count
+      const classCounts = getClassificationCounts();
+      footerClassificationCount.textContent = Object.keys(classCounts).length;
+      
+      // Region count (approximate based on entity data or placeholder)
+      const regions = new Set();
+      entities.forEach(entity => {
+        if (entity.region) regions.add(entity.region);
+      });
+      footerRegionCount.textContent = regions.size > 0 ? regions.size : '—';
+      
+      // Last revision (current date in ISO format)
+      const today = new Date();
+      footerLastRevision.textContent = today.toISOString().split('T')[0];
+    }
+
     async function loadCatalog() {
       try {
         const response = await fetch('catalog.json');
@@ -1118,6 +1203,7 @@
         filteredEntities = [...entities];
 
         renderTags();
+        updateFooterMetadata();
 
         loadingSkeleton.classList.add('hidden');
         entityGrid.classList.remove('hidden');
