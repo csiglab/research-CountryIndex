@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🇮🇪 Ireland · Collectio</title>
+  <title>🇮🇪 Ireland · Index Gentium</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -151,6 +151,28 @@
     .theme-toggle .icon-sun { opacity: 0; transform: scale(0.5); }
     .dark .theme-toggle .icon-moon { opacity: 0; transform: scale(0.5); }
     .dark .theme-toggle .icon-sun { opacity: 1; transform: scale(1); }
+
+    /* Project Header */
+    .project-header {
+      background: var(--card);
+      border-bottom: 1px solid var(--border);
+      padding: 0.75rem 0;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      backdrop-filter: blur(8px);
+      background-color: rgba(var(--card-rgb), 0.85);
+    }
+    
+    .project-header::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
 
     /* Typography Scale */
     .font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
@@ -392,6 +414,24 @@
     }
     .entity-card:hover:not(.opacity-60) .card-cta { gap: 0.75rem; }
 
+    /* Back to Registry Link */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      transition: color 0.2s ease, gap 0.2s ease;
+      padding: 0.5rem 0;
+    }
+    .back-link:hover {
+      color: var(--accent);
+      gap: 0.75rem;
+    }
+
     /* Footer */
     .site-footer {
       background: var(--card);
@@ -461,7 +501,31 @@
     </svg>
   </button>
 
-  <div class="main-content w-full max-w-4xl mx-auto px-6 py-16 md:py-24">
+  <!-- Project Header -->
+  <header class="project-header">
+    <div class="max-w-6xl mx-auto px-6">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center gap-4">
+          <a href="/" class="back-link" aria-label="Back to Index Gentium">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+              <path d="M15 19l-7-7 7-7"/>
+            </svg>
+            <span>Index Gentium</span>
+          </a>
+          <span class="text-muted opacity-30" aria-hidden="true">/</span>
+          <span class="font-mono text-xs text-muted">IRL-001</span>
+        </div>
+        <div class="flex items-center gap-3">
+          <span class="font-mono text-[0.6rem] tracking-widest text-muted uppercase hidden sm:block">
+            Laboratorium Arbitristae
+          </span>
+          <span class="w-1.5 h-1.5 rounded-full bg-accent opacity-50"></span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="main-content w-full max-w-4xl mx-auto px-6 py-12 md:py-16">
     
     <!-- [1] Identity Layer -->
     <header class="mb-10 text-center reveal">
@@ -470,7 +534,7 @@
       </div>
 
       <p class="font-mono type-label uppercase text-muted mb-3 font-medium tracking-widest">
-        Regio Socialis &middot; Collectio
+        Index Gentium · Collectio
       </p>
 
       <h1 class="font-display type-hero font-medium text-fg mb-1">
@@ -651,7 +715,7 @@
         <!-- Column I: Identity -->
         <div class="md:col-span-5 text-center md:text-left">
           <p class="font-display text-lg font-medium tracking-[0.2em] uppercase mb-2 footer-identity">
-            Arbitristae
+            Index Gentium
           </p>
           <p class="font-body text-xs leading-relaxed max-w-xs mx-auto md:mx-0 footer-muted">
             A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems.
@@ -689,7 +753,7 @@
         </div>
         
       </div>
-      
+
       <!-- Bottom Bar -->
       <div class="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 footer-divider">
          <p class="font-mono text-[10px] tracking-[0.15em] uppercase footer-muted">
