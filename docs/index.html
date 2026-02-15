@@ -10,16 +10,17 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
-            bg: '#FAFBFC',
-            fg: '#1E293B',
-            muted: '#64748B',
-            accent: '#4A6FA5',
-            accentDark: '#3A5A8A',
-            card: '#FFFFFF',
-            border: '#E2E8F0',
+            bg: 'var(--bg)',
+            fg: 'var(--fg)',
+            muted: 'var(--muted)',
+            accent: 'var(--accent)',
+            accentDark: 'var(--accent-dark)',
+            card: 'var(--card)',
+            border: 'var(--border)',
             navy: '#1B2838',
           },
           fontFamily: {
@@ -38,13 +39,41 @@
       --muted: #64748B;
       --accent: #4A6FA5;
       --accent-dark: #3A5A8A;
+      --accent-glow: rgba(74, 111, 165, 0.15);
       --card: #FFFFFF;
       --border: #E2E8F0;
-      --navy: #1B2838;
+      --border-hover: #CBD5E1;
+      --input-bg: #FFFFFF;
+      --skeleton-from: #f1f5f9;
+      --skeleton-to: #e2e8f0;
       --footer-bg: #0B1A2B;
       --footer-text: #B8C5D4;
       --footer-text-light: #E8EDF3;
       --footer-muted: #5A7089;
+      --status-active: #22c55e;
+      --dropdown-shadow: rgba(0, 0, 0, 0.12);
+      --card-shadow: rgba(0, 0, 0, 0.06);
+      --tag-bg: rgba(30, 41, 59, 0.06);
+      --tag-selected-border: #1E293B;
+    }
+
+    .dark {
+      --bg: #0D1926;
+      --fg: #E8EDF3;
+      --muted: #8BA3BC;
+      --accent: #6B9BD1;
+      --accent-dark: #4A7AB0;
+      --accent-glow: rgba(107, 155, 209, 0.2);
+      --card: #152238;
+      --border: #243B55;
+      --border-hover: #3A5470;
+      --input-bg: #0F1D2D;
+      --skeleton-from: #1a2d45;
+      --skeleton-to: #243B55;
+      --dropdown-shadow: rgba(0, 0, 0, 0.4);
+      --card-shadow: rgba(0, 0, 0, 0.3);
+      --tag-bg: rgba(107, 155, 209, 0.12);
+      --tag-selected-border: #6B9BD1;
     }
 
     * {
@@ -65,6 +94,7 @@
       min-height: 100%;
       display: flex;
       flex-direction: column;
+      transition: background-color 200ms ease-out, color 200ms ease-out;
     }
 
     .main-content {
@@ -104,24 +134,87 @@
       }
     }
 
+    /* Theme Toggle */
+    .theme-toggle {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 150ms ease-out;
+      z-index: 100;
+      box-shadow: 0 2px 8px var(--card-shadow);
+    }
+
+    .theme-toggle:hover {
+      border-color: var(--border-hover);
+      color: var(--fg);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px var(--card-shadow);
+    }
+
+    .theme-toggle:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .theme-toggle:active {
+      transform: translateY(0);
+    }
+
+    .theme-toggle .icon-sun,
+    .theme-toggle .icon-moon {
+      position: absolute;
+      transition: opacity 200ms ease-out, transform 200ms ease-out;
+    }
+
+    .theme-toggle .icon-moon {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+
+    .theme-toggle .icon-sun {
+      opacity: 0;
+      transform: rotate(-90deg) scale(0.5);
+    }
+
+    .dark .theme-toggle .icon-moon {
+      opacity: 0;
+      transform: rotate(90deg) scale(0.5);
+    }
+
+    .dark .theme-toggle .icon-sun {
+      opacity: 1;
+      transform: rotate(0deg) scale(1);
+    }
+
     /* Search Module */
     .search-module {
       position: relative;
     }
 
     .search-input {
-      transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+      transition: border-color 150ms ease-out, box-shadow 150ms ease-out, background-color 200ms ease-out;
+      background-color: var(--input-bg);
     }
 
     .search-input:hover {
-      border-color: #CBD5E1;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border-color: var(--border-hover);
+      box-shadow: 0 2px 8px var(--card-shadow);
     }
 
     .search-input:focus {
       outline: none;
       border-color: var(--accent);
-      box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.12);
+      box-shadow: 0 0 0 3px var(--accent-glow);
     }
 
     /* Tag Row - Elegant scrollable container */
@@ -160,9 +253,9 @@
     }
 
     .tag-scroll-btn:hover {
-      border-color: var(--fg);
+      border-color: var(--border-hover);
       color: var(--fg);
-      background: rgba(30, 41, 59, 0.03);
+      background: var(--tag-bg);
     }
 
     .tag-scroll-btn:active {
@@ -244,14 +337,14 @@
 
     .tag-pill:hover:not(.selected) {
       color: var(--fg);
-      border-color: #CBD5E1;
-      background: rgba(0, 0, 0, 0.01);
+      border-color: var(--border-hover);
+      background: var(--tag-bg);
     }
 
     .tag-pill.selected {
       color: var(--fg);
-      background: rgba(30, 41, 59, 0.06);
-      border-color: var(--fg);
+      background: var(--tag-bg);
+      border-color: var(--tag-selected-border);
       font-weight: 500;
     }
 
@@ -267,7 +360,7 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 8px;
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      box-shadow: 0 12px 32px var(--dropdown-shadow);
       
       display: none;
       opacity: 0;
@@ -286,7 +379,7 @@
 
     .dropdown-metadata {
       padding: 12px 16px;
-      background: rgba(74, 111, 165, 0.03);
+      background: var(--tag-bg);
       border-bottom: 1px solid var(--border);
     }
 
@@ -355,16 +448,16 @@
 
     .search-dropdown-item:hover,
     .search-dropdown-item.active {
-      background-color: rgba(74, 111, 165, 0.05);
+      background-color: var(--tag-bg);
     }
 
     .search-dropdown-item.active {
-      background-color: rgba(74, 111, 165, 0.08);
+      background-color: var(--accent-glow);
     }
 
     .search-dropdown-item:focus {
       outline: none;
-      background-color: rgba(74, 111, 165, 0.08);
+      background-color: var(--accent-glow);
     }
 
     .scroll-indicator {
@@ -372,7 +465,7 @@
       text-align: center;
       font-size: 11px;
       color: var(--muted);
-      background: rgba(74, 111, 165, 0.02);
+      background: var(--tag-bg);
       border-top: 1px solid var(--border);
       font-family: 'JetBrains Mono', monospace;
       letter-spacing: 0.02em;
@@ -380,7 +473,9 @@
 
     /* Card hover */
     .entity-card {
-      transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+      transition: transform 150ms ease-out, box-shadow 150ms ease-out, background-color 200ms ease-out;
+      background-color: var(--card);
+      border-color: var(--border);
     }
 
     .entity-card::before {
@@ -402,20 +497,27 @@
 
     .entity-card:hover {
       transform: translateY(-3px);
-      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 12px 24px -8px var(--dropdown-shadow);
     }
 
     .entity-card:hover .card-title {
-      color: #0F172A;
+      color: var(--accent);
+    }
+
+    /* Card status tag */
+    .card-tag {
+      background: var(--tag-bg);
+      color: var(--muted);
     }
 
     /* Buttons */
     .btn-outline {
       transition: background-color 150ms ease-out, border-color 150ms ease-out;
+      background-color: transparent;
     }
 
     .btn-outline:hover {
-      background-color: rgba(74, 111, 165, 0.06);
+      background-color: var(--tag-bg);
       border-color: var(--accent);
     }
 
@@ -430,6 +532,7 @@
     /* View CTA */
     .view-cta {
       transition: color 150ms ease-out;
+      color: var(--accent);
     }
 
     .view-cta:hover {
@@ -482,7 +585,7 @@
       left: 0;
       right: 0;
       height: 1px;
-      background-color: rgba(74, 111, 165, 0.25);
+      background-color: var(--accent-glow);
       transition: background-color 150ms ease-out;
       border-radius: 0 0 8px 8px;
     }
@@ -493,7 +596,7 @@
 
     /* Loading skeleton */
     .loading-skeleton {
-      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background: linear-gradient(90deg, var(--skeleton-from) 25%, var(--skeleton-to) 50%, var(--skeleton-from) 75%);
       background-size: 200% 100%;
       animation: shimmer 1.5s infinite;
     }
@@ -545,10 +648,36 @@
       white-space: nowrap;
       border: 0;
     }
+
+    /* Logo image dark mode handling */
+    .logo-img {
+      transition: opacity 150ms ease-out;
+    }
+
+    .dark .logo-img {
+      filter: brightness(1.1);
+    }
+
+    /* Entrance animation for theme toggle */
+    .theme-toggle-animate {
+      opacity: 0;
+      animation: fadeInUp 250ms ease-out forwards;
+      animation-delay: 400ms;
+    }
   </style>
 </head>
 <body>
   
+  <!-- Theme Toggle -->
+  <button class="theme-toggle theme-toggle-animate" id="themeToggle" aria-label="Toggle dark mode" type="button">
+    <svg class="icon-moon w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
+    </svg>
+    <svg class="icon-sun w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z"/>
+    </svg>
+  </button>
+
   <div class="main-content">
 
     <!-- [2] Institutional Hero Layer -->
@@ -560,7 +689,7 @@
             <img 
               src="logo.png" 
               alt="INDEX GENTIUM Crest" 
-              class="w-16 h-16 object-contain opacity-90"
+              class="logo-img w-16 h-16 object-contain opacity-90"
               onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
             >
             <div class="hidden w-16 h-16 rounded-full border-2 border-border bg-card items-center justify-center">
@@ -769,7 +898,60 @@
   </footer>
 
   <script>
-    // State initialization
+    // =============================================
+    // Theme Management
+    // =============================================
+    const themeToggle = document.getElementById('themeToggle');
+    const htmlElement = document.documentElement;
+    
+    function getSystemTheme() {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
+    
+    function getStoredTheme() {
+      return localStorage.getItem('index-gentium-theme');
+    }
+    
+    function setTheme(theme) {
+      if (theme === 'dark') {
+        htmlElement.classList.add('dark');
+      } else {
+        htmlElement.classList.remove('dark');
+      }
+      localStorage.setItem('index-gentium-theme', theme);
+      
+      // Update aria label
+      themeToggle.setAttribute('aria-label', theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode');
+    }
+    
+    function initTheme() {
+      const storedTheme = getStoredTheme();
+      if (storedTheme) {
+        setTheme(storedTheme);
+      } else {
+        setTheme(getSystemTheme());
+      }
+    }
+    
+    themeToggle.addEventListener('click', () => {
+      const currentTheme = htmlElement.classList.contains('dark') ? 'dark' : 'light';
+      const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+    
+    // Listen for system theme changes
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (!getStoredTheme()) {
+        setTheme(e.matches ? 'dark' : 'light');
+      }
+    });
+    
+    // Initialize theme immediately
+    initTheme();
+
+    // =============================================
+    // State Initialization
+    // =============================================
     let entities = [];
     let currentFilter = 'all';
     let currentPage = 1;
@@ -1064,12 +1246,12 @@
       
       const tagsHTML = Array.isArray(entity.tags) 
         ? entity.tags.map(tag => `
-            <span class="inline-block px-2 py-0.5 text-xs font-mono tracking-wide text-muted bg-muted/10 rounded">${tag}</span>
+            <span class="card-tag inline-block px-2 py-0.5 text-xs font-mono tracking-wide rounded">${tag}</span>
           `).join('')
         : '';
       
       return `
-        <article class="entity-card relative bg-card border border-border rounded-xl p-6 shadow-sm" role="listitem">
+        <article class="entity-card relative border rounded-xl p-6 shadow-sm" role="listitem">
           <div class="flex items-start justify-between mb-4">
             <div class="flex items-center gap-3">
               <span class="text-2xl" aria-hidden="true">${entity.icon}</span>
@@ -1078,7 +1260,7 @@
               </div>
             </div>
             <span class="flex items-center gap-1.5 text-xs text-muted">
-              <span class="w-1.5 h-1.5 rounded-full bg-green-500" aria-hidden="true"></span>
+              <span class="w-1.5 h-1.5 rounded-full" style="background-color: var(--status-active);" aria-hidden="true"></span>
               <span class="sr-only">Status:</span>Active
             </span>
           </div>
@@ -1088,7 +1270,7 @@
           
           <div class="flex items-center justify-between pt-4 border-t border-border">
             <span class="font-mono text-xs text-muted/60">${code}</span>
-            <a href="${entity.link}" class="view-cta inline-flex items-center gap-1.5 text-sm font-medium text-accent" aria-label="View details for ${entity.name}">
+            <a href="${entity.link}" class="view-cta inline-flex items-center gap-1.5 text-sm font-medium" aria-label="View details for ${entity.name}">
               <span>View</span>
               <svg class="view-arrow w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -1131,7 +1313,8 @@
         const isActive = i === currentPage;
         dotsHTML += `
           <button 
-            class="page-dot ${isActive ? 'w-6 h-2 bg-accent' : 'w-2 h-2 bg-border hover:bg-muted'} rounded-full transition-all duration-120" 
+            class="page-dot ${isActive ? 'w-6 h-2' : 'w-2 h-2 bg-border hover:bg-muted'} rounded-full transition-all duration-120" 
+            style="${isActive ? 'background-color: var(--accent);' : ''}"
             data-page="${i}" 
             aria-label="Page ${i}" 
             aria-selected="${isActive}"
@@ -1226,8 +1409,9 @@
     document.addEventListener('click', (e) => {
       const isInsideSearchModule = searchModule.contains(e.target);
       const isTagPill = e.target.closest('.tag-pill');
+      const isThemeToggle = e.target.closest('.theme-toggle');
       
-      if (!isInsideSearchModule && !isTagPill) {
+      if (!isInsideSearchModule && !isTagPill && !isThemeToggle) {
         closeDropdown();
       }
     });
