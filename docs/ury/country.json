@@ -59,7 +59,7 @@
     {
       "id": "actor_set_evolution",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Actor Set Evolution of Uruguay",
       "description": "Temporal mapping of Uruguay’s actor space from 19th-century state formation and livestock oligarchies to welfare-state consolidation, military rule, democratic restoration, and contemporary regulatory institutions.",
       "link": null
@@ -67,7 +67,7 @@
     {
       "id": "agro_export_network",
       "type": "Network",
-      "status": "active",
+      "status": "pending",
       "title": "Agro-Export and Energy Network Structure",
       "description": "Network analysis of beef, soy, forestry, and cellulose exports, alongside renewable energy infrastructure and integration into Mercosur trade flows.",
       "link": null

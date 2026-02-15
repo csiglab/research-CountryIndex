@@ -719,12 +719,13 @@
       const worksGrid = document.getElementById('worksGrid');
       worksGrid.innerHTML = '';
       data.works.forEach(work => {
-        const card = document.createElement('div');
         const isActive = work.status === 'active';
-        
+
         // If active, it's an 'a' tag. If pending, it's a 'div'.
         const tagType = isActive ? 'a' : 'div';
-        
+
+        const card = document.createElement(tagType);
+
         card.className = `entity-card group ${!isActive ? 'opacity-60' : ''}`;
         if (isActive) {
           card.setAttribute('href', work.link);

@@ -67,7 +67,7 @@
     {
       "id": "agricultural_export_network",
       "type": "Network",
-      "status": "active",
+      "status": "pending",
       "title": "Agricultural and Trade Network Structure",
       "description": "Network analysis of dairy, meat, forestry, and agri-technology sectors, including export linkages to Asia-Pacific markets.",
       "link": null

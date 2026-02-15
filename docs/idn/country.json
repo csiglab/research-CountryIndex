@@ -59,7 +59,7 @@
     {
       "id": "actor_set_evolution",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Actor Set Evolution of Indonesia",
       "description": "Temporal mapping of Indonesia’s actor space from colonial administration and independence-era leadership to the New Order regime, post-1998 reforms, decentralization, and contemporary political-economic coalitions.",
       "link": null
@@ -67,7 +67,7 @@
     {
       "id": "archipelagic_spatial_structure",
       "type": "Spatial",
-      "status": "active",
+      "status": "pending",
       "title": "Archipelagic Spatial-Administrative Structure",
       "description": "Geospatial representation of Indonesia’s provinces, maritime corridors, resource basins, and inter-island economic integration patterns.",
       "link": null

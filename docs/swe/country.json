@@ -59,7 +59,7 @@
     {
       "id": "actor_set_evolution",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Actor Set Evolution of Sweden",
       "description": "Temporal mapping of Sweden’s actor space from agrarian estates and monarchy to industrial conglomerates, labor unions, welfare-state institutions, and innovation-driven enterprises.",
       "link": null
@@ -67,7 +67,7 @@
     {
       "id": "industrial_and_innovation_network",
       "type": "Network",
-      "status": "active",
+      "status": "pending",
       "title": "Industrial and Innovation Network Structure",
       "description": "Network analysis of Sweden’s engineering firms, automotive and telecom sectors, research institutions, and integration into European and global value chains.",
       "link": null

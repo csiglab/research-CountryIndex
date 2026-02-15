@@ -59,7 +59,7 @@
     {
       "id": "actor_set_evolution",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Actor Set Evolution of Brazil",
       "description": "Temporal visualization of Brazil’s public, private, and civil actors from independence to the present, highlighting structural transformations in the state, industrial sector, and financial system.",
       "link": null

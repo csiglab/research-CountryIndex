@@ -59,7 +59,7 @@
     {
       "id": "actor_set_evolution",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Actor Set Evolution of the Netherlands",
       "description": "Temporal mapping of the Netherlands’ actor space from merchant republic institutions and chartered trading companies to modern parliamentary governance, multinational corporations, and EU-integrated regulatory bodies.",
       "link": null
@@ -67,7 +67,7 @@
     {
       "id": "trade_and_logistics_network",
       "type": "Network",
-      "status": "active",
+      "status": "pending",
       "title": "Trade and Logistics Network Structure",
       "description": "Network analysis of ports, shipping routes, distribution centers, and integration into European and global value chains.",
       "link": null

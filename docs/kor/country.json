@@ -59,7 +59,7 @@
     {
       "id": "actor_set_evolution",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Actor Set Evolution of South Korea",
       "description": "Temporal mapping of South Korea’s actor space from post-war military governance and state-led industrialization to democratization, chaebol consolidation, and contemporary regulatory and innovation ecosystems.",
       "link": null
@@ -67,7 +67,7 @@
     {
       "id": "industrial_policy_dynamics",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Industrial Policy and Structural Transformation",
       "description": "Structured timeline of heavy and chemical industry drives, export promotion strategies, technology upgrading, and transition toward advanced manufacturing and digital sectors.",
       "link": null

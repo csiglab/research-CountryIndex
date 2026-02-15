@@ -59,7 +59,7 @@
     {
       "id": "actor_set_evolution",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Actor Set Evolution of Ireland",
       "description": "Temporal mapping of Ireland’s actor space from colonial administration and independence to state-led development, EU integration, and FDI-driven multinational clustering.",
       "link": null
@@ -67,7 +67,7 @@
     {
       "id": "economic_transformation",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Economic Transformation Dynamics",
       "description": "Structured timeline of Ireland’s shift from agrarian economy to export-oriented, knowledge-intensive sectors during the Celtic Tiger period and beyond.",
       "link": null

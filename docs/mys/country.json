@@ -59,7 +59,7 @@
     {
       "id": "actor_set_evolution",
       "type": "Temporal",
-      "status": "active",
+      "status": "pending",
       "title": "Actor Set Evolution of Malaysia",
       "description": "Temporal mapping of Malaysia’s actor space from colonial administration and resource extraction to post-independence federal consolidation, New Economic Policy reforms, and export-oriented industrialization.",
       "link": null
@@ -67,7 +67,7 @@
     {
       "id": "industrial_and_trade_structure",
       "type": "Network",
-      "status": "active",
+      "status": "pending",
       "title": "Industrial and Trade Network Structure",
       "description": "Network representation of Malaysia’s electronics clusters, palm oil value chains, energy sector, and integration into ASEAN and global production networks.",
       "link": null
