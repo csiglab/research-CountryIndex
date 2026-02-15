@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Gentium · Swiss Pop</title>
+    
+    <!-- Font: Outfit (Geometric, Tight) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Palette: High-Contrast Dark Pop */
+            --bg-canvas: #0f172a; /* Slate 900 */
+            --bg-surface: #1e293b; /* Slate 800 */
+            --fg-primary: #f8fafc; /* Slate 50 */
+            --fg-muted: #94a3b8; /* Slate 400 */
+            
+            /* Signal Colors (The Structure) */
+            --color-lime: #D9F99D;
+            --color-cyan: #A5F3FC;
+            --color-pink: #FBCFE8;
+            --color-amber: #FDE68A;
+            
+            /* UI Colors */
+            --border-thick: 4px solid rgba(255,255,255,0.1);
+            --radius-med: 8px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-canvas);
+            color: var(--fg-primary);
+            font-family: 'Outfit', sans-serif;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        /* --- The Spectacular Hero Structure --- */
+        .hero-section {
+            position: relative;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        /* The Massive Structural Circle */
+        .hero-structure {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            z-index: 0;
+            top: -200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-structure::before {
+            content: '';
+            width: 600px;
+            height: 600px;
+            border: 2px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
+        .container {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Logo inside a floating solid block */
+        .logo-box {
+            background: var(--fg-primary);
+            color: var(--bg-canvas);
+            width: 80px; height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-med);
+            margin-bottom: 2rem;
+            box-shadow: 0 0 0 4px var(--bg-canvas); /* Negative space outline */
+        }
+        .logo-box img {
+            width: 50px;
+            height: auto;
+            filter: brightness(0); /* Black logo */
+        }
+
+        h1 {
+            font-size: clamp(3rem, 12vw, 8rem);
+            font-weight: 900;
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
+        }
+        
+        /* Split Typography */
+        .title-accent {
+            color: transparent;
+            -webkit-text-stroke: 2px var(--fg-primary);
+            display: block;
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            font-weight: 400;
+            color: var(--fg-muted);
+            text-align: center;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        /* --- Controls: The Bar --- */
+        .controls-bar {
+            margin-top: 4rem;
+            background: var(--bg-surface);
+            border-radius: var(--radius-med);
+            padding: 1.5rem;
+            border: var(--border-thick);
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .search-container {
+            position: relative;
+            flex: 1;
+        }
+
+        .search-box {
+            width: 100%;
+            height: 60px;
+            background: var(--bg-canvas);
+            border: 2px solid var(--fg-primary);
+            border-radius: 0; /* Hard edges for typographic feel */
+            padding: 0 1.5rem;
+            font-family: 'Outfit';
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--fg-primary);
+            transition: all 0.2s;
+        }
+        .search-box:focus {
+            outline: none;
+            background: var(--fg-primary);
+            color: var(--bg-canvas);
+        }
+        .search-box::placeholder { color: var(--fg-muted); font-weight: 400; }
+
+        /* Suggestions */
+        .search-suggestions {
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: var(--bg-surface);
+            border: 2px solid var(--fg-primary);
+            border-top: none;
+            z-index: 10;
+            display: none;
+        }
+        .search-suggestions.active { display: block; }
+        .suggestion-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .suggestion-item:hover { background: var(--bg-canvas); }
+        .suggestion-text { font-weight: 700; color: var(--fg-primary); }
+        .suggestion-match { color: var(--color-lime); }
+
+        /* Filter Chips: Hard Blocks */
+        .filter-chips {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .chip {
+            padding: 0.5rem 1.5rem;
+            background: transparent;
+            border: 2px solid var(--fg-muted);
+            color: var(--fg-muted);
+            font-weight: 600;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .chip:hover {
+            background: var(--fg-muted);
+            color: var(--bg-canvas);
+        }
+
+        .chip.active {
+            background: var(--fg-primary);
+            border-color: var(--fg-primary);
+            color: var(--bg-canvas);
+        }
+
+        /* --- The Cards: Color Blocking --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
+        }
+
+        .firm-card {
+            position: relative;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+        }
+
+        /* Spectacular Color Blocking */
+        .card-color-block {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            transition: transform 0.4s;
+        }
+
+        /* Dynamic Colors based on content or rotation */
+        .firm-card:nth-child(4n+1) .card-color-block { background: var(--color-lime); }
+        .firm-card:nth-child(4n+2) .card-color-block { background: var(--color-cyan); }
+        .firm-card:nth-child(4n+3) .card-color-block { background: var(--color-pink); }
+        .firm-card:nth-child(4n+4) .card-color-block { background: var(--color-amber); }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            background: var(--bg-canvas);
+            border: 2px solid var(--bg-canvas); /* Mask edges */
+            margin: 8px; /* Creates the border effect */
+            transition: all 0.3s;
+            /* Clip the corner for geometric look */
+            clip-path: polygon(
+                0 0, 
+                100% 0, 
+                100% calc(100% - 40px), 
+                calc(100% - 40px) 100%, 
+                0 100%
+            );
+        }
+
+        /* Hover: The Inversion */
+        .firm-card:hover .card-content {
+            background: rgba(15, 23, 42, 0.95);
+            border-color: var(--fg-primary);
+        }
+        .firm-card:hover .card-color-block {
+            transform: scale(1.1);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: auto;
+        }
+
+        .firm-category {
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            border-bottom: 2px solid currentColor;
+            padding-bottom: 4px;
+            opacity: 0.8;
+        }
+
+        /* The Icon as a massive watermark */
+        .card-watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10rem;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 1;
+            color: var(--fg-primary);
+        }
+
+        .firm-name {
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
+        }
+
+        .firm-description {
+            font-size: 0.9rem;
+            color: var(--fg-muted);
+            max-width: 90%;
+            line-height: 1.5;
+        }
+
+        .card-footer {
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        /* Button: Text Link style */
+        .btn-enter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--fg-primary);
+            text-decoration: none;
+            transition: transform 0.2s;
+        }
+        .btn-enter:hover {
+            transform: translateX(8px);
+            color: var(--fg-primary);
+        }
+        .btn-enter i { transition: transform 0.2s; }
+        .btn-enter:hover i { transform: translateX(4px); }
+
+        /* --- Pagination --- */
+        .pagination-container { 
+            margin: 6rem 0; 
+            display: flex; 
+            justify-content: center; 
+        }
+        .pagination-controls { 
+            display: flex; 
+            gap: 1rem; 
+        }
+        .nav-button { 
+            width: 60px; height: 60px;
+            background: var(--bg-surface); 
+            border: 2px solid var(--fg-muted); 
+            color: var(--fg-primary); 
+            font-weight: 700;
+            border-radius: 0; /* Square */
+            cursor: pointer; 
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .nav-button:not(:disabled):hover { 
+            background: var(--fg-primary);
+            color: var(--bg-canvas);
+            border-color: var(--fg-primary);
+        }
+        .nav-button:disabled { opacity: 0.2; cursor: not-allowed; }
+        
+        .dots-track { display: flex; gap: 0.5rem; align-items: center; }
+        .pagination-dot { 
+            width: 12px; 
+            height: 12px; 
+            background: var(--bg-surface);
+            border: 2px solid var(--fg-muted);
+            cursor: pointer; 
+            transition: all 0.2s;
+        }
+        .pagination-dot.active { 
+            background: var(--fg-primary);
+            border-color: var(--fg-primary);
+            transform: rotate(45deg); /* Geometric Dot */
+        }
+
+        /* Utils */
+        .loading-state, .empty-state { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 6rem 2rem; 
+            text-align: center; 
+        }
+        .empty-state.active { display: flex; } 
+        .empty-state { display: none; }
+
+        @media (max-width: 768px) {
+            .hero-structure { display: none; }
+            h1 { font-size: 3rem; }
+            .firm-card { height: auto; min-height: 350px; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="hero-section">
+        <div class="hero-structure"></div>
+        <div class="container">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div class="logo-box">
+                    <img src="logo.png" alt="Logo">
+                </div>
+                <h1>
+                    Index <span class="title-accent">Gentium</span>
+                </h1>
+                <p class="subtitle">A systematic registry of sovereign entities & data points.</p>
+            </div>
+
+            <div class="controls-bar">
+                <div class="search-container">
+                    <input type="text" class="search-box" id="searchInput" placeholder="Search..." autocomplete="off">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+                <div class="filter-chips" id="filterChips">
+                    <div class="chip active" data-tag="">All</div>
+                </div>
+            </div>
+
+            <div class="loading-state" id="loadingState">
+                <div style="width: 60px; height: 60px; border: 4px solid var(--bg-surface); border-top-color: var(--fg-primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <p style="margin-top: 1.5rem; font-weight: 600; color: var(--fg-muted);">LOADING DATA</p>
+            </div>
+
+            <div class="empty-state" id="emptyState">
+                <h2 style="font-size: 3rem; font-weight: 900; margin-bottom: 1rem;">VOID</h2>
+                <p style="color: var(--fg-muted);">No entries match your query.</p>
+            </div>
+
+            <div class="cards-grid" id="cardsGrid" style="display: none;"></div>
+
+            <div class="pagination-container" id="paginationContainer" style="display: none;">
+                <div class="pagination-controls">
+                    <button class="nav-button prev" id="prevArrow"><i class="fas fa-arrow-left"></i></button>
+                    <div class="dots-track" id="dotsContainer"></div>
+                    <button class="nav-button next" id="nextArrow"><i class="fas fa-arrow-right"></i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Core Logic ---
+        const $ = (id) => document.getElementById(id);
+        
+        // State
+        let allFirms = [];
+        let filteredFirms = [];
+        let currentPage = 1;
+        let itemsPerPage = 6;
+        let totalPages = 1;
+
+        // Elements
+        const grid = $('cardsGrid');
+        const searchInput = $('searchInput');
+        const suggestionsBox = $('searchSuggestions');
+        const paginationContainer = $('paginationContainer');
+        const dotsContainer = $('dotsContainer');
+
+        // Fetch Data
+        fetch("catalog.json")
+            .then(res => res.json())
+            .then(data => {
+                allFirms = data.countries;
+                filteredFirms = [...allFirms];
+                $('loadingState').style.display = 'none';
+                grid.style.display = 'grid';
+                initApp();
+            })
+            .catch(err => {
+                $('loadingState').innerHTML = `<p style="color: red;">SYSTEM ERROR</p>`;
+                console.error(err);
+            });
+
+        function initApp() {
+            // Generate Chips
+            const tags = [...new Set(allFirms.map(f => f.tags))];
+            const chipContainer = $('filterChips');
+            tags.forEach(tag => {
+                const div = document.createElement('div');
+                div.className = 'chip';
+                div.dataset.tag = tag;
+                div.textContent = tag;
+                chipContainer.appendChild(div);
+            });
+
+            renderCards();
+            renderPagination();
+
+            setupSearch();
+            setupFilters();
+            setupPagination();
+        }
+
+        // --- CARD RENDERING (Spectacular Flat) ---
+        function renderCards() {
+            grid.innerHTML = '';
+            const start = (currentPage - 1) * itemsPerPage;
+            const pageItems = filteredFirms.slice(start, start + itemsPerPage);
+
+            if (pageItems.length === 0) {
+                grid.style.display = 'none';
+                $('emptyState').classList.add('active');
+                paginationContainer.style.display = 'none';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            $('emptyState').classList.remove('active');
+
+            pageItems.forEach((firm, i) => {
+                const card = document.createElement('article');
+                card.className = 'firm-card';
+                card.style.animation = `fadeIn 0.4s ${i * 0.06}s backwards`;
+                
+                const displayId = `NO.${Math.floor(Math.random() * 900) + 100}`;
+
+                card.innerHTML = `
+                    <div class="card-color-block"></div>
+                    <div class="card-content">
+                        <div class="card-watermark">${firm.icon}</div>
+                        <div class="card-header">
+                            <span class="firm-category">${firm.tags}</span>
+                            <span style="font-weight: 700; opacity: 0.7;">${displayId}</span>
+                        </div>
+                        <div class="card-body" style="margin-top: auto;">
+                            <h3 class="firm-name">${firm.name}</h3>
+                            <p class="firm-description">${firm.description}</p>
+                        </div>
+                        <div class="card-footer">
+                            <div style="width: 10px; height: 10px; background: currentColor; opacity: 0.5;"></div>
+                            <a href="${firm.link}" target="_blank" class="btn-enter">
+                                Enter <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- SEARCH LOGIC ---
+        function setupSearch() {
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value;
+                updateSuggestions(term);
+                applyFilter(term, getActiveTag());
+            });
+
+            searchInput.addEventListener('focus', () => {
+                if(searchInput.value) updateSuggestions(searchInput.value);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) suggestionsBox.classList.remove('active');
+            });
+        }
+
+        function updateSuggestions(term) {
+            if (!term) { suggestionsBox.classList.remove('active'); return; }
+            
+            const results = allFirms.filter(f => 
+                f.name.toLowerCase().includes(term.toLowerCase()) || 
+                f.description.toLowerCase().includes(term.toLowerCase())
+            ).slice(0, 4);
+
+            if (results.length === 0) {
+                suggestionsBox.innerHTML = `<div class="suggestion-item"><span class="suggestion-text">No results</span></div>`;
+            } else {
+                suggestionsBox.innerHTML = results.map(f => `
+                    <div class="suggestion-item" data-name="${f.name}">
+                        <div class="suggestion-text">${highlight(f.name, term)}</div>
+                    </div>
+                `).join('');
+            }
+            suggestionsBox.classList.add('active');
+
+            suggestionsBox.querySelectorAll('.suggestion-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    searchInput.value = item.dataset.name;
+                    suggestionsBox.classList.remove('active');
+                    applyFilter(searchInput.value, getActiveTag());
+                });
+            });
+        }
+
+        function highlight(text, term) {
+            const regex = new RegExp(`(${term})`, 'gi');
+            return text.replace(regex, '<span class="suggestion-match">$1</span>');
+        }
+
+        // --- FILTER LOGIC ---
+        function setupFilters() {
+            $('filterChips').addEventListener('click', (e) => {
+                if (e.target.classList.contains('chip')) {
+                    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    searchInput.value = '';
+                    suggestionsBox.classList.remove('active');
+                    applyFilter('', getActiveTag());
+                }
+            });
+        }
+
+        function getActiveTag() {
+            const active = document.querySelector('.chip.active');
+            return active ? active.dataset.tag : '';
+        }
+
+        function applyFilter(term, tag) {
+            filteredFirms = allFirms.filter(f => {
+                const matchSearch = !term || 
+                    f.name.toLowerCase().includes(term.toLowerCase()) || 
+                    f.description.toLowerCase().includes(term.toLowerCase());
+                const matchTag = !tag || f.tags === tag;
+                return matchSearch && matchTag;
+            });
+            currentPage = 1;
+            renderCards();
+            renderPagination();
+        }
+
+        // --- PAGINATION LOGIC ---
+        function setupPagination() {
+            $('prevArrow').addEventListener('click', () => changePage(currentPage - 1));
+            $('nextArrow').addEventListener('click', () => changePage(currentPage + 1));
+            window.addEventListener('resize', () => {
+                itemsPerPage = window.innerWidth < 768 ? 4 : 6;
+                renderCards();
+                renderPagination();
+            });
+        }
+
+        function renderPagination() {
+            totalPages = Math.ceil(filteredFirms.length / itemsPerPage);
+            if (totalPages <= 1) { paginationContainer.style.display = 'none'; return; }
+            
+            paginationContainer.style.display = 'flex';
+            $('prevArrow').disabled = currentPage === 1;
+            $('nextArrow').disabled = currentPage === totalPages;
+
+            dotsContainer.innerHTML = '';
+            let start = Math.max(1, currentPage - 2);
+            let end = Math.min(totalPages, start + 4);
+            
+            for (let i = start; i <= end; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'pagination-dot' + (i === currentPage ? ' active' : '');
+                dot.onclick = () => changePage(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function changePage(p) {
+            if (p < 1 || p > totalPages) return;
+            currentPage = p;
+            renderCards();
+            renderPagination();
+            window.scrollTo({ top: grid.offsetTop - 100, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

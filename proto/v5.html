@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index Gentium · Flat Design System</title>
+    
+    <!-- Font: Outfit (Geometric Sans-Serif) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Core Palette */
+            --background: #FFFFFF;
+            --foreground: #111827;
+            --primary: #3B82F6; /* Blue 500 */
+            --primary-dark: #2563EB; /* Blue 600 */
+            --secondary: #10B981; /* Emerald 500 */
+            --accent: #F59E0B; /* Amber 500 */
+            --muted: #F3F4F6; /* Gray 100 */
+            --border: #E5E7EB; /* Gray 200 */
+            
+            /* Typography */
+            --font-main: 'Outfit', sans-serif;
+            
+            /* Radius */
+            --radius: 8px;
+            
+            /* Transitions */
+            --transition-fast: 0.2s;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-main);
+            font-size: 16px;
+            line-height: 1.5;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- Background Decoration (Geometric Shapes) --- */
+        .bg-decoration {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+        .shape-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: var(--primary);
+            opacity: 0.03;
+        }
+        .shape-1 { width: 800px; height: 800px; top: -200px; right: -200px; }
+        .shape-2 { width: 500px; height: 500px; bottom: 0; left: -100px; background: var(--secondary); }
+        .shape-square {
+            position: absolute;
+            width: 400px; height: 400px;
+            background: var(--accent);
+            opacity: 0.03;
+            transform: rotate(45deg);
+            top: 40%; left: 60%;
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1152px;
+            margin: 0 auto;
+            padding: 0 1.5rem;
+        }
+
+        /* --- Header --- */
+        header {
+            padding: 6rem 0 4rem;
+            text-align: center;
+        }
+
+        .logo-container {
+            display: inline-block;
+            margin-bottom: 2rem;
+            background: var(--muted);
+            padding: 1.5rem;
+            border-radius: 50%;
+        }
+
+        .logo-container img {
+            height: 60px;
+            width: auto;
+            display: block;
+            filter: grayscale(100%) contrast(1.2); /* Flat style desaturation */
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            line-height: 1;
+            margin-bottom: 1rem;
+            color: var(--foreground);
+        }
+
+        h1 span {
+            color: var(--primary);
+        }
+
+        .subtitle {
+            font-size: 1.25rem;
+            color: var(--foreground);
+            opacity: 0.6;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* --- Controls --- */
+        .controls-panel {
+            margin-bottom: 3rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        /* Input Style: Flat, no border, hard focus */
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+        .search-box {
+            width: 100%;
+            height: 56px;
+            padding: 0 1.5rem;
+            background: var(--muted);
+            border: 2px solid transparent;
+            border-radius: var(--radius);
+            font-family: var(--font-main);
+            font-size: 1rem;
+            color: var(--foreground);
+            transition: all var(--transition-fast);
+        }
+        .search-box::placeholder { color: var(--foreground); opacity: 0.4; }
+        .search-box:focus {
+            outline: none;
+            background: var(--background);
+            border-color: var(--primary);
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%; left: 0; right: 0;
+            background: var(--background);
+            border: 2px solid var(--primary);
+            border-top: none;
+            border-radius: 0 0 var(--radius) var(--radius);
+            z-index: 10;
+            display: none;
+        }
+        .search-suggestions.active { display: block; }
+        
+        .suggestion-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 1px solid var(--muted);
+            transition: background var(--transition-fast);
+        }
+        .suggestion-item:hover { background: var(--muted); }
+        .suggestion-text { font-weight: 600; }
+        .suggestion-snippet { font-size: 0.85rem; opacity: 0.6; }
+        .suggestion-match { color: var(--primary); }
+
+        /* Chips: Bold blocks */
+        .filter-chips {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .chip {
+            padding: 0.5rem 1.25rem;
+            background: transparent;
+            border: 2px solid var(--foreground);
+            border-radius: 9999px;
+            font-weight: 600;
+            font-size: 0.875rem;
+            cursor: pointer;
+            transition: all var(--transition-fast);
+            color: var(--foreground);
+        }
+        
+        .chip:hover {
+            background: var(--foreground);
+            color: var(--background);
+            transform: scale(1.05);
+        }
+        
+        .chip.active {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: white;
+        }
+
+        /* --- Cards --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .firm-card {
+            background: var(--muted);
+            border-radius: var(--radius);
+            padding: 2rem;
+            display: flex;
+            flex-direction: column;
+            transition: all var(--transition-fast);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Hover: Scale and color intensify */
+        .firm-card:hover {
+            transform: scale(1.02);
+            background: var(--background);
+            border-color: var(--muted);
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
+        }
+
+        /* Icon: Solid colored circle */
+        .card-icon-box {
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: var(--background);
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: transform var(--transition-fast);
+        }
+        
+        .firm-card:hover .card-icon-box {
+            transform: scale(1.1);
+            background: var(--primary);
+            color: white;
+        }
+
+        /* Category Badge: Color Block */
+        .firm-category {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            background: var(--foreground);
+            color: white;
+            padding: 0.25rem 0.75rem;
+            border-radius: 4px;
+        }
+
+        .firm-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .firm-description {
+            font-size: 1rem;
+            opacity: 0.6;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            flex-grow: 1;
+        }
+
+        .card-footer {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-top: 2px solid var(--border);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .footer-id {
+            font-family: monospace;
+            font-size: 0.75rem;
+            background: var(--background);
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            border: 1px solid var(--border);
+        }
+
+        /* Button: Solid block */
+        .btn-enter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--foreground);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: all var(--transition-fast);
+        }
+
+        .btn-enter:hover {
+            background: var(--primary);
+            transform: scale(1.05);
+        }
+
+        /* --- Pagination --- */
+        .pagination-container { 
+            margin-top: 4rem; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+        }
+        
+        .pagination-controls { 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+        }
+        
+        .nav-button { 
+            background: var(--muted);
+            border: none; 
+            color: var(--foreground); 
+            padding: 0.75rem 1.5rem; 
+            font-weight: 700;
+            font-family: var(--font-main);
+            font-size: 0.9rem;
+            border-radius: 4px;
+            cursor: pointer; 
+            transition: all var(--transition-fast);
+        }
+        .nav-button:not(:disabled):hover { 
+            background: var(--primary);
+            color: white;
+        }
+        .nav-button:disabled { opacity: 0.3; cursor: not-allowed; }
+        
+        .dots-track { display: flex; gap: 0.5rem; }
+        .pagination-dot { 
+            width: 10px; 
+            height: 10px; 
+            background: var(--border);
+            border-radius: 50%;
+            border: none;
+            cursor: pointer; 
+            transition: all var(--transition-fast);
+        }
+        .pagination-dot.active { 
+            background: var(--primary);
+            width: 32px;
+            border-radius: 4px;
+        }
+
+        /* Footer: Bold Block */
+        footer {
+            margin-top: 6rem;
+            background: var(--foreground);
+            color: white;
+            padding: 4rem 0;
+        }
+
+        .footer-content {
+            text-align: center;
+            opacity: 0.8;
+        }
+
+        /* Utils */
+        .loading-state, .empty-state { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 4rem 2rem; 
+            text-align: center; 
+        }
+        .empty-state.active { display: flex; } 
+        .empty-state { display: none; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .firm-card { padding: 1.5rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Background Shapes -->
+    <div class="bg-decoration">
+        <div class="shape-circle shape-1"></div>
+        <div class="shape-circle shape-2"></div>
+        <div class="shape-square"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo">
+            </div>
+            <h1>Index <span>Gentium</span></h1>
+            <p class="subtitle">A structured registry of sovereign entities.</p>
+        </header>
+
+        <div class="controls-panel">
+            <div class="search-container">
+                <input type="text" class="search-box" id="searchInput" placeholder="Search database..." autocomplete="off">
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+            <div class="filter-chips" id="filterChips">
+                <div class="chip active" data-tag="">All Sectors</div>
+            </div>
+        </div>
+
+        <div class="loading-state" id="loadingState">
+            <div style="width: 48px; height: 48px; border: 4px solid var(--muted); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <p style="margin-top: 1rem; font-weight: 600;">Loading...</p>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+            <i class="fas fa-ban" style="font-size: 2rem; margin-bottom: 1rem; color: var(--primary);"></i>
+            <h3 style="margin-bottom: 0.5rem;">No Results</h3>
+            <p style="opacity: 0.6;">Query returned void.</p>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid" style="display: none;"></div>
+
+        <div class="pagination-container" id="paginationContainer" style="display: none;">
+            <div class="pagination-controls">
+                <button class="nav-button prev" id="prevArrow"><i class="fas fa-arrow-left"></i> Prev</button>
+                <div class="dots-track" id="dotsContainer"></div>
+                <button class="nav-button next" id="nextArrow">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="container footer-content">
+            <p>Laboratorium Arbitristae · Flat System</p>
+        </div>
+    </footer>
+
+    <script>
+        // --- Core Logic ---
+        const $ = (id) => document.getElementById(id);
+        
+        // State
+        let allFirms = [];
+        let filteredFirms = [];
+        let currentPage = 1;
+        let itemsPerPage = 6;
+        let totalPages = 1;
+
+        // Elements
+        const grid = $('cardsGrid');
+        const searchInput = $('searchInput');
+        const suggestionsBox = $('searchSuggestions');
+        const paginationContainer = $('paginationContainer');
+        const dotsContainer = $('dotsContainer');
+
+        // Fetch Data
+        fetch("catalog.json")
+            .then(res => res.json())
+            .then(data => {
+                allFirms = data.countries;
+                filteredFirms = [...allFirms];
+                $('loadingState').style.display = 'none';
+                grid.style.display = 'grid';
+                initApp();
+            })
+            .catch(err => {
+                $('loadingState').innerHTML = `<p style="color: red;">Error</p>`;
+                console.error(err);
+            });
+
+        function initApp() {
+            // Generate Chips
+            const tags = [...new Set(allFirms.map(f => f.tags))];
+            const chipContainer = $('filterChips');
+            tags.forEach(tag => {
+                const div = document.createElement('div');
+                div.className = 'chip';
+                div.dataset.tag = tag;
+                div.textContent = tag;
+                chipContainer.appendChild(div);
+            });
+
+            renderCards();
+            renderPagination();
+
+            setupSearch();
+            setupFilters();
+            setupPagination();
+        }
+
+        // --- CARD RENDERING (Flat Design) ---
+        function renderCards() {
+            grid.innerHTML = '';
+            const start = (currentPage - 1) * itemsPerPage;
+            const pageItems = filteredFirms.slice(start, start + itemsPerPage);
+
+            if (pageItems.length === 0) {
+                grid.style.display = 'none';
+                $('emptyState').classList.add('active');
+                paginationContainer.style.display = 'none';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            $('emptyState').classList.remove('active');
+
+            pageItems.forEach((firm, i) => {
+                const card = document.createElement('article');
+                card.className = 'firm-card';
+                card.style.animation = `fadeIn 0.3s ${i * 0.03}s backwards`;
+                
+                const displayId = `${firm.name.substring(0,3).toUpperCase()}-${Math.floor(Math.random() * 900) + 100}`;
+
+                card.innerHTML = `
+                    <div class="card-header">
+                        <div class="card-icon-box">${firm.icon}</div>
+                        <span class="firm-category">${firm.tags}</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="firm-name">${firm.name}</h3>
+                        <p class="firm-description">${firm.description}</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="footer-id">ID: ${displayId}</span>
+                        <a href="${firm.link}" target="_blank" class="btn-enter">
+                            View <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- SEARCH LOGIC ---
+        function setupSearch() {
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value;
+                updateSuggestions(term);
+                applyFilter(term, getActiveTag());
+            });
+
+            searchInput.addEventListener('focus', () => {
+                if(searchInput.value) updateSuggestions(searchInput.value);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) suggestionsBox.classList.remove('active');
+            });
+        }
+
+        function updateSuggestions(term) {
+            if (!term) { suggestionsBox.classList.remove('active'); return; }
+            
+            const results = allFirms.filter(f => 
+                f.name.toLowerCase().includes(term.toLowerCase()) || 
+                f.description.toLowerCase().includes(term.toLowerCase())
+            ).slice(0, 4);
+
+            if (results.length === 0) {
+                suggestionsBox.innerHTML = `<div class="suggestion-item"><span class="suggestion-text">No results</span></div>`;
+            } else {
+                suggestionsBox.innerHTML = results.map(f => `
+                    <div class="suggestion-item" data-name="${f.name}">
+                        <div class="suggestion-text">${highlight(f.name, term)}</div>
+                        <div class="suggestion-snippet">${highlight(f.description.substring(0,40), term)}...</div>
+                    </div>
+                `).join('');
+            }
+            suggestionsBox.classList.add('active');
+
+            suggestionsBox.querySelectorAll('.suggestion-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    searchInput.value = item.dataset.name;
+                    suggestionsBox.classList.remove('active');
+                    applyFilter(searchInput.value, getActiveTag());
+                });
+            });
+        }
+
+        function highlight(text, term) {
+            const regex = new RegExp(`(${term})`, 'gi');
+            return text.replace(regex, '<span class="suggestion-match">$1</span>');
+        }
+
+        // --- FILTER LOGIC ---
+        function setupFilters() {
+            $('filterChips').addEventListener('click', (e) => {
+                if (e.target.classList.contains('chip')) {
+                    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    searchInput.value = '';
+                    suggestionsBox.classList.remove('active');
+                    applyFilter('', getActiveTag());
+                }
+            });
+        }
+
+        function getActiveTag() {
+            const active = document.querySelector('.chip.active');
+            return active ? active.dataset.tag : '';
+        }
+
+        function applyFilter(term, tag) {
+            filteredFirms = allFirms.filter(f => {
+                const matchSearch = !term || 
+                    f.name.toLowerCase().includes(term.toLowerCase()) || 
+                    f.description.toLowerCase().includes(term.toLowerCase());
+                const matchTag = !tag || f.tags === tag;
+                return matchSearch && matchTag;
+            });
+            currentPage = 1;
+            renderCards();
+            renderPagination();
+        }
+
+        // --- PAGINATION LOGIC ---
+        function setupPagination() {
+            $('prevArrow').addEventListener('click', () => changePage(currentPage - 1));
+            $('nextArrow').addEventListener('click', () => changePage(currentPage + 1));
+            window.addEventListener('resize', () => {
+                itemsPerPage = window.innerWidth < 768 ? 4 : 6;
+                renderCards();
+                renderPagination();
+            });
+        }
+
+        function renderPagination() {
+            totalPages = Math.ceil(filteredFirms.length / itemsPerPage);
+            if (totalPages <= 1) { paginationContainer.style.display = 'none'; return; }
+            
+            paginationContainer.style.display = 'flex';
+            $('prevArrow').disabled = currentPage === 1;
+            $('nextArrow').disabled = currentPage === totalPages;
+
+            dotsContainer.innerHTML = '';
+            let start = Math.max(1, currentPage - 2);
+            let end = Math.min(totalPages, start + 4);
+            
+            for (let i = start; i <= end; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'pagination-dot' + (i === currentPage ? ' active' : '');
+                dot.onclick = () => changePage(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function changePage(p) {
+            if (p < 1 || p > totalPages) return;
+            currentPage = p;
+            renderCards();
+            renderPagination();
+            window.scrollTo({ top: grid.offsetTop - 100, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>

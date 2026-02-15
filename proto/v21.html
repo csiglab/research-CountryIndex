@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Arbitristae · Index Gentium</title>
+  <title>INDEX GENTIUM — Laboratorium Arbitristae</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -124,67 +124,17 @@
       box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.12);
     }
 
-    /* Tag Row - Elegant scrollable container */
-    .tag-row-wrapper {
-      position: relative;
+    /* Tag Row - Refined taxonomic style */
+    .tag-row {
       width: 100%;
       margin-top: 12px;
-    }
-
-    .tag-row {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    .tag-scroll-btn {
-      flex-shrink: 0;
-      width: 28px;
-      height: 28px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      background: var(--card);
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 120ms ease-out;
-      opacity: 0;
-      pointer-events: none;
-    }
-
-    .tag-scroll-btn.visible {
-      opacity: 1;
-      pointer-events: auto;
-    }
-
-    .tag-scroll-btn:hover {
-      border-color: var(--fg);
-      color: var(--fg);
-      background: rgba(30, 41, 59, 0.03);
-    }
-
-    .tag-scroll-btn:active {
-      transform: scale(0.95);
-    }
-
-    .tag-scroll-btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .tag-scroll-container {
-      flex: 1;
       overflow-x: auto;
       overflow-y: hidden;
       scrollbar-width: none;
       -ms-overflow-style: none;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
     }
 
-    .tag-scroll-container::-webkit-scrollbar {
+    .tag-row::-webkit-scrollbar {
       display: none;
     }
 
@@ -192,35 +142,7 @@
       display: flex;
       flex-wrap: nowrap;
       gap: 8px;
-      padding: 2px 0;
-    }
-
-    /* Fade indicators */
-    .tag-fade-left,
-    .tag-fade-right {
-      position: absolute;
-      top: 0;
-      bottom: 0;
-      width: 32px;
-      pointer-events: none;
-      z-index: 5;
-      opacity: 0;
-      transition: opacity 200ms ease-out;
-    }
-
-    .tag-fade-left {
-      left: 40px;
-      background: linear-gradient(to right, var(--bg) 0%, var(--bg) 40%, transparent 100%);
-    }
-
-    .tag-fade-right {
-      right: 40px;
-      background: linear-gradient(to left, var(--bg) 0%, var(--bg) 40%, transparent 100%);
-    }
-
-    .tag-fade-left.visible,
-    .tag-fade-right.visible {
-      opacity: 1;
+      padding-bottom: 2px;
     }
 
     .tag-pill {
@@ -630,38 +552,14 @@
             </div>
           </div>
 
-          <!-- Tag Row with elegant scroll -->
-          <div class="tag-row-wrapper" id="tagRowWrapper">
-            <div class="tag-fade-left" id="tagFadeLeft"></div>
-            <div class="tag-fade-right" id="tagFadeRight"></div>
-            <div class="tag-row" role="tablist" aria-label="Filter by classification">
-              <button 
-                class="tag-scroll-btn" 
-                id="tagScrollLeft" 
-                aria-label="Scroll tags left"
-                type="button"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M15 19l-7-7 7-7"/>
-                </svg>
+          <!-- Tag Row - Immediately below search field -->
+          <div class="tag-row" id="tagRow" role="tablist" aria-label="Filter by classification">
+            <div class="tag-container" id="tagContainer">
+              <!-- Static "All Nations" tag -->
+              <button class="tag-pill selected" data-filter="all" role="tab" aria-selected="true">
+                All Nations
               </button>
-              <div class="tag-scroll-container" id="tagScrollContainer">
-                <div class="tag-container" id="tagContainer">
-                  <button class="tag-pill selected" data-filter="all" role="tab" aria-selected="true">
-                    All Nations
-                  </button>
-                </div>
-              </div>
-              <button 
-                class="tag-scroll-btn" 
-                id="tagScrollRight" 
-                aria-label="Scroll tags right"
-                type="button"
-              >
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                  <path d="M9 5l7 7-7 7"/>
-                </svg>
-              </button>
+              <!-- Dynamic tags rendered by JS -->
             </div>
           </div>
 
@@ -677,6 +575,7 @@
             <div class="dropdown-metadata">
               <div class="dropdown-metadata-title">Registry Summary</div>
               <div class="dropdown-metadata-stats" id="metadataStats">
+                <!-- Populated by JS -->
               </div>
             </div>
             
@@ -684,6 +583,7 @@
               Matching Entities
             </div>
             <div class="dropdown-results" id="dropdownResults" role="listbox">
+              <!-- Items rendered by JS -->
             </div>
             
             <div class="scroll-indicator hidden" id="scrollIndicator">
@@ -798,49 +698,8 @@
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
     const tagContainer = document.getElementById('tagContainer');
-    const tagScrollContainer = document.getElementById('tagScrollContainer');
-    const tagScrollLeft = document.getElementById('tagScrollLeft');
-    const tagScrollRight = document.getElementById('tagScrollRight');
-    const tagFadeLeft = document.getElementById('tagFadeLeft');
-    const tagFadeRight = document.getElementById('tagFadeRight');
 
-    // Tag scroll functionality
-    function updateTagScrollState() {
-      const scrollEl = tagScrollContainer;
-      const scrollWidth = scrollEl.scrollWidth;
-      const clientWidth = scrollEl.clientWidth;
-      const scrollLeft = scrollEl.scrollLeft;
-      const hasOverflow = scrollWidth > clientWidth + 1;
-      const canScrollLeft = scrollLeft > 2;
-      const canScrollRight = scrollLeft < scrollWidth - clientWidth - 2;
-
-      tagScrollLeft.classList.toggle('visible', hasOverflow && canScrollLeft);
-      tagScrollRight.classList.toggle('visible', hasOverflow && canScrollRight);
-      tagFadeLeft.classList.toggle('visible', canScrollLeft);
-      tagFadeRight.classList.toggle('visible', canScrollRight);
-    }
-
-    function scrollTags(direction) {
-      const scrollAmount = 150;
-      const targetScroll = tagScrollContainer.scrollLeft + (direction === 'left' ? -scrollAmount : scrollAmount);
-      tagScrollContainer.scrollTo({ left: targetScroll, behavior: 'smooth' });
-    }
-
-    tagScrollLeft.addEventListener('click', () => scrollTags('left'));
-    tagScrollRight.addEventListener('click', () => scrollTags('right'));
-    tagScrollContainer.addEventListener('scroll', updateTagScrollState, { passive: true });
-
-    // Keyboard navigation for tags
-    tagScrollContainer.addEventListener('keydown', (e) => {
-      if (e.key === 'ArrowLeft') {
-        e.preventDefault();
-        scrollTags('left');
-      } else if (e.key === 'ArrowRight') {
-        e.preventDefault();
-        scrollTags('right');
-      }
-    });
-
+    // Updated to handle tags as arrays
     function getClassificationCounts() {
       const counts = {};
       entities.forEach(entity => {
@@ -857,10 +716,12 @@
       const classCounts = getClassificationCounts();
       const tagNames = Object.keys(classCounts);
       
+      // Clear existing dynamic tags (keep "All Nations")
       const allNationsTag = tagContainer.querySelector('[data-filter="all"]');
       tagContainer.innerHTML = '';
       tagContainer.appendChild(allNationsTag);
       
+      // Render dynamic tags
       tagNames.forEach(tagName => {
         const tag = document.createElement('button');
         tag.className = 'tag-pill';
@@ -871,18 +732,15 @@
         tagContainer.appendChild(tag);
       });
 
+      // Attach event listeners to all tags
       attachTagListeners();
-      
-      // Update scroll state after tags are rendered
-      requestAnimationFrame(() => {
-        updateTagScrollState();
-      });
     }
 
     function attachTagListeners() {
       const tags = tagContainer.querySelectorAll('.tag-pill');
       tags.forEach(tag => {
         tag.addEventListener('click', () => {
+          // Update selection state
           tags.forEach(t => {
             t.classList.remove('selected');
             t.setAttribute('aria-selected', 'false');
@@ -890,6 +748,7 @@
           tag.classList.add('selected');
           tag.setAttribute('aria-selected', 'true');
           
+          // Update filter
           currentFilter = tag.dataset.filter;
           filterEntities();
         });
@@ -935,6 +794,7 @@
         entities = data.countries || [];
         filteredEntities = [...entities];
 
+        // Render dynamic tags from catalog
         renderTags();
 
         loadingSkeleton.classList.add('hidden');
@@ -1000,6 +860,7 @@
         return;
       }
 
+      // Updated to search within tags array
       currentMatches = entities.filter(e => {
         const nameMatch = e.name.toLowerCase().includes(term.toLowerCase());
         const tagMatch = Array.isArray(e.tags) && e.tags.some(t => t.toLowerCase().includes(term.toLowerCase()));
@@ -1062,6 +923,7 @@
     function renderCard(entity) {
       const code = entity.code || entity.name.substring(0, 2).toUpperCase() + '-001';
       
+      // Handle tags as array - render each tag as a separate pill
       const tagsHTML = Array.isArray(entity.tags) 
         ? entity.tags.map(tag => `
             <span class="inline-block px-2 py-0.5 text-xs font-mono tracking-wide text-muted bg-muted/10 rounded">${tag}</span>
@@ -1157,6 +1019,7 @@
       const searchTerm = searchInput.value.toLowerCase().trim();
       
       filteredEntities = entities.filter(entity => {
+        // Updated to handle tags array
         const matchesFilter = currentFilter === 'all' || 
           (Array.isArray(entity.tags) && entity.tags.includes(currentFilter));
         
@@ -1248,11 +1111,6 @@
         renderGrid();
         entityGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
-    });
-
-    // Window resize handler for tag scroll
-    window.addEventListener('resize', () => {
-      updateTagScrollState();
     });
 
     // Initialize
