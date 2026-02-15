@@ -514,19 +514,29 @@ Components:
 
 ---
 
+Below is your updated specification.
+The structure is preserved exactly. Content density and institutional weight have been increased in a controlled, non-decorative manner.
+
+---
+
 # 10. Footer Institutional Layer
 
+Here is a corrected and expanded version, written as a precise design specification.
 
-Here is a corrected and improved version, written as a precise design specification.
+---
 
 ## 10. Footer — Institutional Layer
 
 ## Purpose
 
 The Footer constitutes the **institutional layer** of the landing page.
-It provides structural legitimacy, navigational closure, and formal identity reinforcement.
+It provides structural legitimacy, navigational closure, methodological signaling, and registry authority reinforcement.
 
-It must communicate stability, restraint, and intellectual seriousness.
+It must communicate stability, archival seriousness, and epistemic discipline.
+
+The footer is not decorative. It functions as the terminal institutional signature of the page.
+
+---
 
 #### Components
 
@@ -535,32 +545,86 @@ It must communicate stability, restraint, and intellectual seriousness.
    * Typographic logotype (no iconography)
    * Small caps or refined serif variant
    * Positioned at the top of the footer block
+   * Highest visual weight within the footer
 
-2. **Navigation Links**
+2. **Institutional Descriptor (New)**
+
+   Short institutional statement (max 2–3 lines):
+
+   > A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems and institutional regimes.
+
+   * Smaller than the wordmark
+   * Larger than metadata text
+   * Line length controlled (avoid wide paragraphs)
+
+3. **Navigation Links**
 
    * About
    * Methodology
+   * Research Notes
    * Contact
 
    Links should be horizontally arranged on desktop and vertically stacked on mobile.
 
+4. **Registry Metadata (New)**
+
+   Compact, structured registry indicators:
+
+   * Entities Indexed: [dynamic count]
+   * Classifications: [dynamic count]
+   * Regions Represented: [dynamic count]
+   * Last Revision: [ISO date]
+   * Version: v1.0
+
+   Metadata must be rendered in reduced typographic scale and lighter visual weight.
+
+5. **Motto Line (Optional but Recommended)**
+
+   Single-line structural motto centered at bottom:
+
+   > Ordo ex comparatione.
+
+   or
+
+   > Scientia per distinctionem.
+
+   No translation. No ornament.
+
+---
+
 #### Layout
 
 * Full-width container
-* Center-aligned content
+* Center-aligned primary structure
 * Generous vertical padding (min 72–96px desktop, 56px mobile)
 * Clear visual separation from the body via spacing (not borders unless extremely subtle)
 
 Grid recommendation:
 
-* Single centered column
+* Three-column layout (desktop):
+
+  * Column I: Wordmark + Descriptor
+  * Column II: Navigation
+  * Column III: Registry Metadata
+* Single stacked column (mobile)
 * Max content width aligned with main page grid
+
+Spacing must preserve visual air while increasing informational density by approximately 40% relative to the previous version.
+
+---
 
 #### Visual Style
 
 * **Background:** Deep navy (near-black blue; e.g., #0B1A2B range)
-* **Typography:** Light serif typeface
+* **Typography:** Light serif typeface consistent with landing hierarchy
 * **Text Color:** Soft off-white (not pure white; reduce glare)
+* **Hierarchy Control:**
+
+  * Wordmark — highest weight
+  * Section headers — medium weight
+  * Descriptor — regular
+  * Metadata — subtle
+  * Motto — lowest emphasis
 * **Link Styling:**
 
   * No underline by default
@@ -568,15 +632,19 @@ Grid recommendation:
   * Slight luminance shift on hover (subtle, restrained)
 
 Tone:
-Formal, institutional, academic — not commercial.
+Formal, archival, institutional — never promotional.
 
+---
 
 #### Interaction
 
 * No animation.
 * No transitions beyond minimal hover state change.
 * No motion effects.
-* No dynamic content.
+* Registry metadata may be dynamically populated but must not animate.
+* No counters or numeric transitions.
+
+---
 
 ### Positioning Behavior
 
@@ -585,7 +653,7 @@ Formal, institutional, academic — not commercial.
 * Must not overlap content.
 * Must not float.
 * Must not collapse.
-The footer participates in normal document flow and may shift vertically as page content expands.
+* The footer participates in normal document flow and may shift vertically as page content expands.
 * It must always remain positioned at the bottom of the document structure.
 * Its position is strictly relative to the document layout (not fixed or absolute).
 * As the page height increases, the footer moves downward accordingly.
@@ -594,7 +662,9 @@ The footer participates in normal document flow and may shift vertically as page
 * Under no circumstance should the footer float, overlap content, or detach from the document flow.
 
 Implementation note:
-Use flex column layout on the root container (`min-height: 100vh; display: flex; flex-direction: column;`) with footer margin-top auto.
+Use flex column layout on the root container (`min-height: 100vh; display: flex; flex-direction: column;`) with footer `margin-top: auto;`.
+
+
 
 
 
