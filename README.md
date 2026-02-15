@@ -2,6 +2,14 @@
 
 > ...
 
+Country Representation:
+
+- Actor Set Evolution.
+- Cognitive Evolution (Using Book, and Other Media).
+- Product Space Evolution
+- Legal Evolution
+- ...
+
 ## Build & Install
 
 - `./build.sh`
