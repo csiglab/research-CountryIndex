@@ -3,6 +3,7 @@
     {
       "id": 1,
       "name": "New Zealand",
+      "region": "Oceania",
       "tags": [
         "Oceania",
         "Developed",
@@ -15,6 +16,7 @@
     {
       "id": 2,
       "name": "Uruguay",
+      "region": "America",
       "tags": [
         "America",
         "Advanced Emerging",
@@ -27,6 +29,7 @@
     {
       "id": 3,
       "name": "Netherlands",
+      "region": "Europe",
       "tags": [
         "Europe",
         "Developed"
@@ -38,6 +41,7 @@
     {
       "id": 4,
       "name": "England",
+      "region": "Europe",
       "tags": [
         "Europe",
         "Developed",
@@ -50,6 +54,7 @@
     {
       "id": 5,
       "name": "South Korea",
+      "region": "East Asia",
       "tags": [
         "East Asia",
         "Developed",
@@ -62,6 +67,7 @@
     {
       "id": 6,
       "name": "Ireland",
+      "region": "Europe",
       "tags": [
         "Europe",
         "Developed",
@@ -74,6 +80,7 @@
     {
       "id": 7,
       "name": "Malaysia",
+      "region": "Southeast Asia",
       "tags": [
         "Southeast Asia",
         "Emerging",
