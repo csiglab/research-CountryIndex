@@ -16,7 +16,7 @@
       "tags": ["America", "Advanced Emerging", "Agri-Export"],
       "icon": "🇺🇾",
       "description": "A small American country with a robust social welfare system, diversified economy, and a history of political stability and institutional strength.",
-      "link": "https://bremontix.xyz/lab/research/country/"
+      "link": "https://bremontix.xyz/lab/research/country/ury/index.html"
     },
     {
       "alpha_3_code": "NLD",
@@ -25,7 +25,7 @@
       "tags": ["Europe", "Developed", "Innovation"],
       "icon": "🇳🇱",
       "description": "A European country with a highly developed economy, notable for its trade, infrastructure, and liberal social policies.",
-      "link": "https://bremontix.xyz/lab/research/country/"
+      "link": "https://bremontix.xyz/lab/research/country/nld/index.html"
     },
     {
       "alpha_3_code": "GBR",
@@ -34,7 +34,7 @@
       "tags": ["Europe", "Developed", "Innovation"],
       "icon": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
       "description": "A country in the United Kingdom with a historical industrial and commercial influence, strong institutions, and significant cultural and economic impact globally.",
-      "link": "https://bremontix.xyz/lab/research/country/"
+      "link": "https://bremontix.xyz/lab/research/country/grb/index.html"
     },
     {
       "alpha_3_code": "KOR",
@@ -43,7 +43,7 @@
       "tags": ["East Asia", "Developed", "Industrial"],
       "icon": "🇰🇷",
       "description": "An East Asian nation known for rapid industrialization, technological innovation, and strong institutions, with global cultural influence through K-pop and cinema.",
-      "link": "https://bremontix.xyz/lab/research/country/"
+      "link": "https://bremontix.xyz/lab/research/country/kor/index.html"
     },
     {
       "alpha_3_code": "IRL",
@@ -52,7 +52,7 @@
       "tags": ["Europe", "Developed", "Tech-Driven"],
       "icon": "🇮🇪",
       "description": "An island nation in Europe recognized for its high-tech economy, strong institutions, and significant contributions to finance, pharmaceuticals, and cultural industries.",
-      "link": "https://bremontix.xyz/lab/research/country/"
+      "link": "https://bremontix.xyz/lab/research/country/irl/index.html"
     },
     {
       "alpha_3": "MYS",
@@ -61,7 +61,7 @@
       "tags": ["Southeast Asia", "Emerging", "Industrial"],
       "icon": "🇲🇾",
       "description": "A Southeast Asian country known for its diverse economy, rapid industrial development, strategic trade position, and multi-ethnic cultural landscape.",
-      "link": "https://bremontix.xyz/lab/research/country/"
+      "link": "https://bremontix.xyz/lab/research/country/mys/index.html"
     }
   ]
 }
