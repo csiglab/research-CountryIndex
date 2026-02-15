@@ -4,8 +4,8 @@
       "id": 1,
       "name": "New Zealand",
       "tags": [
-        "Developed",
         "Oceania",
+        "Developed",
         "Agri-Export"
       ],
       "icon": "🇳🇿",
@@ -16,8 +16,8 @@
       "id": 2,
       "name": "Uruguay",
       "tags": [
-        "Advanced Emerging",
         "America",
+        "Advanced Emerging",
         "Agri-Export"
       ],
       "icon": "🇺🇾",
@@ -28,8 +28,8 @@
       "id": 3,
       "name": "Netherlands",
       "tags": [
-        "Developed",
-        "Europe"
+        "Europe",
+        "Developed"
       ],
       "icon": "🇳🇱",
       "description": "A European country with a highly developed economy, notable for its trade, infrastructure, and liberal social policies.",
@@ -39,8 +39,8 @@
       "id": 4,
       "name": "England",
       "tags": [
-        "Developed",
         "Europe",
+        "Developed",
         "Innovation"
       ],
       "icon": "🏴󠁧󠁢󠁥󠁮󠁧󠁿",
@@ -51,8 +51,8 @@
       "id": 5,
       "name": "South Korea",
       "tags": [
-        "Developed",
         "East Asia",
+        "Developed",
         "Industrial"
       ],
       "icon": "🇰🇷",
@@ -63,8 +63,8 @@
       "id": 6,
       "name": "Ireland",
       "tags": [
-        "Developed",
         "Europe",
+        "Developed",
         "Tech-Driven"
       ],
       "icon": "🇮🇪",
@@ -75,8 +75,8 @@
       "id": 7,
       "name": "Malaysia",
       "tags": [
-        "Emerging",
         "Southeast Asia",
+        "Emerging",
         "Industrial"
       ],
       "icon": "🇲🇾",
