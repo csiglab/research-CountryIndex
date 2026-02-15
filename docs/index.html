@@ -894,67 +894,69 @@
   </div>
 
   <!-- [10] Footer — Institutional Layer -->
-  <footer class="site-footer py-14 md:py-20 lg:py-24 px-6" style="background-color: #0B1A2B;">
-    <div class="max-w-6xl mx-auto">
+
+  <!-- [10] Footer — Institutional Layer -->
+<footer class="site-footer py-14 md:py-20 lg:py-24 px-6" style="background-color: #0B1A2B;">
+  <div class="max-w-6xl mx-auto">
+    
+    <!-- Three-column grid layout -->
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-12 mb-12 md:mb-16">
       
-      <!-- Three-column grid layout -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-12 mb-12 md:mb-16">
-        
-        <!-- Column I: Wordmark + Descriptor -->
-        <div class="text-center md:text-left">
-          <p class="font-display text-xl md:text-2xl tracking-[0.2em] mb-4" style="color: #E8EDF3; font-variant: small-caps;">ARBITRISTAE</p>
-          <p class="font-display text-sm leading-relaxed max-w-xs mx-auto md:mx-0" style="color: #8A9DB0;">
-            A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems and institutional regimes.
-          </p>
-        </div>
-        
-        <!-- Column II: Navigation -->
-        <div class="text-center">
-          <p class="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style="color: #5A7089;">Navigation</p>
-          <nav class="flex flex-col items-center gap-3" aria-label="Footer navigation">
-            <a href="#" class="footer-link text-sm">About</a>
-            <a href="#" class="footer-link text-sm">Methodology</a>
-            <a href="#" class="footer-link text-sm">Research Notes</a>
-            <a href="#" class="footer-link text-sm">Contact</a>
-          </nav>
-        </div>
-        
-        <!-- Column III: Registry Metadata -->
-        <div class="text-center md:text-right">
-          <p class="font-mono text-[10px] tracking-[0.15em] uppercase mb-4" style="color: #5A7089;">Registry Status</p>
-          <div class="space-y-2 text-sm">
-            <div class="flex justify-center md:justify-end gap-2">
-              <span class="footer-meta-label">Entities Indexed:</span>
-              <span class="footer-meta-value font-medium" id="footerEntityCount">—</span>
-            </div>
-            <div class="flex justify-center md:justify-end gap-2">
-              <span class="footer-meta-label">Classifications:</span>
-              <span class="footer-meta-value font-medium" id="footerClassificationCount">—</span>
-            </div>
-            <div class="flex justify-center md:justify-end gap-2">
-              <span class="footer-meta-label">Regions Represented:</span>
-              <span class="footer-meta-value font-medium" id="footerRegionCount">—</span>
-            </div>
-            <div class="flex justify-center md:justify-end gap-2">
-              <span class="footer-meta-label">Last Revision:</span>
-              <span class="footer-meta-value font-mono text-xs" id="footerLastRevision">—</span>
-            </div>
-            <div class="flex justify-center md:justify-end gap-2">
-              <span class="footer-meta-label">Version:</span>
-              <span class="footer-meta-value font-mono text-xs" id="footerVersion">v1.0</span>
-            </div>
-          </div>
-        </div>
-        
+      <!-- Column I: Wordmark + Descriptor -->
+      <div class="text-center md:text-left">
+        <p class="font-display text-xl md:text-2xl font-medium tracking-[0.2em] mb-4" style="color: #E8EDF3; font-variant: small-caps;">ARBITRISTAE</p>
+        <p class="font-body text-sm leading-relaxed max-w-xs mx-auto md:mx-0" style="color: #8A9DB0;">
+          A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems and institutional regimes.
+        </p>
       </div>
       
-      <!-- Motto Line -->
-      <div class="pt-8 border-t text-center" style="border-color: rgba(90, 112, 137, 0.25);">
-        <p class="font-display text-sm italic tracking-wide" style="color: #5A7089;">Ordo ex comparatione.</p>
+      <!-- Column II: Navigation -->
+      <div class="text-center">
+        <p class="font-mono text-xs tracking-[0.15em] uppercase mb-4" style="color: #5A7089;">Navigation</p>
+        <nav class="flex flex-col items-center gap-3" aria-label="Footer navigation">
+          <a href="#" class="footer-link font-body text-sm">About</a>
+          <a href="#" class="footer-link font-body text-sm">Methodology</a>
+          <a href="#" class="footer-link font-body text-sm">Research Notes</a>
+          <a href="#" class="footer-link font-body text-sm">Contact</a>
+        </nav>
+      </div>
+
+      <!-- Column III: Registry Metadata -->
+      <div class="text-center md:text-right">
+        <p class="font-mono text-xs tracking-[0.15em] uppercase mb-4" style="color: #5A7089;">Registry Status</p>
+        <div class="space-y-2">
+          <div class="flex justify-center md:justify-end gap-2">
+            <span class="font-mono text-xs" style="color: #5A7089;">Entities Indexed:</span>
+            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerEntityCount">—</span>
+          </div>
+          <div class="flex justify-center md:justify-end gap-2">
+            <span class="font-mono text-xs" style="color: #5A7089;">Classifications:</span>
+            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerClassificationCount">—</span>
+          </div>
+          <div class="flex justify-center md:justify-end gap-2">
+            <span class="font-mono text-xs" style="color: #5A7089;">Regions Represented:</span>
+            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerRegionCount">—</span>
+          </div>
+          <div class="flex justify-center md:justify-end gap-2">
+            <span class="font-mono text-xs" style="color: #5A7089;">Last Revision:</span>
+            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerLastRevision">—</span>
+          </div>
+          <div class="flex justify-center md:justify-end gap-2">
+            <span class="font-mono text-xs" style="color: #5A7089;">Version:</span>
+            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerVersion">v1.0</span>
+          </div>
+        </div>
       </div>
       
     </div>
-  </footer>
+    
+    <!-- Motto Line -->
+    <div class="pt-8 border-t text-center" style="border-color: rgba(90, 112, 137, 0.25);">
+      <p class="font-display text-base italic tracking-wide" style="color: #5A7089;">Ordo ex comparatione.</p>
+    </div>
+    
+  </div>
+</footer>
 
   <script>
     // =============================================
@@ -1328,7 +1330,7 @@
     }
 
     function renderCard(entity) {
-      const code = entity.code || entity.name.substring(0, 2).toUpperCase() + '-001';
+      const code = entity.alpha_3_code || entity.name.substring(0, 2).toUpperCase() + '-001';
       
       const tagsHTML = Array.isArray(entity.tags) 
         ? entity.tags.map(tag => `
@@ -1496,7 +1498,7 @@
       const isInsideSearchModule = searchModule.contains(e.target);
       const isTagPill = e.target.closest('.tag-pill');
       const isThemeToggle = e.target.closest('.theme-toggle');
-      
+
       if (!isInsideSearchModule && !isTagPill && !isThemeToggle) {
         closeDropdown();
       }
