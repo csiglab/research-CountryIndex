@@ -62,6 +62,60 @@
       "icon": "🇲🇾",
       "description": "A Southeast Asian country known for its diverse economy, rapid industrial development, strategic trade position, and multi-ethnic cultural landscape.",
       "link": "https://bremontix.xyz/lab/research/country/mys/index.html"
+    },
+    {
+      "alpha_3_code": "THA",
+      "name": "Thailand",
+      "region": "Southeast Asia",
+      "tags": ["Southeast Asia", "Emerging", "Manufacturing"],
+      "icon": "🇹🇭",
+      "description": "A Southeast Asian economy with strong manufacturing, tourism, and agricultural sectors, serving as a regional logistics and industrial hub.",
+      "link": "https://bremontix.xyz/lab/research/country/tha/index.html"
+    },
+    {
+      "alpha_3_code": "IDN",
+      "name": "Indonesia",
+      "region": "Southeast Asia",
+      "tags": ["Southeast Asia", "Emerging", "Resource-Industrial"],
+      "icon": "🇮🇩",
+      "description": "A large archipelagic nation with abundant natural resources, a growing industrial base, and increasing geopolitical and economic relevance.",
+      "link": "https://bremontix.xyz/lab/research/country/idn/index.html"
+    },
+    {
+      "alpha_3_code": "BRA",
+      "name": "Brazil",
+      "region": "South America",
+      "tags": ["South America", "Emerging", "Agri-Industrial"],
+      "icon": "🇧🇷",
+      "description": "A major South American economy with strong agricultural, mining, and industrial sectors, and significant influence in regional and global affairs.",
+      "link": "https://bremontix.xyz/lab/research/country/bra/index.html"
+    },
+    {
+      "alpha_3_code": "IND",
+      "name": "India",
+      "region": "South Asia",
+      "tags": ["South Asia", "Emerging", "Services-Industrial"],
+      "icon": "🇮🇳",
+      "description": "A large South Asian economy with strong services, growing manufacturing capacity, technological development, and increasing geopolitical influence.",
+      "link": "https://bremontix.xyz/lab/research/country/ind/index.html"
+    },
+    {
+      "alpha_3_code": "SWE",
+      "name": "Sweden",
+      "region": "Europe",
+      "tags": ["Europe", "Developed", "Innovation"],
+      "icon": "🇸🇪",
+      "description": "A Nordic country with a highly developed economy, strong welfare institutions, advanced industrial base, and global leadership in innovation and sustainability.",
+      "link": "https://bremontix.xyz/lab/research/country/swe/index.html"
+    },
+     {
+      "alpha_3_code": "ARG",
+      "name": "Argentina",
+      "region": "South America",
+      "tags": ["South America", "Emerging", "Agri-Industrial"],
+      "icon": "🇦🇷",
+      "description": "A South American country with a strong agricultural sector, significant natural resources, and a diversified industrial base, marked by recurring macroeconomic volatility.",
+      "link": "https://bremontix.xyz/lab/research/country/arg/index.html"
     }
   ]
 }
