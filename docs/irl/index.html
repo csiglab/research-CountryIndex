@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🇮🇪 Ireland · Index Gentium</title>
+  <title>🇮🇪 Ireland · Collectio · Index Gentium</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -41,6 +41,9 @@
       --status-active: #2A9D5C;
       --status-pending: #8A9FB0;
       --bg-subtle: #F1F5F9;
+      --header-bg: #0B1A2B;
+      --header-text: #E8EDF3;
+      --header-muted: #8A9DB0;
     }
 
     .dark {
@@ -53,6 +56,9 @@
       --status-active: #4ADE80;
       --status-pending: #64748B;
       --bg-subtle: #172033;
+      --header-bg: #070F18;
+      --header-text: #E8EDF3;
+      --header-muted: #6B8299;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -66,7 +72,6 @@
       min-height: 100vh;
       display: flex;
       flex-direction: column;
-      border-top: 3px solid var(--accent);
       -webkit-font-smoothing: antialiased;
       position: relative;
     }
@@ -87,6 +92,99 @@
       background-image: 
         radial-gradient(ellipse 80% 50% at 50% -10%, rgba(147, 197, 253, 0.06) 0%, transparent 60%),
         radial-gradient(ellipse 60% 40% at 80% 100%, rgba(147, 197, 253, 0.04) 0%, transparent 50%);
+    }
+
+    /* Project Header - New Addition */
+    .project-header {
+      background-color: var(--header-bg);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      z-index: 50;
+    }
+
+    .project-header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .project-identity {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .project-identity:hover {
+      opacity: 0.8;
+    }
+
+    .project-logo {
+      width: 32px;
+      height: 32px;
+      border: 1.5px solid var(--header-muted);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .project-logo svg {
+      width: 18px;
+      height: 18px;
+      color: var(--header-text);
+    }
+
+    .project-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--header-text);
+      letter-spacing: 0.05em;
+    }
+
+    .project-subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      color: var(--header-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      margin-top: 0.125rem;
+    }
+
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--header-muted);
+    }
+
+    .breadcrumb-nav a {
+      color: var(--header-muted);
+      text-decoration: none;
+      transition: color 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .breadcrumb-nav a:hover {
+      color: var(--header-text);
+    }
+
+    .breadcrumb-separator {
+      opacity: 0.4;
+    }
+
+    .breadcrumb-current {
+      color: var(--header-text);
+      font-weight: 500;
     }
 
     .main-content { 
@@ -117,7 +215,7 @@
     /* Theme Toggle */
     .theme-toggle {
       position: fixed;
-      top: 1.5rem;
+      top: 5.5rem;
       right: 1.5rem;
       width: 40px;
       height: 40px;
@@ -151,28 +249,6 @@
     .theme-toggle .icon-sun { opacity: 0; transform: scale(0.5); }
     .dark .theme-toggle .icon-moon { opacity: 0; transform: scale(0.5); }
     .dark .theme-toggle .icon-sun { opacity: 1; transform: scale(1); }
-
-    /* Project Header */
-    .project-header {
-      background: var(--card);
-      border-bottom: 1px solid var(--border);
-      padding: 0.75rem 0;
-      position: sticky;
-      top: 0;
-      z-index: 50;
-      backdrop-filter: blur(8px);
-      background-color: rgba(var(--card-rgb), 0.85);
-    }
-    
-    .project-header::after {
-      content: '';
-      position: absolute;
-      bottom: -1px;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-    }
 
     /* Typography Scale */
     .font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
@@ -414,24 +490,6 @@
     }
     .entity-card:hover:not(.opacity-60) .card-cta { gap: 0.75rem; }
 
-    /* Back to Registry Link */
-    .back-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      color: var(--muted);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      transition: color 0.2s ease, gap 0.2s ease;
-      padding: 0.5rem 0;
-    }
-    .back-link:hover {
-      color: var(--accent);
-      gap: 0.75rem;
-    }
-
     /* Footer */
     .site-footer {
       background: var(--card);
@@ -485,10 +543,56 @@
       transition: transform 0.1s linear;
     }
 
+    /* Mobile Header Adjustments */
+    @media (max-width: 640px) {
+      .project-header-inner {
+        padding: 0.875rem 1rem;
+      }
+      
+      .project-title {
+        font-size: 1rem;
+      }
+      
+      .breadcrumb-nav {
+        font-size: 0.65rem;
+      }
+      
+      .theme-toggle {
+        top: 5rem;
+        right: 1rem;
+      }
+    }
   </style>
 <base target="_blank">
 </head>
 <body>
+
+  <!-- Project Header -->
+  <header class="project-header">
+    <div class="project-header-inner">
+      <a href="index.html" class="project-identity" aria-label="Return to Index Gentium">
+        <div class="project-logo">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+            <path d="M2 17l10 5 10-5"/>
+            <path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div>
+          <div class="project-title">Index Gentium</div>
+          <div class="project-subtitle">Arbitristae · Laboratorium</div>
+        </div>
+      </a>
+      
+      <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+        <a href="index.html">
+          <span>Registry</span>
+        </a>
+        <span class="breadcrumb-separator">/</span>
+        <span class="breadcrumb-current">Ireland</span>
+      </nav>
+    </div>
+  </header>
 
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
@@ -501,31 +605,7 @@
     </svg>
   </button>
 
-  <!-- Project Header -->
-  <header class="project-header">
-    <div class="max-w-6xl mx-auto px-6">
-      <div class="flex items-center justify-between">
-        <div class="flex items-center gap-4">
-          <a href="/" class="back-link" aria-label="Back to Index Gentium">
-            <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              <path d="M15 19l-7-7 7-7"/>
-            </svg>
-            <span>Index Gentium</span>
-          </a>
-          <span class="text-muted opacity-30" aria-hidden="true">/</span>
-          <span class="font-mono text-xs text-muted">IRL-001</span>
-        </div>
-        <div class="flex items-center gap-3">
-          <span class="font-mono text-[0.6rem] tracking-widest text-muted uppercase hidden sm:block">
-            Laboratorium Arbitristae
-          </span>
-          <span class="w-1.5 h-1.5 rounded-full bg-accent opacity-50"></span>
-        </div>
-      </div>
-    </div>
-  </header>
-
-  <div class="main-content w-full max-w-4xl mx-auto px-6 py-12 md:py-16">
+  <div class="main-content w-full max-w-4xl mx-auto px-6 py-16 md:py-24">
     
     <!-- [1] Identity Layer -->
     <header class="mb-10 text-center reveal">
@@ -534,7 +614,7 @@
       </div>
 
       <p class="font-mono type-label uppercase text-muted mb-3 font-medium tracking-widest">
-        Index Gentium · Collectio
+        Regio Socialis · Collectio
       </p>
 
       <h1 class="font-display type-hero font-medium text-fg mb-1">
@@ -715,7 +795,7 @@
         <!-- Column I: Identity -->
         <div class="md:col-span-5 text-center md:text-left">
           <p class="font-display text-lg font-medium tracking-[0.2em] uppercase mb-2 footer-identity">
-            Index Gentium
+            Arbitristae
           </p>
           <p class="font-body text-xs leading-relaxed max-w-xs mx-auto md:mx-0 footer-muted">
             A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems.
@@ -726,7 +806,7 @@
         <div class="md:col-span-3 text-center md:text-left">
           <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Navigation</p>
           <nav class="flex flex-col items-center md:items-start gap-1.5" aria-label="Footer navigation">
-            <a href="#" class="footer-link font-body text-xs">Index Gentium</a>
+            <a href="index.html" class="footer-link font-body text-xs">Index Gentium</a>
             <a href="#" class="footer-link font-body text-xs">Methodology</a>
             <a href="#" class="footer-link font-body text-xs">Research Notes</a>
             <a href="#" class="footer-link font-body text-xs">Contact</a>
@@ -753,7 +833,7 @@
         </div>
         
       </div>
-
+      
       <!-- Bottom Bar -->
       <div class="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 footer-divider">
          <p class="font-mono text-[10px] tracking-[0.15em] uppercase footer-muted">
