@@ -894,65 +894,66 @@
   </div>
 
   <!-- [10] Footer — Institutional Layer -->
-
-  <!-- [10] Footer — Institutional Layer -->
-<footer class="site-footer py-14 md:py-20 lg:py-24 px-6" style="background-color: #0B1A2B;">
+<footer class="site-footer mt-12 py-16 md:py-20 px-6" style="background-color: #0B1A2B;">
   <div class="max-w-6xl mx-auto">
     
-    <!-- Three-column grid layout -->
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-8 lg:gap-12 mb-12 md:mb-16">
+    <!-- Main Footer Grid -->
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-12 md:gap-8 mb-12">
       
-      <!-- Column I: Wordmark + Descriptor -->
-      <div class="text-center md:text-left">
-        <p class="font-display text-xl md:text-2xl font-medium tracking-[0.2em] mb-4" style="color: #E8EDF3; font-variant: small-caps;">ARBITRISTAE</p>
-        <p class="font-body text-sm leading-relaxed max-w-xs mx-auto md:mx-0" style="color: #8A9DB0;">
-          A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems and institutional regimes.
+      <!-- Column I: Identity (5 cols) -->
+      <div class="md:col-span-5 text-center md:text-left">
+        <p class="font-display text-lg font-medium tracking-[0.25em] uppercase mb-3" style="color: #E8EDF3;">
+          ARBITRISTAE
+        </p>
+        <p class="font-body text-xs leading-relaxed max-w-xs mx-auto md:mx-0" style="color: #6B8299;">
+          A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems.
         </p>
       </div>
       
-      <!-- Column II: Navigation -->
-      <div class="text-center">
-        <p class="font-mono text-xs tracking-[0.15em] uppercase mb-4" style="color: #5A7089;">Navigation</p>
-        <nav class="flex flex-col items-center gap-3" aria-label="Footer navigation">
-          <a href="#" class="footer-link font-body text-sm">About</a>
-          <a href="#" class="footer-link font-body text-sm">Methodology</a>
-          <a href="#" class="footer-link font-body text-sm">Research Notes</a>
-          <a href="#" class="footer-link font-body text-sm">Contact</a>
+      <!-- Column II: Navigation (3 cols) -->
+      <div class="md:col-span-3 text-center md:text-left">
+        <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-4" style="color: #4A6075;">Navigation</p>
+        <nav class="flex flex-col items-center md:items-start gap-2" aria-label="Footer navigation">
+          <a href="#" class="font-body text-xs transition-colors duration-150 hover:text-white" style="color: #8A9DB0;">About</a>
+          <a href="#" class="font-body text-xs transition-colors duration-150 hover:text-white" style="color: #8A9DB0;">Methodology</a>
+          <a href="#" class="font-body text-xs transition-colors duration-150 hover:text-white" style="color: #8A9DB0;">Research Notes</a>
+          <a href="#" class="font-body text-xs transition-colors duration-150 hover:text-white" style="color: #8A9DB0;">Contact</a>
         </nav>
       </div>
 
-      <!-- Column III: Registry Metadata -->
-      <div class="text-center md:text-right">
-        <p class="font-mono text-xs tracking-[0.15em] uppercase mb-4" style="color: #5A7089;">Registry Status</p>
-        <div class="space-y-2">
-          <div class="flex justify-center md:justify-end gap-2">
-            <span class="font-mono text-xs" style="color: #5A7089;">Entities Indexed:</span>
-            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerEntityCount">—</span>
+      <!-- Column III: Registry Metadata (4 cols) -->
+      <div class="md:col-span-4 text-center md:text-right">
+        <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-4" style="color: #4A6075;">Registry Status</p>
+        <div class="space-y-2 font-mono text-xs">
+          <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span style="color: #5A7089;">Entities Indexed</span>
+            <span class="font-medium tabular-nums" style="color: #B8C5D4;" id="footerEntityCount">—</span>
           </div>
-          <div class="flex justify-center md:justify-end gap-2">
-            <span class="font-mono text-xs" style="color: #5A7089;">Classifications:</span>
-            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerClassificationCount">—</span>
+          <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span style="color: #5A7089;">Classifications</span>
+            <span class="font-medium tabular-nums" style="color: #B8C5D4;" id="footerClassificationCount">—</span>
           </div>
-          <div class="flex justify-center md:justify-end gap-2">
-            <span class="font-mono text-xs" style="color: #5A7089;">Regions Represented:</span>
-            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerRegionCount">—</span>
+          <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span style="color: #5A7089;">Regions</span>
+            <span class="font-medium tabular-nums" style="color: #B8C5D4;" id="footerRegionCount">—</span>
           </div>
-          <div class="flex justify-center md:justify-end gap-2">
-            <span class="font-mono text-xs" style="color: #5A7089;">Last Revision:</span>
-            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerLastRevision">—</span>
-          </div>
-          <div class="flex justify-center md:justify-end gap-2">
-            <span class="font-mono text-xs" style="color: #5A7089;">Version:</span>
-            <span class="font-mono text-xs font-medium" style="color: #B8C5D4;" id="footerVersion">v1.0</span>
+          <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span style="color: #5A7089;">Last Revised</span>
+            <span style="color: #8A9DB0;" id="footerLastRevision">—</span>
           </div>
         </div>
       </div>
       
     </div>
     
-    <!-- Motto Line -->
-    <div class="pt-8 border-t text-center" style="border-color: rgba(90, 112, 137, 0.25);">
-      <p class="font-display text-base italic tracking-wide" style="color: #5A7089;">Ordo ex comparatione.</p>
+    <!-- Subtle Divider and Bottom Bar -->
+    <div class="pt-8 border-t flex flex-col sm:flex-row items-center justify-between gap-4" style="border-color: rgba(90, 112, 137, 0.15);">
+       <p class="font-mono text-[10px] tracking-[0.15em] uppercase" style="color: #4A6075;">
+         Index Gentium <span id="footerVersion">v1.0</span>
+       </p>
+       <p class="font-display text-sm italic tracking-wide" style="color: #5A7089;">
+         Ordo ex comparatione.
+       </p>
     </div>
     
   </div>
