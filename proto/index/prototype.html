@@ -14,18 +14,18 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Core Palette - Dark Academic */
-            --background: #0A0A0A;
-            --background-elevated: #111111;
-            --foreground: #F5F0E8;
-            --muted: #1A1A1A;
-            --muted-foreground: #7A7468;
-            --accent: #C9A962;
-            --accent-secondary: #B8860B;
-            --accent-foreground: #0A0A0A;
-            --border: #2A2520;
-            --card: #141414;
-            --card-hover: #1A1A1A;
+            /* Core Palette - Light Modern */
+            --background: #FAFAFA;
+            --background-elevated: #FFFFFF;
+            --foreground: #0F172A; /* Slate 900 */
+            --muted: #F1F5F9; /* Slate 100 */
+            --muted-foreground: #64748B; /* Slate 500 */
+            --accent: #0052FF; /* Electric Blue */
+            --accent-secondary: #4D7CFF;
+            --accent-foreground: #FFFFFF;
+            --border: #E2E8F0; /* Slate 200 */
+            --card: #FFFFFF;
+            --card-hover: #FFFFFF;
             
             /* Typography */
             --font-display: 'Cormorant Garamond', Georgia, serif;
@@ -33,11 +33,11 @@
             --font-mono: 'JetBrains Mono', monospace;
             
             /* Shadows & Effects */
-            --shadow-card: 0 4px 24px rgba(0,0,0,0.4);
-            --shadow-card-hover: 0 8px 40px rgba(0,0,0,0.6), 0 0 1px rgba(201, 169, 98, 0.3);
-            --shadow-accent: 0 4px 20px rgba(201, 169, 98, 0.15);
+            --shadow-card: 0 4px 6px rgba(0,0,0,0.04), 0 10px 20px rgba(0,0,0,0.03);
+            --shadow-card-hover: 0 10px 15px rgba(0,0,0,0.06), 0 20px 40px rgba(0,0,0,0.08);
+            --shadow-accent: 0 8px 24px rgba(0, 82, 255, 0.25);
             
-            --radius-lg: 4px;
+            --radius-lg: 16px;
             --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -59,39 +59,28 @@
             position: relative;
         }
 
-        /* --- Header: Institutional Emblem --- */
+        /* --- Header: Institutional Emblem (Light Theme) --- */
         header {
             text-align: center;
             padding: 6rem 0 5rem;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(180deg, #0A0A0A 0%, #0D0D0D 100%);
+            background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
             border-bottom: 1px solid var(--border);
         }
 
-        /* Subtle radial gradient behind emblem */
+        /* Ambient glow background */
         header::before {
             content: '';
             position: absolute;
-            top: 50%;
+            top: -100px;
             left: 50%;
-            transform: translate(-50%, -50%);
-            width: 600px;
+            transform: translateX(-50%);
+            width: 800px;
             height: 600px;
-            background: radial-gradient(circle, rgba(201, 169, 98, 0.03) 0%, transparent 60%);
+            background: radial-gradient(circle, rgba(0, 82, 255, 0.06) 0%, transparent 70%);
             z-index: 0;
             pointer-events: none;
-        }
-
-        /* Noise texture overlay */
-        header::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-            opacity: 0.03;
-            pointer-events: none;
-            z-index: 1;
         }
 
         .header-content {
@@ -114,9 +103,10 @@
             width: 100%;
             height: 100%;
             object-fit: contain;
-            filter: brightness(1) contrast(1.1);
             opacity: 0;
             animation: emblemReveal 1s ease-out 0.2s forwards;
+            /* Optional: If logo is dark, you might want a subtle drop shadow on light bg */
+            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
         }
 
         @keyframes emblemReveal {
@@ -128,14 +118,14 @@
         .emblem-ring {
             position: absolute;
             inset: -8px;
-            border: 1px solid rgba(201, 169, 98, 0.2);
+            border: 1px solid rgba(0, 82, 255, 0.15);
             border-radius: 50%;
             animation: ringPulse 3s ease-in-out infinite;
         }
 
         @keyframes ringPulse {
-            0%, 100% { opacity: 0.3; transform: scale(1); }
-            50% { opacity: 0.6; transform: scale(1.05); }
+            0%, 100% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 0.8; transform: scale(1.05); }
         }
 
         /* Establishment Year */
@@ -154,7 +144,7 @@
         .main-title {
             font-family: var(--font-display);
             font-size: clamp(2.5rem, 7vw, 4rem);
-            font-weight: 400;
+            font-weight: 500;
             line-height: 1.1;
             color: var(--foreground);
             letter-spacing: 0.08em;
@@ -173,8 +163,9 @@
             text-transform: uppercase;
             margin-bottom: 2.5rem;
             padding: 0.6rem 1.5rem;
-            border: 1px solid rgba(201, 169, 98, 0.25);
-            background: rgba(201, 169, 98, 0.03);
+            border: 1px solid rgba(0, 82, 255, 0.25);
+            background: rgba(0, 82, 255, 0.03);
+            border-radius: 2px;
             opacity: 0;
             animation: fadeSlideUp 0.8s ease-out 0.6s forwards;
         }
@@ -212,7 +203,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* --- Controls: Refined Dark --- */
+        /* --- Controls: Premium Inputs --- */
         .controls-panel {
             padding: 3rem 0 4rem;
             background: var(--background);
@@ -235,11 +226,12 @@
             padding: 0 1.25rem 0 3rem;
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: 12px;
             font-family: var(--font-body);
             font-size: 0.9rem;
             color: var(--foreground);
             transition: all 0.25s ease;
+            box-shadow: var(--shadow-card);
         }
 
         .search-container::before {
@@ -260,8 +252,7 @@
         .search-box:focus {
             outline: none;
             border-color: var(--accent);
-            background: var(--card-hover);
-            box-shadow: 0 0 0 3px rgba(201, 169, 98, 0.08);
+            box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.15), var(--shadow-card);
         }
 
         .search-suggestions {
@@ -271,7 +262,7 @@
             right: 0;
             background: var(--card);
             border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
+            border-radius: 12px;
             margin-top: 0.5rem;
             box-shadow: var(--shadow-card-hover);
             z-index: 10;
@@ -307,27 +298,29 @@
             padding: 0.5rem 1rem;
             background: transparent;
             border: 1px solid var(--border);
-            border-radius: 2px;
+            border-radius: 999px;
             color: var(--muted-foreground);
             font-size: 0.75rem;
             font-weight: 500;
             font-family: var(--font-mono);
-            letter-spacing: 0.08em;
+            letter-spacing: 0.02em;
             text-transform: uppercase;
             cursor: pointer;
             transition: all 0.2s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
         }
         .chip:hover {
-            border-color: var(--accent);
-            color: var(--accent);
+            border-color: rgba(0, 82, 255, 0.3);
+            color: var(--foreground);
         }
         .chip.active {
-            background: var(--accent);
-            color: var(--accent-foreground);
-            border-color: var(--accent);
+            background: linear-gradient(to right, var(--accent), var(--accent-secondary));
+            color: white;
+            border-color: transparent;
+            box-shadow: var(--shadow-accent);
         }
 
-        /* --- Card Design: Dark Refined --- */
+        /* --- Card Design: Elevated & Light --- */
         .cards-section {
             padding: 4rem 0;
             background: var(--background);
@@ -348,26 +341,26 @@
             flex-direction: column;
             position: relative;
             transition: all 0.3s var(--transition-smooth);
+            box-shadow: var(--shadow-card);
             overflow: hidden;
         }
 
         .firm-card:hover {
-            border-color: rgba(201, 169, 98, 0.3);
-            background: var(--card-hover);
-            transform: translateY(-2px);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-card-hover);
+            border-color: rgba(0,0,0,0.06);
         }
 
-        /* Top accent line */
+        /* Gradient overlay on hover */
         .firm-card::before {
             content: "";
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
+            inset: 0;
+            background: linear-gradient(135deg, rgba(0, 82, 255, 0.03), transparent);
             opacity: 0;
             transition: opacity 0.3s ease;
+            z-index: 0;
+            pointer-events: none;
         }
         .firm-card:hover::before { opacity: 1; }
 
@@ -376,30 +369,37 @@
             justify-content: space-between;
             align-items: flex-start;
             margin-bottom: 1.25rem;
+            position: relative;
+            z-index: 1;
         }
 
         .card-icon-container {
             width: 40px;
             height: 40px;
-            border: 1px solid var(--border);
-            border-radius: 2px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
             display: flex;
             align-items: center;
             justify-content: center;
-            color: var(--accent);
-            font-size: 1.1rem;
-            background: rgba(201, 169, 98, 0.05);
+            color: white;
+            font-size: 1rem;
+            box-shadow: var(--shadow-accent);
         }
 
         .firm-category {
             font-family: var(--font-mono);
             font-size: 0.65rem;
             color: var(--muted-foreground);
-            letter-spacing: 0.1em;
+            background: var(--muted);
+            padding: 0.25rem 0.5rem;
+            border-radius: 6px;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
         }
 
         .card-body {
+            position: relative;
+            z-index: 1;
             flex: 1;
         }
 
@@ -425,8 +425,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border);
+            position: relative;
+            z-index: 1;
         }
 
         .footer-meta {
@@ -440,9 +440,9 @@
         }
         
         .status-dot {
-            width: 5px;
-            height: 5px;
-            background: #4ADE80;
+            width: 6px;
+            height: 6px;
+            background: #22C55E;
             border-radius: 50%;
         }
 
@@ -453,13 +453,10 @@
             padding: 0.4rem 0.875rem;
             background: transparent;
             color: var(--accent);
-            border: 1px solid rgba(201, 169, 98, 0.4);
-            border-radius: 2px;
-            font-weight: 500;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-weight: 600;
             font-size: 0.75rem;
-            font-family: var(--font-mono);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
             cursor: pointer;
             text-decoration: none;
             transition: all 0.2s ease;
@@ -467,8 +464,9 @@
 
         .btn-enter:hover {
             background: var(--accent);
-            color: var(--accent-foreground);
+            color: white;
             border-color: var(--accent);
+            box-shadow: var(--shadow-accent);
         }
         
         .btn-enter i { 
@@ -492,16 +490,13 @@
         }
         
         .nav-button { 
-            background: transparent; 
+            background: var(--card); 
             border: 1px solid var(--border); 
-            color: var(--muted-foreground); 
+            color: var(--foreground); 
             padding: 0.6rem 1rem; 
-            font-weight: 500;
+            font-weight: 600;
             font-size: 0.75rem;
-            font-family: var(--font-mono);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            border-radius: 2px;
+            border-radius: 8px;
             cursor: pointer; 
             transition: all 0.2s ease;
             display: flex;
@@ -509,17 +504,18 @@
             gap: 0.5rem;
         }
         .nav-button:not(:disabled):hover { 
-            border-color: var(--accent);
-            color: var(--accent);
+            background: var(--foreground);
+            color: var(--background);
+            border-color: var(--foreground);
         }
-        .nav-button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .nav-button:disabled { opacity: 0.4; cursor: not-allowed; }
         
         .dots-track { display: flex; gap: 0.5rem; }
         .pagination-dot { 
             width: 8px; 
             height: 8px; 
             background: var(--border);
-            border-radius: 1px;
+            border-radius: 50%;
             cursor: pointer; 
             transition: all 0.2s ease;
             border: none;
@@ -527,17 +523,32 @@
         .pagination-dot.active { 
             background: var(--accent);
             width: 20px;
+            border-radius: 4px;
         }
 
-        /* --- Footer: Minimal Dark --- */
+        /* --- Footer: Inverted Section --- */
         footer {
-            background: var(--background-elevated);
-            border-top: 1px solid var(--border);
-            padding: 3rem 0;
+            background: var(--foreground);
+            color: var(--background);
+            padding: 4rem 0;
             position: relative;
+            overflow: hidden;
+        }
+        
+        /* Dot Pattern Texture */
+        footer::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px);
+            background-size: 24px 24px;
+            opacity: 0.1;
+            pointer-events: none;
         }
 
         .footer-content {
+            position: relative;
+            z-index: 1;
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -549,7 +560,7 @@
             font-family: var(--font-display);
             font-size: 1.25rem;
             font-weight: 500;
-            color: var(--foreground);
+            color: white;
             letter-spacing: 0.1em;
             text-transform: uppercase;
         }
@@ -560,7 +571,7 @@
         }
         
         .footer-link {
-            color: var(--muted-foreground);
+            color: rgba(255,255,255,0.6);
             text-decoration: none;
             font-size: 0.8rem;
             font-family: var(--font-mono);
@@ -568,14 +579,13 @@
             text-transform: uppercase;
             transition: color 0.2s;
         }
-        .footer-link:hover { color: var(--accent); }
+        .footer-link:hover { color: white; }
 
         .footer-copyright {
             font-size: 0.7rem;
-            color: var(--muted-foreground);
+            color: rgba(255,255,255,0.4);
             font-family: var(--font-mono);
             letter-spacing: 0.05em;
-            opacity: 0.6;
         }
 
         /* Utilities */
@@ -683,7 +693,7 @@
 
     <footer>
         <div class="container footer-content">
-            <div class="footer-logo">Laboratorium</div>
+            <div class="footer-logo">Arbitristae</div>
             <div class="footer-links">
                 <a href="#" class="footer-link">About</a>
                 <a href="#" class="footer-link">Methodology</a>
@@ -728,7 +738,7 @@
                 initApp();
             })
             .catch(err => {
-                $('loadingState').innerHTML = `<p style="color: #C9A962; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em;">CONNECTION ERROR</p>`;
+                $('loadingState').innerHTML = `<p style="color: #0052FF; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em;">CONNECTION ERROR</p>`;
                 console.error(err);
             });
 
