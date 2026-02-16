@@ -1,955 +1,1039 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Gentium · Laboratorium Arbitristae</title>
-    
-    <!-- Fonts: Cormorant Garamond (Display), Inter (Body), JetBrains Mono (Label) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        :root {
-            /* Core Palette - Light Modern */
-            --background: #FAFAFA;
-            --background-elevated: #FFFFFF;
-            --foreground: #0F172A; /* Slate 900 */
-            --muted: #F1F5F9; /* Slate 100 */
-            --muted-foreground: #64748B; /* Slate 500 */
-            --accent: #0052FF; /* Electric Blue */
-            --accent-secondary: #4D7CFF;
-            --accent-foreground: #FFFFFF;
-            --border: #E2E8F0; /* Slate 200 */
-            --card: #FFFFFF;
-            --card-hover: #FFFFFF;
-            
-            /* Typography */
-            --font-display: 'Cormorant Garamond', Georgia, serif;
-            --font-body: 'Inter', system-ui, sans-serif;
-            --font-mono: 'JetBrains Mono', monospace;
-            
-            /* Shadows & Effects */
-            --shadow-card: 0 4px 6px rgba(0,0,0,0.04), 0 10px 20px rgba(0,0,0,0.03);
-            --shadow-card-hover: 0 10px 15px rgba(0,0,0,0.06), 0 20px 40px rgba(0,0,0,0.08);
-            --shadow-accent: 0 8px 24px rgba(0, 82, 255, 0.25);
-            
-            --radius-lg: 16px;
-            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>INDEX GENTIUM — Laboratorium Arbitristae</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg: '#FAFBFC',
+            fg: '#1E293B',
+            muted: '#64748B',
+            accent: '#4A6FA5',
+            accentDark: '#3A5A8A',
+            card: '#FFFFFF',
+            border: '#E2E8F0',
+            navy: '#1B2838',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
         }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg: #FAFBFC;
+      --fg: #1E293B;
+      --muted: #64748B;
+      --accent: #4A6FA5;
+      --accent-dark: #3A5A8A;
+      --card: #FFFFFF;
+      --border: #E2E8F0;
+      --navy: #1B2838;
+      --footer-bg: #0B1A2B;
+      --footer-text: #B8C5D4;
+      --footer-text-light: #E8EDF3;
+      --footer-muted: #5A7089;
+    }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
-        body {
-            background-color: var(--background);
-            color: var(--foreground);
-            font-family: var(--font-body);
-            font-size: 16px;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-        }
+    html {
+      height: 100%;
+    }
 
-        .container {
-            max-width: 1152px;
-            margin: 0 auto;
-            padding: 0 1.5rem;
-            position: relative;
-        }
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      min-height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
 
-        /* --- Header: Institutional Emblem (Light Theme) --- */
-        header {
-            text-align: center;
-            padding: 7rem 0 5rem;
-            position: relative;
-            overflow: hidden;
-            background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
-            border-bottom: 1px solid var(--border);
-        }
+    .main-content {
+      flex: 1 0 auto;
+    }
 
-        /* Ambient glow background */
-        header::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100%;
-            height: 500px;
-            background: radial-gradient(ellipse at center top, rgba(0, 82, 255, 0.04) 0%, transparent 70%);
-            z-index: 0;
-            pointer-events: none;
-        }
+    .site-footer {
+      flex-shrink: 0;
+    }
 
-        .header-content {
-            position: relative;
-            z-index: 2;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(12px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
-        /* --- STANDALONE LOGO WITH INTERACTION --- */
-        .emblem-container {
-            position: relative;
-            margin-bottom: 2.5rem;
-            cursor: pointer;
-        }
+    .animate-entrance {
+      opacity: 0;
+      animation: fadeInUp 250ms ease-out forwards;
+    }
 
-        .emblem {
-            width: 80px;
-            height: 80px;
-            object-fit: contain;
-            opacity: 0.7;
-            filter: grayscale(100%);
-            transition: all 0.6s var(--transition-smooth);
-            position: relative;
-            z-index: 2;
-        }
+    .delay-1 { animation-delay: 0ms; }
+    .delay-2 { animation-delay: 80ms; }
+    .delay-3 { animation-delay: 150ms; }
+    .delay-4 { animation-delay: 250ms; }
+    .delay-5 { animation-delay: 350ms; }
 
-        /* Hover State: Full Color + Lift */
-        .emblem-container:hover .emblem {
-            opacity: 1;
-            filter: grayscale(0%);
-            transform: scale(1.1) translateY(-2px);
-        }
+    @media (prefers-reduced-motion: reduce) {
+      .animate-entrance {
+        animation: none;
+        opacity: 1;
+      }
+    }
 
-        /* Glow Effect appearing behind logo on hover */
-        .emblem-glow {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            width: 80px;
-            height: 80px;
-            background: radial-gradient(circle, rgba(0, 82, 255, 0.15) 0%, transparent 65%);
-            border-radius: 50%;
-            z-index: 1;
-            opacity: 0;
-            transition: all 0.6s var(--transition-smooth);
-            pointer-events: none;
-        }
+    /* Search Module - Static flow layout to prevent overlap */
+    .search-module {
+      position: relative;
+    }
 
-        .emblem-container:hover .emblem-glow {
-            opacity: 1;
-            transform: translate(-50%, -50%) scale(1.5);
-        }
+    .search-input {
+      transition: border-color 150ms ease-out, box-shadow 150ms ease-out;
+    }
 
-        /* Entrance Animation */
-        .emblem-container {
-            opacity: 0;
-            animation: fadeIn 1s ease-out 0.2s forwards;
-        }
+    .search-input:hover {
+      border-color: #CBD5E1;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.12);
+    }
 
-        /* Establishment Year */
-        .establishment {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            letter-spacing: 0.35em;
-            color: var(--muted-foreground);
-            text-transform: uppercase;
-            margin-bottom: 1.25rem;
-            opacity: 0;
-            animation: fadeSlideUp 0.8s ease-out 0.4s forwards;
-        }
+    /* Dropdown panel - Static block element (Normal Flow) */
+    /* This ensures it pushes content down instead of overlapping */
+    .search-dropdown {
+      position: relative; /* Static flow */
+      margin-top: 8px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
+      
+      display: none; /* Hidden by default */
+      opacity: 0;
+      transform: translateY(-8px);
+      transition: opacity 150ms ease-out, transform 150ms ease-out;
+      
+      overflow: hidden;
+      max-height: 420px; /* Approx height for 5 items + metadata */
+    }
 
-        /* Main Title */
-        .main-title {
-            font-family: var(--font-display);
-            font-size: clamp(2.5rem, 7vw, 4rem);
-            font-weight: 500;
-            line-height: 1.1;
-            color: var(--foreground);
-            letter-spacing: 0.08em;
-            text-transform: uppercase;
-            margin-bottom: 0.75rem;
-            opacity: 0;
-            animation: fadeSlideUp 0.8s ease-out 0.5s forwards;
-        }
+    .search-dropdown.open {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* Laboratory Name */
-        .lab-name {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            letter-spacing: 0.5em;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 2.5rem;
-            padding: 0.6rem 1.5rem;
-            border: 1px solid rgba(0, 82, 255, 0.25);
-            background: rgba(0, 82, 255, 0.03);
-            border-radius: 2px;
-            opacity: 0;
-            animation: fadeSlideUp 0.8s ease-out 0.6s forwards;
-        }
+    /* Metadata summary section */
+    .dropdown-metadata {
+      padding: 12px 16px;
+      background: rgba(74, 111, 165, 0.03);
+      border-bottom: 1px solid var(--border);
+    }
 
-        /* Divider */
-        .header-divider {
-            width: 60px;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, var(--accent), transparent);
-            margin-bottom: 2rem;
-            opacity: 0;
-            animation: dividerExpand 1s ease-out 0.7s forwards;
-        }
+    .dropdown-metadata-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      margin-bottom: 8px;
+    }
 
-        @keyframes dividerExpand {
-            from { opacity: 0; width: 0; }
-            to { opacity: 1; width: 60px; }
-        }
+    .dropdown-metadata-stats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
 
-        /* Tagline */
-        .tagline {
-            font-family: var(--font-body);
-            font-size: 0.95rem;
-            font-weight: 400;
-            color: var(--muted-foreground);
-            max-width: 480px;
-            line-height: 1.8;
-            letter-spacing: 0.02em;
-            opacity: 0;
-            animation: fadeSlideUp 0.8s ease-out 0.8s forwards;
-        }
+    .metadata-stat {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
 
-        @keyframes fadeSlideUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    .metadata-stat-value {
+      font-weight: 600;
+      font-size: 14px;
+      color: var(--fg);
+    }
 
-        /* --- Controls: Premium Inputs --- */
-        .controls-panel {
-            padding: 3rem 0 4rem;
-            background: var(--background);
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-        }
+    .metadata-stat-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
 
-        .search-container {
-            width: 100%;
-            max-width: 520px;
-            position: relative;
-        }
+    /* Results section */
+    .dropdown-results {
+      max-height: 300px; /* Limits visible area to ~5 items */
+      overflow-y: auto;
+      overscroll-behavior: contain; /* Prevents scroll chaining */
+    }
 
-        .search-box {
-            width: 100%;
-            height: 52px;
-            padding: 0 1.25rem 0 3rem;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-family: var(--font-body);
-            font-size: 0.9rem;
-            color: var(--foreground);
-            transition: all 0.25s ease;
-            box-shadow: var(--shadow-card);
-        }
+    .dropdown-results-header {
+      padding: 8px 16px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      background: var(--card);
+      position: sticky;
+      top: 0;
+      border-bottom: 1px solid var(--border);
+      z-index: 1;
+    }
 
-        .search-container::before {
-            content: '\f002';
-            font-family: 'Font Awesome 6 Free';
-            font-weight: 900;
-            position: absolute;
-            left: 1.25rem;
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--muted-foreground);
-            font-size: 0.85rem;
-            pointer-events: none;
-        }
-        
-        .search-box::placeholder { color: var(--muted-foreground); opacity: 0.6; }
-        
-        .search-box:focus {
-            outline: none;
-            border-color: var(--accent);
-            box-shadow: 0 0 0 4px rgba(0, 82, 255, 0.15), var(--shadow-card);
-        }
+    .search-dropdown-item {
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: background-color 100ms ease-out;
+      border-bottom: 1px solid var(--border);
+    }
 
-        .search-suggestions {
-            position: absolute;
-            top: 100%;
-            left: 0;
-            right: 0;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-top: 0.5rem;
-            box-shadow: var(--shadow-card-hover);
-            z-index: 10;
-            display: none;
-            overflow: hidden;
-        }
-        .search-suggestions.active { display: block; }
+    .search-dropdown-item:last-child {
+      border-bottom: none;
+    }
 
-        .suggestion-item {
-            padding: 0.875rem 1.25rem;
-            cursor: pointer;
-            border-bottom: 1px solid var(--border);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            transition: background 0.15s;
-        }
-        .suggestion-item:last-child { border-bottom: none; }
-        .suggestion-item:hover { background: var(--muted); }
-        .suggestion-text { font-weight: 500; color: var(--foreground); font-size: 0.9rem; }
-        .suggestion-snippet { font-size: 0.8rem; color: var(--muted-foreground); }
-        .suggestion-match { color: var(--accent); font-weight: 600; }
+    .search-dropdown-item:hover,
+    .search-dropdown-item.active {
+      background-color: rgba(74, 111, 165, 0.05);
+    }
 
-        /* Chips */
-        .filter-chips {
-            display: flex;
-            gap: 0.5rem;
-            flex-wrap: wrap;
-            justify-content: center;
-        }
+    .search-dropdown-item.active {
+      background-color: rgba(74, 111, 165, 0.08);
+    }
 
-        .chip {
-            padding: 0.5rem 1rem;
-            background: transparent;
-            border: 1px solid var(--border);
-            border-radius: 999px;
-            color: var(--muted-foreground);
-            font-size: 0.75rem;
-            font-weight: 500;
-            font-family: var(--font-mono);
-            letter-spacing: 0.02em;
-            text-transform: uppercase;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
-        }
-        .chip:hover {
-            border-color: rgba(0, 82, 255, 0.3);
-            color: var(--foreground);
-        }
-        .chip.active {
-            background: linear-gradient(to right, var(--accent), var(--accent-secondary));
-            color: white;
-            border-color: transparent;
-            box-shadow: var(--shadow-accent);
-        }
+    .search-dropdown-item:focus {
+      outline: none;
+      background-color: rgba(74, 111, 165, 0.08);
+    }
 
-        /* --- Card Design: Elevated & Light --- */
-        .cards-section {
-            padding: 4rem 0;
-            background: var(--background);
-        }
+    /* Scroll hint */
+    .scroll-indicator {
+      padding: 10px 16px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--muted);
+      background: rgba(74, 111, 165, 0.02);
+      border-top: 1px solid var(--border);
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.02em;
+    }
 
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-            gap: 1.5rem;
-        }
+    /* Card hover */
+    .entity-card {
+      transition: transform 150ms ease-out, box-shadow 150ms ease-out;
+    }
 
-        .firm-card {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: var(--radius-lg);
-            padding: 1.75rem;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-            transition: all 0.3s var(--transition-smooth);
-            box-shadow: var(--shadow-card);
-            overflow: hidden;
-        }
+    .entity-card::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 2px;
+      background-color: var(--accent);
+      opacity: 0;
+      transition: opacity 150ms ease-out;
+      border-radius: 1px 0 0 1px;
+    }
 
-        .firm-card:hover {
-            transform: translateY(-4px);
-            box-shadow: var(--shadow-card-hover);
-            border-color: rgba(0,0,0,0.06);
-        }
+    .entity-card:hover::before {
+      opacity: 1;
+    }
 
-        /* Gradient overlay on hover */
-        .firm-card::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(135deg, rgba(0, 82, 255, 0.03), transparent);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-            z-index: 0;
-            pointer-events: none;
-        }
-        .firm-card:hover::before { opacity: 1; }
+    .entity-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px -8px rgba(0, 0, 0, 0.1);
+    }
 
-        .card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: flex-start;
-            margin-bottom: 1.25rem;
-            position: relative;
-            z-index: 1;
-        }
+    .entity-card:hover .card-title {
+      color: #0F172A;
+    }
 
-        .card-icon-container {
-            width: 40px;
-            height: 40px;
-            border-radius: 10px;
-            background: linear-gradient(135deg, var(--accent), var(--accent-secondary));
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1rem;
-            box-shadow: var(--shadow-accent);
-        }
+    /* Buttons */
+    .btn-outline {
+      transition: background-color 150ms ease-out, border-color 150ms ease-out;
+    }
 
-        .firm-category {
-            font-family: var(--font-mono);
-            font-size: 0.65rem;
-            color: var(--muted-foreground);
-            background: var(--muted);
-            padding: 0.25rem 0.5rem;
-            border-radius: 6px;
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-        }
+    .btn-outline:hover {
+      background-color: rgba(74, 111, 165, 0.06);
+      border-color: var(--accent);
+    }
 
-        .card-body {
-            position: relative;
-            z-index: 1;
-            flex: 1;
-        }
+    .btn-outline:hover .btn-arrow {
+      transform: translateX(3px);
+    }
 
-        .firm-name {
-            font-family: var(--font-display);
-            font-size: 1.5rem;
-            font-weight: 500;
-            line-height: 1.25;
-            margin-bottom: 0.6rem;
-            color: var(--foreground);
-            letter-spacing: 0.02em;
-        }
+    .btn-arrow {
+      transition: transform 150ms ease-out;
+    }
 
-        .firm-description {
-            font-size: 0.875rem;
-            color: var(--muted-foreground);
-            line-height: 1.7;
-            margin-bottom: 1.5rem;
-        }
+    /* Filter pill */
+    .filter-pill {
+      transition: background-color 120ms ease-out, border-color 120ms ease-out, color 120ms ease-out;
+    }
 
-        .card-footer {
-            margin-top: auto;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: relative;
-            z-index: 1;
-        }
+    .filter-pill.active {
+      background-color: var(--accent);
+      border-color: var(--accent);
+      color: white;
+      border-width: 1.5px;
+    }
 
-        .footer-meta {
-            font-family: var(--font-mono);
-            font-size: 0.7rem;
-            color: var(--muted-foreground);
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            letter-spacing: 0.05em;
-        }
-        
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background: #22C55E;
-            border-radius: 50%;
-        }
+    .filter-pill:not(.active):hover {
+      background-color: rgba(74, 111, 165, 0.05);
+      border-color: var(--accent);
+    }
 
-        .btn-enter {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding: 0.4rem 0.875rem;
-            background: transparent;
-            color: var(--accent);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.75rem;
-            cursor: pointer;
-            text-decoration: none;
-            transition: all 0.2s ease;
-        }
+    /* View CTA */
+    .view-cta {
+      transition: color 150ms ease-out;
+    }
 
-        .btn-enter:hover {
-            background: var(--accent);
-            color: white;
-            border-color: var(--accent);
-            box-shadow: var(--shadow-accent);
-        }
-        
-        .btn-enter i { 
-            font-size: 0.7rem;
-            transition: transform 0.2s ease; 
-        }
-        .btn-enter:hover i { transform: translateX(2px); }
+    .view-cta:hover {
+      color: var(--accent-dark);
+    }
 
-        /* Pagination */
-        .pagination-container { 
-            margin-top: 3rem; 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-        }
-        
-        .pagination-controls { 
-            display: flex; 
-            align-items: center; 
-            gap: 1rem; 
-        }
-        
-        .nav-button { 
-            background: var(--card); 
-            border: 1px solid var(--border); 
-            color: var(--foreground); 
-            padding: 0.6rem 1rem; 
-            font-weight: 600;
-            font-size: 0.75rem;
-            border-radius: 8px;
-            cursor: pointer; 
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-        .nav-button:not(:disabled):hover { 
-            background: var(--foreground);
-            color: var(--background);
-            border-color: var(--foreground);
-        }
-        .nav-button:disabled { opacity: 0.4; cursor: not-allowed; }
-        
-        .dots-track { display: flex; gap: 0.5rem; }
-        .pagination-dot { 
-            width: 8px; 
-            height: 8px; 
-            background: var(--border);
-            border-radius: 50%;
-            cursor: pointer; 
-            transition: all 0.2s ease;
-            border: none;
-        }
-        .pagination-dot.active { 
-            background: var(--accent);
-            width: 20px;
-            border-radius: 4px;
-        }
+    .view-cta:hover .view-arrow {
+      transform: translateX(3px);
+    }
 
-        /* --- Footer: Inverted Section --- */
-        footer {
-            background: var(--foreground);
-            color: var(--background);
-            padding: 4rem 0;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        /* Dot Pattern Texture */
-        footer::before {
-            content: "";
-            position: absolute;
-            inset: 0;
-            background-image: radial-gradient(rgba(255,255,255,0.15) 1px, transparent 1px);
-            background-size: 24px 24px;
-            opacity: 0.1;
-            pointer-events: none;
-        }
+    .view-arrow {
+      transition: transform 150ms ease-out;
+    }
 
-        .footer-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1.5rem;
-            text-align: center;
-        }
-        
-        .footer-logo {
-            font-family: var(--font-display);
-            font-size: 1.25rem;
-            font-weight: 500;
-            color: white;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-        
-        .footer-links {
-            display: flex;
-            gap: 2rem;
-        }
-        
-        .footer-link {
-            color: rgba(255,255,255,0.6);
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-family: var(--font-mono);
-            letter-spacing: 0.05em;
-            text-transform: uppercase;
-            transition: color 0.2s;
-        }
-        .footer-link:hover { color: white; }
+    /* Pagination */
+    .page-dot {
+      transition: background-color 120ms ease-out;
+    }
 
-        .footer-copyright {
-            font-size: 0.7rem;
-            color: rgba(255,255,255,0.4);
-            font-family: var(--font-mono);
-            letter-spacing: 0.05em;
-        }
+    .pagination-btn {
+      transition: color 120ms ease-out;
+    }
 
-        /* Utilities */
-        .loading-state, .empty-state { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            justify-content: center; 
-            padding: 4rem 2rem; 
-            text-align: center; 
-        }
-        .empty-state.active { display: flex; } 
-        .empty-state { display: none; }
+    .pagination-btn:hover:not(:disabled) {
+      color: var(--fg);
+    }
 
-        @keyframes fadeIn { 
-            from { opacity: 0; transform: translateY(15px); } 
-            to { opacity: 1; transform: translateY(0); } 
-        }
+    .pagination-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
 
-        @media (max-width: 768px) {
-            header { padding: 5rem 0 3rem; }
-            .emblem { width: 60px; height: 60px; }
-            .main-title { font-size: 2rem; letter-spacing: 0.06em; }
-            .lab-name { font-size: 0.55rem; letter-spacing: 0.35em; padding: 0.5rem 1rem; }
-            .tagline { font-size: 0.875rem; padding: 0 1rem; }
-            .cards-grid { grid-template-columns: 1fr; }
-            .firm-card { padding: 1.5rem; }
-        }
+    /* Focus visible */
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
 
-        /* Reduced motion */
-        @media (prefers-reduced-motion: reduce) {
-            *, *::before, *::after {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-    </style>
+    /* Search wrapper underline */
+    .search-wrapper {
+      position: relative;
+    }
+
+    .search-wrapper::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background-color: rgba(74, 111, 165, 0.25);
+      transition: background-color 150ms ease-out;
+      border-radius: 0 0 8px 8px;
+    }
+
+    .search-wrapper:focus-within::after {
+      background-color: var(--accent);
+    }
+
+    /* Loading skeleton */
+    .loading-skeleton {
+      background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    ::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 3px;
+    }
+
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--muted);
+    }
+
+    /* Footer links */
+    .footer-link {
+      text-decoration: none;
+      color: #B8C5D4;
+    }
+
+    .footer-link:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+      color: #E8EDF3;
+    }
+
+    /* Screen reader only */
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+  </style>
 </head>
-
 <body>
-    <div class="container">
-        <header>
-            <div class="header-content">
-                <!-- Standalone Logo with Interaction -->
-                <div class="emblem-container">
-                    <div class="emblem-glow"></div>
-                    <img src="logo.png" alt="Index Gentium Emblem" class="emblem">
-                </div>
-                
-                <!-- Establishment Year -->
-                <p class="establishment">Est. MMXXIV</p>
-                
-                <!-- Main Title -->
-                <h1 class="main-title">Index Gentium</h1>
-                
-                <!-- Laboratory Name -->
-                <p class="lab-name">Laboratorium Arbitristae</p>
-                
-                <!-- Divider -->
-                <div class="header-divider"></div>
-                
-                <!-- Tagline -->
-                <p class="tagline">An encyclopedic registry of sovereign entities, observed through the lens of data.</p>
-            </div>
-        </header>
-    </div>
+  
+  <div class="main-content">
 
-    <section class="controls-panel">
-        <div class="container" style="display: flex; flex-direction: column; align-items: center; gap: 1.5rem;">
-            <div class="search-container">
-                <input type="text" class="search-box" id="searchInput" placeholder="Search entities, labs, or sectors..." autocomplete="off">
-                <div class="search-suggestions" id="searchSuggestions"></div>
-            </div>
-            <div class="filter-chips" id="filterChips">
-                <div class="chip active" data-tag="">All Sectors</div>
-            </div>
-        </div>
-    </section>
-
-    <section class="cards-section">
-        <div class="container">
-            <div class="loading-state" id="loadingState">
-                <div style="width: 32px; height: 32px; border: 2px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite;"></div>
-                <p style="margin-top: 1rem; color: var(--muted-foreground); font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em;">LOADING</p>
-            </div>
-
-            <div class="empty-state" id="emptyState">
-                <i class="fas fa-search" style="font-size: 1.5rem; color: var(--muted-foreground); margin-bottom: 1rem;"></i>
-                <h3 style="margin-bottom: 0.5rem; font-family: var(--font-display); font-weight: 500;">No Entities Found</h3>
-                <p style="font-size: 0.875rem; color: var(--muted-foreground);">Try broadening your search terms.</p>
-            </div>
-
-            <div class="cards-grid" id="cardsGrid" style="display: none;"></div>
-
-            <div class="pagination-container" id="paginationContainer" style="display: none;">
-                <div class="pagination-controls">
-                    <button class="nav-button prev" id="prevArrow"><i class="fas fa-arrow-left"></i> Prev</button>
-                    <div class="dots-track" id="dotsContainer"></div>
-                    <button class="nav-button next" id="nextArrow">Next <i class="fas fa-arrow-right"></i></button>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <footer>
-        <div class="container footer-content">
-            <div class="footer-logo">Arbitristae</div>
-            <div class="footer-links">
-                <a href="#" class="footer-link">About</a>
-                <a href="#" class="footer-link">Methodology</a>
-                <a href="#" class="footer-link">Contact</a>
-            </div>
-            <p class="footer-copyright">2024 Arbitristae Systems</p>
-        </div>
-    </footer>
-
-    <style>
-        @keyframes spin {
-            to { transform: rotate(360deg); }
-        }
-    </style>
-
-    <script>
-        // --- Core Logic ---
-        const $ = (id) => document.getElementById(id);
+    <!-- [2] Institutional Hero Layer -->
+    <header class="pt-12 pb-16 px-6">
+      <div class="max-w-6xl mx-auto text-center">
         
-        // State
-        let allFirms = [];
-        let filteredFirms = [];
-        let currentPage = 1;
-        let itemsPerPage = 6;
-        let totalPages = 1;
+        <div class="animate-entrance delay-1 mb-8">
+          <div class="inline-flex items-center justify-center w-20 h-20">
+            <img 
+              src="logo.png" 
+              alt="INDEX GENTIUM Crest" 
+              class="w-16 h-16 object-contain opacity-90"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            >
+            <div class="hidden w-16 h-16 rounded-full border-2 border-border bg-card items-center justify-center">
+              <svg class="w-8 h-8 text-fg opacity-60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+                <path d="M2 17l10 5 10-5"/>
+                <path d="M2 12l10 5 10-5"/>
+              </svg>
+            </div>
+          </div>
+        </div>
 
-        // Elements
-        const grid = $('cardsGrid');
-        const searchInput = $('searchInput');
-        const suggestionsBox = $('searchSuggestions');
-        const paginationContainer = $('paginationContainer');
-        const dotsContainer = $('dotsContainer');
+        <p class="animate-entrance delay-2 font-mono text-xs tracking-[0.2em] text-muted uppercase mb-6">EST. MMXXIV</p>
 
-        // Fetch Data
-        fetch("catalog.json")
-            .then(res => res.json())
-            .then(data => {
-                allFirms = data.countries;
-                filteredFirms = [...allFirms];
-                $('loadingState').style.display = 'none';
-                grid.style.display = 'grid';
-                initApp();
-            })
-            .catch(err => {
-                $('loadingState').innerHTML = `<p style="color: #0052FF; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.1em;">CONNECTION ERROR</p>`;
-                console.error(err);
-            });
+        <h1 class="animate-entrance delay-2 font-display text-5xl md:text-6xl lg:text-7xl font-medium tracking-tight text-fg mb-4">
+          INDEX GENTIUM
+        </h1>
 
-        function initApp() {
-            // Generate Chips
-            const tags = [...new Set(allFirms.map(f => f.tags))];
-            const chipContainer = $('filterChips');
-            tags.forEach(tag => {
-                const div = document.createElement('div');
-                div.className = 'chip';
-                div.dataset.tag = tag;
-                div.textContent = tag;
-                chipContainer.appendChild(div);
-            });
+        <p class="animate-entrance delay-3 font-display text-xl md:text-2xl italic text-muted mb-6">
+          Laboratorium Arbitristae
+        </p>
 
-            renderCards();
-            renderPagination();
+        <p class="animate-entrance delay-3 max-w-xl mx-auto text-muted leading-relaxed">
+          A curated registry of sovereign entities, institutions, and classifications for structured inquiry and institutional reference.
+        </p>
+      </div>
+    </header>
 
-            setupSearch();
-            setupFilters();
-            setupPagination();
-        }
+    <!-- [3] Inquiry Layer -->
+    <section class="pb-8 px-6">
+      <div class="max-w-3xl mx-auto animate-entrance delay-4">
+        
+        <label for="searchInput" class="block font-mono text-xs tracking-[0.15em] text-muted uppercase mb-4 text-center">
+          Inquire the Registry
+        </label>
 
-        // --- CARD RENDERING ---
-        function renderCards() {
-            grid.innerHTML = '';
-            const start = (currentPage - 1) * itemsPerPage;
-            const pageItems = filteredFirms.slice(start, start + itemsPerPage);
+        <!-- Search Module -->
+        <div class="search-module" id="searchModule">
+          <div class="search-wrapper rounded-lg">
+            <div class="flex flex-col sm:flex-row gap-3">
+              <div class="relative flex-1">
+                <input 
+                  type="text" 
+                  id="searchInput"
+                  class="search-input w-full h-14 px-5 pr-12 text-base bg-card border border-border rounded-lg shadow-sm"
+                  placeholder="Search sovereign entities, regions, or classifications…"
+                  autocomplete="off"
+                  aria-label="Search entities"
+                  aria-describedby="searchHelp"
+                  aria-expanded="false"
+                  aria-controls="searchDropdown"
+                  aria-autocomplete="list"
+                  role="combobox"
+                >
+                <svg class="absolute right-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted pointer-events-none" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+                  <circle cx="11" cy="11" r="8"/>
+                  <path d="m21 21-4.35-4.35"/>
+                </svg>
+              </div>
 
-            if (pageItems.length === 0) {
-                grid.style.display = 'none';
-                $('emptyState').classList.add('active');
-                paginationContainer.style.display = 'none';
-                return;
-            }
+              <button class="btn-outline h-14 px-8 border border-border rounded-lg font-medium text-fg flex items-center justify-center gap-2 whitespace-nowrap" aria-label="Explore all entities">
+                <span>Explore</span>
+                <svg class="btn-arrow w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+              </button>
+            </div>
+          </div>
+          <p id="searchHelp" class="sr-only">Type to search through sovereign entities, regions, or classifications</p>
 
-            grid.style.display = 'grid';
-            $('emptyState').classList.remove('active');
-
-            pageItems.forEach((firm, i) => {
-                const card = document.createElement('article');
-                card.className = 'firm-card';
-                card.style.animation = `fadeIn 0.4s ${i * 0.06}s backwards`;
-                
-                const displayId = `#${firm.name.substring(0,3).toUpperCase()}-${Math.floor(Math.random() * 900) + 100}`;
-
-                card.innerHTML = `
-                    <div class="card-header">
-                        <div class="card-icon-container">
-                            ${firm.icon}
-                        </div>
-                        <span class="firm-category">${firm.tags}</span>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="firm-name">${firm.name}</h3>
-                        <p class="firm-description">${firm.description}</p>
-                    </div>
-                    <div class="card-footer">
-                        <span class="footer-meta">
-                            <span class="status-dot"></span>
-                            Active · ${displayId}
-                        </span>
-                        <a href="${firm.link}" target="_blank" class="btn-enter">
-                            View <i class="fas fa-arrow-right"></i>
-                        </a>
-                    </div>
-                `;
-                grid.appendChild(card);
-            });
-        }
-
-        // --- SEARCH LOGIC ---
-        function setupSearch() {
-            searchInput.addEventListener('input', (e) => {
-                const term = e.target.value;
-                updateSuggestions(term);
-                applyFilter(term, getActiveTag());
-            });
-
-            searchInput.addEventListener('focus', () => {
-                if(searchInput.value) updateSuggestions(searchInput.value);
-            });
-
-            document.addEventListener('click', (e) => {
-                if (!e.target.closest('.search-container')) suggestionsBox.classList.remove('active');
-            });
-        }
-
-        function updateSuggestions(term) {
-            if (!term) { suggestionsBox.classList.remove('active'); return; }
+          <!-- Dropdown Panel - Static flow, pushes content down -->
+          <div 
+            id="searchDropdown" 
+            class="search-dropdown" 
+            role="listbox"
+            aria-label="Search suggestions"
+          >
+            <div class="dropdown-metadata">
+              <div class="dropdown-metadata-title">Registry Summary</div>
+              <div class="dropdown-metadata-stats" id="metadataStats">
+                <!-- Populated by JS -->
+              </div>
+            </div>
             
-            const results = allFirms.filter(f => 
-                f.name.toLowerCase().includes(term.toLowerCase()) || 
-                f.description.toLowerCase().includes(term.toLowerCase())
-            ).slice(0, 4);
-
-            if (results.length === 0) {
-                suggestionsBox.innerHTML = `<div class="suggestion-item"><span class="suggestion-text">No results</span></div>`;
-            } else {
-                suggestionsBox.innerHTML = results.map(f => `
-                    <div class="suggestion-item" data-name="${f.name}">
-                        <div class="suggestion-text">${highlight(f.name, term)}</div>
-                        <div class="suggestion-snippet">${highlight(f.description.substring(0,40), term)}...</div>
-                    </div>
-                `).join('');
-            }
-            suggestionsBox.classList.add('active');
-
-            suggestionsBox.querySelectorAll('.suggestion-item').forEach(item => {
-                item.addEventListener('click', () => {
-                    searchInput.value = item.dataset.name;
-                    suggestionsBox.classList.remove('active');
-                    applyFilter(searchInput.value, getActiveTag());
-                });
-            });
-        }
-
-        function highlight(text, term) {
-            const regex = new RegExp(`(${term})`, 'gi');
-            return text.replace(regex, '<span class="suggestion-match">$1</span>');
-        }
-
-        // --- FILTER LOGIC ---
-        function setupFilters() {
-            $('filterChips').addEventListener('click', (e) => {
-                if (e.target.classList.contains('chip')) {
-                    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
-                    e.target.classList.add('active');
-                    searchInput.value = '';
-                    suggestionsBox.classList.remove('active');
-                    applyFilter('', getActiveTag());
-                }
-            });
-        }
-
-        function getActiveTag() {
-            const active = document.querySelector('.chip.active');
-            return active ? active.dataset.tag : '';
-        }
-
-        function applyFilter(term, tag) {
-            filteredFirms = allFirms.filter(f => {
-                const matchSearch = !term || 
-                    f.name.toLowerCase().includes(term.toLowerCase()) || 
-                    f.description.toLowerCase().includes(term.toLowerCase());
-                const matchTag = !tag || f.tags === tag;
-                return matchSearch && matchTag;
-            });
-            currentPage = 1;
-            renderCards();
-            renderPagination();
-        }
-
-        // --- PAGINATION LOGIC ---
-        function setupPagination() {
-            $('prevArrow').addEventListener('click', () => changePage(currentPage - 1));
-            $('nextArrow').addEventListener('click', () => changePage(currentPage + 1));
-            window.addEventListener('resize', () => {
-                itemsPerPage = window.innerWidth < 768 ? 4 : 6;
-                renderCards();
-                renderPagination();
-            });
-        }
-
-        function renderPagination() {
-            totalPages = Math.ceil(filteredFirms.length / itemsPerPage);
-            if (totalPages <= 1) { paginationContainer.style.display = 'none'; return; }
+            <div class="dropdown-results-header" id="resultsHeader">
+              Matching Entities
+            </div>
+            <div class="dropdown-results" id="dropdownResults" role="listbox">
+              <!-- Items rendered by JS -->
+            </div>
             
-            paginationContainer.style.display = 'flex';
-            $('prevArrow').disabled = currentPage === 1;
-            $('nextArrow').disabled = currentPage === totalPages;
+            <div class="scroll-indicator hidden" id="scrollIndicator">
+              Scroll or use arrow keys to see more results
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
 
-            dotsContainer.innerHTML = '';
-            let start = Math.max(1, currentPage - 2);
-            let end = Math.min(totalPages, start + 4);
-            
-            for (let i = start; i <= end; i++) {
-                const dot = document.createElement('button');
-                dot.className = 'pagination-dot' + (i === currentPage ? ' active' : '');
-                dot.onclick = () => changePage(i);
-                dotsContainer.appendChild(dot);
-            }
-        }
+    <!-- [4] Classification Filter Layer -->
+    <section class="py-10 px-6">
+      <div class="max-w-6xl mx-auto animate-entrance delay-5">
+        <div class="flex flex-wrap justify-center gap-3" role="tablist" aria-label="Filter by classification">
+          <button class="filter-pill active px-5 py-2 border border-border rounded-full text-sm font-medium" data-filter="all" role="tab" aria-selected="true">
+            All Nations
+          </button>
+        </div>
+      </div>
+    </section>
 
-        function changePage(p) {
-            if (p < 1 || p > totalPages) return;
-            currentPage = p;
-            renderCards();
-            renderPagination();
-            window.scrollTo({ top: grid.offsetTop - 100, behavior: 'smooth' });
+    <!-- [5] Entity Registry Grid -->
+    <section class="pb-16 px-6">
+      <div class="max-w-6xl mx-auto">
+        
+        <div id="loadingSkeleton" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div class="bg-card border border-border rounded-xl p-6">
+            <div class="loading-skeleton h-6 w-24 rounded mb-4"></div>
+            <div class="loading-skeleton h-5 w-32 rounded mb-3"></div>
+            <div class="loading-skeleton h-4 w-full rounded mb-2"></div>
+            <div class="loading-skeleton h-4 w-3/4 rounded mb-4"></div>
+            <div class="loading-skeleton h-4 w-20 rounded"></div>
+          </div>
+          <div class="bg-card border border-border rounded-xl p-6 hidden md:block">
+            <div class="loading-skeleton h-6 w-24 rounded mb-4"></div>
+            <div class="loading-skeleton h-5 w-32 rounded mb-3"></div>
+            <div class="loading-skeleton h-4 w-full rounded mb-2"></div>
+            <div class="loading-skeleton h-4 w-3/4 rounded mb-4"></div>
+            <div class="loading-skeleton h-4 w-20 rounded"></div>
+          </div>
+          <div class="bg-card border border-border rounded-xl p-6 hidden lg:block">
+            <div class="loading-skeleton h-6 w-24 rounded mb-4"></div>
+            <div class="loading-skeleton h-5 w-32 rounded mb-3"></div>
+            <div class="loading-skeleton h-4 w-full rounded mb-2"></div>
+            <div class="loading-skeleton h-4 w-3/4 rounded mb-4"></div>
+            <div class="loading-skeleton h-4 w-20 rounded"></div>
+          </div>
+        </div>
+
+        <div id="entityGrid" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" role="list" aria-label="Entity registry">
+        </div>
+
+        <div id="emptyState" class="hidden py-20 text-center">
+          <p class="text-muted">No matching entities found.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- [9] Pagination Layer -->
+    <section id="paginationSection" class="hidden pb-20 px-6">
+      <div class="max-w-6xl mx-auto flex items-center justify-center gap-6">
+        <button id="prevBtn" class="pagination-btn flex items-center gap-2 text-sm text-muted disabled:opacity-40 disabled:cursor-not-allowed" disabled aria-label="Previous page">
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 12H5M12 19l-7-7 7-7"/>
+          </svg>
+          <span>Prev</span>
+        </button>
+
+        <div id="pageIndicator" class="flex items-center gap-2" role="tablist" aria-label="Page navigation">
+        </div>
+
+        <button id="nextBtn" class="pagination-btn flex items-center gap-2 text-sm text-muted" aria-label="Next page">
+          <span>Next</span>
+          <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14M12 5l7 7-7 7"/>
+          </svg>
+        </button>
+      </div>
+    </section>
+
+  </div>
+
+  <footer class="site-footer py-14 md:py-20 lg:py-24 px-6" style="background-color: #0B1A2B;">
+    <div class="max-w-6xl mx-auto">
+      <p class="font-display text-xl md:text-2xl tracking-widest text-center mb-10 md:mb-12" style="color: #E8EDF3;">ARBITRISTAE</p>
+      <nav class="flex flex-col md:flex-row justify-center items-center gap-6 md:gap-10 mb-10 md:mb-12" aria-label="Footer navigation">
+        <a href="#" class="footer-link text-sm">About</a>
+        <a href="#" class="footer-link text-sm">Methodology</a>
+        <a href="#" class="footer-link text-sm">Contact</a>
+      </nav>
+      <p class="font-mono text-xs tracking-wide text-center" style="color: #5A7089;">MMXXIV</p>
+    </div>
+  </footer>
+
+  <script>
+    // State initialization
+    let entities = [];
+    let currentFilter = 'all';
+    let currentPage = 1;
+    const itemsPerPage = 6;
+    let filteredEntities = [];
+    
+    // Dropdown state
+    let dropdownOpen = false;
+    let activeIndex = -1;
+    let currentMatches = [];
+    const VISIBLE_ITEMS = 5;
+
+    // DOM Elements
+    const searchModule = document.getElementById('searchModule');
+    const searchInput = document.getElementById('searchInput');
+    const searchDropdown = document.getElementById('searchDropdown');
+    const metadataStats = document.getElementById('metadataStats');
+    const dropdownResults = document.getElementById('dropdownResults');
+    const resultsHeader = document.getElementById('resultsHeader');
+    const scrollIndicator = document.getElementById('scrollIndicator');
+    const entityGrid = document.getElementById('entityGrid');
+    const loadingSkeleton = document.getElementById('loadingSkeleton');
+    const emptyState = document.getElementById('emptyState');
+    const pageIndicator = document.getElementById('pageIndicator');
+    const paginationSection = document.getElementById('paginationSection');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const filterPills = document.querySelectorAll('.filter-pill');
+
+    function getClassificationCounts() {
+      const counts = {};
+      entities.forEach(entity => {
+        const tag = entity.tags;
+        counts[tag] = (counts[tag] || 0) + 1;
+      });
+      return counts;
+    }
+
+    function renderMetadata(matchCount) {
+      const classCounts = getClassificationCounts();
+      const totalEntities = entities.length;
+      
+      let statsHTML = `
+        <div class="metadata-stat">
+          <span class="metadata-stat-value">${totalEntities}</span>
+          <span class="metadata-stat-label">Total</span>
+        </div>
+      `;
+      
+      const entries = Object.entries(classCounts).slice(0, 3);
+      entries.forEach(([tag, count]) => {
+        statsHTML += `
+          <div class="metadata-stat">
+            <span class="metadata-stat-value">${count}</span>
+            <span class="metadata-stat-label">${tag}</span>
+          </div>
+        `;
+      });
+      
+      metadataStats.innerHTML = statsHTML;
+      
+      if (matchCount > 0) {
+        resultsHeader.textContent = `${matchCount} Matching ${matchCount === 1 ? 'Entity' : 'Entities'}`;
+      } else {
+        resultsHeader.textContent = 'No Matches';
+      }
+    }
+
+    async function loadCatalog() {
+      try {
+        const response = await fetch('catalog.json');
+        if (!response.ok) throw new Error('Catalog not found');
+        
+        const data = await response.json();
+        entities = data.countries || [];
+        filteredEntities = [...entities];
+
+
+        loadingSkeleton.classList.add('hidden');
+        entityGrid.classList.remove('hidden');
+        
+        renderGrid();
+      } catch (error) {
+        console.error('Failed to load catalog:', error);
+        loadingSkeleton.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        emptyState.innerHTML = '<p class="text-muted">Unable to load registry data.</p><p class="text-sm text-muted/60 mt-2">Please ensure catalog.json is available.</p>';
+      }
+    }
+
+    function openDropdown() {
+      dropdownOpen = true;
+      searchDropdown.classList.add('open');
+      searchInput.setAttribute('aria-expanded', 'true');
+    }
+
+    function closeDropdown() {
+      dropdownOpen = false;
+      activeIndex = -1;
+      searchDropdown.classList.remove('open');
+      searchInput.setAttribute('aria-expanded', 'false');
+      clearActiveItem();
+    }
+
+    function clearActiveItem() {
+      const items = dropdownResults.querySelectorAll('.search-dropdown-item');
+      items.forEach(item => item.classList.remove('active'));
+    }
+
+    function setActiveItem(index) {
+      const items = dropdownResults.querySelectorAll('.search-dropdown-item');
+      clearActiveItem();
+      if (index >= 0 && index < items.length) {
+        items[index].classList.add('active');
+        items[index].scrollIntoView({ block: 'nearest' });
+      }
+    }
+
+    function selectItem(index) {
+      if (index >= 0 && index < currentMatches.length) {
+        const entity = currentMatches[index];
+        searchInput.value = entity.name;
+        closeDropdown();
+        filterEntities();
+      }
+    }
+
+    function renderDropdown(term) {
+      if (term.length < 2) {
+        currentMatches = [];
+        renderMetadata(0);
+        dropdownResults.innerHTML = `
+          <div class="px-4 py-6 text-center text-sm text-muted">
+            Type at least 2 characters to search
+          </div>
+        `;
+        scrollIndicator.classList.add('hidden');
+        openDropdown();
+        return;
+      }
+
+      currentMatches = entities.filter(e => 
+        e.name.toLowerCase().includes(term.toLowerCase()) ||
+        e.tags.toLowerCase().includes(term.toLowerCase())
+      );
+
+      renderMetadata(currentMatches.length);
+
+      if (currentMatches.length === 0) {
+        dropdownResults.innerHTML = `
+          <div class="px-4 py-6 text-center text-sm text-muted">
+            No entities found
+          </div>
+        `;
+        scrollIndicator.classList.add('hidden');
+        openDropdown();
+        return;
+      }
+
+      // Render all matches; container max-height shows 5 at a time
+      dropdownResults.innerHTML = currentMatches.map((entity, idx) => `
+        <div 
+          class="search-dropdown-item" 
+          data-index="${idx}"
+          role="option"
+          tabindex="-1"
+          aria-selected="false"
+        >
+          <div class="flex items-center gap-3">
+            <span class="text-lg" aria-hidden="true">${entity.icon}</span>
+            <div class="flex-1 min-w-0">
+              <p class="font-medium text-fg truncate">${entity.name}</p>
+              <p class="text-xs text-muted">${entity.tags}</p>
+            </div>
+          </div>
+        </div>
+      `).join('');
+
+      // Show scroll indicator if more than 5 items
+      if (currentMatches.length > VISIBLE_ITEMS) {
+        scrollIndicator.classList.remove('hidden');
+        scrollIndicator.textContent = `${currentMatches.length - VISIBLE_ITEMS} more — scroll or use arrow keys`;
+      } else {
+        scrollIndicator.classList.add('hidden');
+      }
+
+      // Attach event listeners
+      const items = dropdownResults.querySelectorAll('.search-dropdown-item');
+      items.forEach((item, idx) => {
+        item.addEventListener('mouseenter', () => {
+          activeIndex = idx;
+          setActiveItem(idx);
+        });
+        item.addEventListener('click', () => {
+          selectItem(idx);
+        });
+      });
+
+      activeIndex = -1;
+      openDropdown();
+    }
+
+    function renderCard(entity) {
+      const code = entity.code || entity.name.substring(0, 2).toUpperCase() + '-001';
+      
+      return `
+        <article class="entity-card relative bg-card border border-border rounded-xl p-6 shadow-sm" role="listitem">
+          <div class="flex items-start justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <span class="text-2xl" aria-hidden="true">${entity.icon}</span>
+              <div>
+                <span class="inline-block px-2 py-0.5 text-xs font-mono tracking-wide text-muted bg-muted/10 rounded">${entity.tags}</span>
+              </div>
+            </div>
+            <span class="flex items-center gap-1.5 text-xs text-muted">
+              <span class="w-1.5 h-1.5 rounded-full bg-green-500" aria-hidden="true"></span>
+              <span class="sr-only">Status:</span>Active
+            </span>
+          </div>
+          
+          <h3 class="card-title font-display text-xl font-medium text-fg mb-2 transition-colors duration-150">${entity.name}</h3>
+          <p class="text-sm text-muted leading-relaxed mb-4">${entity.description}</p>
+          
+          <div class="flex items-center justify-between pt-4 border-t border-border">
+            <span class="font-mono text-xs text-muted/60">${code}</span>
+            <a href="${entity.link}" class="view-cta inline-flex items-center gap-1.5 text-sm font-medium text-accent" aria-label="View details for ${entity.name}">
+              <span>View</span>
+              <svg class="view-arrow w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M5 12h14M12 5l7 7-7 7"/>
+              </svg>
+            </a>
+          </div>
+        </article>
+      `;
+    }
+
+    function renderGrid() {
+      const startIndex = (currentPage - 1) * itemsPerPage;
+      const endIndex = startIndex + itemsPerPage;
+      const pageEntities = filteredEntities.slice(startIndex, endIndex);
+
+      if (filteredEntities.length === 0) {
+        entityGrid.classList.add('hidden');
+        emptyState.classList.remove('hidden');
+        emptyState.innerHTML = '<p class="text-muted">No matching entities found.</p>';
+        paginationSection.classList.add('hidden');
+      } else {
+        emptyState.classList.add('hidden');
+        entityGrid.classList.remove('hidden');
+        entityGrid.innerHTML = pageEntities.map(renderCard).join('');
+        
+        if (filteredEntities.length > itemsPerPage) {
+          paginationSection.classList.remove('hidden');
+          renderPagination();
+        } else {
+          paginationSection.classList.add('hidden');
         }
-    </script>
+      }
+    }
+
+    function renderPagination() {
+      const totalPages = Math.max(1, Math.ceil(filteredEntities.length / itemsPerPage));
+      
+      let dotsHTML = '';
+      for (let i = 1; i <= totalPages; i++) {
+        const isActive = i === currentPage;
+        dotsHTML += `
+          <button 
+            class="page-dot ${isActive ? 'w-6 h-2 bg-accent' : 'w-2 h-2 bg-border hover:bg-muted'} rounded-full transition-all duration-120" 
+            data-page="${i}" 
+            aria-label="Page ${i}" 
+            aria-selected="${isActive}"
+            role="tab"
+          ></button>
+        `;
+      }
+      pageIndicator.innerHTML = dotsHTML;
+
+      prevBtn.disabled = currentPage === 1;
+      nextBtn.disabled = currentPage === totalPages;
+
+      document.querySelectorAll('.page-dot').forEach(dot => {
+        dot.addEventListener('click', () => {
+          currentPage = parseInt(dot.dataset.page);
+          renderGrid();
+          entityGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        });
+      });
+    }
+
+    function filterEntities() {
+      const searchTerm = searchInput.value.toLowerCase().trim();
+      
+      filteredEntities = entities.filter(entity => {
+        const matchesFilter = currentFilter === 'all' || entity.tags === currentFilter;
+        const matchesSearch = searchTerm === '' || 
+          entity.name.toLowerCase().includes(searchTerm) ||
+          entity.description.toLowerCase().includes(searchTerm) ||
+          entity.tags.toLowerCase().includes(searchTerm);
+        
+        return matchesFilter && matchesSearch;
+      });
+
+      currentPage = 1;
+      renderGrid();
+    }
+
+    // Search Input Events
+    searchInput.addEventListener('input', (e) => {
+      renderDropdown(e.target.value);
+      filterEntities();
+    });
+
+    searchInput.addEventListener('focus', () => {
+      renderDropdown(searchInput.value);
+    });
+
+    // Keyboard Navigation
+    searchInput.addEventListener('keydown', (e) => {
+      const items = dropdownResults.querySelectorAll('.search-dropdown-item');
+      
+      if (!dropdownOpen) {
+        if (e.key === 'ArrowDown' && searchInput.value.length >= 2) {
+          e.preventDefault();
+          renderDropdown(searchInput.value);
+        }
+        return;
+      }
+
+      switch (e.key) {
+        case 'ArrowDown':
+          e.preventDefault();
+          activeIndex = Math.min(activeIndex + 1, items.length - 1);
+          setActiveItem(activeIndex);
+          break;
+        case 'ArrowUp':
+          e.preventDefault();
+          activeIndex = Math.max(activeIndex - 1, 0);
+          setActiveItem(activeIndex);
+          break;
+        case 'Enter':
+          e.preventDefault();
+          if (activeIndex >= 0 && activeIndex < items.length) {
+            selectItem(activeIndex);
+          }
+          break;
+        case 'Escape':
+          e.preventDefault();
+          closeDropdown();
+          searchInput.focus();
+          break;
+        case 'Tab':
+          closeDropdown();
+          break;
+      }
+    });
+
+    // Click outside to close
+    document.addEventListener('click', (e) => {
+      const isInsideSearchModule = searchModule.contains(e.target);
+      const isFilterPill = e.target.closest('.filter-pill');
+      
+      if (!isInsideSearchModule && !isFilterPill) {
+        closeDropdown();
+      }
+    });
+
+    // Filter pills interaction
+    filterPills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        filterPills.forEach(p => {
+          p.classList.remove('active');
+          p.setAttribute('aria-selected', 'false');
+        });
+        pill.classList.add('active');
+        pill.setAttribute('aria-selected', 'true');
+        currentFilter = pill.dataset.filter;
+        filterEntities();
+        // Dropdown stays open per spec
+      });
+    });
+
+    // Pagination buttons
+    prevBtn.addEventListener('click', () => {
+      if (currentPage > 1) {
+        currentPage--;
+        renderGrid();
+        entityGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const totalPages = Math.ceil(filteredEntities.length / itemsPerPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        renderGrid();
+        entityGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+
+    // Initialize
+    loadCatalog();
+  </script>
 </body>
 </html>
