@@ -58,7 +58,6 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     
-    /* Sticky Footer Setup */
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background-color: var(--bg);
@@ -70,15 +69,9 @@
       border-top: 4px solid var(--accent);
     }
 
-    .main-content {
-      flex: 1 0 auto; 
-    }
+    .main-content { flex: 1 0 auto; }
+    .site-footer { flex-shrink: 0; }
 
-    .site-footer {
-      flex-shrink: 0;
-    }
-
-    /* Scroll Reveal */
     .reveal {
       opacity: 0;
       transform: translateY(20px);
@@ -92,12 +85,12 @@
     .delay-1 { transition-delay: 0.1s; }
     .delay-2 { transition-delay: 0.2s; }
     .delay-3 { transition-delay: 0.3s; }
+    .delay-4 { transition-delay: 0.4s; }
 
     @media (prefers-reduced-motion: reduce) {
       .reveal { opacity: 1; transform: none; transition: none; }
     }
 
-    /* Theme Toggle */
     .theme-toggle {
       position: fixed;
       top: 1.5rem;
@@ -116,10 +109,7 @@
       z-index: 100;
       box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
-    .theme-toggle:hover {
-      color: var(--fg);
-      border-color: var(--fg);
-    }
+    .theme-toggle:hover { color: var(--fg); border-color: var(--fg); }
     .theme-toggle .icon-sun, .theme-toggle .icon-moon {
       position: absolute;
       transition: opacity 0.2s ease, transform 0.2s ease;
@@ -129,7 +119,6 @@
     .dark .theme-toggle .icon-moon { opacity: 0; transform: scale(0.5); }
     .dark .theme-toggle .icon-sun { opacity: 1; transform: scale(1); }
 
-    /* Data Cards */
     .data-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -143,19 +132,14 @@
     .data-card::before {
       content: '';
       position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
+      top: 0; left: 0; right: 0;
       height: 2px;
       background: var(--accent);
       opacity: 0;
       transition: opacity 0.25s ease;
     }
     .data-card:hover::before { opacity: 1; }
-    .data-card:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 16px rgba(0,0,0,0.05);
-    }
+    .data-card:hover { transform: translateY(-2px); box-shadow: 0 6px 16px rgba(0,0,0,0.05); }
 
     .data-point-value {
       font-family: 'Cormorant Garamond', Georgia, serif;
@@ -176,7 +160,6 @@
       margin-top: 0.25rem;
     }
 
-    /* Entity Cards */
     .entity-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -200,12 +183,7 @@
       justify-content: center;
       border-bottom: 1px solid var(--border);
     }
-    .card-preview svg {
-      width: 40px;
-      height: 40px;
-      color: var(--muted);
-      opacity: 0.4;
-    }
+    .card-preview svg { width: 40px; height: 40px; color: var(--muted); opacity: 0.4; }
 
     .card-content { padding: 1.25rem; }
 
@@ -228,11 +206,7 @@
       font-family: 'JetBrains Mono', monospace;
       color: var(--muted);
     }
-    .status-dot {
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-    }
+    .status-dot { width: 6px; height: 6px; border-radius: 50%; }
     .status-active { background: var(--status-active); }
     .status-pending { background: var(--status-pending); }
 
@@ -258,7 +232,6 @@
 </head>
 <body>
 
-  <!-- Theme Toggle -->
   <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" type="button">
     <svg class="icon-moon w-5 h-5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
       <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
@@ -271,8 +244,7 @@
   <div class="main-content w-full max-w-4xl mx-auto px-6 py-12 md:py-16">
     
     <!-- [1] Object Identity Layer -->
-    <header class="mb-12 text-center reveal">
-      
+    <header class="mb-10 text-center reveal">
       <div class="mb-5">
         <span class="flag-icon" aria-hidden="true">🇳🇿</span>
       </div>
@@ -294,42 +266,45 @@
         <span class="px-2.5 py-1 border border-border rounded text-xs font-mono text-muted">Commonwealth Realm</span>
         <span class="px-2.5 py-1 border border-border rounded text-xs font-mono text-muted">Oceania</span>
       </div>
-      
     </header>
 
+    <!-- [1.5] Entry Note (New Content) -->
+    <section class="mb-12 reveal delay-1 max-w-2xl mx-auto">
+      <p class="font-body text-base md:text-lg text-muted leading-relaxed text-center">
+        An island nation in the southwestern Pacific Ocean, New Zealand comprises two main landmasses and over 700 smaller islands. Geographically isolated, it developed a distinct biodiversity and a rich cultural heritage rooted in Māori tradition. As a constitutional monarchy with a parliamentary democracy, it represents a sophisticated synthesis of indigenous custom and Westminster legal traditions.
+      </p>
+    </section>
+
     <!-- [2] Data Point Matrix -->
-    <section class="mb-16 reveal delay-1">
+    <section class="mb-16 reveal delay-2">
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
-        
         <div class="data-card">
           <div class="data-point-value">NZL</div>
           <div class="data-point-label">ISO 3166-1</div>
         </div>
-        
         <div class="data-card">
           <div class="data-point-value">5.1M</div>
           <div class="data-point-label">Population</div>
         </div>
-        
         <div class="data-card">
           <div class="data-point-value">1907</div>
           <div class="data-point-label">Sovereignty</div>
         </div>
-        
         <div class="data-card">
           <div class="data-point-value">268K</div>
           <div class="data-point-label">Area km²</div>
         </div>
-        
       </div>
     </section>
 
     <!-- [3] Works & Visualizations Registry -->
-    <section class="reveal delay-2">
+    <section class="reveal delay-3">
       
-      <div class="flex items-center justify-between mb-6 border-b border-border pb-2">
-        <h2 class="font-display text-xl font-medium text-fg">Registry</h2>
-        <span class="font-mono text-xs text-muted">3 Entries</span>
+      <div class="text-center mb-8 border-b border-border pb-6">
+        <h2 class="font-mono text-xs tracking-[0.2em] text-muted uppercase mb-2">Representation & Explanation</h2>
+        <p class="font-body text-sm text-muted max-w-lg mx-auto">
+          Analytical Representation of a Region of Social Reality: Supporting Understanding, Comparison, and Insight.
+        </p>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
@@ -422,7 +397,7 @@
 
   </div>
 
-  <!-- Footer (Restored Original Design) -->
+  <!-- Footer -->
   <footer class="site-footer py-10 px-6" style="background-color: #0B1A2B;">
     <div class="max-w-6xl mx-auto text-center">
        <p class="font-mono text-[10px] tracking-[0.15em] uppercase mb-2" style="color: #4A6075;">
@@ -435,7 +410,6 @@
   </footer>
 
   <script>
-    // Theme Logic
     const themeToggle = document.getElementById('themeToggle');
     const htmlElement = document.documentElement;
     
@@ -454,7 +428,6 @@
       setTheme(newTheme);
     });
 
-    // Intersection Observer for reveals
     if (!window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
