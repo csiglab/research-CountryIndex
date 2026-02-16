@@ -58,6 +58,10 @@
    * What criteria define a “good” visualization in this context (clarity, scalability, interactivity, insight)?
    * How do we ensure the visualization remains **coherent** with other granular requirements of the actor set?
 
+8. **Data**
+
+    * Should our actor state have some 'representative entities' to capture professions, education quality, medical, etc.?
+
 ## Requirements
 
 1. Temporal Visualization

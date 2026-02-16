@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "source": "Historical records and public archives",
+    "source": "Historical records, public archives, and biographical sources",
     "lastUpdated": "2026-02-16",
-    "description": "Dataset of actors in a social region with key events"
+    "description": "Comprehensive dataset of New Zealand actors (organizations and individuals) in a social region with key events since 1800."
   },
   "region": "New Zealand",
   "actors": [
@@ -14,9 +14,21 @@
       "regionOfActivity": "Wellington",
       "description": "Private British company instrumental in the early colonization.",
       "events": [
-        { "date": "1839-05-02", "category": "birth", "description": "Established in London" },
-        { "date": "1841-01-22", "category": "expansion", "description": "Wellington settlement founded" },
-        { "date": "1858-12-31", "category": "death", "description": "Dissolution" }
+        {
+          "date": "1839-05-02",
+          "category": "birth",
+          "description": "Established in London"
+        },
+        {
+          "date": "1841-01-22",
+          "category": "expansion",
+          "description": "Wellington settlement founded"
+        },
+        {
+          "date": "1858-12-31",
+          "category": "death",
+          "description": "Dissolution"
+        }
       ]
     },
     {
@@ -27,9 +39,21 @@
       "regionOfActivity": "Wellington",
       "description": "The supreme legislative body of New Zealand.",
       "events": [
-        { "date": "1854-05-24", "category": "birth", "description": "First parliament convened" },
-        { "date": "1893-09-19", "category": "milestone", "description": "Women's suffrage granted" },
-        { "date": "1996-10-12", "category": "transformation", "description": "MMP system adopted" }
+        {
+          "date": "1854-05-24",
+          "category": "birth",
+          "description": "First parliament convened"
+        },
+        {
+          "date": "1893-09-19",
+          "category": "milestone",
+          "description": "Women's suffrage granted"
+        },
+        {
+          "date": "1996-10-12",
+          "category": "transformation",
+          "description": "MMP system adopted"
+        }
       ]
     },
     {
@@ -40,8 +64,16 @@
       "regionOfActivity": "Dunedin",
       "description": "Oldest university in New Zealand.",
       "events": [
-        { "date": "1869-01-01", "category": "birth", "description": "Founded" },
-        { "date": "1871-07-05", "category": "expansion", "description": "First classes began" }
+        {
+          "date": "1869-01-01",
+          "category": "birth",
+          "description": "Founded"
+        },
+        {
+          "date": "1871-07-05",
+          "category": "expansion",
+          "description": "First classes began"
+        }
       ]
     },
     {
@@ -52,8 +84,16 @@
       "regionOfActivity": "Auckland",
       "description": "One of New Zealand's largest banks.",
       "events": [
-        { "date": "1861-07-29", "category": "birth", "description": "Founded in Auckland" },
-        { "date": "1945-01-01", "category": "milestone", "description": "Largest bank by assets" }
+        {
+          "date": "1861-07-29",
+          "category": "birth",
+          "description": "Founded in Auckland"
+        },
+        {
+          "date": "1945-01-01",
+          "category": "milestone",
+          "description": "Largest bank by assets"
+        }
       ]
     },
     {
@@ -64,67 +104,21 @@
       "regionOfActivity": "National",
       "description": "National railway system.",
       "events": [
-        { "date": "1863-12-31", "category": "birth", "description": "First railway opened" },
-        { "date": "1993-07-01", "category": "privatization", "description": "Privatized" },
-        { "date": "2008-07-01", "category": "renationalization", "description": "Renationalized" }
-      ]
-    },
-    {
-      "id": "a6",
-      "name": "Air New Zealand",
-      "type": "hybrid",
-      "role": "Aviation",
-      "regionOfActivity": "National",
-      "description": "National airline carrier.",
-      "events": [
-        { "date": "1940-04-26", "category": "birth", "description": "TEAL formed" },
-        { "date": "1989-01-01", "category": "privatization", "description": "Privatized" },
-        { "date": "2001-09-13", "category": "renationalization", "description": "Govt bailout" }
-      ]
-    },
-    {
-      "id": "a7",
-      "name": "Waitangi Tribunal",
-      "type": "public",
-      "role": "Justice",
-      "regionOfActivity": "National",
-      "description": "Permanent commission of inquiry on Treaty claims.",
-      "events": [
-        { "date": "1975-10-10", "category": "birth", "description": "Established by Act" }
-      ]
-    },
-    {
-      "id": "a8",
-      "name": "Fonterra",
-      "type": "hybrid",
-      "role": "Dairy",
-      "regionOfActivity": "National",
-      "description": "New Zealand's largest dairy cooperative.",
-      "events": [
-        { "date": "2001-10-16", "category": "birth", "description": "Merger formed Fonterra" }
-      ]
-    },
-    {
-      "id": "a9",
-      "name": "Māori King Movement",
-      "type": "hybrid",
-      "role": "Cultural Leadership",
-      "regionOfActivity": "Waikato",
-      "description": "Māori sovereignty movement.",
-      "events": [
-        { "date": "1858-06-02", "category": "birth", "description": "First Māori King installed" },
-        { "date": "1863-07-12", "category": "conflict", "description": "Waikato War invasion" }
-      ]
-    },
-    {
-      "id": "a10",
-      "name": "Reserve Bank of New Zealand",
-      "type": "public",
-      "role": "Finance",
-      "regionOfActivity": "National",
-      "description": "Central bank responsible for monetary policy.",
-      "events": [
-        { "date": "1934-08-01", "category": "birth", "description": "Established under Reserve Bank Act" }
+        {
+          "date": "1863-12-31",
+          "category": "birth",
+          "description": "First railway opened"
+        },
+        {
+          "date": "1993-07-01",
+          "category": "privatization",
+          "description": "Privatized"
+        },
+        {
+          "date": "2008-07-01",
+          "category": "renationalization",
+          "description": "Renationalized"
+        }
       ]
     }
   ]
