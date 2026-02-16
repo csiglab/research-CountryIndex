@@ -287,9 +287,8 @@
       display: grid;
       grid-template-columns: 1fr;
       gap: 2rem;
-      margin-bottom: 2rem; /* Adjusted for divider spacing */
-      padding-bottom: 2rem; /* Adjusted for divider spacing */
-      /* Border removed to make way for Diamond Divider */
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
     }
     @media (min-width: 768px) {
       .hero-grid {
@@ -299,12 +298,19 @@
       }
     }
 
+    /* Flag Icon - original style with matching interaction */
     .flag-icon-large {
       font-size: 3.5rem;
       line-height: 1;
-      display: block;
+      display: inline-block;
       margin-bottom: 0.5rem;
-      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.06));
+      transition: transform 0.3s ease, filter 0.3s ease;
+      cursor: default;
+    }
+    .flag-icon-large:hover {
+      transform: scale(1.05);
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
     }
 
     /* Definition styling */
@@ -368,7 +374,7 @@
       align-items: center;
       justify-content: center;
       gap: 1rem;
-      margin: 2rem 0; /* Consistent margin */
+      margin: 2rem 0;
     }
     .section-divider::before, .section-divider::after {
       content: '';
