@@ -4,138 +4,154 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Laboratorium Arbitristae · The Obsidian Archive</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <title>Index Gentium · Minimalist Monochrome</title>
+    
+    <!-- Fonts: Playfair Display (Display), Source Serif 4 (Body), JetBrains Mono (Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&display=swap" rel="stylesheet">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            --bg-void: #000000;
-            --bg-deep: #050505;
-            --bg-card: #0a0a0a;
-            --bg-elevated: #111111;
+            /* Core Palette */
+            --background: #FFFFFF;
+            --foreground: #000000;
+            --muted-bg: #F5F5F5;
             
-            --text-primary: #e0e0e0;
-            --text-secondary: #888888;
-            --text-muted: #444444;
-            
-            --accent-primary: #00ff9d; /* Neon Mint */
-            --accent-glow: rgba(0, 255, 157, 0.15);
-            --accent-dim: #1a1a1a;
-            
-            --border-subtle: rgba(255, 255, 255, 0.05);
-            --border-strong: rgba(255, 255, 255, 0.1);
-            
-            --font-display: 'Cormorant Garamond', serif;
+            /* Typography */
+            --font-display: 'Playfair Display', serif;
+            --font-body: 'Source Serif 4', serif;
             --font-mono: 'JetBrains Mono', monospace;
             
-            --radius-lg: 4px; /* Brutalist sharp corners */
-            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+            /* Spacing & Lines */
+            --border-hairline: 1px solid #E5E5E5;
+            --border-thin: 1px solid #000000;
+            --border-thick: 4px solid #000000;
+            --border-ultra: 8px solid #000000;
+            
+            /* Transitions */
+            --transition-instant: 0.1s;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--bg-void);
-            color: var(--text-primary);
-            font-family: var(--font-mono);
-            font-size: 14px;
+            background-color: var(--background);
+            color: var(--foreground);
+            font-family: var(--font-body);
+            font-size: 16px;
             line-height: 1.6;
-            min-height: 100vh;
             overflow-x: hidden;
-            /* Subtle noise texture overlay */
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+            /* Noise Texture Overlay */
+            position: relative;
         }
 
-        /* --- Abstract Background Composition --- */
-        .bg-gradient-mesh {
+        /* Apply Textures to Body */
+        body::before {
+            content: "";
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            z-index: 0;
             pointer-events: none;
-            background: 
-                radial-gradient(circle at 0% 0%, rgba(0, 255, 157, 0.03) 0%, transparent 40%),
-                radial-gradient(circle at 100% 100%, rgba(100, 100, 100, 0.05) 0%, transparent 40%);
+            z-index: 1000;
+            /* Noise */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+        }
+        
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 999;
+            /* Horizontal Lines */
+            background-image: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 1px,
+                #000 1px,
+                #000 2px
+            );
+            background-size: 100% 4px;
+            opacity: 0.015;
         }
 
+        /* Container */
         .container {
+            max-width: 1200px; /* max-w-6xl equivalent */
+            margin: 0 auto;
+            padding: 0 1.5rem;
             position: relative;
             z-index: 1;
-            max-width: 1600px;
-            margin: 0 auto;
-            padding: 4rem 2rem;
         }
 
-        /* --- Header: Editorial Style --- */
+        /* --- Header: Editorial Masthead --- */
         header {
             text-align: center;
-            margin-bottom: 6rem;
+            padding: 6rem 0;
             position: relative;
         }
-
-        .header-deco {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 1rem;
-            margin-bottom: 2rem;
-            color: var(--text-muted);
-            font-size: 0.7rem;
-            letter-spacing: 0.3em;
-            text-transform: uppercase;
-        }
-        .header-deco::before, .header-deco::after {
+        
+        /* Decorative top rule */
+        header::before {
             content: '';
-            width: 40px;
-            height: 1px;
-            background: var(--accent-primary);
-            opacity: 0.5;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 8px;
+            background: var(--foreground);
         }
 
         .coat-image {
-            width: 60px;
-            opacity: 0.6;
-            filter: grayscale(100%) contrast(1.2);
+            width: 40px;
+            height: auto;
             margin-bottom: 2rem;
+            filter: grayscale(100%) contrast(1.2);
+            opacity: 0.8;
         }
 
         h1 {
             font-family: var(--font-display);
-            font-size: clamp(3rem, 8vw, 6rem);
-            font-weight: 300;
-            color: var(--text-primary);
-            letter-spacing: -0.02em;
-            line-height: 1;
-            margin-bottom: 1rem;
+            font-size: clamp(4rem, 10vw, 10rem); /* 9xl/10xl Oversized */
+            line-height: 0.9;
+            font-weight: 400;
             font-style: italic;
+            letter-spacing: -0.03em;
+            margin-bottom: 1rem;
+            color: var(--foreground);
         }
 
         h2 {
             font-family: var(--font-mono);
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: var(--accent-primary);
-            letter-spacing: 0.2em;
+            font-size: 0.75rem; /* xs */
+            letter-spacing: 0.2em; /* widest */
             text-transform: uppercase;
-            margin-bottom: 1.5rem;
+            color: var(--foreground);
+            margin-bottom: 2rem;
         }
 
         .subtitle {
-            font-family: var(--font-display);
+            font-family: var(--font-body);
             font-size: 1.2rem;
-            color: var(--text-secondary);
-            max-width: 500px;
-            margin: 0 auto;
             font-style: italic;
-            opacity: 0.7;
+            max-width: 600px;
+            margin: 0 auto;
+            color: var(--foreground);
         }
 
         /* --- Controls: Industrial Terminal --- */
         .controls-panel {
+            border-top: var(--border-thick);
+            border-bottom: var(--border-thin);
+            padding: 2rem 0;
+            margin-bottom: 4rem;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 2rem;
-            margin-bottom: 4rem;
         }
 
         .search-container {
@@ -146,20 +162,19 @@
 
         .search-box {
             width: 100%;
-            background: var(--bg-deep);
-            border: 1px solid var(--border-strong);
-            padding: 1.2rem 1.5rem;
-            color: var(--text-primary);
+            padding: 1rem;
+            background: transparent;
+            border: 2px solid var(--foreground); /* Thick border */
+            border-radius: 0;
             font-family: var(--font-mono);
             font-size: 0.9rem;
-            transition: all 0.3s ease;
+            color: var(--foreground);
+            transition: border-width var(--transition-instant);
         }
-        .search-box::placeholder { color: var(--text-muted); }
+        .search-box::placeholder { color: #525252; font-style: italic; }
         .search-box:focus {
             outline: none;
-            border-color: var(--accent-primary);
-            background: var(--bg-card);
-            box-shadow: 0 0 20px var(--accent-glow);
+            border-width: 4px; /* Thicken on focus */
         }
 
         .search-suggestions {
@@ -167,29 +182,29 @@
             top: 100%;
             left: 0;
             right: 0;
-            background: var(--bg-elevated);
-            border: 1px solid var(--border-strong);
+            background: var(--background);
+            border: 2px solid var(--foreground);
             border-top: none;
             z-index: 10;
-            max-height: 300px;
-            overflow-y: auto;
             display: none;
+            box-shadow: 4px 4px 0 rgba(0,0,0,0.1); /* Minimal offset shadow for dropdown */
         }
         .search-suggestions.active { display: block; }
-        
-        .suggestion-item {
-            padding: 1rem 1.5rem;
-            cursor: pointer;
-            border-bottom: 1px solid var(--border-subtle);
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-        }
-        .suggestion-item:hover { background: var(--bg-deep); }
-        .suggestion-text { font-weight: 500; color: var(--text-primary); }
-        .suggestion-snippet { font-size: 0.8rem; color: var(--text-secondary); }
-        .suggestion-match { color: var(--accent-primary); }
 
+        .suggestion-item {
+            padding: 1rem;
+            cursor: pointer;
+            border-bottom: 1px solid #E5E5E5;
+            color: var(--foreground);
+        }
+        .suggestion-item:last-child { border-bottom: none; }
+        .suggestion-item:hover { background: var(--foreground); color: var(--background); }
+        .suggestion-text { font-family: var(--font-body); font-weight: 600; }
+        .suggestion-snippet { font-size: 0.85rem; font-family: var(--font-body); color: #525252; }
+        .suggestion-item:hover .suggestion-snippet { color: #e5e5e5; }
+        .suggestion-match { text-decoration: underline; }
+
+        /* Chips */
         .filter-chips {
             display: flex;
             gap: 0.5rem;
@@ -198,222 +213,267 @@
         }
 
         .chip {
+            padding: 0.75rem 1.5rem;
+            border: 1px solid var(--foreground);
             background: transparent;
-            border: 1px solid var(--text-muted);
-            color: var(--text-secondary);
-            padding: 0.5rem 1rem;
+            color: var(--foreground);
             font-family: var(--font-mono);
-            font-size: 0.75rem;
-            text-transform: uppercase;
+            font-size: 0.7rem;
             letter-spacing: 0.1em;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.2s;
+            transition: all var(--transition-instant);
         }
         .chip:hover {
-            border-color: var(--text-primary);
-            color: var(--text-primary);
+            background: var(--foreground);
+            color: var(--background);
         }
         .chip.active {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: var(--bg-void);
+            background: var(--foreground);
+            color: var(--background);
             font-weight: 700;
         }
+        /* Focus state for accessibility */
+        .chip:focus-visible {
+            outline: 3px solid var(--foreground);
+            outline-offset: 3px;
+        }
 
-        /* --- The Card: Specimen Slide --- */
+        /* --- Card Design: Index Card / Archive Style --- */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
             gap: 2rem;
         }
 
         .firm-card {
-            position: relative;
-            background: var(--bg-card);
-            border: 1px solid var(--border-subtle);
+            background: var(--background);
+            border: 1px solid var(--foreground);
             padding: 2rem;
+            display: flex;
+            flex-direction: column;
             height: 400px;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: all 0.4s var(--transition-smooth);
-        }
-
-        /* Watermark Effect */
-        .card-watermark {
-            position: absolute;
-            top: -20%;
-            right: -10%;
-            font-size: 12rem;
-            opacity: 0.03;
-            pointer-events: none;
-            filter: grayscale(100%);
-            transition: all 0.6s var(--transition-smooth);
-            z-index: 1;
-        }
-        
-        /* Content Layer */
-        .card-content {
             position: relative;
-            z-index: 2;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
+            transition: all var(--transition-instant);
+            cursor: default;
         }
 
-        /* Header */
+        /* Hover Inversion */
+        .firm-card:hover {
+            background: var(--foreground);
+            color: var(--background);
+            border-color: var(--foreground);
+        }
+
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 2rem;
+            margin-bottom: 1.5rem;
         }
+        
         .firm-category {
-            font-size: 0.7rem;
-            color: var(--accent-primary);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            border: 1px solid var(--accent-primary);
-            padding: 0.2rem 0.5rem;
-            background: var(--accent-glow);
-        }
-        .card-id {
-            font-size: 0.7rem;
-            color: var(--text-muted);
             font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            padding: 0.25rem 0.5rem;
+            border: 1px solid var(--foreground);
+        }
+        
+        .firm-card:hover .firm-category {
+            border-color: var(--background);
         }
 
-        /* Body */
+        .card-id {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            opacity: 0.5;
+        }
+
         .card-body {
             flex: 1;
-        }
-        .firm-name {
-            font-family: var(--font-display);
-            font-size: 3rem;
-            line-height: 0.9;
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 1rem;
-            font-style: italic;
-            transition: color 0.3s;
-        }
-        .firm-description {
-            font-size: 0.85rem;
-            color: var(--text-secondary);
-            max-width: 90%;
-            line-height: 1.7;
+            display: flex;
+            flex-direction: column;
         }
 
-        /* Footer & Action */
+        .firm-name {
+            font-family: var(--font-display);
+            font-size: 2.5rem;
+            line-height: 1;
+            font-weight: 400;
+            font-style: italic;
+            margin-bottom: 1rem;
+        }
+
+        .firm-description {
+            font-family: var(--font-body);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            color: #525252; /* Muted text */
+            transition: color var(--transition-instant);
+        }
+        
+        .firm-card:hover .firm-description {
+            color: #e5e5e5; /* Muted on black */
+        }
+
         .card-footer {
             margin-top: auto;
-            border-top: 1px solid var(--border-subtle);
-            padding-top: 1.5rem;
+            border-top: 1px solid #E5E5E5;
+            padding-top: 1rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            transition: border-color var(--transition-instant);
         }
+        
+        .firm-card:hover .card-footer {
+            border-color: #333;
+        }
+
         .footer-meta {
-            font-size: 0.75rem;
-            color: var(--text-muted);
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
         }
 
         .btn-enter {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: transparent;
-            border: 1px solid var(--text-muted);
-            color: var(--text-secondary);
-            padding: 0.6rem 1rem;
             font-family: var(--font-mono);
-            font-size: 0.75rem;
+            font-size: 0.7rem;
             text-transform: uppercase;
             letter-spacing: 0.1em;
             text-decoration: none;
-            cursor: pointer;
-            transition: all 0.3s;
+            color: var(--foreground);
+            background: transparent;
+            padding: 0.5rem 1rem;
+            border: 1px solid var(--foreground);
+            transition: all var(--transition-instant);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
-        .btn-enter i { transition: transform 0.3s; }
+        
+        .btn-enter i { transition: transform var(--transition-instant); }
 
-        /* --- Interaction: The Hover State --- */
-        .firm-card:hover {
-            border-color: var(--accent-primary);
-            background: var(--bg-elevated);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-        }
-        .firm-card:hover .card-watermark {
-            opacity: 0.06;
-            transform: scale(1.1) rotate(-5deg);
-        }
-        .firm-card:hover .firm-name {
-            color: #ffffff;
-        }
+        /* Hover state for button when card inverts */
         .firm-card:hover .btn-enter {
-            background: var(--accent-primary);
-            border-color: var(--accent-primary);
-            color: var(--bg-void);
-            box-shadow: 0 0 15px var(--accent-glow);
+            background: var(--background);
+            color: var(--foreground);
+            border-color: var(--background);
         }
+        
         .firm-card:hover .btn-enter i {
-            transform: translateX(4px);
+            transform: translateX(3px);
         }
 
         /* Pagination */
-        .pagination-container { margin-top: 6rem; display: flex; flex-direction: column; align-items: center; }
-        .pagination-controls { display: flex; align-items: center; gap: 1rem; }
-        .nav-button { background: transparent; border: 1px solid var(--border-strong); color: var(--text-secondary); padding: 0.8rem 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
-        .nav-button:not(:disabled):hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+        .pagination-container { 
+            margin-top: 6rem; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            padding-bottom: 4rem;
+        }
+        
+        .pagination-controls { 
+            display: flex; 
+            align-items: center; 
+            gap: 1rem; 
+        }
+        
+        .nav-button { 
+            background: transparent; 
+            border: 1px solid var(--foreground); 
+            color: var(--foreground); 
+            padding: 0.8rem 1.5rem; 
+            font-family: var(--font-mono); 
+            font-size: 0.8rem; 
+            cursor: pointer; 
+            transition: all var(--transition-instant); 
+        }
+        .nav-button:not(:disabled):hover { 
+            background: var(--foreground); 
+            color: var(--background); 
+        }
         .nav-button:disabled { opacity: 0.2; cursor: not-allowed; }
+        .nav-button:focus-visible {
+            outline: 3px solid var(--foreground);
+            outline-offset: 3px;
+        }
+        
         .dots-track { display: flex; gap: 0.5rem; }
-        .pagination-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted); border: none; cursor: pointer; transition: all 0.3s; }
-        .pagination-dot.active { background: var(--accent-primary); box-shadow: 0 0 10px var(--accent-glow); transform: scale(2); }
+        .pagination-dot { 
+            width: 8px; 
+            height: 8px; 
+            background: transparent; 
+            border: 1px solid var(--foreground);
+            cursor: pointer; 
+            transition: all var(--transition-instant);
+        }
+        .pagination-dot.active { 
+            background: var(--foreground);
+            transform: scale(1.5); 
+        }
         
         /* Utilities */
-        .loading-state, .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center; color: var(--text-muted); }
-        .empty-state.active { display: flex; } .empty-state { display: none; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        .loading-state, .empty-state { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            padding: 4rem 2rem; 
+            text-align: center; 
+            color: var(--foreground); 
+            border: 1px solid #E5E5E5;
+            margin-top: 4rem;
+        }
+        .empty-state.active { display: flex; } 
+        .empty-state { display: none; }
+        
+        @keyframes fadeIn { 
+            from { opacity: 0; transform: translateY(20px); } 
+            to { opacity: 1; transform: translateY(0); } 
+        }
 
         /* Responsive */
         @media (max-width: 768px) {
-            .container { padding: 2rem 1rem; }
+            h1 { font-size: 3rem; /* Adjusted for mobile */ }
+            .controls-panel { padding: 1.5rem 0; }
             .firm-card { height: auto; min-height: 350px; }
-            .firm-name { font-size: 2.5rem; }
         }
     </style>
 </head>
 
 <body>
-    <div class="bg-gradient-mesh"></div>
-    
     <div class="container">
         <header>
             <img src="logo.png" alt="Seal" class="coat-image">
-            <div class="header-deco">Est. MMXXIV</div>
             <h1>Index Gentium</h1>
             <h2>Laboratorium Arbitristae</h2>
-            <p class="subtitle">An encyclopedic registry of sovereign entities, observed through the lens of data.</p>
+            <p class="subtitle">A monochromatic registry of sovereign entities and research laboratories.</p>
         </header>
 
         <div class="controls-panel">
             <div class="search-container">
-                <input type="text" class="search-box" id="searchInput" placeholder="Initiate Search Protocol..." autocomplete="off">
+                <input type="text" class="search-box" id="searchInput" placeholder="Search Index..." autocomplete="off">
                 <div class="search-suggestions" id="searchSuggestions"></div>
             </div>
             <div class="filter-chips" id="filterChips">
-                <div class="chip active" data-tag="">Index All</div>
+                <div class="chip active" data-tag="">View All</div>
             </div>
         </div>
 
         <div class="loading-state" id="loadingState">
-            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
-            <p>Accessing Archives...</p>
+            <div style="width: 40px; height: 40px; border: 2px solid #000; border-top-color: transparent; border-radius: 0; animation: spin 1s linear infinite;"></div>
+            <p style="margin-top: 1rem; font-family: 'JetBrains Mono'; font-size: 0.8rem;">LOADING DATA...</p>
         </div>
 
         <div class="empty-state" id="emptyState">
-            <i class="fas fa-file-circle-question" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.3;"></i>
-            <h3>NO DATA RETRIEVED</h3>
-            <p style="margin-top: 0.5rem;">Query returned void. Adjust parameters.</p>
+            <h3 style="font-family: 'Playfair Display'; font-size: 2rem; margin-bottom: 0.5rem;">No Results</h3>
+            <p style="font-family: 'JetBrains Mono'; font-size: 0.8rem;">QUERY RETURNED VOID</p>
         </div>
 
         <div class="cards-grid" id="cardsGrid" style="display: none;"></div>
@@ -456,16 +516,12 @@
                 initApp();
             })
             .catch(err => {
-                $('loadingState').innerHTML = `<p style="color: red;">Error: Cannot access archives.</p>`;
+                $('loadingState').innerHTML = `<p style="color: red; font-family: 'JetBrains Mono';">SYSTEM ERROR</p>`;
                 console.error(err);
             });
 
         function initApp() {
-            // 1. Theme Switcher (Implicit via system or manual toggle if added)
-            // For this design, we stick to the dark "Obsidian" theme as per the aesthetic directive.
-            // The toggle is removed to maintain visual coherence.
-
-            // 2. Generate Chips
+            // Generate Chips
             const tags = [...new Set(allFirms.map(f => f.tags))];
             const chipContainer = $('filterChips');
             tags.forEach(tag => {
@@ -476,17 +532,15 @@
                 chipContainer.appendChild(div);
             });
 
-            // 3. Render Everything
             renderCards();
             renderPagination();
 
-            // 4. Event Listeners
             setupSearch();
             setupFilters();
             setupPagination();
         }
 
-        // --- CARD RENDERING (The Specimen Slide) ---
+        // --- CARD RENDERING (Index Card Style) ---
         function renderCards() {
             grid.innerHTML = '';
             const start = (currentPage - 1) * itemsPerPage;
@@ -505,31 +559,27 @@
             pageItems.forEach((firm, i) => {
                 const card = document.createElement('article');
                 card.className = 'firm-card';
-                card.style.animation = `fadeIn 0.6s ${i * 0.1}s backwards`;
+                // Simple fade in animation
+                card.style.animation = `fadeIn 0.4s ${i * 0.05}s backwards`;
                 
-                // Generate a pseudo-random ID for aesthetic purposes
                 const displayId = `IDX-${firm.name.substring(0,3).toUpperCase()}-${Math.floor(Math.random() * 900) + 100}`;
 
                 card.innerHTML = `
-                    <div class="card-watermark">${firm.icon}</div>
-                    <div class="card-content">
-                        <div class="card-header">
-                            <span class="firm-category">${firm.tags}</span>
-                            <span class="card-id">${displayId}</span>
-                        </div>
-                        <div class="card-body">
-                            <h3 class="firm-name">${firm.name}</h3>
-                            <p class="firm-description">${firm.description}</p>
-                        </div>
-                        <div class="card-footer">
-                            <span class="footer-meta">
-                                <i class="fas fa-circle" style="color: var(--accent-primary); font-size: 6px; vertical-align: middle;"></i>
-                                Active
-                            </span>
-                            <a href="${firm.link}" target="_blank" class="btn-enter">
-                                Enter <i class="fas fa-arrow-right"></i>
-                            </a>
-                        </div>
+                    <div class="card-header">
+                        <span class="firm-category">${firm.tags}</span>
+                        <span class="card-id">${displayId}</span>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="firm-name">${firm.name}</h3>
+                        <p class="firm-description">${firm.description}</p>
+                    </div>
+                    <div class="card-footer">
+                        <span class="footer-meta">
+                            Active File
+                        </span>
+                        <a href="${firm.link}" target="_blank" class="btn-enter">
+                            Enter <i class="fas fa-arrow-right"></i>
+                        </a>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -562,7 +612,7 @@
             ).slice(0, 4);
 
             if (results.length === 0) {
-                suggestionsBox.innerHTML = `<div class="suggestion-item" style="pointer-events: none;">No Results</div>`;
+                suggestionsBox.innerHTML = `<div class="suggestion-item">No results</div>`;
             } else {
                 suggestionsBox.innerHTML = results.map(f => `
                     <div class="suggestion-item" data-name="${f.name}">
