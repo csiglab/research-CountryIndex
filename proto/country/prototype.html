@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>🇮🇪 Ireland · Collectio · Index Gentium</title>
+  <title>Loading... · Collectio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -30,7 +30,6 @@
       }
     }
   </script>
-
   <style>
     :root {
       --bg: #FAFBFC;
@@ -39,9 +38,11 @@
       --accent: #3D6B99;
       --card: #FFFFFF;
       --border: #D8E1EB;
-      --status-active: #2A9D5C;
       --status-pending: #8A9FB0;
       --bg-subtle: #F1F5F9;
+      --type-temporal: #6B4C9A;
+      --type-spatial: #2D7D9A;
+      --type-network: #9A6B4C;
     }
 
     .dark {
@@ -51,14 +52,41 @@
       --accent: #93C5FD;
       --card: #1E293B;
       --border: #334155;
-      --status-active: #4ADE80;
       --status-pending: #64748B;
       --bg-subtle: #172033;
+      --type-temporal: #A78BFA;
+      --type-spatial: #22D3EE;
+      --type-network: #FBBF24;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
     
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-subtle);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--muted);
+    }
+
+    /* Custom Text Selection */
+    ::selection {
+      background-color: color-mix(in srgb, var(--accent) 20%, transparent);
+      color: var(--fg);
+    }
+    .dark ::selection {
+      background-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
     body {
       font-family: 'Inter', system-ui, sans-serif;
       background-color: var(--bg);
@@ -97,14 +125,12 @@
     }
     .site-footer { flex-shrink: 0; position: relative; z-index: 1; }
 
-    /* ═══════════════════════════════════════════════════════════
-       NAVIGATION HEADER STYLES
-       ═══════════════════════════════════════════════════════════ */
+    /* Header Styles */
     .project-header {
       position: sticky;
       top: 0;
       z-index: 50;
-      background: var(--card);
+      background: color-mix(in srgb, var(--card) 85%, transparent);
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(12px);
       -webkit-backdrop-filter: blur(12px);
@@ -123,22 +149,18 @@
       transition: opacity 0.3s ease;
     }
     
-    .project-header.scrolled::after {
-      opacity: 0.4;
+    .project-header.scrolled::after { opacity: 0.4; }
+    .project-header.scrolled { 
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06); 
+      background: var(--card);
     }
-    
-    .project-header.scrolled {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
-    }
-    
-    .dark .project-header.scrolled {
-      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    }
+    .dark .project-header.scrolled { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25); }
 
+    /* Improvement: Tighter Header Padding */
     .project-header-inner {
       max-width: 56rem;
       margin: 0 auto;
-      padding: 0.875rem 1.5rem;
+      padding: 0.75rem 1.5rem; /* Adjusted from 0.875rem */
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -152,16 +174,8 @@
       text-decoration: none;
       transition: opacity 0.25s ease;
     }
-    
-    .project-identity:hover {
-      opacity: 0.85;
-    }
-    
-    .project-identity:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 4px;
-      border-radius: 2px;
-    }
+    .project-identity:hover { opacity: 0.85; }
+    .project-identity:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
 
     .project-logo {
       width: 38px;
@@ -173,18 +187,8 @@
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       border: 1px solid var(--border);
     }
-    
-    .project-identity:hover .project-logo {
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    }
-    
-    .project-logo img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
+    .project-identity:hover .project-logo { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+    .project-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .project-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
@@ -204,12 +208,7 @@
       margin-top: 1px;
     }
 
-    /* Container for Nav + Toggle */
-    .nav-controls {
-      display: flex;
-      align-items: center;
-      gap: 1.25rem;
-    }
+    .nav-controls { display: flex; align-items: center; gap: 1.25rem; }
 
     .breadcrumb-nav {
       display: flex;
@@ -228,7 +227,6 @@
       transition: all 0.2s ease;
       position: relative;
     }
-    
     .breadcrumb-nav a::after {
       content: '';
       position: absolute;
@@ -240,25 +238,11 @@
       transition: all 0.2s ease;
       transform: translateX(-50%);
     }
-    
-    .breadcrumb-nav a:hover {
-      color: var(--fg);
-    }
-    
-    .breadcrumb-nav a:hover::after {
-      width: calc(100% - 1rem);
-    }
-    
-    .breadcrumb-nav a:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
+    .breadcrumb-nav a:hover { color: var(--fg); }
+    .breadcrumb-nav a:hover::after { width: calc(100% - 1rem); }
+    .breadcrumb-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-    .breadcrumb-separator {
-      color: var(--border);
-      font-weight: 300;
-      user-select: none;
-    }
+    .breadcrumb-separator { color: var(--border); font-weight: 300; user-select: none; }
 
     .breadcrumb-current {
       color: var(--fg);
@@ -269,7 +253,6 @@
       border: 1px solid var(--border);
     }
 
-    /* Theme Toggle (Moved to Nav) */
     .theme-toggle {
       width: 36px;
       height: 36px;
@@ -283,44 +266,22 @@
       justify-content: center;
       transition: all 0.25s ease;
       flex-shrink: 0;
+      position: relative;
     }
-    .theme-toggle:hover { 
-      color: var(--fg); 
-      border-color: var(--accent); 
-      transform: scale(1.05);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-    .theme-toggle:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-    .theme-toggle .icon-sun, .theme-toggle .icon-moon {
-      position: absolute;
-      transition: opacity 0.25s ease, transform 0.25s ease;
-    }
+    .theme-toggle:hover { color: var(--fg); border-color: var(--accent); transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .theme-toggle .icon-sun, .theme-toggle .icon-moon { position: absolute; transition: opacity 0.25s ease, transform 0.25s ease; }
     .theme-toggle .icon-moon { opacity: 1; transform: scale(1); }
     .theme-toggle .icon-sun { opacity: 0; transform: scale(0.5); }
     .dark .theme-toggle .icon-moon { opacity: 0; transform: scale(0.5); }
     .dark .theme-toggle .icon-sun { opacity: 1; transform: scale(1); }
 
     @media (max-width: 640px) {
-      .project-header-inner {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.75rem;
-        padding: 0.75rem 1rem;
-      }
-      
-      .nav-controls {
-        width: 100%;
-        justify-content: space-between; /* Push toggle to far right */
-        padding-top: 0.5rem;
-        border-top: 1px solid var(--border);
-      }
+      .project-header-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 1rem; }
+      .nav-controls { width: 100%; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid var(--border); }
     }
 
-    /* ═══════════════════════════════════════════════════════════ */
-
+    /* Animations & Reveal */
     .reveal {
       opacity: 0;
       transform: translateY(20px);
@@ -328,22 +289,52 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     
+    /* Improvement: Staggered Grid Reveal */
+    #statsGrid .data-card,
+    #worksGrid .entity-card {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 
+        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.3s ease, 
+        box-shadow 0.3s ease;
+    }
+
+    .reveal.visible #statsGrid .data-card,
+    .reveal.visible #worksGrid .entity-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal.visible #statsGrid .data-card:nth-child(1) { transition-delay: 0.05s; }
+    .reveal.visible #statsGrid .data-card:nth-child(2) { transition-delay: 0.15s; }
+    .reveal.visible #statsGrid .data-card:nth-child(3) { transition-delay: 0.25s; }
+    .reveal.visible #statsGrid .data-card:nth-child(4) { transition-delay: 0.35s; }
+
+    .reveal.visible #worksGrid .entity-card:nth-child(1) { transition-delay: 0.1s; }
+    .reveal.visible #worksGrid .entity-card:nth-child(2) { transition-delay: 0.2s; }
+    .reveal.visible #worksGrid .entity-card:nth-child(3) { transition-delay: 0.3s; }
+
     .delay-1 { transition-delay: 0.15s; }
     .delay-2 { transition-delay: 0.3s; }
     .delay-3 { transition-delay: 0.45s; }
     .delay-4 { transition-delay: 0.6s; }
 
     @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
+      .reveal, #statsGrid .data-card, #worksGrid .entity-card { opacity: 1; transform: none; transition: none; }
     }
 
-    .font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
+    /* Typography */
+    .font-display { 
+      font-family: 'Cormorant Garamond', Georgia, serif; 
+      font-feature-settings: "kern", "liga";
+    }
     .font-body { font-family: 'Inter', system-ui, sans-serif; }
     .font-meta { font-family: 'JetBrains Mono', monospace; }
 
     .type-hero { font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; }
     @media (min-width: 768px) { .type-hero { font-size: 4rem; } }
-    
     .type-section { font-size: 1.5rem; line-height: 1.3; }
     .type-card-title { font-size: 1.25rem; line-height: 1.3; }
     .type-data-value { font-size: 2rem; line-height: 1; }
@@ -352,81 +343,153 @@
     .type-label { font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.05em; }
     .type-meta { font-size: 0.7rem; line-height: 1.4; }
 
-    .flag-container {
-      width: 72px;
-      height: 72px;
-      border-radius: 50%;
-      background: var(--card);
-      border: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 1.25rem;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* Hero Grid System */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
     }
-    .flag-container:hover {
-      transform: scale(1.05);
-      box-shadow: 0 6px 20px rgba(0,0,0,0.06);
-    }
-    .flag-icon { 
-      font-size: 2.5rem; 
-      line-height: 1; 
+    @media (min-width: 768px) {
+      .hero-grid {
+        grid-template-columns: 1fr 1.4fr; 
+        gap: 4rem;
+        align-items: start; 
+      }
     }
 
+    /* Flag Icon */
+    .flag-link {
+      display: inline-block;
+      text-decoration: none;
+      transition: opacity 0.25s ease;
+      cursor: pointer;
+    }
+    
+    .flag-link:hover { opacity: 0.85; }
+    .flag-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
+
+    .flag-icon-large {
+      font-size: 3.5rem;
+      line-height: 1;
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.06));
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .flag-link:hover .flag-icon-large {
+      transform: scale(1.05); 
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+    }
+
+    /* Definition */
+    .definition-lead {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.35rem;
+      line-height: 1.6;
+      color: var(--fg);
+      font-weight: 400;
+      position: relative;
+      hyphens: auto;
+      transition: color 0.3s ease;
+      /* Improvement: Max width for readability */
+      max-width: 52rem; 
+    }
+    
+    .definition-lead::before {
+      content: '';
+      position: absolute;
+      left: -1.5rem;
+      top: 0.25rem;
+      bottom: 0.25rem;
+      width: 2px;
+      background: var(--border);
+      transition: background 0.3s ease, height 0.3s ease;
+    }
+
+    .definition-lead:hover::before {
+      background: var(--accent);
+    }
+
+    @media (max-width: 768px) {
+      .definition-lead::before { display: none; }
+      .definition-lead { font-size: 1.25rem; }
+    }
+
+    #nativeName { letter-spacing: 0.04em; margin-bottom: 1rem; display: block; }
+
+    /* Tags - Elegant non-moving interaction */
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.375rem 0.75rem;
+      background-color: var(--card); 
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02); 
+      user-select: none;
+      position: relative;
+    }
+
+    .tag-pill::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: 1px;
+    }
+
+    .tag-pill:hover {
+      color: var(--accent);
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+      background-color: color-mix(in srgb, var(--accent) 6%, var(--card));
+      box-shadow: 0 2px 8px rgba(61, 107, 153, 0.08);
+    }
+
+    .tag-pill:hover::after {
+      width: calc(100% - 1rem);
+    }
+
+    .dark .tag-pill:hover {
+      background-color: color-mix(in srgb, var(--accent) 10%, var(--card));
+      box-shadow: 0 2px 8px rgba(147, 197, 253, 0.12);
+    }
+
+    /* Section Divider */
     .section-divider {
       display: flex;
       align-items: center;
       justify-content: center;
       gap: 1rem;
-      margin: 3rem 0;
+      margin: 2rem 0;
     }
-    .section-divider::before,
-    .section-divider::after {
+    .section-divider::before, .section-divider::after {
       content: '';
       height: 1px;
       flex: 1;
       max-width: 120px;
       background: linear-gradient(90deg, transparent, var(--border), transparent);
     }
-    .section-divider .diamond {
-      width: 6px;
-      height: 6px;
-      background: var(--border);
-      transform: rotate(45deg);
+    .section-divider .diamond { 
+      width: 6px; 
+      height: 6px; 
+      background: var(--border); 
+      transform: rotate(45deg); 
     }
 
-    .definition-card {
-      background-color: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px; 
-      padding: 2.25rem 2.75rem;
-      max-width: 680px;
-      margin: 0 auto;
-      position: relative;
-      box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-    }
-    
-    .definition-card::before {
-      content: '';
-      position: absolute;
-      top: -1px; left: 50%; 
-      transform: translateX(-50%);
-      width: 48px;
-      height: 2px; 
-      background-color: var(--accent);
-    }
-
-    .definition-card::after {
-      content: '';
-      position: absolute;
-      bottom: -1px; left: 50%; 
-      transform: translateX(-50%);
-      width: 24px;
-      height: 2px; 
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-    }
-
+    /* Data Cards */
     .data-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -440,42 +503,21 @@
       justify-content: center;
       gap: 0.75rem;
     }
-    .data-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 2px;
-      background: var(--accent);
-      transition: width 0.3s ease;
-    }
+    .data-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--accent); transition: width 0.3s ease; }
+    
+    /* Improvement: Active hover state for data cards */
     .data-card:hover::before { width: 40px; }
-    .data-card:hover { 
-      transform: translateY(-4px); 
-      box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06);
-      border-color: var(--accent);
-    }
-    .data-card:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
+    .data-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06); border-color: var(--accent); }
+    .data-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .data-card:hover .type-data-value { color: var(--accent); }
 
-    .data-indicator {
-      height: 3px;
-      background: var(--bg-subtle);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 0.5rem;
-    }
-    .data-indicator-fill {
-      height: 100%;
-      background: var(--accent);
-      border-radius: 2px;
-      transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1);
-    }
+    .data-indicator { height: 3px; background: var(--bg-subtle); border-radius: 2px; overflow: hidden; margin-top: 0.5rem; }
+    .data-indicator-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
 
+    /* ========================================
+       ENTITY CARD SYSTEM - REFINED
+       ======================================== */
+    
     .entity-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -484,15 +526,44 @@
       transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
       text-decoration: none;
       display: block;
+      position: relative;
+      height: 100%; 
     }
-    .entity-card:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
+    
+    .entity-card[data-state="pending"] {
+      border-style: dashed;
     }
-    .entity-card:hover:not(.opacity-60) {
-      transform: translateY(-4px);
-      box-shadow: 0 16px 32px -12px rgba(0,0,0,0.08);
-      border-color: var(--accent);
+
+    .entity-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--status-pending);
+      transition: background 0.3s ease;
+      z-index: 1;
+    }
+    
+    .entity-card[data-state="active"]::before {
+      background: var(--accent);
+    }
+    
+    .entity-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    
+    .entity-card[data-state="active"]:hover { 
+      transform: translateY(-4px); 
+      box-shadow: 0 16px 32px -12px rgba(0,0,0,0.08); 
+      border-color: var(--accent); 
+    }
+    
+    .entity-card[data-state="pending"] {
+      opacity: 0.65;
+    }
+    
+    .entity-card[data-state="pending"]:hover {
+      opacity: 0.8;
     }
     
     .card-preview {
@@ -505,91 +576,144 @@
       position: relative;
       overflow: hidden;
     }
-    .card-preview::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(135deg, transparent 40%, rgba(61, 107, 153, 0.03) 100%);
-      opacity: 0;
-      transition: opacity 0.3s ease;
+    
+    .card-preview::before { 
+      content: ''; 
+      position: absolute; 
+      inset: 0; 
+      background: linear-gradient(135deg, transparent 40%, rgba(61, 107, 153, 0.03) 100%); 
+      opacity: 0; 
+      transition: opacity 0.3s ease; 
     }
-    .entity-card:hover:not(.opacity-60) .card-preview::before { opacity: 1; }
+    
+    .entity-card[data-state="active"]:hover .card-preview::before { opacity: 1; }
+    
     .card-preview svg { 
       width: 36px; 
       height: 36px; 
       color: var(--muted); 
       opacity: 0.4; 
-      transition: all 0.3s ease;
+      transition: all 0.3s ease; 
     }
-    .entity-card:hover:not(.opacity-60) .card-preview svg { 
-      opacity: 0.7;
-      transform: scale(1.1);
+    
+    .entity-card[data-state="active"]:hover .card-preview svg { 
+      opacity: 0.7; 
+      transform: scale(1.1); 
     }
 
-    .card-content { padding: 1.25rem 1.25rem 1.5rem; }
+    .card-content { 
+      padding: 1.25rem 1.25rem 1.5rem; 
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 88px);
+    }
+
+    .card-title {
+      transition: color 0.3s ease;
+    }
+
+    .entity-card[data-state="active"]:hover .card-title {
+      color: var(--accent);
+    }
+
+    .card-description {
+      flex-grow: 1;
+      margin-bottom: 1rem;
+    }
 
     .card-tag {
-      background: var(--bg-subtle);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: transparent;
       color: var(--muted);
-      font-family: 'Inter', sans-serif;
-      padding: 0.3rem 0.65rem;
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.2rem 0.5rem;
       border-radius: 2px;
-      border: 1px solid var(--border);
-      font-weight: 500;
-      font-size: 0.6875rem;
-      transition: all 0.2s ease;
+      border: none;
+      font-weight: 400;
+      font-size: 0.65rem;
+      transition: color 0.2s ease;
+      text-transform: none;
+      letter-spacing: 0.02em;
     }
-    .entity-card:hover:not(.opacity-60) .card-tag {
-      border-color: var(--accent);
-      color: var(--accent);
+    
+    .card-tag[data-type="Temporal"] { --type-color: var(--type-temporal); }
+    .card-tag[data-type="Spatial"] { --type-color: var(--type-spatial); }
+    .card-tag[data-type="Network"] { --type-color: var(--type-network); }
+    
+    .card-tag .type-icon {
+      width: 12px;
+      height: 12px;
+      opacity: 0.6;
     }
+    
+    .entity-card[data-state="active"]:hover .card-tag { color: var(--type-color); }
+    .entity-card[data-state="active"]:hover .card-tag .type-icon { opacity: 1; }
 
-    .status-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.375rem;
-      color: var(--muted);
-      font-family: 'Inter', sans-serif;
+    .status-badge { 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 0.4rem; 
+      color: var(--muted); 
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: capitalize;
+      letter-spacing: 0.02em;
     }
+    
     .status-dot { 
-      width: 6px; 
-      height: 6px; 
+      width: 5px; 
+      height: 5px; 
       border-radius: 50%; 
-      transition: transform 0.2s ease;
+      transition: transform 0.2s ease, box-shadow 0.2s ease; 
     }
-    .entity-card:hover:not(.opacity-60) .status-dot { transform: scale(1.2); }
-    .status-active { background: var(--status-active); }
-    .status-pending { background: var(--status-pending); }
-
-    .card-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.375rem;
-      font-weight: 500;
-      color: var(--accent);
-      transition: gap 0.25s ease;
-    }
-    .entity-card:hover:not(.opacity-60) .card-cta { gap: 0.75rem; }
-
-    .site-footer {
-      background: var(--card);
-      border-top: 1px solid var(--border);
+    
+    .status-dot[data-state="active"] { background: var(--accent); }
+    .status-dot[data-state="pending"] { background: var(--status-pending); }
+    
+    .entity-card[data-state="active"]:hover .status-dot { 
+      transform: scale(1.4);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 50%, transparent);
     }
 
+    .card-cta { 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 0.375rem; 
+      font-weight: 500; 
+      color: var(--accent); 
+      transition: gap 0.25s ease; 
+      font-size: 0.8125rem;
+    }
+    
+    .entity-card[data-state="active"]:hover .card-cta { gap: 0.75rem; }
+
+    /* Footer */
+    .site-footer { background: var(--card); border-top: 1px solid var(--border); }
     .footer-identity { color: var(--fg); }
     .footer-muted { color: var(--muted); }
     .footer-label { color: var(--muted); opacity: 0.7; }
-
-    .footer-link {
-      color: var(--muted);
-      transition: color 0.2s ease;
+    
+    .footer-link { 
+      color: var(--muted); 
+      transition: color 0.2s ease; 
+      position: relative;
+      text-decoration: none;
+    }
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
     }
     .footer-link:hover { color: var(--fg); }
-    .footer-link:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
+    .footer-link:hover::after { width: 100%; }
+    .footer-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .footer-value { color: var(--fg); opacity: 0.85; }
     .footer-divider { border-color: var(--border); }
 
@@ -604,9 +728,7 @@
       transform: scaleX(0);
       transition: transform 0.1s linear;
     }
-
   </style>
-
 <base target="_blank">
 </head>
 <body>
@@ -616,7 +738,7 @@
     <div class="project-header-inner">
       <a href="../index.html" class="project-identity" aria-label="Return to Index Gentium">
         <div class="project-logo">
-          <img src="../logo.png" alt="Index Gentium Logo">
+          <img src="../logo.png" alt="Index Gentium Logo" onerror="this.style.display='none'">
         </div>
         <div>
           <div class="project-title">Index Gentium</div>
@@ -624,14 +746,11 @@
         </div>
       </a>
 
-      <!-- Controls: Breadcrumbs + Theme Toggle -->
       <div class="nav-controls">
         <nav class="breadcrumb-nav" aria-label="Breadcrumb">
-          <a href="index.html">
-            <span>Gentium</span>
-          </a>
+          <a href="index.html"><span>Gentium</span></a>
           <span class="breadcrumb-separator">/</span>
-          <span class="breadcrumb-current">Ireland</span>
+          <span class="breadcrumb-current" id="breadcrumbCurrent">Loading...</span>
         </nav>
 
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" type="button">
@@ -648,185 +767,52 @@
 
   <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
 
-
-
   <div class="main-content w-full max-w-4xl mx-auto px-6 py-16 md:py-24">
     
     <!-- [1] Identity Layer -->
-    <header class="mb-10 text-center reveal">
-      <div class="flag-container">
-        <span class="flag-icon" aria-hidden="true">🇮🇪</span>
+    <header class="hero-grid reveal">
+      <div class="identity-column">
+        <!-- Flag Link -->
+        <a href="index.html" class="flag-link" id="flagLink" aria-label="Return to Index">
+          <span class="flag-icon-large" id="flagIcon" aria-hidden="true">...</span>
+        </a>
+        
+        <h1 class="font-display type-hero font-medium text-fg mb-1" id="countryName">...</h1>
+        <p class="font-display type-section italic text-muted" id="nativeName">...</p>
+        <div class="flex flex-wrap gap-2" id="tagContainer"></div>
       </div>
 
-      <p class="font-mono type-label uppercase text-muted mb-3 font-medium tracking-widest">
-        Regio Socialis · Collectio
-      </p>
-
-      <h1 class="font-display type-hero font-medium text-fg mb-1">
-        Ireland
-      </h1>
-
-      <p class="font-display type-section italic text-muted mb-5">
-        Éire
-      </p>
-
-      <div class="flex flex-wrap justify-center gap-2">
-        <span class="card-tag">Sovereign State</span>
-        <span class="card-tag">Republic</span>
-        <span class="card-tag">Northwestern Europe</span>
+      <div class="context-column">
+        <div class="definition-lead text-muted" id="definitionText">Loading definition...</div>
       </div>
     </header>
 
-    <!-- Divider -->
     <div class="section-divider reveal delay-1">
       <span class="diamond"></span>
     </div>
 
-    <!-- [2] Intro Definition Card -->
-    <section class="reveal delay-1 mb-10">
-      <div class="definition-card">
-        <p class="font-body type-body text-muted text-center">
-          A parliamentary republic occupying the majority of the island of Ireland. Defined by its post-colonial independence, continued partition, and preservation of Gaelic cultural heritage alongside European integration.
-        </p>
-      </div>
-    </section>
-
-    <!-- [3] Vital Statistics -->
-    <section class="mb-12 reveal delay-2">
+    <!-- [2] Vital Statistics -->
+    <section class="reveal delay-2">
       <div class="text-center mb-6">
         <h2 class="font-display type-section text-fg mb-1">Overview</h2>
-        <p class="font-body type-secondary text-muted">
-          Vital Statistics (Republic of Ireland)
-        </p>
+        <p class="font-body type-secondary text-muted">Vital Statistics</p>
       </div>
-
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
-        <div class="data-card" tabindex="0">
-          <div class="font-display type-data-value font-medium text-fg">IRL</div>
-          <div class="font-body type-label text-muted uppercase font-medium">ISO Code</div>
-        </div>
-        <div class="data-card" tabindex="0">
-          <div class="font-display type-data-value font-medium text-fg">5.1M</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Population</div>
-          <div class="data-indicator">
-            <div class="data-indicator-fill" style="width: 12%;"></div>
-          </div>
-        </div>
-        <div class="data-card" tabindex="0">
-          <div class="font-display type-data-value font-medium text-fg">1922</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Independence</div>
-        </div>
-        <div class="data-card" tabindex="0">
-          <div class="font-display type-data-value font-medium text-fg">70K</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Area km&sup2;</div>
-          <div class="data-indicator">
-            <div class="data-indicator-fill" style="width: 26%;"></div>
-          </div>
-        </div>
-      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="statsGrid"></div>
     </section>
 
-    <!-- Divider -->
     <div class="section-divider reveal delay-2">
       <span class="diamond"></span>
     </div>
 
-    <!-- [4] Registry of Works -->
+    <!-- [3] Registry of Works -->
     <section class="reveal delay-3">
-      
       <div class="text-center mb-6">
         <h2 class="font-display type-section text-fg mb-1">Representation & Explanation</h2>
         <p class="font-body type-secondary text-muted max-w-lg mx-auto">
-          Analytical Representation of a Region of Social Reality.
+          Analytical Representations of Social Reality that Render The Dynamics Intelligible.
         </p>
       </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-        
-        <!-- Card 1 -->
-        <a href="rep/event.html" target="_blank" class="entity-card group" aria-label="View Actor Set Evolution dataset">
-          <div class="card-preview">
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="M8 40V24M16 40V16M24 40V28M32 40V12M40 40V20" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex gap-1.5">
-                <span class="card-tag">Temporal</span>
-              </div>
-              <span class="status-badge type-label">
-                <span class="status-dot status-active"></span>
-                Active
-              </span>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg mb-1.5">Actor Set Evolution</h3>
-            <p class="font-body type-secondary text-muted leading-relaxed mb-3">
-              From Irish Free State to Republic and EU membership, 1922 to present.
-            </p>
-            <span class="card-cta type-secondary">
-              View
-              <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </span>
-          </div>
-        </a>
-
-        <!-- Card 2 -->
-        <div class="entity-card opacity-60" aria-disabled="true" role="article">
-          <div class="card-preview">
-             <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="M24 8L40 18V30L24 40L8 30V18L24 8Z" stroke-linejoin="round"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex gap-1.5">
-                <span class="card-tag">Spatial</span>
-              </div>
-              <span class="status-badge type-label">
-                <span class="status-dot status-pending"></span>
-                Pending
-              </span>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg mb-1.5">Institutional Map</h3>
-            <p class="font-body type-secondary text-muted leading-relaxed mb-3">
-              County and local authority distribution across the twenty-six counties.
-            </p>
-            <span class="font-meta type-meta text-muted uppercase">Coming MMXXV</span>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="entity-card opacity-60" aria-disabled="true" role="article">
-          <div class="card-preview">
-            <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <circle cx="24" cy="24" r="4"/>
-              <circle cx="12" cy="14" r="3"/>
-              <circle cx="36" cy="34" r="3"/>
-              <path d="M24 20L12 17M24 28L36 31" stroke-linecap="round"/>
-            </svg>
-          </div>
-          <div class="card-content">
-            <div class="flex items-center justify-between mb-2">
-              <div class="flex gap-1.5">
-                <span class="card-tag">Network</span>
-              </div>
-              <span class="status-badge type-label">
-                <span class="status-dot status-pending"></span>
-                Pending
-              </span>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg mb-1.5">Inter-Agency Graph</h3>
-            <p class="font-body type-secondary text-muted leading-relaxed mb-3">
-              All-island bodies and cross-border cooperation institutions.
-            </p>
-            <span class="font-meta type-meta text-muted uppercase">Coming MMXXV</span>
-          </div>
-        </div>
-
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="worksGrid"></div>
     </section>
 
   </div>
@@ -834,67 +820,59 @@
   <!-- Footer -->
   <footer class="site-footer py-12 md:py-16 px-6">
     <div class="max-w-4xl mx-auto">
-      
       <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-6 mb-10">
-        
-        <!-- Column I: Identity -->
         <div class="md:col-span-5 text-center md:text-left">
-          <p class="font-display text-lg font-medium tracking-[0.2em] uppercase mb-2 footer-identity">
-            Arbitristae
-          </p>
+          <p class="font-display text-lg font-medium tracking-[0.2em] uppercase mb-2 footer-identity">Arbitristae</p>
           <p class="font-body text-xs leading-relaxed max-w-xs mx-auto md:mx-0 footer-muted">
             A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems.
           </p>
         </div>
         
-        <!-- Column II: Navigation -->
         <div class="md:col-span-3 text-center md:text-left">
           <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Navigation</p>
-          <nav class="flex flex-col items-center md:items-start gap-1.5" aria-label="Footer navigation">
-            <a href="index.html" class="footer-link font-body text-xs">Index Gentium</a>
+
+          <nav id="footerLinks"  class="flex flex-col items-center md:items-start gap-1.5"  aria-label="Footer navigation">
+          </nav>
+          <!-- <nav class="flex flex-col items-center md:items-start gap-1.5" aria-label="Footer navigation">
+            <a href="#" class="footer-link font-body text-xs">Index Gentium</a>
             <a href="#" class="footer-link font-body text-xs">Methodology</a>
             <a href="#" class="footer-link font-body text-xs">Research Notes</a>
             <a href="#" class="footer-link font-body text-xs">Contact</a>
-          </nav>
+          </nav> -->
         </div>
 
-        <!-- Column III: Collectio Metadata -->
         <div class="md:col-span-4 text-center md:text-right">
           <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Status</p>
-          <div class="space-y-1.5 font-mono text-xs">
-            <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Entity Code</span>
-              <span class="font-medium tabular-nums footer-value">IRL-001</span>
-            </div>
-            <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Region</span>
-              <span class="font-medium footer-value">Northwestern Europe</span>
-            </div>
-            <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Last Revised</span>
-              <span class="footer-value">2025-01-16</span>
-            </div>
-          </div>
+          <div class="space-y-1.5 font-mono text-xs" id="footerMetadata"></div>
         </div>
-        
       </div>
       
-      <!-- Bottom Bar -->
       <div class="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 footer-divider">
-         <p class="font-mono text-[10px] tracking-[0.15em] uppercase footer-muted">
-           Index Gentium <span>v1.2</span>
-         </p>
-         <p class="font-display text-sm italic tracking-wide footer-muted">
-           Ordo ex comparatione.
-         </p>
+        <p class="font-mono text-[10px] tracking-[0.15em] uppercase footer-muted">Index Gentium <span>v1.2</span></p>
+        <p class="font-display text-sm italic tracking-wide footer-muted">Ordo ex comparatione.</p>
       </div>
-      
     </div>
   </footer>
 
   <script>
+    // Type-specific mini icons
+    const typeIcons = {
+      Temporal: `<svg class="type-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 12V8M6 12V5M9 12V9M12 12V4" stroke-linecap="round"/></svg>`,
+      Spatial: `<svg class="type-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 3L13 6V10L8 13L3 10V6L8 3Z" stroke-linejoin="round"/></svg>`,
+      Network: `<svg class="type-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="1.5"/><circle cx="4" cy="5" r="1"/><circle cx="12" cy="11" r="1"/><path d="M8 6.5L4.5 5.5M8 9.5L11.5 10.5" stroke-linecap="round"/></svg>`
+    };
+
+    // Preview icons
+    const previewIcons = {
+      Temporal: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 40V24M16 40V16M24 40V28M32 40V12M40 40V20" stroke-linecap="round"/></svg>`,
+      Spatial: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M24 8L40 18V30L24 40L8 30V18L24 8Z" stroke-linejoin="round"/></svg>`,
+      Network: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="24" cy="24" r="4"/><circle cx="12" cy="14" r="3"/><circle cx="36" cy="34" r="3"/><path d="M24 20L12 17M24 28L36 31" stroke-linecap="round"/></svg>`
+    };
+
+    // Theme & Scroll Logic
     const themeToggle = document.getElementById('themeToggle');
     const scrollProgress = document.getElementById('scrollProgress');
+    const projectHeader = document.getElementById('projectHeader');
     const htmlElement = document.documentElement;
 
     const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
@@ -912,20 +890,20 @@
       setTheme(newTheme);
     });
 
-    // Scroll Progress
     function updateScrollProgress() {
       const scrollTop = window.scrollY;
       const docHeight = document.documentElement.scrollHeight - window.innerHeight;
       const progress = docHeight > 0 ? scrollTop / docHeight : 0;
       scrollProgress.style.transform = `scaleX(${progress})`;
+      if (scrollTop > 10) projectHeader.classList.add('scrolled');
+      else projectHeader.classList.remove('scrolled');
     }
 
     window.addEventListener('scroll', updateScrollProgress, { passive: true });
     updateScrollProgress();
 
     // Reveal Animation
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce').matches;
     if (!prefersReducedMotion) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
@@ -935,11 +913,160 @@
           }
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-
       document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
     } else {
       document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
     }
+
+    // Data Loading & Rendering
+    async function initPage() {
+      try {
+        const response = await fetch('country.json');
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        renderData(data);
+      } catch (error) {
+        console.error('Failed to load country data:', error);
+        document.getElementById('definitionText').textContent = "Error loading data. Please check console.";
+      }
+    }
+
+    function renderFooter(data) {
+        // Metadata (already partially implemented in your file)
+
+        // Footer Metadata
+        const footerMeta = document.getElementById('footerMetadata');
+        footerMeta.innerHTML = `
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span class="footer-muted">Entity Code</span>
+            <span class="font-medium tabular-nums footer-value">${data.footer.entityCode}</span>
+            </div>
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span class="footer-muted">Region</span>
+            <span class="font-medium footer-value">${data.footer.region}</span>
+            </div>
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span class="footer-muted">Last Revised</span>
+            <span class="footer-value">${data.footer.lastRevised}</span>
+            </div>
+        `;
+        
+        // Dynamic Links
+        const linksContainer = document.getElementById("footerLinks");
+        linksContainer.innerHTML = "";
+
+        data.footer.links.forEach(link => {
+            const a = document.createElement("a");
+            a.href = link.href;
+            a.textContent = link.label;
+            a.className = "footer-link font-body text-xs";
+            linksContainer.appendChild(a);
+        });
+    }
+
+
+    function renderData(data) {
+      // Meta
+      document.title = data.meta.title;
+      document.getElementById('breadcrumbCurrent').textContent = data.meta.breadcrumbName;
+
+      // Identity
+      document.getElementById('flagIcon').textContent = data.meta.flagEmoji;
+      document.getElementById('countryName').textContent = data.identity.name;
+      document.getElementById('nativeName').textContent = data.identity.nativeName;
+
+      const tagContainer = document.getElementById('tagContainer');
+      tagContainer.innerHTML = '';
+      data.identity.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'tag-pill';
+        span.textContent = tag;
+        tagContainer.appendChild(span);
+      });
+
+      // Definition
+      document.getElementById('definitionText').textContent = data.definition.text;
+
+      // Statistics
+      const statsGrid = document.getElementById('statsGrid');
+      statsGrid.innerHTML = '';
+      data.statistics.forEach(stat => {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        card.tabIndex = 0;
+        
+        let indicatorHtml = '';
+        if (stat.hasIndicator) {
+          indicatorHtml = `<div class="data-indicator"><div class="data-indicator-fill" style="width: ${stat.indicatorValue}%;"></div></div>`;
+        }
+
+        let labelHtml = stat.label;
+        if (stat.id === 'area') {
+          labelHtml = `Area km<sup>2</sup>`;
+        }
+
+        card.innerHTML = `
+          <div class="font-display type-data-value font-medium text-fg">${stat.value}</div>
+          <div class="font-body type-label text-muted uppercase font-medium">${labelHtml}</div>
+          ${indicatorHtml}
+        `;
+        statsGrid.appendChild(card);
+      });
+
+      // Works
+      const worksGrid = document.getElementById('worksGrid');
+      worksGrid.innerHTML = '';
+      
+      data.works.forEach(work => {
+        const isActive = work.status === 'active';
+        const tagType = isActive ? 'a' : 'div';
+        const card = document.createElement(tagType);
+
+        card.className = 'entity-card group';
+        card.setAttribute('data-state', work.status);
+        card.setAttribute('data-type', work.type);
+        card.setAttribute('data-work-id', work.id);
+        
+        if (isActive) {
+          card.setAttribute('href', work.link || '#');
+          card.setAttribute('target', '_blank');
+          card.setAttribute('aria-label', `View ${work.title} dataset`);
+        } else {
+          card.setAttribute('aria-disabled', 'true');
+          card.setAttribute('role', 'article');
+        }
+
+        const previewSvg = previewIcons[work.type] || previewIcons['Temporal'];
+        const typeIconSvg = typeIcons[work.type] || typeIcons['Temporal'];
+        const statusText = isActive ? 'Active' : 'Pending';
+
+        const ctaHtml = isActive 
+          ? `<span class="card-cta type-secondary">View<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>`
+          : `<span class="font-meta type-meta text-muted uppercase">Coming MMXXV</span>`;
+
+        card.innerHTML = `
+          <div class="card-preview">${previewSvg}</div>
+          <div class="card-content">
+            <div class="flex items-center justify-between mb-3">
+              <span class="card-tag" data-type="${work.type}">${typeIconSvg}${work.type}</span>
+              <span class="status-badge">
+                <span class="status-dot" data-state="${work.status}"></span>
+                ${statusText}
+              </span>
+            </div>
+            <h3 class="font-display type-card-title font-medium text-fg mb-1.5 card-title">${work.title}</h3>
+            <p class="font-body type-secondary text-muted leading-relaxed card-description">${work.description}</p>
+            ${ctaHtml}
+          </div>
+        `;
+
+        worksGrid.appendChild(card);
+      });
+
+      renderFooter(data)
+    }
+
+    initPage();
   </script>
 </body>
 </html>
