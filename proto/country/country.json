@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "Argentina · Collectio",
+    "title": "🇦🇷 Argentina",
     "flagEmoji": "🇦🇷",
     "breadcrumbName": "Argentina"
   },
@@ -48,7 +48,7 @@
       "status": "active",
       "title": "Actor Set Evolution",
       "description": "From Viceroyalty to Confederation and Peronist era transitions, 1816 to present.",
-      "link": "rep/event.html"
+      "link": null
     },
     {
       "id": "institutional-map",
