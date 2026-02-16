@@ -699,11 +699,15 @@
     const nextBtn = document.getElementById('nextBtn');
     const tagContainer = document.getElementById('tagContainer');
 
+    // Updated to handle tags as arrays
     function getClassificationCounts() {
       const counts = {};
       entities.forEach(entity => {
-        const tag = entity.tags;
-        counts[tag] = (counts[tag] || 0) + 1;
+        if (Array.isArray(entity.tags)) {
+          entity.tags.forEach(tag => {
+            counts[tag] = (counts[tag] || 0) + 1;
+          });
+        }
       });
       return counts;
     }
@@ -856,10 +860,12 @@
         return;
       }
 
-      currentMatches = entities.filter(e => 
-        e.name.toLowerCase().includes(term.toLowerCase()) ||
-        e.tags.toLowerCase().includes(term.toLowerCase())
-      );
+      // Updated to search within tags array
+      currentMatches = entities.filter(e => {
+        const nameMatch = e.name.toLowerCase().includes(term.toLowerCase());
+        const tagMatch = Array.isArray(e.tags) && e.tags.some(t => t.toLowerCase().includes(term.toLowerCase()));
+        return nameMatch || tagMatch;
+      });
 
       renderMetadata(currentMatches.length);
 
@@ -886,7 +892,7 @@
             <span class="text-lg" aria-hidden="true">${entity.icon}</span>
             <div class="flex-1 min-w-0">
               <p class="font-medium text-fg truncate">${entity.name}</p>
-              <p class="text-xs text-muted">${entity.tags}</p>
+              <p class="text-xs text-muted">${Array.isArray(entity.tags) ? entity.tags.join(', ') : ''}</p>
             </div>
           </div>
         </div>
@@ -917,13 +923,20 @@
     function renderCard(entity) {
       const code = entity.code || entity.name.substring(0, 2).toUpperCase() + '-001';
       
+      // Handle tags as array - render each tag as a separate pill
+      const tagsHTML = Array.isArray(entity.tags) 
+        ? entity.tags.map(tag => `
+            <span class="inline-block px-2 py-0.5 text-xs font-mono tracking-wide text-muted bg-muted/10 rounded">${tag}</span>
+          `).join('')
+        : '';
+      
       return `
         <article class="entity-card relative bg-card border border-border rounded-xl p-6 shadow-sm" role="listitem">
           <div class="flex items-start justify-between mb-4">
             <div class="flex items-center gap-3">
               <span class="text-2xl" aria-hidden="true">${entity.icon}</span>
-              <div>
-                <span class="inline-block px-2 py-0.5 text-xs font-mono tracking-wide text-muted bg-muted/10 rounded">${entity.tags}</span>
+              <div class="flex flex-wrap gap-1">
+                ${tagsHTML}
               </div>
             </div>
             <span class="flex items-center gap-1.5 text-xs text-muted">
@@ -1006,11 +1019,14 @@
       const searchTerm = searchInput.value.toLowerCase().trim();
       
       filteredEntities = entities.filter(entity => {
-        const matchesFilter = currentFilter === 'all' || entity.tags === currentFilter;
+        // Updated to handle tags array
+        const matchesFilter = currentFilter === 'all' || 
+          (Array.isArray(entity.tags) && entity.tags.includes(currentFilter));
+        
         const matchesSearch = searchTerm === '' || 
           entity.name.toLowerCase().includes(searchTerm) ||
           entity.description.toLowerCase().includes(searchTerm) ||
-          entity.tags.toLowerCase().includes(searchTerm);
+          (Array.isArray(entity.tags) && entity.tags.some(t => t.toLowerCase().includes(searchTerm)));
         
         return matchesFilter && matchesSearch;
       });
