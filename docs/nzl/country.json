@@ -65,10 +65,10 @@
       "link": "rep/event.html"
     },
     {
-      "id": "agricultural_export_network",
+      "id": "product_space",
       "type": "Network",
       "status": "pending",
-      "title": "Agricultural and Trade Network Structure",
+      "title": "Product Space Evolution",
       "description": "Network analysis of dairy, meat, forestry, and agri-technology sectors, including export linkages to Asia-Pacific markets.",
       "link": null
     },
