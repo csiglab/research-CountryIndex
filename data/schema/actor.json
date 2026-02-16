@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://example.org/schemas/social-region-actors",
+  "title": "Social Region Actors Set",
+  "type": "object",
+  "properties": {
+    "metadata": {
+      "type": "object",
+      "description": "Metadata about the dataset, including information about the social region"
+    },
+    "region": {
+      "type": "string",
+      "description": "Name of the social region this dataset pertains to"
+    },
+    "actors": {
+      "type": "array",
+      "description": "List of actors relevant to the social region",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Unique identifier for the actor"
+          },
+          "name": {
+            "type": "string",
+            "description": "Full name of the actor"
+          },
+          "type": {
+            "type": "string",
+            "enum": ["public", "private", "hybrid"],
+            "description": "Type of actor"
+          },
+          "role": {
+            "type": "string",
+            "description": "Primary function or role of the actor"
+          },
+          "regionOfActivity": {
+            "type": "string",
+            "description": "Geographic or social region of activity"
+          },
+          "description": {
+            "type": "string",
+            "description": "Short description of the actor"
+          },
+          "events": {
+            "type": "array",
+            "description": "Significant events in the actor's history",
+            "items": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "type": "string",
+                  "format": "date",
+                  "description": "Date of the event"
+                },
+                "category": {
+                  "type": "string",
+                  "description": "Type or category of the event"
+                },
+                "description": {
+                  "type": "string",
+                  "description": "Brief description of the event"
+                }
+              },
+              "required": ["date", "category", "description"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["id", "name", "type", "role", "regionOfActivity", "description", "events"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["metadata", "region", "actors"],
+  "additionalProperties": false
+}

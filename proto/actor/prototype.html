@@ -43,7 +43,7 @@
         
         /* Controls */
         .control-panel {
-            background: rgba(246, 244, 239, 0.9);
+            background: rgba(246, 244, 239, 0.95);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid var(--border-subtle);
         }
@@ -79,13 +79,14 @@
             right: 0;
             top: 0;
             height: 100vh;
-            width: 320px;
+            width: 340px;
             background: var(--bg-primary);
             border-left: 1px solid var(--border-subtle);
             transform: translateX(100%);
             transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             z-index: 50;
             overflow-y: auto;
+            box-shadow: -4px 0 20px rgba(0,0,0,0.05);
         }
         .detail-sidebar.open {
             transform: translateX(0);
@@ -97,18 +98,25 @@
             border-top: 1px solid var(--fg-muted);
             background: var(--bg-secondary);
         }
-        
-        /* Animations */
-        @keyframes pulse {
-            0% { transform: scale(1); opacity: 1; }
-            100% { transform: scale(2); opacity: 0; }
+
+        /* Loading State */
+        #loading-indicator {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--fg-muted);
+            pointer-events: none;
+            transition: opacity 0.5s;
         }
     </style>
 </head>
 <body class="overflow-hidden">
 
     <!-- Header -->
-    <header class="control-panel py-4 px-6 flex justify-between items-center">
+    <header class="control-panel py-4 px-6 flex justify-between items-center z-10 relative">
         <div>
             <h1 class="font-display text-2xl font-medium tracking-wide">New Zealand Actor Space</h1>
             <p class="text-xs text-[var(--fg-muted)] uppercase tracking-widest mt-1">Event-Based Temporal Representation, 1800–Present</p>
@@ -150,10 +158,13 @@
                 <div class="text-sm italic" id="tt-desc">Description</div>
                 <div class="mt-2 text-xs font-mono" id="tt-date">Date</div>
             </div>
+
+            <!-- Loading Message -->
+            <div id="loading-indicator">Loading actor-set.json...</div>
         </div>
 
         <!-- Time Axis -->
-        <div class="time-axis relative">
+        <div class="time-axis relative z-10">
             <canvas id="axis-canvas"></canvas>
         </div>
         
@@ -161,10 +172,10 @@
 
     <!-- Detail Sidebar (Consolidated Actor View) -->
     <aside id="sidebar" class="detail-sidebar p-6">
-        <button id="close-sidebar" class="absolute top-4 right-4 text-sm opacity-50 hover:opacity-100">✕</button>
-        <div class="border-b border-[var(--border-subtle)] pb-4 mb-4">
-            <h2 class="font-display text-3xl font-medium" id="sb-name">Actor Name</h2>
-            <p class="text-sm text-[var(--fg-muted)] uppercase tracking-wider" id="sb-role">Role</p>
+        <button id="close-sidebar" class="absolute top-4 right-4 text-sm opacity-50 hover:opacity-100 transition-opacity p-2">✕</button>
+        <div class="border-b border-[var(--border-subtle)] pb-4 mb-4 mt-4">
+            <h2 class="font-display text-3xl font-medium leading-tight" id="sb-name">Actor Name</h2>
+            <p class="text-sm text-[var(--fg-muted)] uppercase tracking-wider mt-2" id="sb-role">Role</p>
         </div>
         
         <div class="space-y-4">
@@ -178,101 +189,101 @@
             </div>
             <div>
                 <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)] mb-1">Description</h3>
-                <p id="sb-desc" class="text-sm italic">Description text...</p>
+                <p id="sb-desc" class="text-sm italic leading-relaxed">Description text...</p>
             </div>
             
             <!-- Consolidated Timeline in Sidebar -->
-            <div class="mt-6 pt-4 border-t border-[var(--border-subtle)]">
+            <div class="mt-8 pt-4 border-t border-[var(--border-subtle)]">
                 <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)] mb-4">Consolidated Event Sequence</h3>
-                <div id="sb-timeline" class="space-y-4 pl-4 border-l-2 border-[var(--fg-muted)]">
+                <div id="sb-timeline" class="space-y-6 pl-4 border-l-2 border-[var(--fg-muted)]">
                     <!-- Events will be injected here -->
                 </div>
             </div>
         </div>
     </aside>
 
-    <!-- Data Structure (Simulated Data) -->
-    <script type="application/json" id="data-json">
+    <!-- Fallback Data (Used if actor-set.json is missing) -->
+    <script type="application/json" id="fallback-data">
     [
         {
-            "id": "a1", "name": "New Zealand Company", "type": "private", "role": "Colonization", "region": "Wellington",
+            "id": "a1", "name": "New Zealand Company", "type": "private", "role": "Colonization", "regionOfActivity": "Wellington",
             "description": "Private British company instrumental in the early colonization.",
             "events": [
-                { "date": "1839-05-02", "type": "birth", "desc": "Established in London" },
-                { "date": "1841-01-22", "type": "expansion", "desc": "Wellington settlement founded" },
-                { "date": "1858-12-31", "type": "death", "desc": "Dissolution" }
+                { "date": "1839-05-02", "category": "birth", "description": "Established in London" },
+                { "date": "1841-01-22", "category": "expansion", "description": "Wellington settlement founded" },
+                { "date": "1858-12-31", "category": "death", "description": "Dissolution" }
             ]
         },
         {
-            "id": "a2", "name": "Parliament of New Zealand", "type": "public", "role": "Legislature", "region": "Wellington",
+            "id": "a2", "name": "Parliament of New Zealand", "type": "public", "role": "Legislature", "regionOfActivity": "Wellington",
             "description": "The supreme legislative body of New Zealand.",
             "events": [
-                { "date": "1854-05-24", "type": "birth", "desc": "First parliament convened" },
-                { "date": "1893-09-19", "type": "milestone", "desc": "Women's suffrage granted" },
-                { "date": "1996-10-12", "type": "transformation", "desc": "MMP system adopted" }
+                { "date": "1854-05-24", "category": "birth", "description": "First parliament convened" },
+                { "date": "1893-09-19", "category": "milestone", "description": "Women's suffrage granted" },
+                { "date": "1996-10-12", "category": "transformation", "description": "MMP system adopted" }
             ]
         },
         {
-            "id": "a3", "name": "University of Otago", "type": "public", "role": "Education", "region": "Dunedin",
+            "id": "a3", "name": "University of Otago", "type": "public", "role": "Education", "regionOfActivity": "Dunedin",
             "description": "Oldest university in New Zealand.",
             "events": [
-                { "date": "1869-01-01", "type": "birth", "desc": "Founded" },
-                { "date": "1871-07-05", "type": "expansion", "desc": "First classes began" }
+                { "date": "1869-01-01", "category": "birth", "description": "Founded" },
+                { "date": "1871-07-05", "category": "expansion", "description": "First classes began" }
             ]
         },
         {
-            "id": "a4", "name": "Bank of New Zealand", "type": "private", "role": "Finance", "region": "Auckland",
+            "id": "a4", "name": "Bank of New Zealand", "type": "private", "role": "Finance", "regionOfActivity": "Auckland",
             "description": "One of New Zealand's largest banks.",
             "events": [
-                { "date": "1861-07-29", "type": "birth", "desc": "Founded in Auckland" },
-                { "date": "1945-01-01", "type": "milestone", "desc": "Largest bank by assets" }
+                { "date": "1861-07-29", "category": "birth", "description": "Founded in Auckland" },
+                { "date": "1945-01-01", "category": "milestone", "description": "Largest bank by assets" }
             ]
         },
         {
-            "id": "a5", "name": "New Zealand Railways", "type": "public", "role": "Transport", "region": "National",
+            "id": "a5", "name": "New Zealand Railways", "type": "public", "role": "Transport", "regionOfActivity": "National",
             "description": "National railway system.",
             "events": [
-                { "date": "1863-12-31", "type": "birth", "desc": "First railway opened" },
-                { "date": "1993-07-01", "type": "privatization", "desc": "Privatized" },
-                { "date": "2008-07-01", "type": "renationalization", "desc": "Renationalized" }
+                { "date": "1863-12-31", "category": "birth", "description": "First railway opened" },
+                { "date": "1993-07-01", "category": "privatization", "description": "Privatized" },
+                { "date": "2008-07-01", "category": "renationalization", "description": "Renationalized" }
             ]
         },
         {
-            "id": "a6", "name": "Air New Zealand", "type": "hybrid", "role": "Aviation", "region": "National",
+            "id": "a6", "name": "Air New Zealand", "type": "hybrid", "role": "Aviation", "regionOfActivity": "National",
             "description": "National airline carrier.",
             "events": [
-                { "date": "1940-04-26", "type": "birth", "desc": "TEAL formed" },
-                { "date": "1989-01-01", "type": "privatization", "desc": "Privatized" },
-                { "date": "2001-09-13", "type": "renationalization", "desc": "Govt bailout" }
+                { "date": "1940-04-26", "category": "birth", "description": "TEAL formed" },
+                { "date": "1989-01-01", "category": "privatization", "description": "Privatized" },
+                { "date": "2001-09-13", "category": "renationalization", "description": "Govt bailout" }
             ]
         },
         {
-            "id": "a7", "name": "Waitangi Tribunal", "type": "public", "role": "Justice", "region": "National",
+            "id": "a7", "name": "Waitangi Tribunal", "type": "public", "role": "Justice", "regionOfActivity": "National",
             "description": "Permanent commission of inquiry on Treaty claims.",
             "events": [
-                { "date": "1975-10-10", "type": "birth", "desc": "Established by Act" }
+                { "date": "1975-10-10", "category": "birth", "description": "Established by Act" }
             ]
         },
         {
-            "id": "a8", "name": "Fonterra", "type": "hybrid", "role": "Dairy", "region": "National",
+            "id": "a8", "name": "Fonterra", "type": "hybrid", "role": "Dairy", "regionOfActivity": "National",
             "description": "New Zealand's largest dairy cooperative.",
             "events": [
-                { "date": "2001-10-16", "type": "birth", "desc": "Merger formed Fonterra" }
+                { "date": "2001-10-16", "category": "birth", "description": "Merger formed Fonterra" }
             ]
         },
         {
-            "id": "a9", "name": "Māori King Movement", "type": "hybrid", "role": "Cultural Leadership", "region": "Waikato",
+            "id": "a9", "name": "Māori King Movement", "type": "hybrid", "role": "Cultural Leadership", "regionOfActivity": "Waikato",
             "description": "Māori sovereignty movement.",
             "events": [
-                { "date": "1858-06-02", "type": "birth", "desc": "First Māori King installed" },
-                { "date": "1863-07-12", "type": "conflict", "desc": "Waikato War invasion" }
+                { "date": "1858-06-02", "category": "birth", "description": "First Māori King installed" },
+                { "date": "1863-07-12", "category": "conflict", "description": "Waikato War invasion" }
             ]
         },
         {
-            "id": "a10", "name": "Reserve Bank of NZ", "type": "public", "role": "Finance", "region": "National",
+            "id": "a10", "name": "Reserve Bank of NZ", "type": "public", "role": "Finance", "regionOfActivity": "National",
             "description": "Central bank.",
             "events": [
-                { "date": "1934-08-01", "type": "birth", "desc": "Established" }
+                { "date": "1934-08-01", "category": "birth", "description": "Established" }
             ]
         }
     ]
@@ -287,21 +298,61 @@
             events: [], // Flattened event list for rendering
             selectedActor: null,
 
-            init() {
-                // Load data
-                const rawData = JSON.parse(document.getElementById('data-json').textContent);
-                this.actors = rawData;
+            async init() {
+                const loadingEl = document.getElementById('loading-indicator');
+                
+                try {
+                    // Try to fetch the external file
+                    const response = await fetch('actor-set.json');
+                    
+                    if (!response.ok) {
+                        throw new Error(`HTTP Error: ${response.status}`);
+                    }
+                    
+                    const rawData = await response.json();
+                    console.log("Successfully loaded actor-set.json");
+                    this.processData(rawData);
+                    
+                } catch (error) {
+                    console.warn("Could not load actor-set.json (likely CORS or file missing). Using fallback data.", error);
+                    
+                    // Fallback: Load embedded JSON
+                    const fallbackText = document.getElementById('fallback-data').textContent;
+                    const rawData = JSON.parse(fallbackText);
+                    this.processData(rawData);
+                } finally {
+                    // Hide loading indicator
+                    loadingEl.style.opacity = '0';
+                }
+            },
+
+            processData(rawData) {
+                // Schema normalization: 
+                // The provided schema has a root object { metadata, region, actors }.
+                // The fallback data is just an array [actors].
+                // We handle both cases here.
+                this.actors = rawData.actors || (Array.isArray(rawData) ? rawData : []);
                 
                 // Flatten events for scalable rendering
-                // We add a reference back to the actor ID
                 this.events = [];
                 this.actors.forEach(actor => {
+                    // Ensure actor has events array
+                    if (!actor.events) return;
+
                     actor.events.forEach(ev => {
+                        // Schema Mapping:
+                        // Schema: 'date', 'category', 'description'
+                        // Internal: 'date', 'type', 'desc'
+                        // We normalize 'category' -> 'type' and 'description' -> 'desc'
+                        
+                        const eventDate = new Date(ev.date);
+                        if (isNaN(eventDate.getTime())) return; // Skip invalid dates
+
                         this.events.push({
                             x: 0, y: 0, // To be calculated by renderer
-                            date: new Date(ev.date),
-                            type: ev.type,
-                            desc: ev.desc,
+                            date: eventDate,
+                            type: ev.category || ev.type || 'general', // Prefer category (schema), fallback to type (old format)
+                            desc: ev.description || ev.desc || '',      // Prefer description (schema)
                             actorId: actor.id,
                             actorName: actor.name,
                             actorType: actor.type
@@ -309,7 +360,7 @@
                     });
                 });
 
-                // Sort events by date for potential optimizations
+                // Sort events by date
                 this.events.sort((a, b) => a.date - b.date);
             },
 
@@ -342,7 +393,7 @@
             
             // Time constraints
             minDate: new Date('1800-01-01').getTime(),
-            maxDate: new Date('2024-12-31').getTime(),
+            maxDate: new Date('2025-12-31').getTime(), // Extended slightly
             timeRange: 0,
             
             // Layout constants
@@ -390,7 +441,6 @@
                 // Normalized position 0..1
                 const normalized = (timestamp - this.minDate) / this.timeRange;
                 // Apply zoom and pan
-                // Base width available for timeline
                 const W = this.width - this.marginLeft - this.marginRight;
                 // Scaled position
                 const x = this.marginLeft + (normalized * W * this.zoom) + this.panX;
@@ -422,7 +472,7 @@
                 // Target: roughly 100px between ticks
                 const targetStepMs = ms_per_pixel * 100;
                 
-                // Define reasonable steps: 1yr, 5yr, 10yr, 25yr
+                // Define reasonable steps
                 const year = 31536000000;
                 let step = 10 * year;
                 
@@ -432,9 +482,9 @@
                 else step = 25 * year;
 
                 const startYear = 1800;
-                const endYear = 2024;
+                const endYear = 2025;
                 
-                // Find first visible tick
+                // Find visible range
                 const leftDate = this.mapXToDate(this.marginLeft);
                 const rightDate = this.mapXToDate(this.width - this.marginRight);
                 
@@ -442,7 +492,7 @@
                 current.setMonth(0, 1);
                 current.setHours(0,0,0,0);
                 
-                // Round to step
+                // Snap to step
                 let years = Math.floor((current.getFullYear() - startYear) / (step/year));
                 current.setFullYear(startYear + years * (step/year));
 
@@ -466,11 +516,18 @@
                 // Background
                 ctx.fillStyle = '#F6F4EF';
                 ctx.fillRect(0, 0, this.width, this.height);
-
-                // Draw vertical "now" line or guide lines could go here
+                
+                // Draw vertical "now" line (approximate)
+                // const nowX = this.mapDateToX(new Date().getTime());
+                // if (nowX > this.marginLeft && nowX < this.width) {
+                //     ctx.strokeStyle = 'rgba(0,0,0,0.1)';
+                //     ctx.beginPath();
+                //     ctx.moveTo(nowX, 0);
+                //     ctx.lineTo(nowX, this.height);
+                //     ctx.stroke();
+                // }
                 
                 // Determine layout bands for types
-                // Public: Top, Hybrid: Middle, Private: Bottom
                 const bandHeight = (this.height - this.marginTop - this.marginBottom) / 3;
 
                 const bands = {
@@ -494,8 +551,6 @@
                 // Render Events
                 const events = DataModel.getEvents();
                 const selectedId = DataModel.selectedActor ? DataModel.selectedActor.id : null;
-                
-                // To draw connections for selected actor, we need to collect points first
                 let selectedPoints = [];
 
                 events.forEach(ev => {
@@ -507,43 +562,35 @@
                     const band = bands[ev.actorType];
                     if (!band) return;
 
-                    // Simple Y distribution (Randomized or fixed layout within band)
-                    // For true scalability, we distribute within the band area
-                    // We can use a hash of the ID or simple random to prevent overlap
+                    // Deterministic Y position
                     const centerY = band.y + band.h / 2;
-                    const spread = band.h * 0.4;
+                    const spread = band.h * 0.35;
                     
-                    // Deterministic Y position based on ID for stability
+                    // Hash ID for stable distribution
                     const hash = ev.actorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
                     const y = centerY + ((hash % 10) / 10 - 0.5) * spread;
 
                     ev.x = x;
                     ev.y = y;
 
-                    // Visual Encoding
                     const isSelected = ev.actorId === selectedId;
-                    const radius = isSelected ? 5 : 3;
-                    const alpha = selectedId ? (isSelected ? 1.0 : 0.1) : 0.7;
+                    const radius = isSelected ? 6 : 3.5;
+                    const alpha = selectedId ? (isSelected ? 1.0 : 0.1) : 0.8;
 
                     ctx.beginPath();
                     ctx.arc(x, y, radius, 0, Math.PI * 2);
                     
-                    // Color based on event type or actor type?
-                    // Requirement: "encode actor types... lines, colors"
-                    // We use Actor Type color as fill, Event Type might change shape later
+                    // Color handling
                     let fillColor = band.color;
-                    
-                    // Event Type differentiation (Visual refinement)
-                    if (ev.type === 'death') ctx.globalAlpha = 0.4;
+                    if (ev.type === 'death') ctx.globalAlpha = alpha * 0.5;
                     else ctx.globalAlpha = alpha;
 
                     ctx.fillStyle = fillColor;
                     ctx.fill();
 
-                    // Highlight stroke for selected
                     if (isSelected) {
                         ctx.strokeStyle = '#000';
-                        ctx.lineWidth = 1.5;
+                        ctx.lineWidth = 2;
                         ctx.stroke();
                         selectedPoints.push({x, y, date: ev.date, desc: ev.desc, type: ev.type});
                     }
@@ -551,14 +598,14 @@
                     ctx.globalAlpha = 1.0;
                 });
 
-                // Draw Consolidated Line for Selected Actor
+                // Draw Connector Line for Selected Actor
                 if (selectedPoints.length > 1) {
                     selectedPoints.sort((a,b) => a.x - b.x);
                     
                     ctx.beginPath();
-                    ctx.strokeStyle = '#000000';
-                    ctx.lineWidth = 1;
-                    ctx.setLineDash([2, 2]);
+                    ctx.strokeStyle = '#1A1A1A'; // Dark ink color
+                    ctx.lineWidth = 1.5;
+                    ctx.setLineDash([4, 4]); // Dashed line for temporal connection
                     
                     ctx.moveTo(selectedPoints[0].x, selectedPoints[0].y);
                     selectedPoints.forEach(p => ctx.lineTo(p.x, p.y));
@@ -601,8 +648,9 @@
                         const dx = e.clientX - Renderer.dragStartX;
                         Renderer.panX = Renderer.panStartX + dx;
                     } else {
-                        // Hit detection
-                        this.handleHover(e);
+                        // Hit detection only if not dragging
+                        const rect = canvas.getBoundingClientRect();
+                        this.handleHover(e.clientX - rect.left, e.clientY - rect.top, e.clientX, e.clientY);
                     }
                 });
 
@@ -611,12 +659,15 @@
                     canvas.style.cursor = 'crosshair';
                 });
 
-                // Click to Consolidate
+                // Click to Select
                 canvas.addEventListener('click', (e) => {
-                    const hit = this.findEvent(e.offsetX, e.offsetY);
+                    const rect = canvas.getBoundingClientRect();
+                    const hit = this.findEvent(e.clientX - rect.left, e.clientY - rect.top);
                     if (hit) {
                         this.selectActor(hit.actorId);
                     } else {
+                        // Deselect if clicked on empty space (and not dragging)
+                        // Simple check: if mouse moved significantly, it was a drag
                         this.deselectActor();
                     }
                 });
@@ -626,18 +677,15 @@
                     e.preventDefault();
                     const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
                     
-                    // Zoom towards mouse position
                     const mouse_x = e.offsetX;
-                    // Date at mouse before zoom
                     const dateAtMouse = Renderer.mapXToDate(mouse_x);
                     
                     Renderer.zoom *= zoomFactor;
-                    Renderer.zoom = Math.max(0.5, Math.min(Renderer.zoom, 50)); // Limits
+                    Renderer.zoom = Math.max(0.5, Math.min(Renderer.zoom, 50)); 
 
-                    // Adjust pan to keep date under mouse
                     const new_x_for_date = Renderer.mapDateToX(dateAtMouse);
                     Renderer.panX += (mouse_x - new_x_for_date);
-                });
+                }, { passive: false });
 
                 // Controls
                 document.getElementById('btn-zoom-in').addEventListener('click', () => {
@@ -651,37 +699,41 @@
                     Renderer.panX = 0;
                 });
 
-                // Sidebar
+                // Sidebar Close
                 document.getElementById('close-sidebar').addEventListener('click', () => {
                     this.deselectActor();
                 });
             },
 
-            handleHover(e) {
-                const hit = this.findEvent(e.offsetX, e.offsetY);
+            handleHover(canvasX, canvasY, clientX, clientY) {
+                const hit = this.findEvent(canvasX, canvasY);
                 const tooltip = document.getElementById('tooltip');
                 
                 if (hit) {
-                    tooltip.style.left = (e.clientX + 15) + 'px';
-                    tooltip.style.top = (e.clientY + 15) + 'px';
+                    // Ensure tooltip stays within viewport
+                    let left = clientX + 15;
+                    let top = clientY + 15;
+                    
+                    tooltip.style.left = left + 'px';
+                    tooltip.style.top = top + 'px';
                     tooltip.style.opacity = 1;
                     
                     document.getElementById('tt-type').textContent = hit.type;
                     document.getElementById('tt-actor').textContent = hit.actorName;
                     document.getElementById('tt-desc').textContent = hit.desc;
-                    document.getElementById('tt-date').textContent = hit.date.toLocaleDateString();
+                    document.getElementById('tt-date').textContent = hit.date.toLocaleDateString(undefined, {
+                        year: 'numeric', month: 'short', day: 'numeric'
+                    });
                 } else {
                     tooltip.style.opacity = 0;
                 }
             },
 
             findEvent(mx, my) {
-                // Proximity search
                 const events = DataModel.getEvents();
-                const radius = 6; // Hit radius
+                const radius = 8; // Generous hit radius
                 
-                // Simple loop, could be optimized with QuadTree for massive datasets
-                // For "thousands", a simple loop is instantaneous in JS.
+                // Search backwards to find top-most rendered item first
                 for (let i = events.length - 1; i >= 0; i--) {
                     const ev = events[i];
                     const dx = ev.x - mx;
@@ -703,30 +755,40 @@
                 
                 document.getElementById('sb-name').textContent = actor.name;
                 document.getElementById('sb-role').textContent = actor.role;
-                document.getElementById('sb-type').textContent = actor.type;
-                document.getElementById('sb-region').textContent = actor.region;
-                document.getElementById('sb-desc').textContent = actor.description;
+                
+                // Capitalize type for display
+                const typeDisplay = actor.type.charAt(0).toUpperCase() + actor.type.slice(1);
+                document.getElementById('sb-type').textContent = typeDisplay;
+                
+                // Handle regionOfActivity (schema) vs region (fallback)
+                document.getElementById('sb-region').textContent = actor.regionOfActivity || actor.region || 'Unknown';
+                document.getElementById('sb-desc').textContent = actor.description || 'No description available.';
                 
                 // Timeline
                 const tl = document.getElementById('sb-timeline');
                 tl.innerHTML = '';
 
-                // Sort events
                 const sorted = [...actor.events].sort((a,b) => new Date(a.date) - new Date(b.date));
                 
                 sorted.forEach(ev => {
                     const div = document.createElement('div');
-                    div.className = 'relative pl-4';
+                    div.className = 'relative pl-6 group';
+                    
+                    // Determine color based on category
+                    let dotColor = 'var(--fg-primary)';
+                    if (ev.category === 'birth') dotColor = 'var(--accent-public)';
+                    if (ev.category === 'death') dotColor = 'var(--accent-private)';
+
                     div.innerHTML = `
-                        <div class="absolute -left-2 top-1 w-3 h-3 rounded-full border border-[var(--fg-primary)] bg-[var(--bg-primary)]"></div>
-                        <div class="text-xs text-[var(--fg-muted)]">${new Date(ev.date).toLocaleDateString()}</div>
-                        <div class="text-sm font-medium">${ev.type}</div>
-                        <div class="text-xs italic">${ev.desc}</div>
+                        <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full border border-[var(--fg-primary)] bg-[var(--bg-primary)] group-hover:bg-[var(--fg-secondary)] transition-colors"></div>
+                        <div class="text-xs text-[var(--fg-muted)] font-mono mb-0.5">${new Date(ev.date).toLocaleDateString()}</div>
+                        <div class="text-sm font-medium text-[var(--fg-primary)] capitalize">${ev.category || ev.type || 'Event'}</div>
+                        <div class="text-sm text-[var(--fg-secondary)] leading-snug">${ev.description || ev.desc || ''}</div>
                     `;
                     tl.appendChild(div);
                 });
 
-                Renderer.draw(); // Trigger immediate redraw
+                Renderer.draw();
             },
 
             deselectActor() {
@@ -740,9 +802,12 @@
         // BOOT
         // ==========================================
         window.addEventListener('DOMContentLoaded', () => {
-            DataModel.init();
-            Renderer.init();
-            Interaction.init();
+            // Initialize Data (Async fetch)
+            DataModel.init().then(() => {
+                // Once data is loaded (or failed over), init visuals
+                Renderer.init();
+                Interaction.init();
+            });
         });
 
     </script>
