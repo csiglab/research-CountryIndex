@@ -311,15 +311,8 @@
       cursor: pointer;
     }
     
-    .flag-link:hover {
-      opacity: 0.85;
-    }
-
-    .flag-link:focus-visible { 
-      outline: 2px solid var(--accent); 
-      outline-offset: 4px; 
-      border-radius: 4px; 
-    }
+    .flag-link:hover { opacity: 0.85; }
+    .flag-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 
     .flag-icon-large {
       font-size: 3.5rem;
@@ -327,7 +320,6 @@
       display: block;
       filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.06));
       transition: transform 0.3s ease, filter 0.3s ease;
-      /* Animation removed for elegance */
     }
 
     .flag-link:hover .flag-icon-large {
@@ -335,7 +327,7 @@
       filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
     }
 
-    /* Definition */
+    /* Definition - Improvement: Hover Border Highlight */
     .definition-lead {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 1.35rem;
@@ -344,6 +336,7 @@
       font-weight: 400;
       position: relative;
       hyphens: auto;
+      transition: color 0.3s ease;
     }
     
     .definition-lead::before {
@@ -354,7 +347,14 @@
       bottom: 0.25rem;
       width: 2px;
       background: var(--border);
+      transition: background 0.3s ease, height 0.3s ease;
     }
+
+    /* Highlight the border on hover */
+    .definition-lead:hover::before {
+      background: var(--accent);
+    }
+
     @media (max-width: 768px) {
       .definition-lead::before { display: none; }
       .definition-lead { font-size: 1.25rem; }
@@ -451,6 +451,7 @@
       text-decoration: none;
       display: block;
       position: relative;
+      height: 100%; /* Ensure consistent height in grid */
     }
     
     /* State indicator: Top accent line */
@@ -521,8 +522,27 @@
       transform: scale(1.1); 
     }
 
+    /* Improvement: Flexbox layout for content alignment */
     .card-content { 
       padding: 1.25rem 1.25rem 1.5rem; 
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 88px); /* Fill remaining space */
+    }
+
+    /* Improvement: Title color transition */
+    .card-title {
+      transition: color 0.3s ease;
+    }
+
+    .entity-card[data-state="active"]:hover .card-title {
+      color: var(--accent);
+    }
+
+    /* Improvement: Push CTA to bottom */
+    .card-description {
+      flex-grow: 1; /* Takes up available space */
+      margin-bottom: 1rem;
     }
 
     /* Refined Type Tag */
@@ -532,18 +552,17 @@
       gap: 0.35rem;
       background: transparent;
       color: var(--muted);
-      font-family: 'JetBrains Mono', monospace; /* Monospace for elegance */
+      font-family: 'JetBrains Mono', monospace;
       padding: 0.2rem 0.5rem;
       border-radius: 2px;
-      border: none; /* No border */
+      border: none;
       font-weight: 400;
       font-size: 0.65rem;
       transition: color 0.2s ease;
-      text-transform: none; /* Normal case */
+      text-transform: none;
       letter-spacing: 0.02em;
     }
     
-    /* Type-specific coloring */
     .card-tag[data-type="Temporal"] { --type-color: var(--type-temporal); }
     .card-tag[data-type="Spatial"] { --type-color: var(--type-spatial); }
     .card-tag[data-type="Network"] { --type-color: var(--type-network); }
@@ -554,13 +573,8 @@
       opacity: 0.6;
     }
     
-    .entity-card[data-state="active"]:hover .card-tag { 
-      color: var(--type-color); 
-    }
-    
-    .entity-card[data-state="active"]:hover .card-tag .type-icon {
-      opacity: 1;
-    }
+    .entity-card[data-state="active"]:hover .card-tag { color: var(--type-color); }
+    .entity-card[data-state="active"]:hover .card-tag .type-icon { opacity: 1; }
 
     /* Refined Status Badge */
     .status-badge { 
@@ -570,7 +584,7 @@
       color: var(--muted); 
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.65rem;
-      text-transform: capitalize; /* Elegant capitalization */
+      text-transform: capitalize;
       letter-spacing: 0.02em;
     }
     
@@ -581,13 +595,8 @@
       transition: transform 0.2s ease, box-shadow 0.2s ease; 
     }
     
-    .status-dot[data-state="active"] { 
-      background: var(--accent);
-    }
-    
-    .status-dot[data-state="pending"] { 
-      background: var(--status-pending); 
-    }
+    .status-dot[data-state="active"] { background: var(--accent); }
+    .status-dot[data-state="pending"] { background: var(--status-pending); }
     
     .entity-card[data-state="active"]:hover .status-dot { 
       transform: scale(1.4);
@@ -604,9 +613,7 @@
       font-size: 0.8125rem;
     }
     
-    .entity-card[data-state="active"]:hover .card-cta { 
-      gap: 0.75rem; 
-    }
+    .entity-card[data-state="active"]:hover .card-cta { gap: 0.75rem; }
 
     /* Footer */
     .site-footer { background: var(--card); border-top: 1px solid var(--border); }
@@ -936,8 +943,8 @@
                 ${statusText}
               </span>
             </div>
-            <h3 class="font-display type-card-title font-medium text-fg mb-1.5">${work.title}</h3>
-            <p class="font-body type-secondary text-muted leading-relaxed mb-4">${work.description}</p>
+            <h3 class="font-display type-card-title font-medium text-fg mb-1.5 card-title">${work.title}</h3>
+            <p class="font-body type-secondary text-muted leading-relaxed card-description">${work.description}</p>
             ${ctaHtml}
           </div>
         `;
