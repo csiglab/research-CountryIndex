@@ -84,6 +84,12 @@
   "footer": {
     "entityCode": "URY",
     "region": "Latin America & Caribbean",
-    "lastRevised": "2026-02-15"
+    "lastRevised": "2026-02-15",
+    "links": [
+      { "label": "Index Gentium", "href": "https://bremontix.xyz/lab/research/country/" },
+      { "label": "Methodology", "href": "#" },
+      { "label": "Research Notes", "href": "https://www.bremontix.xyz/lab/ar/Locus-Social-Realitatis/Region/New-Zealand/" },
+      { "label": "Contact", "href": "#" }
+    ]
   }
 }

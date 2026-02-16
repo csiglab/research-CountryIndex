@@ -830,12 +830,15 @@
         
         <div class="md:col-span-3 text-center md:text-left">
           <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Navigation</p>
-          <nav class="flex flex-col items-center md:items-start gap-1.5" aria-label="Footer navigation">
+
+          <nav id="footerLinks"  class="flex flex-col items-center md:items-start gap-1.5"  aria-label="Footer navigation">
+          </nav>
+          <!-- <nav class="flex flex-col items-center md:items-start gap-1.5" aria-label="Footer navigation">
             <a href="#" class="footer-link font-body text-xs">Index Gentium</a>
             <a href="#" class="footer-link font-body text-xs">Methodology</a>
             <a href="#" class="footer-link font-body text-xs">Research Notes</a>
             <a href="#" class="footer-link font-body text-xs">Contact</a>
-          </nav>
+          </nav> -->
         </div>
 
         <div class="md:col-span-4 text-center md:text-right">
@@ -927,6 +930,40 @@
         document.getElementById('definitionText').textContent = "Error loading data. Please check console.";
       }
     }
+
+    function renderFooter(data) {
+        // Metadata (already partially implemented in your file)
+
+        // Footer Metadata
+        const footerMeta = document.getElementById('footerMetadata');
+        footerMeta.innerHTML = `
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span class="footer-muted">Entity Code</span>
+            <span class="font-medium tabular-nums footer-value">${data.footer.entityCode}</span>
+            </div>
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span class="footer-muted">Region</span>
+            <span class="font-medium footer-value">${data.footer.region}</span>
+            </div>
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span class="footer-muted">Last Revised</span>
+            <span class="footer-value">${data.footer.lastRevised}</span>
+            </div>
+        `;
+        
+        // Dynamic Links
+        const linksContainer = document.getElementById("footerLinks");
+        linksContainer.innerHTML = "";
+
+        data.footer.links.forEach(link => {
+            const a = document.createElement("a");
+            a.href = link.href;
+            a.textContent = link.label;
+            a.className = "footer-link font-body text-xs";
+            linksContainer.appendChild(a);
+        });
+    }
+
 
     function renderData(data) {
       // Meta
@@ -1026,22 +1063,7 @@
         worksGrid.appendChild(card);
       });
 
-      // Footer Metadata
-      const footerMeta = document.getElementById('footerMetadata');
-      footerMeta.innerHTML = `
-        <div class="flex justify-center md:justify-end items-baseline gap-3">
-          <span class="footer-muted">Entity Code</span>
-          <span class="font-medium tabular-nums footer-value">${data.footer.entityCode}</span>
-        </div>
-        <div class="flex justify-center md:justify-end items-baseline gap-3">
-          <span class="footer-muted">Region</span>
-          <span class="font-medium footer-value">${data.footer.region}</span>
-        </div>
-        <div class="flex justify-center md:justify-end items-baseline gap-3">
-          <span class="footer-muted">Last Revised</span>
-          <span class="footer-value">${data.footer.lastRevised}</span>
-        </div>
-      `;
+      renderFooter(data)
     }
 
     initPage();
