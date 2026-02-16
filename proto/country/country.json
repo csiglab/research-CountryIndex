@@ -1,75 +1,89 @@
 {
   "meta": {
-    "title": "🇦🇷 Argentina",
-    "flagEmoji": "🇦🇷",
-    "breadcrumbName": "Argentina"
+    "title": "🇳🇿 New Zealand",
+    "flagEmoji": "🇳🇿",
+    "breadcrumbName": "New Zealand"
   },
   "identity": {
-    "category": "Regio Socialis · Collectio",
-    "name": "Argentina",
-    "nativeName": "República Argentina",
-    "tags": ["Sovereign State", "Federal Republic", "South America"]
+    "category": "Country",
+    "name": "New Zealand",
+    "nativeName": "New Zealand · Aotearoa",
+    "tags": [
+      "Oceania",
+      "Island Nation",
+      "Common Law",
+      "Agricultural Exporter",
+      "OECD",
+      "Parliamentary Democracy"
+    ]
   },
   "definition": {
-    "text": "A federal presidential republic and the second-largest country in South America. Defined by its immigrant heritage, complex federal structure, and oscillation between developmentalist and neoliberal economic models."
+    "text": "New Zealand is a sovereign island nation in Oceania composed primarily of the North and South Islands. It operates as a parliamentary democracy and constitutional monarchy. Historically shaped by Māori settlement and later British colonization, New Zealand developed a high-income, export-oriented economy centered on agriculture, agri-technology, tourism, and services, with strong institutional quality and regulatory transparency."
   },
   "statistics": [
     {
-      "id": "iso",
-      "value": "ARG",
-      "label": "ISO Code",
-      "hasIndicator": false
-    },
-    {
       "id": "population",
-      "value": "46M",
-      "label": "Population",
+      "value": "5.2 million",
+      "label": "Population (approx.)",
       "hasIndicator": true,
-      "indicatorValue": 65
+      "indicatorValue": 5200000
     },
     {
-      "id": "independence",
-      "value": "1816",
-      "label": "Independence",
-      "hasIndicator": false
+      "id": "gdp_nominal",
+      "value": "USD 250 billion",
+      "label": "GDP (Nominal, approx.)",
+      "hasIndicator": true,
+      "indicatorValue": 250000000000
     },
     {
       "id": "area",
-      "value": "2.8M",
-      "label": "Area km²",
+      "value": "268,838 km²",
+      "label": "Total Area",
       "hasIndicator": true,
-      "indicatorValue": 33
+      "indicatorValue": 268838
+    },
+    {
+      "id": "capital",
+      "value": "Wellington",
+      "label": "Capital City",
+      "hasIndicator": false
+    },
+    {
+      "id": "government_type",
+      "value": "Parliamentary Democracy and Constitutional Monarchy",
+      "label": "System of Government",
+      "hasIndicator": false
     }
   ],
   "works": [
     {
-      "id": "actor-evolution",
+      "id": "actor_set_evolution",
       "type": "Temporal",
       "status": "active",
-      "title": "Actor Set Evolution",
-      "description": "From Viceroyalty to Confederation and Peronist era transitions, 1816 to present.",
-      "link": null
+      "title": "Actor Set Evolution of New Zealand",
+      "description": "Temporal mapping of New Zealand’s actor space from Māori polities and colonial administration to welfare-state expansion, economic liberalization (post-1984 reforms), and contemporary regulatory institutions.",
+      "link": "rep/event.html"
     },
     {
-      "id": "institutional-map",
-      "type": "Spatial",
-      "status": "pending",
-      "title": "Institutional Map",
-      "description": "Province and autonomous city distribution across the federal structure.",
-      "link": null
-    },
-    {
-      "id": "inter-agency-graph",
+      "id": "agricultural_export_network",
       "type": "Network",
       "status": "pending",
-      "title": "Inter-Agency Graph",
-      "description": "Federal-provincial fiscal relations and co-participation dynamics.",
+      "title": "Agricultural and Trade Network Structure",
+      "description": "Network analysis of dairy, meat, forestry, and agri-technology sectors, including export linkages to Asia-Pacific markets.",
+      "link": null
+    },
+    {
+      "id": "regional_spatial_structure",
+      "type": "Spatial",
+      "status": "pending",
+      "title": "Regional Spatial-Administrative Structure",
+      "description": "Geospatial representation of regions, major urban centers, infrastructure networks, and environmental management systems.",
       "link": null
     }
   ],
   "footer": {
-    "entityCode": "ARG-001",
-    "region": "South America",
-    "lastRevised": "2025-01-16"
+    "entityCode": "NZL",
+    "region": "Oceania",
+    "lastRevised": "2026-02-15"
   }
 }
