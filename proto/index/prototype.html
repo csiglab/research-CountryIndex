@@ -62,10 +62,10 @@
         /* --- Header: Institutional Emblem (Light Theme) --- */
         header {
             text-align: center;
-            padding: 6rem 0 5rem;
+            padding: 7rem 0 5rem;
             position: relative;
             overflow: hidden;
-            background: linear-gradient(180deg, #FAFAFA 0%, #FFFFFF 100%);
+            background: linear-gradient(180deg, #F8FAFC 0%, #FFFFFF 100%);
             border-bottom: 1px solid var(--border);
         }
 
@@ -73,12 +73,12 @@
         header::before {
             content: '';
             position: absolute;
-            top: -100px;
+            top: 0;
             left: 50%;
             transform: translateX(-50%);
-            width: 800px;
-            height: 600px;
-            background: radial-gradient(circle, rgba(0, 82, 255, 0.06) 0%, transparent 70%);
+            width: 100%;
+            height: 500px;
+            background: radial-gradient(ellipse at center top, rgba(0, 82, 255, 0.04) 0%, transparent 70%);
             z-index: 0;
             pointer-events: none;
         }
@@ -91,41 +91,61 @@
             align-items: center;
         }
 
-        /* Emblem / Badge */
+        /* --- STANDALONE LOGO WITH INTERACTION --- */
         .emblem-container {
-            width: 88px;
-            height: 88px;
-            margin-bottom: 2rem;
             position: relative;
+            margin-bottom: 2.5rem;
+            cursor: pointer;
         }
 
         .emblem {
-            width: 100%;
-            height: 100%;
+            width: 80px;
+            height: 80px;
             object-fit: contain;
-            opacity: 0;
-            animation: emblemReveal 1s ease-out 0.2s forwards;
-            /* Optional: If logo is dark, you might want a subtle drop shadow on light bg */
-            filter: drop-shadow(0 4px 6px rgba(0,0,0,0.05));
+            opacity: 0.7;
+            filter: grayscale(100%);
+            transition: all 0.6s var(--transition-smooth);
+            position: relative;
+            z-index: 2;
         }
 
-        @keyframes emblemReveal {
-            from { opacity: 0; transform: scale(0.8); }
-            to { opacity: 1; transform: scale(1); }
+        /* Hover State: Full Color + Lift */
+        .emblem-container:hover .emblem {
+            opacity: 1;
+            filter: grayscale(0%);
+            transform: scale(1.1) translateY(-2px);
         }
 
-        /* Decorative ring around emblem */
-        .emblem-ring {
+        /* Glow Effect appearing behind logo on hover */
+        .emblem-glow {
             position: absolute;
-            inset: -8px;
-            border: 1px solid rgba(0, 82, 255, 0.15);
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(0, 82, 255, 0.15) 0%, transparent 65%);
             border-radius: 50%;
-            animation: ringPulse 3s ease-in-out infinite;
+            z-index: 1;
+            opacity: 0;
+            transition: all 0.6s var(--transition-smooth);
+            pointer-events: none;
         }
 
-        @keyframes ringPulse {
-            0%, 100% { opacity: 0.4; transform: scale(1); }
-            50% { opacity: 0.8; transform: scale(1.05); }
+        .emblem-container:hover .emblem-glow {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1.5);
+        }
+
+        /* Entrance Animation */
+        .emblem-container {
+            opacity: 0;
+            animation: fadeIn 1s ease-out 0.2s forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         /* Establishment Year */
@@ -606,8 +626,8 @@
         }
 
         @media (max-width: 768px) {
-            header { padding: 4rem 0 3rem; }
-            .emblem-container { width: 72px; height: 72px; }
+            header { padding: 5rem 0 3rem; }
+            .emblem { width: 60px; height: 60px; }
             .main-title { font-size: 2rem; letter-spacing: 0.06em; }
             .lab-name { font-size: 0.55rem; letter-spacing: 0.35em; padding: 0.5rem 1rem; }
             .tagline { font-size: 0.875rem; padding: 0 1rem; }
@@ -630,10 +650,10 @@
     <div class="container">
         <header>
             <div class="header-content">
-                <!-- Emblem / Badge -->
+                <!-- Standalone Logo with Interaction -->
                 <div class="emblem-container">
-                    <div class="emblem-ring"></div>
-                    <img src="logo.png" alt="Emblem" class="emblem">
+                    <div class="emblem-glow"></div>
+                    <img src="logo.png" alt="Index Gentium Emblem" class="emblem">
                 </div>
                 
                 <!-- Establishment Year -->
