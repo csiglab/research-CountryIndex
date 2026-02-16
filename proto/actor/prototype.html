@@ -1,0 +1,1559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>National Actor Space — Temporal Visualization</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #F8F6F1;
+            --bg-dark: #EDE9E0;
+            --fg: #1A1A1A;
+            --muted: #6B6B6B;
+            --accent: #0D4F8B;
+            --accent-light: #3A7BC8;
+            --card: #FFFFFF;
+            --border: #D4D0C8;
+            --govt: #1E3A5F;
+            --private: #2D5A3D;
+            --ngo: #8B4049;
+            --intl: #4A5568;
+            --military: #8B6914;
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background: var(--bg);
+            color: var(--fg);
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .font-serif { font-family: 'Cormorant Garamond', serif; }
+
+        .bg-pattern {
+            background-image: 
+                linear-gradient(90deg, transparent 99%, rgba(0,0,0,0.03) 100%),
+                linear-gradient(0deg, transparent 99%, rgba(0,0,0,0.02) 100%);
+            background-size: 40px 40px;
+        }
+
+        .timeline-canvas {
+            display: block;
+        }
+
+        .control-panel {
+            background: linear-gradient(135deg, var(--card) 0%, var(--bg-dark) 100%);
+            border-right: 1px solid var(--border);
+        }
+
+        .filter-chip {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .filter-chip:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .filter-chip.active {
+            color: white;
+        }
+
+        .slider-track {
+            -webkit-appearance: none;
+            appearance: none;
+            background: var(--border);
+            border-radius: 4px;
+            height: 6px;
+            outline: none;
+        }
+
+        .slider-track::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: var(--accent);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+            transition: transform 0.15s ease;
+        }
+
+        .slider-track::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+
+        .detail-panel {
+            background: var(--card);
+            border-left: 1px solid var(--border);
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .detail-panel.open {
+            transform: translateX(0);
+        }
+
+        .snapshot-overlay {
+            background: rgba(248, 246, 241, 0.95);
+            backdrop-filter: blur(8px);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+
+        .snapshot-overlay.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .btn {
+            transition: all 0.2s ease;
+        }
+
+        .btn:hover {
+            transform: translateY(-1px);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .granularity-btn {
+            transition: all 0.15s ease;
+        }
+
+        .granularity-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        .stagger-1 { animation-delay: 0.1s; }
+        .stagger-2 { animation-delay: 0.2s; }
+        .stagger-3 { animation-delay: 0.3s; }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                transition-duration: 0.01ms !important;
+            }
+        }
+
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-track {
+            background: var(--bg-dark);
+        }
+
+        .scrollbar-thin::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body class="bg-pattern">
+    <div class="h-screen flex flex-col">
+        <!-- Header -->
+        <header class="h-14 border-b border-[var(--border)] bg-[var(--card)] flex items-center justify-between px-6 flex-shrink-0">
+            <div class="flex items-center gap-4">
+                <h1 class="font-serif text-2xl font-semibold tracking-tight text-[var(--fg)]">National Actor Space</h1>
+                <span class="text-xs text-[var(--muted)] uppercase tracking-wider">Temporal Visualization</span>
+            </div>
+            <div class="flex items-center gap-3">
+                <button id="snapshotBtn" class="btn px-3 py-1.5 text-sm border border-[var(--border)] rounded hover:bg-[var(--bg-dark)] flex items-center gap-2" aria-label="Create snapshot">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z"/>
+                    </svg>
+                    Snapshot
+                </button>
+                <button id="aggregateBtn" class="btn px-3 py-1.5 text-sm border border-[var(--border)] rounded hover:bg-[var(--bg-dark)] flex items-center gap-2" aria-label="Toggle aggregation">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+                    </svg>
+                    Aggregate
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <div class="flex-1 flex overflow-hidden">
+            <!-- Left Control Panel -->
+            <aside class="control-panel w-64 flex-shrink-0 flex flex-col overflow-hidden">
+                <div class="p-4 border-b border-[var(--border)]">
+                    <div class="relative">
+                        <input type="text" id="searchInput" placeholder="Search actors..." 
+                            class="w-full px-3 py-2 pl-9 text-sm border border-[var(--border)] rounded bg-[var(--card)] focus:border-[var(--accent)] outline-none"
+                            aria-label="Search actors">
+                        <svg class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-[var(--muted)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                    </div>
+                </div>
+
+                <!-- Filters -->
+                <div class="p-4 border-b border-[var(--border)]">
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted)] mb-3">Actor Types</h3>
+                    <div class="flex flex-wrap gap-2" id="typeFilters">
+                        <button class="filter-chip active px-2.5 py-1 text-xs rounded-full border" style="border-color: var(--govt); background: var(--govt);" data-type="government">
+                            Government
+                        </button>
+                        <button class="filter-chip active px-2.5 py-1 text-xs rounded-full border" style="border-color: var(--private); background: var(--private);" data-type="private">
+                            Private
+                        </button>
+                        <button class="filter-chip active px-2.5 py-1 text-xs rounded-full border" style="border-color: var(--ngo); background: var(--ngo);" data-type="ngo">
+                            NGO
+                        </button>
+                        <button class="filter-chip active px-2.5 py-1 text-xs rounded-full border" style="border-color: var(--intl); background: var(--intl);" data-type="international">
+                            International
+                        </button>
+                        <button class="filter-chip active px-2.5 py-1 text-xs rounded-full border" style="border-color: var(--military); background: var(--military);" data-type="military">
+                            Military
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Sectors -->
+                <div class="p-4 border-b border-[var(--border)]">
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted)] mb-3">Sectors</h3>
+                    <div class="space-y-1.5" id="sectorFilters">
+                        <label class="flex items-center gap-2 cursor-pointer text-sm">
+                            <input type="checkbox" checked class="w-4 h-4 accent-[var(--accent)]" data-sector="economic">
+                            <span>Economic</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer text-sm">
+                            <input type="checkbox" checked class="w-4 h-4 accent-[var(--accent)]" data-sector="security">
+                            <span>Security</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer text-sm">
+                            <input type="checkbox" checked class="w-4 h-4 accent-[var(--accent)]" data-sector="social">
+                            <span>Social</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer text-sm">
+                            <input type="checkbox" checked class="w-4 h-4 accent-[var(--accent)]" data-sector="infrastructure">
+                            <span>Infrastructure</span>
+                        </label>
+                        <label class="flex items-center gap-2 cursor-pointer text-sm">
+                            <input type="checkbox" checked class="w-4 h-4 accent-[var(--accent)]" data-sector="diplomatic">
+                            <span>Diplomatic</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Statistics -->
+                <div class="p-4 flex-1 overflow-auto scrollbar-thin">
+                    <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted)] mb-3">Statistics</h3>
+                    <div class="space-y-3">
+                        <div class="bg-[var(--bg)] p-3 rounded border border-[var(--border)]">
+                            <div class="text-2xl font-serif font-semibold" id="totalActors">0</div>
+                            <div class="text-xs text-[var(--muted)]">Total Actors</div>
+                        </div>
+                        <div class="bg-[var(--bg)] p-3 rounded border border-[var(--border)]">
+                            <div class="text-2xl font-serif font-semibold" id="visibleActors">0</div>
+                            <div class="text-xs text-[var(--muted)]">Visible Actors</div>
+                        </div>
+                        <div class="bg-[var(--bg)] p-3 rounded border border-[var(--border)]">
+                            <div class="text-2xl font-serif font-semibold" id="activeAtTime">0</div>
+                            <div class="text-xs text-[var(--muted)]">Active at Timeline</div>
+                        </div>
+                    </div>
+
+                    <!-- Legend -->
+                    <div class="mt-6">
+                        <h3 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted)] mb-3">Legend</h3>
+                        <div class="space-y-2 text-xs">
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-1 rounded" style="background: var(--govt)"></div>
+                                <span>Government Institution</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-1 rounded" style="background: var(--private)"></div>
+                                <span>Private Entity</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-1 rounded" style="background: var(--ngo)"></div>
+                                <span>NGO / Civil Society</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-1 rounded" style="background: var(--intl)"></div>
+                                <span>International Body</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <div class="w-6 h-1 rounded" style="background: var(--military)"></div>
+                                <span>Military / Defense</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Main Visualization Area -->
+            <main class="flex-1 flex flex-col overflow-hidden">
+                <!-- Overview Histogram -->
+                <div class="h-20 border-b border-[var(--border)] bg-[var(--card)] flex-shrink-0">
+                    <canvas id="histogramCanvas" class="w-full h-full"></canvas>
+                </div>
+
+                <!-- Main Timeline Canvas -->
+                <div class="flex-1 relative overflow-hidden">
+                    <canvas id="timelineCanvas" class="timeline-canvas w-full h-full"></canvas>
+                    
+                    <!-- Time Marker -->
+                    <div id="timeMarker" class="absolute top-0 bottom-0 w-px bg-[var(--accent)] opacity-50 pointer-events-none" style="left: 50%; display: none;">
+                        <div class="absolute -top-1 left-1/2 -translate-x-1/2 w-3 h-3 bg-[var(--accent)] rounded-full"></div>
+                    </div>
+
+                    <!-- Tooltip -->
+                    <div id="tooltip" class="absolute pointer-events-none bg-[var(--card)] border border-[var(--border)] rounded shadow-lg p-3 max-w-xs opacity-0 transition-opacity z-50">
+                        <div class="font-serif font-semibold text-sm" id="tooltipName"></div>
+                        <div class="text-xs text-[var(--muted)] mt-1" id="tooltipType"></div>
+                        <div class="text-xs mt-2" id="tooltipDates"></div>
+                    </div>
+                </div>
+
+                <!-- Time Controls -->
+                <div class="h-24 border-t border-[var(--border)] bg-[var(--card)] flex-shrink-0 px-6 py-3">
+                    <div class="flex items-center justify-between mb-2">
+                        <div class="flex items-center gap-2">
+                            <span class="text-xs text-[var(--muted)]">Year:</span>
+                            <span class="font-serif font-semibold text-lg" id="currentYear">1950</span>
+                        </div>
+                        
+                        <!-- Granularity Controls -->
+                        <div class="flex items-center gap-1 bg-[var(--bg)] rounded p-1">
+                            <button class="granularity-btn px-2 py-1 text-xs rounded" data-granularity="year">Year</button>
+                            <button class="granularity-btn px-2 py-1 text-xs rounded active" data-granularity="month">Month</button>
+                            <button class="granularity-btn px-2 py-1 text-xs rounded" data-granularity="decade">Decade</button>
+                        </div>
+
+                        <div class="flex items-center gap-2">
+                            <button id="playBtn" class="btn w-8 h-8 flex items-center justify-center rounded-full border border-[var(--border)] hover:bg-[var(--bg-dark)]" aria-label="Play timeline">
+                                <svg id="playIcon" class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M8 5v14l11-7z"/>
+                                </svg>
+                                <svg id="pauseIcon" class="w-4 h-4 hidden" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/>
+                                </svg>
+                            </button>
+                            <span class="text-xs text-[var(--muted)]">Speed:</span>
+                            <select id="speedSelect" class="text-xs border border-[var(--border)] rounded px-2 py-1 bg-[var(--card)]">
+                                <option value="0.5">0.5x</option>
+                                <option value="1" selected>1x</option>
+                                <option value="2">2x</option>
+                                <option value="4">4x</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Time Slider -->
+                    <div class="relative">
+                        <input type="range" id="timeSlider" class="slider-track w-full" min="1950" max="2024" value="1950" step="0.1" aria-label="Time slider">
+                        <!-- Decade markers -->
+                        <div class="flex justify-between mt-1 text-xs text-[var(--muted)]">
+                            <span>1950</span>
+                            <span>1970</span>
+                            <span>1990</span>
+                            <span>2010</span>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </div>
+            </main>
+
+            <!-- Detail Panel -->
+            <aside id="detailPanel" class="detail-panel w-80 flex-shrink-0 flex flex-col overflow-hidden">
+                <div class="p-4 border-b border-[var(--border)] flex items-center justify-between">
+                    <h2 class="font-serif text-lg font-semibold">Actor Details</h2>
+                    <button id="closeDetail" class="w-6 h-6 flex items-center justify-center rounded hover:bg-[var(--bg)]" aria-label="Close panel">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                        </svg>
+                    </button>
+                </div>
+                <div id="detailContent" class="p-4 flex-1 overflow-auto scrollbar-thin">
+                    <p class="text-sm text-[var(--muted)]">Select an actor to view details</p>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <!-- Snapshot Overlay -->
+    <div id="snapshotOverlay" class="snapshot-overlay fixed inset-0 z-50 flex items-center justify-center">
+        <div class="bg-[var(--card)] rounded-lg shadow-2xl max-w-4xl w-full mx-4 max-h-[90vh] overflow-auto">
+            <div class="p-6 border-b border-[var(--border)] flex items-center justify-between">
+                <div>
+                    <h2 class="font-serif text-xl font-semibold">Snapshot View</h2>
+                    <p class="text-sm text-[var(--muted)]" id="snapshotDate">January 1, 2000</p>
+                </div>
+                <button id="closeSnapshot" class="btn px-3 py-1.5 text-sm border border-[var(--border)] rounded hover:bg-[var(--bg)]" aria-label="Close snapshot">
+                    Close
+                </button>
+            </div>
+            <div class="p-6">
+                <div class="grid grid-cols-2 gap-4 mb-6">
+                    <div class="bg-[var(--bg)] p-4 rounded border border-[var(--border)]">
+                        <div class="text-3xl font-serif font-semibold" id="snapshotTotal">0</div>
+                        <div class="text-xs text-[var(--muted)]">Active Actors</div>
+                    </div>
+                    <div class="bg-[var(--bg)] p-4 rounded border border-[var(--border)]">
+                        <div class="text-3xl font-serif font-semibold" id="snapshotSectors">0</div>
+                        <div class="text-xs text-[var(--muted)]">Sectors Represented</div>
+                    </div>
+                </div>
+                <canvas id="snapshotCanvas" class="w-full border border-[var(--border)] rounded" height="400"></canvas>
+                <div id="snapshotList" class="mt-4 max-h-64 overflow-auto scrollbar-thin">
+                    <!-- Actor list populated dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // DATA MODULE
+        // ============================================
+        const ActorData = (function() {
+            const typeColors = {
+                government: '#1E3A5F',
+                private: '#2D5A3D',
+                ngo: '#8B4049',
+                international: '#4A5568',
+                military: '#8B6914'
+            };
+
+            const sectorNames = {
+                economic: 'Economic',
+                security: 'Security',
+                social: 'Social',
+                infrastructure: 'Infrastructure',
+                diplomatic: 'Diplomatic'
+            };
+
+            // Generate fake data
+            function generateActors(count) {
+                const actors = [];
+                const types = Object.keys(typeColors);
+                const sectors = Object.keys(sectorNames);
+                
+                const govNames = [
+                    'Ministry of Finance', 'Ministry of Defense', 'Ministry of Foreign Affairs',
+                    'Ministry of Health', 'Ministry of Education', 'Ministry of Interior',
+                    'Ministry of Justice', 'Ministry of Agriculture', 'Ministry of Transport',
+                    'Ministry of Energy', 'Central Bank', 'National Statistics Office',
+                    'Immigration Office', 'Customs Authority', 'National Security Council'
+                ];
+                
+                const privateNames = [
+                    'National Oil Corporation', 'Telecom Authority', 'Power Utility Co.',
+                    'National Airlines', 'Shipping Corporation', 'Mining Consortium',
+                    'Agricultural Cooperative', 'Export-Import Bank', 'Industrial Development Corp',
+                    'Pharmaceutical Industries', 'Steel Works Ltd', 'Automotive Assembly',
+                    'Cement Factory', 'Textile Manufacturers', 'Food Processing Corp'
+                ];
+                
+                const ngoNames = [
+                    'Red Crescent Society', 'Environmental Foundation', 'Human Rights Watch',
+                    'Women\'s Development Association', 'Youth Employment Initiative', 'Heritage Preservation',
+                    'Rural Development NGO', 'Education for All', 'Healthcare Access Fund',
+                    'Legal Aid Society', 'Consumer Protection Union', 'Farmers Association',
+                    'Teachers Union', 'Medical Association', 'Engineers Association'
+                ];
+                
+                const intlNames = [
+                    'UN Development Programme', 'World Health Organization', 'UNICEF',
+                    'World Bank Mission', 'IMF Regional Office', 'UNHCR Operations',
+                    'International Red Cross', 'Amnesty International', 'Human Rights Watch',
+                    'Transparency International', 'Greenpeace Regional', 'Doctors Without Borders',
+                    'International Trade Centre', 'UN Peacekeeping', 'UNESCO'
+                ];
+                
+                const militaryNames = [
+                    'Army Command', 'Navy Headquarters', 'Air Force Command',
+                    'National Guard', 'Coast Guard', 'Military Intelligence',
+                    'Defense Research Institute', 'Military Academy', 'Veterans Affairs',
+                    'Arms Procurement Agency', 'Cyber Defense Unit', 'Special Operations',
+                    'Military Hospital', 'Defense Logistics', 'Military Police'
+                ];
+                
+                const nameBanks = {
+                    government: govNames,
+                    private: privateNames,
+                    ngo: ngoNames,
+                    international: intlNames,
+                    military: militaryNames
+                };
+
+                for (let i = 0; i < count; i++) {
+                    const type = types[Math.floor(Math.random() * types.length)];
+                    const names = nameBanks[type];
+                    const nameIndex = i % names.length;
+                    const suffix = Math.floor(i / names.length);
+                    const name = suffix > 0 ? `${names[nameIndex]} ${suffix}` : names[nameIndex];
+                    
+                    const startYear = 1950 + Math.floor(Math.random() * 50);
+                    const endYear = Math.random() > 0.3 ? startYear + Math.floor(Math.random() * (2024 - startYear)) : 2024;
+                    
+                    actors.push({
+                        id: i + 1,
+                        name: name,
+                        type: type,
+                        sector: sectors[Math.floor(Math.random() * sectors.length)],
+                        startDate: `${startYear}-${String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
+                        endDate: `${endYear}-${String(Math.floor(Math.random() * 12) + 1).padStart(2, '0')}-${String(Math.floor(Math.random() * 28) + 1).padStart(2, '0')}`,
+                        description: `A ${type} organization operating in the ${sectors[Math.floor(Math.random() * sectors.length)]} sector since ${startYear}.`,
+                        relationships: generateRelationships(i, count)
+                    });
+                }
+                
+                return actors;
+            }
+
+            function generateRelationships(actorIndex, total) {
+                const relationships = [];
+                const numRelations = Math.floor(Math.random() * 4);
+                
+                for (let i = 0; i < numRelations; i++) {
+                    let relatedId;
+                    do {
+                        relatedId = Math.floor(Math.random() * total) + 1;
+                    } while (relatedId === actorIndex + 1 || relationships.includes(relatedId));
+                    relationships.push(relatedId);
+                }
+                
+                return relationships;
+            }
+
+            let actors = generateActors(500);
+
+            function getActors() {
+                return actors;
+            }
+
+            function getActorById(id) {
+                return actors.find(a => a.id === id);
+            }
+
+            function parseDate(dateStr) {
+                return new Date(dateStr);
+            }
+
+            function yearFromDate(dateStr) {
+                return parseInt(dateStr.split('-')[0], 10);
+            }
+
+            function filterActors(filters) {
+                return actors.filter(actor => {
+                    if (filters.types && filters.types.length > 0 && !filters.types.includes(actor.type)) {
+                        return false;
+                    }
+                    if (filters.sectors && filters.sectors.length > 0 && !filters.sectors.includes(actor.sector)) {
+                        return false;
+                    }
+                    if (filters.search) {
+                        const searchLower = filters.search.toLowerCase();
+                        if (!actor.name.toLowerCase().includes(searchLower)) {
+                            return false;
+                        }
+                    }
+                    return true;
+                });
+            }
+
+            function getActorsAtTime(year, filters = {}) {
+                const filtered = filterActors(filters);
+                return filtered.filter(actor => {
+                    const startYear = yearFromDate(actor.startDate);
+                    const endYear = yearFromDate(actor.endDate);
+                    return year >= startYear && year <= endYear;
+                });
+            }
+
+            function getTypeColor(type) {
+                return typeColors[type] || '#666666';
+            }
+
+            return {
+                getActors,
+                getActorById,
+                filterActors,
+                getActorsAtTime,
+                getTypeColor,
+                parseDate,
+                yearFromDate,
+                typeColors,
+                sectorNames
+            };
+        })();
+
+        // ============================================
+        // STATE MODULE
+        // ============================================
+        const AppState = (function() {
+            const state = {
+                currentYear: 1950,
+                granularity: 'month',
+                isPlaying: false,
+                playSpeed: 1,
+                viewStart: 1950,
+                viewEnd: 2024,
+                filters: {
+                    types: ['government', 'private', 'ngo', 'international', 'military'],
+                    sectors: ['economic', 'security', 'social', 'infrastructure', 'diplomatic'],
+                    search: ''
+                },
+                selectedActor: null,
+                isAggregated: false,
+                zoomLevel: 1,
+                panOffset: 0
+            };
+
+            const listeners = [];
+
+            function subscribe(fn) {
+                listeners.push(fn);
+            }
+
+            function notify() {
+                listeners.forEach(fn => fn(state));
+            }
+
+            function update(changes) {
+                Object.assign(state, changes);
+                notify();
+            }
+
+            function getState() {
+                return state;
+            }
+
+            return { subscribe, update, getState };
+        })();
+
+        // ============================================
+        // HISTOGRAM RENDERER
+        // ============================================
+        const HistogramRenderer = (function() {
+            let canvas = null;
+            let ctx = null;
+            let data = [];
+
+            function init(canvasEl) {
+                canvas = canvasEl;
+                ctx = canvas.getContext('2d');
+                resize();
+                window.addEventListener('resize', resize);
+            }
+
+            function resize() {
+                if (!canvas) return;
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                ctx.scale(dpr, dpr);
+            }
+
+            function computeHistogram(actors, startYear, endYear) {
+                data = [];
+                const numBins = 50;
+                const binSize = (endYear - startYear) / numBins;
+                
+                for (let i = 0; i < numBins; i++) {
+                    const binStart = startYear + i * binSize;
+                    const binEnd = binStart + binSize;
+                    let count = 0;
+                    
+                    actors.forEach(actor => {
+                        const actorStart = ActorData.yearFromDate(actor.startDate);
+                        const actorEnd = ActorData.yearFromDate(actor.endDate);
+                        if (actorEnd >= binStart && actorStart <= binEnd) {
+                            count++;
+                        }
+                    });
+                    
+                    data.push({ start: binStart, end: binEnd, count });
+                }
+                
+                return data;
+            }
+
+            function render(viewStart, viewEnd, currentYear) {
+                if (!ctx || !canvas) return;
+                
+                const rect = canvas.getBoundingClientRect();
+                const width = rect.width;
+                const height = rect.height;
+                
+                ctx.clearRect(0, 0, width, height);
+                
+                const actors = ActorData.filterActors(AppState.getState().filters);
+                const histogram = computeHistogram(actors, 1950, 2024);
+                
+                const maxCount = Math.max(...histogram.map(d => d.count), 1);
+                const barWidth = width / histogram.length;
+                
+                // Draw bars
+                histogram.forEach((bin, i) => {
+                    const barHeight = (bin.count / maxCount) * (height - 10);
+                    const x = i * barWidth;
+                    const y = height - barHeight;
+                    
+                    // Gradient based on position
+                    const gradient = ctx.createLinearGradient(x, y, x, height);
+                    gradient.addColorStop(0, '#0D4F8B');
+                    gradient.addColorStop(1, 'rgba(13, 79, 139, 0.3)');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fillRect(x + 1, y, barWidth - 2, barHeight);
+                });
+
+                // Draw view range indicator
+                const viewStartX = ((viewStart - 1950) / (2024 - 1950)) * width;
+                const viewEndX = ((viewEnd - 1950) / (2024 - 1950)) * width;
+                
+                ctx.fillStyle = 'rgba(13, 79, 139, 0.2)';
+                ctx.fillRect(viewStartX, 0, viewEndX - viewStartX, height);
+                
+                ctx.strokeStyle = '#0D4F8B';
+                ctx.lineWidth = 2;
+                ctx.strokeRect(viewStartX, 0, viewEndX - viewStartX, height);
+
+                // Draw current year marker
+                const yearX = ((currentYear - 1950) / (2024 - 1950)) * width;
+                ctx.strokeStyle = '#8B4049';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.moveTo(yearX, 0);
+                ctx.lineTo(yearX, height);
+                ctx.stroke();
+            }
+
+            return { init, render };
+        })();
+
+        // ============================================
+        // TIMELINE RENDERER
+        // ============================================
+        const TimelineRenderer = (function() {
+            let canvas = null;
+            let ctx = null;
+            let width = 0;
+            let height = 0;
+            let dpr = 1;
+            let hoveredActor = null;
+            let actorPositions = [];
+
+            function init(canvasEl) {
+                canvas = canvasEl;
+                ctx = canvas.getContext('2d');
+                resize();
+                window.addEventListener('resize', resize);
+            }
+
+            function resize() {
+                if (!canvas) return;
+                const rect = canvas.getBoundingClientRect();
+                dpr = window.devicePixelRatio || 1;
+                canvas.width = rect.width * dpr;
+                canvas.height = rect.height * dpr;
+                width = rect.width;
+                height = rect.height;
+                ctx.scale(dpr, dpr);
+            }
+
+            function yearToX(year, viewStart, viewEnd) {
+                const padding = 60;
+                const usableWidth = width - padding * 2;
+                return padding + ((year - viewStart) / (viewEnd - viewStart)) * usableWidth;
+            }
+
+            function xToYear(x, viewStart, viewEnd) {
+                const padding = 60;
+                const usableWidth = width - padding * 2;
+                return viewStart + ((x - padding) / usableWidth) * (viewEnd - viewStart);
+            }
+
+            function render(state) {
+                if (!ctx) return;
+                
+                const { currentYear, viewStart, viewEnd, filters, isAggregated, granularity } = state;
+                
+                ctx.clearRect(0, 0, width, height);
+                
+                // Background
+                ctx.fillStyle = '#F8F6F1';
+                ctx.fillRect(0, 0, width, height);
+                
+                // Grid lines
+                drawGrid(viewStart, viewEnd);
+                
+                // Get filtered actors
+                const actors = ActorData.filterActors(filters);
+                
+                // Sort by start date for consistent layering
+                actors.sort((a, b) => ActorData.yearFromDate(a.startDate) - ActorData.yearFromDate(b.startDate));
+                
+                actorPositions = [];
+                
+                if (isAggregated) {
+                    renderAggregated(actors, viewStart, viewEnd);
+                } else {
+                    renderIndividual(actors, viewStart, viewEnd, currentYear);
+                }
+                
+                // Current time indicator
+                const timeX = yearToX(currentYear, viewStart, viewEnd);
+                ctx.strokeStyle = 'rgba(139, 64, 73, 0.6)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash([5, 5]);
+                ctx.beginPath();
+                ctx.moveTo(timeX, 0);
+                ctx.lineTo(timeX, height);
+                ctx.stroke();
+                ctx.setLineDash([]);
+            }
+
+            function drawGrid(viewStart, viewEnd) {
+                const padding = 60;
+                const usableWidth = width - padding * 2;
+                
+                // Determine decade markers based on zoom
+                const range = viewEnd - viewStart;
+                const step = range < 20 ? 1 : range < 50 ? 5 : 10;
+                
+                ctx.strokeStyle = 'rgba(0, 0, 0, 0.05)';
+                ctx.lineWidth = 1;
+                ctx.fillStyle = '#6B6B6B';
+                ctx.font = '11px "DM Sans", sans-serif';
+                ctx.textAlign = 'center';
+                
+                const startDecade = Math.floor(viewStart / step) * step;
+                
+                for (let year = startDecade; year <= viewEnd; year += step) {
+                    if (year < viewStart) continue;
+                    const x = yearToX(year, viewStart, viewEnd);
+                    
+                    ctx.beginPath();
+                    ctx.moveTo(x, 0);
+                    ctx.lineTo(x, height);
+                    ctx.stroke();
+                    
+                    ctx.fillText(year.toString(), x, height - 10);
+                }
+            }
+
+            function renderAggregated(actors, viewStart, viewEnd) {
+                const padding = 60;
+                const topPadding = 30;
+                const bottomPadding = 40;
+                const usableHeight = height - topPadding - bottomPadding;
+                
+                // Aggregate by type
+                const types = ['government', 'private', 'ngo', 'international', 'military'];
+                const laneHeight = usableHeight / types.length;
+                
+                types.forEach((type, typeIndex) => {
+                    const typeActors = actors.filter(a => a.type === type);
+                    const y = topPadding + typeIndex * laneHeight;
+                    
+                    // Draw type label
+                    ctx.fillStyle = ActorData.typeColors[type];
+                    ctx.font = '600 11px "DM Sans", sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(type.charAt(0).toUpperCase() + type.slice(1), 5, y + laneHeight / 2);
+                    
+                    // Draw stream
+                    const numBins = 100;
+                    const binSize = (viewEnd - viewStart) / numBins;
+                    const streamData = [];
+                    
+                    for (let i = 0; i < numBins; i++) {
+                        const binStart = viewStart + i * binSize;
+                        const binEnd = binStart + binSize;
+                        let count = 0;
+                        
+                        typeActors.forEach(actor => {
+                            const start = ActorData.yearFromDate(actor.startDate);
+                            const end = ActorData.yearFromDate(actor.endDate);
+                            if (end >= binStart && start <= binEnd) {
+                                count++;
+                            }
+                        });
+                        
+                        streamData.push(count);
+                    }
+                    
+                    const maxCount = Math.max(...streamData, 1);
+                    
+                    // Draw as filled area
+                    ctx.beginPath();
+                    ctx.moveTo(yearToX(viewStart, viewStart, viewEnd), y + laneHeight);
+                    
+                    streamData.forEach((count, i) => {
+                        const year = viewStart + i * binSize;
+                        const x = yearToX(year, viewStart, viewEnd);
+                        const barHeight = (count / maxCount) * (laneHeight - 20);
+                        ctx.lineTo(x, y + laneHeight - barHeight);
+                    });
+                    
+                    ctx.lineTo(yearToX(viewEnd, viewStart, viewEnd), y + laneHeight);
+                    ctx.closePath();
+                    
+                    const gradient = ctx.createLinearGradient(0, y, 0, y + laneHeight);
+                    const baseColor = ActorData.typeColors[type];
+                    gradient.addColorStop(0, baseColor);
+                    gradient.addColorStop(1, baseColor + '33');
+                    
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+                });
+            }
+
+            function renderIndividual(actors, viewStart, viewEnd, currentYear) {
+                const padding = 60;
+                const topPadding = 30;
+                const bottomPadding = 40;
+                const usableHeight = height - topPadding - bottomPadding;
+                const laneHeight = Math.max(6, Math.min(16, usableHeight / Math.min(actors.length, 200)));
+                
+                actorPositions = [];
+                
+                actors.forEach((actor, index) => {
+                    const startYear = ActorData.yearFromDate(actor.startDate);
+                    const endYear = ActorData.yearFromDate(actor.endDate);
+                    
+                    // Skip if not visible
+                    if (endYear < viewStart || startYear > viewEnd) return;
+                    
+                    const x1 = yearToX(Math.max(startYear, viewStart), viewStart, viewEnd);
+                    const x2 = yearToX(Math.min(endYear, viewEnd), viewStart, viewEnd);
+                    
+                    // Calculate Y position with overflow handling
+                    const maxVisible = Math.floor(usableHeight / laneHeight);
+                    const laneIndex = index % maxVisible;
+                    const y = topPadding + laneIndex * laneHeight;
+                    
+                    const isActive = currentYear >= startYear && currentYear <= endYear;
+                    const isHovered = hoveredActor && hoveredActor.id === actor.id;
+                    
+                    // Store position for hit testing
+                    actorPositions.push({
+                        actor,
+                        x: x1,
+                        y,
+                        width: x2 - x1,
+                        height: laneHeight - 2
+                    });
+                    
+                    // Draw actor bar
+                    const alpha = isActive ? 1 : 0.4;
+                    const baseColor = ActorData.getTypeColor(actor.type);
+                    
+                    if (isHovered) {
+                        ctx.shadowColor = 'rgba(0, 0, 0, 0.3)';
+                        ctx.shadowBlur = 8;
+                        ctx.shadowOffsetY = 2;
+                    }
+                    
+                    ctx.fillStyle = isHovered ? baseColor : (isActive ? baseColor : baseColor + '66');
+                    ctx.beginPath();
+                    const radius = Math.max(0.1, Math.min(laneHeight / 2 - 1, 3));
+                    const barHeight = Math.max(1, laneHeight - 2);
+                    roundRect(ctx, x1, y + 1, Math.max(1, x2 - x1), barHeight, radius);
+                    ctx.fill();
+                    
+                    ctx.shadowColor = 'transparent';
+                    ctx.shadowBlur = 0;
+                    ctx.shadowOffsetY = 0;
+                    
+                    // Draw name if wide enough
+                    const barWidth = x2 - x1;
+                    if (barWidth > 60 && laneHeight > 10) {
+                        ctx.fillStyle = isActive ? '#FFFFFF' : 'rgba(255, 255, 255, 0.7)';
+                        ctx.font = '10px "DM Sans", sans-serif';
+                        ctx.textAlign = 'left';
+                        const displayName = barWidth > 120 ? actor.name : actor.name.substring(0, 15) + '...';
+                        ctx.fillText(displayName, x1 + 4, y + laneHeight / 2 + 3);
+                    }
+                });
+            }
+
+            function roundRect(ctx, x, y, w, h, r) {
+                const safeW = Math.max(0.1, w);
+                const safeH = Math.max(0.1, h);
+                const safeR = Math.max(0, Math.min(r, safeW / 2, safeH / 2));
+                
+                ctx.beginPath();
+                ctx.moveTo(x + safeR, y);
+                ctx.lineTo(x + safeW - safeR, y);
+                ctx.quadraticCurveTo(x + safeW, y, x + safeW, y + safeR);
+                ctx.lineTo(x + safeW, y + safeH - safeR);
+                ctx.quadraticCurveTo(x + safeW, y + safeH, x + safeW - safeR, y + safeH);
+                ctx.lineTo(x + safeR, y + safeH);
+                ctx.quadraticCurveTo(x, y + safeH, x, y + safeH - safeR);
+                ctx.lineTo(x, y + safeR);
+                ctx.quadraticCurveTo(x, y, x + safeR, y);
+                ctx.closePath();
+            }
+
+            function hitTest(x, y) {
+                for (let i = actorPositions.length - 1; i >= 0; i--) {
+                    const pos = actorPositions[i];
+                    if (x >= pos.x && x <= pos.x + pos.width &&
+                        y >= pos.y && y <= pos.y + pos.height) {
+                        return pos.actor;
+                    }
+                }
+                return null;
+            }
+
+            function setHoveredActor(actor) {
+                hoveredActor = actor;
+            }
+
+            function getYearFromX(x, viewStart, viewEnd) {
+                return xToYear(x, viewStart, viewEnd);
+            }
+
+            return { init, render, hitTest, setHoveredActor, getYearFromX };
+        })();
+
+        // ============================================
+        // SNAPSHOT RENDERER
+        // ============================================
+        const SnapshotRenderer = (function() {
+            let canvas = null;
+            let ctx = null;
+
+            function init(canvasEl) {
+                canvas = canvasEl;
+                ctx = canvas.getContext('2d');
+            }
+
+            function render(year, actors) {
+                if (!ctx || !canvas) return;
+                
+                const rect = canvas.getBoundingClientRect();
+                const dpr = window.devicePixelRatio || 1;
+                canvas.width = rect.width * dpr;
+                canvas.height = 400 * dpr;
+                ctx.scale(dpr, dpr);
+                
+                const width = rect.width;
+                const height = 400;
+                
+                ctx.fillStyle = '#F8F6F1';
+                ctx.fillRect(0, 0, width, height);
+                
+                // Group by type
+                const byType = {};
+                actors.forEach(actor => {
+                    if (!byType[actor.type]) byType[actor.type] = [];
+                    byType[actor.type].push(actor);
+                });
+                
+                const types = Object.keys(byType);
+                const cols = Math.ceil(Math.sqrt(types.length));
+                const rows = Math.ceil(types.length / cols);
+                const cellWidth = width / cols;
+                const cellHeight = height / rows;
+                
+                types.forEach((type, index) => {
+                    const col = index % cols;
+                    const row = Math.floor(index / cols);
+                    const x = col * cellWidth;
+                    const y = row * cellHeight;
+                    
+                    // Type background
+                    ctx.fillStyle = ActorData.typeColors[type] + '15';
+                    ctx.fillRect(x, y, cellWidth, cellHeight);
+                    
+                    // Type border
+                    ctx.strokeStyle = ActorData.typeColors[type];
+                    ctx.lineWidth = 2;
+                    ctx.strokeRect(x, y, cellWidth, cellHeight);
+                    
+                    // Type title
+                    ctx.fillStyle = ActorData.typeColors[type];
+                    ctx.font = 'bold 14px "DM Sans", sans-serif';
+                    ctx.textAlign = 'left';
+                    ctx.fillText(type.charAt(0).toUpperCase() + type.slice(1), x + 10, y + 25);
+                    
+                    ctx.font = '12px "DM Sans", sans-serif';
+                    ctx.fillStyle = '#6B6B6B';
+                    ctx.fillText(`${byType[type].length} actors`, x + 10, y + 45);
+                    
+                    // Actor list
+                    ctx.font = '11px "DM Sans", sans-serif';
+                    ctx.fillStyle = '#1A1A1A';
+                    byType[type].slice(0, 8).forEach((actor, i) => {
+                        ctx.fillText(`• ${actor.name}`, x + 10, y + 70 + i * 16);
+                    });
+                    
+                    if (byType[type].length > 8) {
+                        ctx.fillStyle = '#6B6B6B';
+                        ctx.fillText(`... and ${byType[type].length - 8} more`, x + 10, y + 70 + 8 * 16);
+                    }
+                });
+            }
+
+            return { init, render };
+        })();
+
+        // ============================================
+        // UI CONTROLLER
+        // ============================================
+        const UIController = (function() {
+            // DOM Elements
+            let searchInput = null;
+            let timeSlider = null;
+            let currentYearEl = null;
+            let playBtn = null;
+            let playIcon = null;
+            let pauseIcon = null;
+            let speedSelect = null;
+            let granularityBtns = null;
+            let typeFilters = null;
+            let sectorFilters = null;
+            let totalActorsEl = null;
+            let visibleActorsEl = null;
+            let activeAtTimeEl = null;
+            let detailPanel = null;
+            let detailContent = null;
+            let closeDetailBtn = null;
+            let tooltip = null;
+            let tooltipName = null;
+            let tooltipType = null;
+            let tooltipDates = null;
+            let snapshotBtn = null;
+            let snapshotOverlay = null;
+            let closeSnapshotBtn = null;
+            let snapshotCanvas = null;
+            let aggregateBtn = null;
+            let histogramCanvas = null;
+            let timelineCanvas = null;
+            let timeMarker = null;
+
+            let animationFrame = null;
+            let lastTime = 0;
+
+            function init() {
+                // Get DOM elements
+                searchInput = document.getElementById('searchInput');
+                timeSlider = document.getElementById('timeSlider');
+                currentYearEl = document.getElementById('currentYear');
+                playBtn = document.getElementById('playBtn');
+                playIcon = document.getElementById('playIcon');
+                pauseIcon = document.getElementById('pauseIcon');
+                speedSelect = document.getElementById('speedSelect');
+                granularityBtns = document.querySelectorAll('.granularity-btn');
+                typeFilters = document.querySelectorAll('#typeFilters .filter-chip');
+                sectorFilters = document.querySelectorAll('#sectorFilters input');
+                totalActorsEl = document.getElementById('totalActors');
+                visibleActorsEl = document.getElementById('visibleActors');
+                activeAtTimeEl = document.getElementById('activeAtTime');
+                detailPanel = document.getElementById('detailPanel');
+                detailContent = document.getElementById('detailContent');
+                closeDetailBtn = document.getElementById('closeDetail');
+                tooltip = document.getElementById('tooltip');
+                tooltipName = document.getElementById('tooltipName');
+                tooltipType = document.getElementById('tooltipType');
+                tooltipDates = document.getElementById('tooltipDates');
+                snapshotBtn = document.getElementById('snapshotBtn');
+                snapshotOverlay = document.getElementById('snapshotOverlay');
+                closeSnapshotBtn = document.getElementById('closeSnapshot');
+                snapshotCanvas = document.getElementById('snapshotCanvas');
+                aggregateBtn = document.getElementById('aggregateBtn');
+                histogramCanvas = document.getElementById('histogramCanvas');
+                timelineCanvas = document.getElementById('timelineCanvas');
+                timeMarker = document.getElementById('timeMarker');
+
+                // Initialize renderers
+                HistogramRenderer.init(histogramCanvas);
+                TimelineRenderer.init(timelineCanvas);
+                SnapshotRenderer.init(snapshotCanvas);
+
+                // Bind events
+                bindEvents();
+
+                // Initial stats
+                updateStats();
+
+                // Initial render
+                render();
+            }
+
+            function bindEvents() {
+                // Search
+                searchInput.addEventListener('input', debounce((e) => {
+                    const state = AppState.getState();
+                    state.filters.search = e.target.value;
+                    AppState.update({ filters: state.filters });
+                    updateStats();
+                }, 200));
+
+                // Time slider
+                timeSlider.addEventListener('input', (e) => {
+                    const year = parseFloat(e.target.value);
+                    AppState.update({ currentYear: year });
+                    updateStats();
+                });
+
+                // Play/Pause
+                playBtn.addEventListener('click', togglePlay);
+
+                // Speed
+                speedSelect.addEventListener('change', (e) => {
+                    AppState.update({ playSpeed: parseFloat(e.target.value) });
+                });
+
+                // Granularity
+                granularityBtns.forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        granularityBtns.forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        AppState.update({ granularity: btn.dataset.granularity });
+                    });
+                });
+
+                // Type filters
+                typeFilters.forEach(chip => {
+                    chip.addEventListener('click', () => {
+                        const type = chip.dataset.type;
+                        const state = AppState.getState();
+                        const types = [...state.filters.types];
+                        
+                        if (types.includes(type)) {
+                            const index = types.indexOf(type);
+                            types.splice(index, 1);
+                            chip.classList.remove('active');
+                            chip.style.background = 'transparent';
+                        } else {
+                            types.push(type);
+                            chip.classList.add('active');
+                            chip.style.background = ActorData.typeColors[type];
+                        }
+                        
+                        state.filters.types = types;
+                        AppState.update({ filters: state.filters });
+                        updateStats();
+                    });
+                });
+
+                // Sector filters
+                sectorFilters.forEach(checkbox => {
+                    checkbox.addEventListener('change', () => {
+                        const sector = checkbox.dataset.sector;
+                        const state = AppState.getState();
+                        const sectors = [...state.filters.sectors];
+                        
+                        if (checkbox.checked) {
+                            if (!sectors.includes(sector)) sectors.push(sector);
+                        } else {
+                            const index = sectors.indexOf(sector);
+                            if (index > -1) sectors.splice(index, 1);
+                        }
+                        
+                        state.filters.sectors = sectors;
+                        AppState.update({ filters: state.filters });
+                        updateStats();
+                    });
+                });
+
+                // Detail panel close
+                closeDetailBtn.addEventListener('click', () => {
+                    detailPanel.classList.remove('open');
+                    AppState.update({ selectedActor: null });
+                });
+
+                // Snapshot
+                snapshotBtn.addEventListener('click', showSnapshot);
+                closeSnapshotBtn.addEventListener('click', () => {
+                    snapshotOverlay.classList.remove('visible');
+                });
+
+                // Aggregate toggle
+                aggregateBtn.addEventListener('click', () => {
+                    const state = AppState.getState();
+                    AppState.update({ isAggregated: !state.isAggregated });
+                    aggregateBtn.classList.toggle('bg-[var(--accent)]');
+                    aggregateBtn.classList.toggle('text-white');
+                });
+
+                // Timeline interactions
+                timelineCanvas.addEventListener('mousemove', handleTimelineHover);
+                timelineCanvas.addEventListener('click', handleTimelineClick);
+                timelineCanvas.addEventListener('mouseleave', () => {
+                    tooltip.style.opacity = '0';
+                    TimelineRenderer.setHoveredActor(null);
+                    render();
+                });
+
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    const state = AppState.getState();
+                    if (e.key === 'ArrowLeft') {
+                        AppState.update({ currentYear: Math.max(1950, state.currentYear - 1) });
+                    } else if (e.key === 'ArrowRight') {
+                        AppState.update({ currentYear: Math.min(2024, state.currentYear + 1) });
+                    } else if (e.key === ' ') {
+                        e.preventDefault();
+                        togglePlay();
+                    }
+                });
+            }
+
+            function handleTimelineHover(e) {
+                const rect = timelineCanvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const state = AppState.getState();
+                const actor = TimelineRenderer.hitTest(x, y);
+                
+                if (actor) {
+                    TimelineRenderer.setHoveredActor(actor);
+                    tooltip.style.opacity = '1';
+                    tooltip.style.left = `${Math.min(x + 10, rect.width - 200)}px`;
+                    tooltip.style.top = `${Math.max(y - 60, 10)}px`;
+                    tooltipName.textContent = actor.name;
+                    tooltipType.textContent = `${actor.type.charAt(0).toUpperCase() + actor.type.slice(1)} • ${ActorData.sectorNames[actor.sector]}`;
+                    tooltipDates.textContent = `${actor.startDate} — ${actor.endDate}`;
+                    timelineCanvas.style.cursor = 'pointer';
+                } else {
+                    TimelineRenderer.setHoveredActor(null);
+                    tooltip.style.opacity = '0';
+                    timelineCanvas.style.cursor = 'default';
+                }
+                
+                render();
+            }
+
+            function handleTimelineClick(e) {
+                const rect = timelineCanvas.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const actor = TimelineRenderer.hitTest(x, y);
+                
+                if (actor) {
+                    showActorDetail(actor);
+                }
+            }
+
+            function showActorDetail(actor) {
+                detailPanel.classList.add('open');
+                AppState.update({ selectedActor: actor });
+                
+                const relationships = actor.relationships
+                    .map(id => ActorData.getActorById(id))
+                    .filter(Boolean);
+                
+                detailContent.innerHTML = `
+                    <div class="space-y-4">
+                        <div>
+                            <h3 class="font-serif text-xl font-semibold">${actor.name}</h3>
+                            <div class="flex items-center gap-2 mt-1">
+                                <span class="px-2 py-0.5 text-xs rounded" style="background: ${ActorData.typeColors[actor.type]}; color: white;">
+                                    ${actor.type}
+                                </span>
+                                <span class="text-xs text-[var(--muted)]">${ActorData.sectorNames[actor.sector]}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="bg-[var(--bg)] p-3 rounded border border-[var(--border)]">
+                            <div class="text-xs text-[var(--muted)] mb-1">Active Period</div>
+                            <div class="font-serif">${actor.startDate} — ${actor.endDate}</div>
+                        </div>
+                        
+                        <div>
+                            <h4 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted)] mb-2">Description</h4>
+                            <p class="text-sm">${actor.description}</p>
+                        </div>
+                        
+                        ${relationships.length > 0 ? `
+                            <div>
+                                <h4 class="text-xs font-semibold uppercase tracking-wider text-[var(--muted)] mb-2">Related Actors (${relationships.length})</h4>
+                                <div class="space-y-2">
+                                    ${relationships.map(r => `
+                                        <div class="flex items-center gap-2 p-2 bg-[var(--bg)] rounded cursor-pointer hover:bg-[var(--bg-dark)]" onclick="UIController.selectActorById(${r.id})">
+                                            <div class="w-2 h-2 rounded-full" style="background: ${ActorData.typeColors[r.type]}"></div>
+                                            <span class="text-sm">${r.name}</span>
+                                        </div>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        ` : ''}
+                    </div>
+                `;
+            }
+
+            function selectActorById(id) {
+                const actor = ActorData.getActorById(id);
+                if (actor) {
+                    showActorDetail(actor);
+                }
+            }
+
+            function showSnapshot() {
+                const state = AppState.getState();
+                const actors = ActorData.getActorsAtTime(state.currentYear, state.filters);
+                
+                snapshotOverlay.classList.add('visible');
+                
+                document.getElementById('snapshotDate').textContent = formatYear(state.currentYear);
+                document.getElementById('snapshotTotal').textContent = actors.length;
+                
+                const sectors = new Set(actors.map(a => a.sector));
+                document.getElementById('snapshotSectors').textContent = sectors.size;
+                
+                SnapshotRenderer.render(state.currentYear, actors);
+                
+                // Populate list
+                const listHtml = actors.slice(0, 50).map(actor => `
+                    <div class="flex items-center gap-2 py-1">
+                        <div class="w-2 h-2 rounded-full" style="background: ${ActorData.typeColors[actor.type]}"></div>
+                        <span class="text-sm">${actor.name}</span>
+                        <span class="text-xs text-[var(--muted)] ml-auto">${actor.type}</span>
+                    </div>
+                `).join('');
+                
+                document.getElementById('snapshotList').innerHTML = listHtml + 
+                    (actors.length > 50 ? `<div class="text-xs text-[var(--muted)] mt-2">... and ${actors.length - 50} more</div>` : '');
+            }
+
+            function formatYear(year) {
+                const y = Math.floor(year);
+                const months = ['January', 'February', 'March', 'April', 'May', 'June',
+                    'July', 'August', 'September', 'October', 'November', 'December'];
+                const m = Math.round((year - y) * 11);
+                return `${months[m]} ${y}`;
+            }
+
+            function togglePlay() {
+                const state = AppState.getState();
+                AppState.update({ isPlaying: !state.isPlaying });
+                
+                if (!state.isPlaying) {
+                    lastTime = performance.now();
+                    animate();
+                } else {
+                    cancelAnimationFrame(animationFrame);
+                }
+                
+                updatePlayButton();
+            }
+
+            function animate(currentTime) {
+                if (!currentTime) currentTime = performance.now();
+                
+                const state = AppState.getState();
+                
+                if (!state.isPlaying) return;
+                
+                const delta = (currentTime - lastTime) / 1000;
+                lastTime = currentTime;
+                
+                let newYear = state.currentYear + delta * state.playSpeed * 2;
+                
+                if (newYear > 2024) {
+                    newYear = 1950;
+                }
+                
+                AppState.update({ currentYear: newYear });
+                timeSlider.value = newYear;
+                currentYearEl.textContent = Math.floor(newYear);
+                updateStats();
+                render();
+                
+                animationFrame = requestAnimationFrame(animate);
+            }
+
+            function updatePlayButton() {
+                const state = AppState.getState();
+                if (state.isPlaying) {
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                } else {
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                }
+            }
+
+            function updateStats() {
+                const state = AppState.getState();
+                const allActors = ActorData.getActors();
+                const filteredActors = ActorData.filterActors(state.filters);
+                const activeActors = ActorData.getActorsAtTime(state.currentYear, state.filters);
+                
+                totalActorsEl.textContent = allActors.length;
+                visibleActorsEl.textContent = filteredActors.length;
+                activeAtTimeEl.textContent = activeActors.length;
+            }
+
+            function render() {
+                const state = AppState.getState();
+                currentYearEl.textContent = Math.floor(state.currentYear);
+                timeSlider.value = state.currentYear;
+                
+                HistogramRenderer.render(state.viewStart, state.viewEnd, state.currentYear);
+                TimelineRenderer.render(state);
+            }
+
+            function debounce(fn, delay) {
+                let timeout;
+                return function(...args) {
+                    clearTimeout(timeout);
+                    timeout = setTimeout(() => fn.apply(this, args), delay);
+                };
+            }
+
+            // Subscribe to state changes
+            AppState.subscribe(() => {
+                render();
+            });
+
+            return { init, selectActorById };
+        })();
+
+        // ============================================
+        // INITIALIZATION
+        // ============================================
+        document.addEventListener('DOMContentLoaded', () => {
+            UIController.init();
+            
+            // Staggered entrance animation
+            document.querySelectorAll('.animate-in').forEach((el, i) => {
+                el.style.opacity = '0';
+                setTimeout(() => {
+                    el.style.opacity = '1';
+                }, i * 100);
+            });
+        });
+    </script>
+</body>
+</html>
