@@ -32,7 +32,7 @@ Implementation Global Rules:
 - **Extraction Command**:
 
   ```bash
-  ./bin/explode-prototype <prototype_path> <target_dir>
+  ./bin/unfold-protype-versions.sh <prototype_path> <target_dir>
   ```
 
 ## References
