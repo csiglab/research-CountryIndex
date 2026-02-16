@@ -4,387 +4,389 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Index Gentium · Flat Design System</title>
+    <title>Index Gentium · Swiss Pop</title>
     
-    <!-- Font: Outfit (Geometric Sans-Serif) -->
+    <!-- Font: Outfit (Geometric, Tight) -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800;900&display=swap" rel="stylesheet">
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         :root {
-            /* Core Palette */
-            --background: #FFFFFF;
-            --foreground: #111827;
-            --primary: #3B82F6; /* Blue 500 */
-            --primary-dark: #2563EB; /* Blue 600 */
-            --secondary: #10B981; /* Emerald 500 */
-            --accent: #F59E0B; /* Amber 500 */
-            --muted: #F3F4F6; /* Gray 100 */
-            --border: #E5E7EB; /* Gray 200 */
+            /* Palette: High-Contrast Dark Pop */
+            --bg-canvas: #0f172a; /* Slate 900 */
+            --bg-surface: #1e293b; /* Slate 800 */
+            --fg-primary: #f8fafc; /* Slate 50 */
+            --fg-muted: #94a3b8; /* Slate 400 */
             
-            /* Typography */
-            --font-main: 'Outfit', sans-serif;
+            /* Signal Colors (The Structure) */
+            --color-lime: #D9F99D;
+            --color-cyan: #A5F3FC;
+            --color-pink: #FBCFE8;
+            --color-amber: #FDE68A;
             
-            /* Radius */
-            --radius: 8px;
-            
-            /* Transitions */
-            --transition-fast: 0.2s;
+            /* UI Colors */
+            --border-thick: 4px solid rgba(255,255,255,0.1);
+            --radius-med: 8px;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
         body {
-            background-color: var(--background);
-            color: var(--foreground);
-            font-family: var(--font-main);
-            font-size: 16px;
-            line-height: 1.5;
+            background-color: var(--bg-canvas);
+            color: var(--fg-primary);
+            font-family: 'Outfit', sans-serif;
             overflow-x: hidden;
-            position: relative;
+            min-height: 100vh;
         }
 
-        /* --- Background Decoration (Geometric Shapes) --- */
-        .bg-decoration {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            z-index: 0;
+        /* --- The Spectacular Hero Structure --- */
+        .hero-section {
+            position: relative;
+            padding: 4rem 2rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
             overflow: hidden;
         }
-        .shape-circle {
-            position: absolute;
-            border-radius: 50%;
-            background: var(--primary);
-            opacity: 0.03;
-        }
-        .shape-1 { width: 800px; height: 800px; top: -200px; right: -200px; }
-        .shape-2 { width: 500px; height: 500px; bottom: 0; left: -100px; background: var(--secondary); }
-        .shape-square {
-            position: absolute;
-            width: 400px; height: 400px;
-            background: var(--accent);
-            opacity: 0.03;
-            transform: rotate(45deg);
-            top: 40%; left: 60%;
-        }
 
+        /* The Massive Structural Circle */
+        .hero-structure {
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            border: 2px solid rgba(255,255,255,0.1);
+            border-radius: 50%;
+            z-index: 0;
+            top: -200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .hero-structure::before {
+            content: '';
+            width: 600px;
+            height: 600px;
+            border: 2px solid rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
         .container {
             position: relative;
-            z-index: 1;
-            max-width: 1152px;
+            z-index: 2;
+            width: 100%;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 0 1.5rem;
         }
 
-        /* --- Header --- */
-        header {
-            padding: 6rem 0 4rem;
-            text-align: center;
-        }
-
-        .logo-container {
-            display: inline-block;
+        /* Logo inside a floating solid block */
+        .logo-box {
+            background: var(--fg-primary);
+            color: var(--bg-canvas);
+            width: 80px; height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: var(--radius-med);
             margin-bottom: 2rem;
-            background: var(--muted);
-            padding: 1.5rem;
-            border-radius: 50%;
+            box-shadow: 0 0 0 4px var(--bg-canvas); /* Negative space outline */
         }
-
-        .logo-container img {
-            height: 60px;
-            width: auto;
-            display: block;
-            filter: grayscale(100%) contrast(1.2); /* Flat style desaturation */
+        .logo-box img {
+            width: 50px;
+            height: auto;
+            filter: brightness(0); /* Black logo */
         }
 
         h1 {
-            font-size: 4rem;
-            font-weight: 800;
-            letter-spacing: -0.03em;
-            line-height: 1;
-            margin-bottom: 1rem;
-            color: var(--foreground);
+            font-size: clamp(3rem, 12vw, 8rem);
+            font-weight: 900;
+            line-height: 0.85;
+            letter-spacing: -0.04em;
+            text-align: center;
+            margin-bottom: 2rem;
+            text-transform: uppercase;
         }
-
-        h1 span {
-            color: var(--primary);
+        
+        /* Split Typography */
+        .title-accent {
+            color: transparent;
+            -webkit-text-stroke: 2px var(--fg-primary);
+            display: block;
         }
 
         .subtitle {
             font-size: 1.25rem;
-            color: var(--foreground);
-            opacity: 0.6;
-            max-width: 600px;
+            font-weight: 400;
+            color: var(--fg-muted);
+            text-align: center;
+            max-width: 500px;
             margin: 0 auto;
         }
 
-        /* --- Controls --- */
-        .controls-panel {
-            margin-bottom: 3rem;
+        /* --- Controls: The Bar --- */
+        .controls-bar {
+            margin-top: 4rem;
+            background: var(--bg-surface);
+            border-radius: var(--radius-med);
+            padding: 1.5rem;
+            border: var(--border-thick);
             display: flex;
             flex-direction: column;
-            align-items: center;
             gap: 1.5rem;
         }
 
-        /* Input Style: Flat, no border, hard focus */
         .search-container {
-            width: 100%;
-            max-width: 500px;
             position: relative;
-        }
-        .search-box {
-            width: 100%;
-            height: 56px;
-            padding: 0 1.5rem;
-            background: var(--muted);
-            border: 2px solid transparent;
-            border-radius: var(--radius);
-            font-family: var(--font-main);
-            font-size: 1rem;
-            color: var(--foreground);
-            transition: all var(--transition-fast);
-        }
-        .search-box::placeholder { color: var(--foreground); opacity: 0.4; }
-        .search-box:focus {
-            outline: none;
-            background: var(--background);
-            border-color: var(--primary);
+            flex: 1;
         }
 
+        .search-box {
+            width: 100%;
+            height: 60px;
+            background: var(--bg-canvas);
+            border: 2px solid var(--fg-primary);
+            border-radius: 0; /* Hard edges for typographic feel */
+            padding: 0 1.5rem;
+            font-family: 'Outfit';
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--fg-primary);
+            transition: all 0.2s;
+        }
+        .search-box:focus {
+            outline: none;
+            background: var(--fg-primary);
+            color: var(--bg-canvas);
+        }
+        .search-box::placeholder { color: var(--fg-muted); font-weight: 400; }
+
+        /* Suggestions */
         .search-suggestions {
             position: absolute;
             top: 100%; left: 0; right: 0;
-            background: var(--background);
-            border: 2px solid var(--primary);
+            background: var(--bg-surface);
+            border: 2px solid var(--fg-primary);
             border-top: none;
-            border-radius: 0 0 var(--radius) var(--radius);
             z-index: 10;
             display: none;
         }
         .search-suggestions.active { display: block; }
-        
         .suggestion-item {
             padding: 1rem 1.5rem;
             cursor: pointer;
-            border-bottom: 1px solid var(--muted);
-            transition: background var(--transition-fast);
+            border-bottom: 1px solid rgba(255,255,255,0.05);
         }
-        .suggestion-item:hover { background: var(--muted); }
-        .suggestion-text { font-weight: 600; }
-        .suggestion-snippet { font-size: 0.85rem; opacity: 0.6; }
-        .suggestion-match { color: var(--primary); }
+        .suggestion-item:hover { background: var(--bg-canvas); }
+        .suggestion-text { font-weight: 700; color: var(--fg-primary); }
+        .suggestion-match { color: var(--color-lime); }
 
-        /* Chips: Bold blocks */
+        /* Filter Chips: Hard Blocks */
         .filter-chips {
             display: flex;
-            gap: 0.75rem;
+            gap: 0.5rem;
             flex-wrap: wrap;
-            justify-content: center;
         }
 
         .chip {
-            padding: 0.5rem 1.25rem;
+            padding: 0.5rem 1.5rem;
             background: transparent;
-            border: 2px solid var(--foreground);
-            border-radius: 9999px;
+            border: 2px solid var(--fg-muted);
+            color: var(--fg-muted);
             font-weight: 600;
-            font-size: 0.875rem;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
             cursor: pointer;
-            transition: all var(--transition-fast);
-            color: var(--foreground);
-        }
-        
-        .chip:hover {
-            background: var(--foreground);
-            color: var(--background);
-            transform: scale(1.05);
-        }
-        
-        .chip.active {
-            background: var(--primary);
-            border-color: var(--primary);
-            color: white;
+            transition: all 0.2s;
         }
 
-        /* --- Cards --- */
+        .chip:hover {
+            background: var(--fg-muted);
+            color: var(--bg-canvas);
+        }
+
+        .chip.active {
+            background: var(--fg-primary);
+            border-color: var(--fg-primary);
+            color: var(--bg-canvas);
+        }
+
+        /* --- The Cards: Color Blocking --- */
         .cards-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+            margin-top: 4rem;
         }
 
         .firm-card {
-            background: var(--muted);
-            border-radius: var(--radius);
-            padding: 2rem;
+            position: relative;
+            height: 400px;
             display: flex;
             flex-direction: column;
-            transition: all var(--transition-fast);
-            border: 2px solid transparent;
-            position: relative;
             overflow: hidden;
+            border: 2px solid transparent;
+            transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
         }
 
-        /* Hover: Scale and color intensify */
-        .firm-card:hover {
-            transform: scale(1.02);
-            background: var(--background);
-            border-color: var(--muted);
+        /* Spectacular Color Blocking */
+        .card-color-block {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            transition: transform 0.4s;
+        }
+
+        /* Dynamic Colors based on content or rotation */
+        .firm-card:nth-child(4n+1) .card-color-block { background: var(--color-lime); }
+        .firm-card:nth-child(4n+2) .card-color-block { background: var(--color-cyan); }
+        .firm-card:nth-child(4n+3) .card-color-block { background: var(--color-pink); }
+        .firm-card:nth-child(4n+4) .card-color-block { background: var(--color-amber); }
+
+        .card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+            background: var(--bg-canvas);
+            border: 2px solid var(--bg-canvas); /* Mask edges */
+            margin: 8px; /* Creates the border effect */
+            transition: all 0.3s;
+            /* Clip the corner for geometric look */
+            clip-path: polygon(
+                0 0, 
+                100% 0, 
+                100% calc(100% - 40px), 
+                calc(100% - 40px) 100%, 
+                0 100%
+            );
+        }
+
+        /* Hover: The Inversion */
+        .firm-card:hover .card-content {
+            background: rgba(15, 23, 42, 0.95);
+            border-color: var(--fg-primary);
+        }
+        .firm-card:hover .card-color-block {
+            transform: scale(1.1);
         }
 
         .card-header {
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            margin-bottom: 1.5rem;
+            margin-bottom: auto;
         }
 
-        /* Icon: Solid colored circle */
-        .card-icon-box {
-            width: 48px; height: 48px;
-            border-radius: 50%;
-            background: var(--background);
-            color: var(--primary);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
-            transition: transform var(--transition-fast);
-        }
-        
-        .firm-card:hover .card-icon-box {
-            transform: scale(1.1);
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Category Badge: Color Block */
         .firm-category {
             font-size: 0.75rem;
-            font-weight: 700;
+            font-weight: 800;
             text-transform: uppercase;
-            letter-spacing: 0.05em;
-            background: var(--foreground);
-            color: white;
-            padding: 0.25rem 0.75rem;
-            border-radius: 4px;
+            letter-spacing: 0.1em;
+            border-bottom: 2px solid currentColor;
+            padding-bottom: 4px;
+            opacity: 0.8;
+        }
+
+        /* The Icon as a massive watermark */
+        .card-watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 10rem;
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 1;
+            color: var(--fg-primary);
         }
 
         .firm-name {
-            font-size: 1.5rem;
-            font-weight: 700;
-            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+            font-weight: 800;
+            line-height: 1;
+            margin-bottom: 1rem;
+            letter-spacing: -0.02em;
         }
 
         .firm-description {
-            font-size: 1rem;
-            opacity: 0.6;
-            line-height: 1.6;
-            margin-bottom: 1.5rem;
-            flex-grow: 1;
+            font-size: 0.9rem;
+            color: var(--fg-muted);
+            max-width: 90%;
+            line-height: 1.5;
         }
 
         .card-footer {
+            margin-top: auto;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-top: 2px solid var(--border);
-            padding-top: 1rem;
-            margin-top: auto;
         }
 
-        .footer-id {
-            font-family: monospace;
-            font-size: 0.75rem;
-            background: var(--background);
-            padding: 0.25rem 0.5rem;
-            border-radius: 4px;
-            border: 1px solid var(--border);
-        }
-
-        /* Button: Solid block */
+        /* Button: Text Link style */
         .btn-enter {
             display: inline-flex;
             align-items: center;
             gap: 0.5rem;
-            background: var(--foreground);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 6px;
-            font-weight: 600;
-            font-size: 0.85rem;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            color: var(--fg-primary);
             text-decoration: none;
-            transition: all var(--transition-fast);
+            transition: transform 0.2s;
         }
-
         .btn-enter:hover {
-            background: var(--primary);
-            transform: scale(1.05);
+            transform: translateX(8px);
+            color: var(--fg-primary);
         }
+        .btn-enter i { transition: transform 0.2s; }
+        .btn-enter:hover i { transform: translateX(4px); }
 
         /* --- Pagination --- */
         .pagination-container { 
-            margin-top: 4rem; 
+            margin: 6rem 0; 
             display: flex; 
-            flex-direction: column; 
-            align-items: center; 
+            justify-content: center; 
         }
-        
         .pagination-controls { 
             display: flex; 
-            align-items: center; 
             gap: 1rem; 
         }
-        
         .nav-button { 
-            background: var(--muted);
-            border: none; 
-            color: var(--foreground); 
-            padding: 0.75rem 1.5rem; 
+            width: 60px; height: 60px;
+            background: var(--bg-surface); 
+            border: 2px solid var(--fg-muted); 
+            color: var(--fg-primary); 
             font-weight: 700;
-            font-family: var(--font-main);
-            font-size: 0.9rem;
-            border-radius: 4px;
+            border-radius: 0; /* Square */
             cursor: pointer; 
-            transition: all var(--transition-fast);
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         .nav-button:not(:disabled):hover { 
-            background: var(--primary);
-            color: white;
+            background: var(--fg-primary);
+            color: var(--bg-canvas);
+            border-color: var(--fg-primary);
         }
-        .nav-button:disabled { opacity: 0.3; cursor: not-allowed; }
+        .nav-button:disabled { opacity: 0.2; cursor: not-allowed; }
         
-        .dots-track { display: flex; gap: 0.5rem; }
+        .dots-track { display: flex; gap: 0.5rem; align-items: center; }
         .pagination-dot { 
-            width: 10px; 
-            height: 10px; 
-            background: var(--border);
-            border-radius: 50%;
-            border: none;
+            width: 12px; 
+            height: 12px; 
+            background: var(--bg-surface);
+            border: 2px solid var(--fg-muted);
             cursor: pointer; 
-            transition: all var(--transition-fast);
+            transition: all 0.2s;
         }
         .pagination-dot.active { 
-            background: var(--primary);
-            width: 32px;
-            border-radius: 4px;
-        }
-
-        /* Footer: Bold Block */
-        footer {
-            margin-top: 6rem;
-            background: var(--foreground);
-            color: white;
-            padding: 4rem 0;
-        }
-
-        .footer-content {
-            text-align: center;
-            opacity: 0.8;
+            background: var(--fg-primary);
+            border-color: var(--fg-primary);
+            transform: rotate(45deg); /* Geometric Dot */
         }
 
         /* Utils */
@@ -393,73 +395,65 @@
             flex-direction: column; 
             align-items: center; 
             justify-content: center; 
-            padding: 4rem 2rem; 
+            padding: 6rem 2rem; 
             text-align: center; 
         }
         .empty-state.active { display: flex; } 
         .empty-state { display: none; }
 
         @media (max-width: 768px) {
-            h1 { font-size: 2.5rem; }
-            .firm-card { padding: 1.5rem; }
+            .hero-structure { display: none; }
+            h1 { font-size: 3rem; }
+            .firm-card { height: auto; min-height: 350px; }
         }
     </style>
 </head>
 
 <body>
-    <!-- Background Shapes -->
-    <div class="bg-decoration">
-        <div class="shape-circle shape-1"></div>
-        <div class="shape-circle shape-2"></div>
-        <div class="shape-square"></div>
-    </div>
-
-    <div class="container">
-        <header>
-            <div class="logo-container">
-                <img src="logo.png" alt="Logo">
+    <div class="hero-section">
+        <div class="hero-structure"></div>
+        <div class="container">
+            <div style="display: flex; flex-direction: column; align-items: center;">
+                <div class="logo-box">
+                    <img src="logo.png" alt="Logo">
+                </div>
+                <h1>
+                    Index <span class="title-accent">Gentium</span>
+                </h1>
+                <p class="subtitle">A systematic registry of sovereign entities & data points.</p>
             </div>
-            <h1>Index <span>Gentium</span></h1>
-            <p class="subtitle">A structured registry of sovereign entities.</p>
-        </header>
 
-        <div class="controls-panel">
-            <div class="search-container">
-                <input type="text" class="search-box" id="searchInput" placeholder="Search database..." autocomplete="off">
-                <div class="search-suggestions" id="searchSuggestions"></div>
+            <div class="controls-bar">
+                <div class="search-container">
+                    <input type="text" class="search-box" id="searchInput" placeholder="Search..." autocomplete="off">
+                    <div class="search-suggestions" id="searchSuggestions"></div>
+                </div>
+                <div class="filter-chips" id="filterChips">
+                    <div class="chip active" data-tag="">All</div>
+                </div>
             </div>
-            <div class="filter-chips" id="filterChips">
-                <div class="chip active" data-tag="">All Sectors</div>
+
+            <div class="loading-state" id="loadingState">
+                <div style="width: 60px; height: 60px; border: 4px solid var(--bg-surface); border-top-color: var(--fg-primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+                <p style="margin-top: 1.5rem; font-weight: 600; color: var(--fg-muted);">LOADING DATA</p>
             </div>
-        </div>
 
-        <div class="loading-state" id="loadingState">
-            <div style="width: 48px; height: 48px; border: 4px solid var(--muted); border-top-color: var(--primary); border-radius: 50%; animation: spin 1s linear infinite;"></div>
-            <p style="margin-top: 1rem; font-weight: 600;">Loading...</p>
-        </div>
+            <div class="empty-state" id="emptyState">
+                <h2 style="font-size: 3rem; font-weight: 900; margin-bottom: 1rem;">VOID</h2>
+                <p style="color: var(--fg-muted);">No entries match your query.</p>
+            </div>
 
-        <div class="empty-state" id="emptyState">
-            <i class="fas fa-ban" style="font-size: 2rem; margin-bottom: 1rem; color: var(--primary);"></i>
-            <h3 style="margin-bottom: 0.5rem;">No Results</h3>
-            <p style="opacity: 0.6;">Query returned void.</p>
-        </div>
+            <div class="cards-grid" id="cardsGrid" style="display: none;"></div>
 
-        <div class="cards-grid" id="cardsGrid" style="display: none;"></div>
-
-        <div class="pagination-container" id="paginationContainer" style="display: none;">
-            <div class="pagination-controls">
-                <button class="nav-button prev" id="prevArrow"><i class="fas fa-arrow-left"></i> Prev</button>
-                <div class="dots-track" id="dotsContainer"></div>
-                <button class="nav-button next" id="nextArrow">Next <i class="fas fa-arrow-right"></i></button>
+            <div class="pagination-container" id="paginationContainer" style="display: none;">
+                <div class="pagination-controls">
+                    <button class="nav-button prev" id="prevArrow"><i class="fas fa-arrow-left"></i></button>
+                    <div class="dots-track" id="dotsContainer"></div>
+                    <button class="nav-button next" id="nextArrow"><i class="fas fa-arrow-right"></i></button>
+                </div>
             </div>
         </div>
     </div>
-
-    <footer>
-        <div class="container footer-content">
-            <p>Laboratorium Arbitristae · Flat System</p>
-        </div>
-    </footer>
 
     <script>
         // --- Core Logic ---
@@ -490,7 +484,7 @@
                 initApp();
             })
             .catch(err => {
-                $('loadingState').innerHTML = `<p style="color: red;">Error</p>`;
+                $('loadingState').innerHTML = `<p style="color: red;">SYSTEM ERROR</p>`;
                 console.error(err);
             });
 
@@ -514,7 +508,7 @@
             setupPagination();
         }
 
-        // --- CARD RENDERING (Flat Design) ---
+        // --- CARD RENDERING (Spectacular Flat) ---
         function renderCards() {
             grid.innerHTML = '';
             const start = (currentPage - 1) * itemsPerPage;
@@ -533,24 +527,28 @@
             pageItems.forEach((firm, i) => {
                 const card = document.createElement('article');
                 card.className = 'firm-card';
-                card.style.animation = `fadeIn 0.3s ${i * 0.03}s backwards`;
+                card.style.animation = `fadeIn 0.4s ${i * 0.06}s backwards`;
                 
-                const displayId = `${firm.name.substring(0,3).toUpperCase()}-${Math.floor(Math.random() * 900) + 100}`;
+                const displayId = `NO.${Math.floor(Math.random() * 900) + 100}`;
 
                 card.innerHTML = `
-                    <div class="card-header">
-                        <div class="card-icon-box">${firm.icon}</div>
-                        <span class="firm-category">${firm.tags}</span>
-                    </div>
-                    <div class="card-body">
-                        <h3 class="firm-name">${firm.name}</h3>
-                        <p class="firm-description">${firm.description}</p>
-                    </div>
-                    <div class="card-footer">
-                        <span class="footer-id">ID: ${displayId}</span>
-                        <a href="${firm.link}" target="_blank" class="btn-enter">
-                            View <i class="fas fa-arrow-right"></i>
-                        </a>
+                    <div class="card-color-block"></div>
+                    <div class="card-content">
+                        <div class="card-watermark">${firm.icon}</div>
+                        <div class="card-header">
+                            <span class="firm-category">${firm.tags}</span>
+                            <span style="font-weight: 700; opacity: 0.7;">${displayId}</span>
+                        </div>
+                        <div class="card-body" style="margin-top: auto;">
+                            <h3 class="firm-name">${firm.name}</h3>
+                            <p class="firm-description">${firm.description}</p>
+                        </div>
+                        <div class="card-footer">
+                            <div style="width: 10px; height: 10px; background: currentColor; opacity: 0.5;"></div>
+                            <a href="${firm.link}" target="_blank" class="btn-enter">
+                                Enter <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
                     </div>
                 `;
                 grid.appendChild(card);
@@ -588,7 +586,6 @@
                 suggestionsBox.innerHTML = results.map(f => `
                     <div class="suggestion-item" data-name="${f.name}">
                         <div class="suggestion-text">${highlight(f.name, term)}</div>
-                        <div class="suggestion-snippet">${highlight(f.description.substring(0,40), term)}...</div>
                     </div>
                 `).join('');
             }
