@@ -62,7 +62,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
     
-    /* Improvement: Custom Scrollbar */
+    /* Custom Scrollbar */
     ::-webkit-scrollbar {
       width: 8px;
       height: 8px;
@@ -78,7 +78,7 @@
       background: var(--muted);
     }
 
-    /* Improvement: Custom Text Selection */
+    /* Custom Text Selection */
     ::selection {
       background-color: color-mix(in srgb, var(--accent) 20%, transparent);
       color: var(--fg);
@@ -156,10 +156,11 @@
     }
     .dark .project-header.scrolled { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25); }
 
+    /* Improvement: Tighter Header Padding */
     .project-header-inner {
       max-width: 56rem;
       margin: 0 auto;
-      padding: 0.875rem 1.5rem;
+      padding: 0.75rem 1.5rem; /* Adjusted from 0.875rem */
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -288,17 +289,43 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     
+    /* Improvement: Staggered Grid Reveal */
+    #statsGrid .data-card,
+    #worksGrid .entity-card {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 
+        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.3s ease, 
+        box-shadow 0.3s ease;
+    }
+
+    .reveal.visible #statsGrid .data-card,
+    .reveal.visible #worksGrid .entity-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal.visible #statsGrid .data-card:nth-child(1) { transition-delay: 0.05s; }
+    .reveal.visible #statsGrid .data-card:nth-child(2) { transition-delay: 0.15s; }
+    .reveal.visible #statsGrid .data-card:nth-child(3) { transition-delay: 0.25s; }
+    .reveal.visible #statsGrid .data-card:nth-child(4) { transition-delay: 0.35s; }
+
+    .reveal.visible #worksGrid .entity-card:nth-child(1) { transition-delay: 0.1s; }
+    .reveal.visible #worksGrid .entity-card:nth-child(2) { transition-delay: 0.2s; }
+    .reveal.visible #worksGrid .entity-card:nth-child(3) { transition-delay: 0.3s; }
+
     .delay-1 { transition-delay: 0.15s; }
     .delay-2 { transition-delay: 0.3s; }
     .delay-3 { transition-delay: 0.45s; }
     .delay-4 { transition-delay: 0.6s; }
 
     @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
+      .reveal, #statsGrid .data-card, #worksGrid .entity-card { opacity: 1; transform: none; transition: none; }
     }
 
     /* Typography */
-    /* Improvement: Enable Ligatures for elegant serif rendering */
     .font-display { 
       font-family: 'Cormorant Garamond', Georgia, serif; 
       font-feature-settings: "kern", "liga";
@@ -366,6 +393,8 @@
       position: relative;
       hyphens: auto;
       transition: color 0.3s ease;
+      /* Improvement: Max width for readability */
+      max-width: 52rem; 
     }
     
     .definition-lead::before {
@@ -388,7 +417,7 @@
       .definition-lead { font-size: 1.25rem; }
     }
 
-    #nativeName { letter-spacing: 0.04em; }
+    #nativeName { letter-spacing: 0.04em; margin-bottom: 1rem; display: block; }
 
     /* Tags */
     .tag-pill {
@@ -458,6 +487,8 @@
       gap: 0.75rem;
     }
     .data-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--accent); transition: width 0.3s ease; }
+    
+    /* Improvement: Active hover state for data cards */
     .data-card:hover::before { width: 40px; }
     .data-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06); border-color: var(--accent); }
     .data-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
@@ -482,12 +513,10 @@
       height: 100%; 
     }
     
-    /* Improvement: Dashed border for pending state */
     .entity-card[data-state="pending"] {
       border-style: dashed;
     }
 
-    /* State indicator: Top accent line */
     .entity-card::before {
       content: '';
       position: absolute;
@@ -555,7 +584,6 @@
       transform: scale(1.1); 
     }
 
-    /* Flexbox layout for content alignment */
     .card-content { 
       padding: 1.25rem 1.25rem 1.5rem; 
       display: flex;
@@ -563,7 +591,6 @@
       height: calc(100% - 88px);
     }
 
-    /* Title color transition */
     .card-title {
       transition: color 0.3s ease;
     }
@@ -572,13 +599,11 @@
       color: var(--accent);
     }
 
-    /* Push CTA to bottom */
     .card-description {
       flex-grow: 1;
       margin-bottom: 1rem;
     }
 
-    /* Refined Type Tag */
     .card-tag {
       display: inline-flex;
       align-items: center;
@@ -609,7 +634,6 @@
     .entity-card[data-state="active"]:hover .card-tag { color: var(--type-color); }
     .entity-card[data-state="active"]:hover .card-tag .type-icon { opacity: 1; }
 
-    /* Refined Status Badge */
     .status-badge { 
       display: inline-flex; 
       align-items: center; 
@@ -737,7 +761,7 @@
         </a>
         
         <h1 class="font-display type-hero font-medium text-fg mb-1" id="countryName">...</h1>
-        <p class="font-display type-section italic text-muted mb-4" id="nativeName">...</p>
+        <p class="font-display type-section italic text-muted" id="nativeName">...</p>
         <div class="flex flex-wrap gap-2" id="tagContainer"></div>
       </div>
 
