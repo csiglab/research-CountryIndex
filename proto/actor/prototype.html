@@ -1,815 +1,1359 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Zealand Actor Space — Event Representation</title>
-    
-    <!-- Fonts: Elegant Oxford/Academic Style -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-    
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        :root {
-            --bg-primary: #F6F4EF; /* Vellum */
-            --bg-secondary: #EDE9E0;
-            --fg-primary: #1A1A1A; /* Ink */
-            --fg-secondary: #4A4A4A;
-            --fg-muted: #78716C;
-            --accent-public: #1E3A5F; /* Navy */
-            --accent-private: #7F1D1D; /* Burgundy */
-            --accent-hybrid: #2D4A3E; /* Forest */
-            --border-subtle: #D1CCC0;
-            --event-stroke: rgba(26, 26, 26, 0.8);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>New Zealand Actor Space — Index Gentium</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bg: 'var(--bg)',
+            fg: 'var(--fg)',
+            muted: 'var(--muted)',
+            accent: 'var(--accent)',
+            card: 'var(--card)',
+            border: 'var(--border)',
+          },
+          fontFamily: {
+            display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
+            body: ['Inter', 'system-ui', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
         }
-        
-        body {
-            font-family: 'EB Garamond', serif;
-            background-color: var(--bg-primary);
-            color: var(--fg-primary);
-        }
-        
-        .font-display {
-            font-family: 'Cormorant Garamond', serif;
-        }
-        
-        /* Canvas specific */
-        #viz-canvas {
-            cursor: crosshair;
-        }
-        
-        /* Controls */
-        .control-panel {
-            background: rgba(246, 244, 239, 0.95);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--border-subtle);
-        }
-        
-        .btn-classic {
-            border: 1px solid var(--fg-muted);
-            background: transparent;
-            transition: all 0.2s ease;
-        }
-        .btn-classic:hover {
-            background: var(--fg-primary);
-            color: var(--bg-primary);
-            border-color: var(--fg-primary);
-        }
-        
-        /* Tooltip */
-        .tooltip-box {
-            position: absolute;
-            background: #fff;
-            border: 1px solid var(--fg-muted);
-            padding: 12px 16px;
-            pointer-events: none;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            opacity: 0;
-            transition: opacity 0.1s;
-            z-index: 100;
-            max-width: 300px;
-        }
-        
-        /* Detail Sidebar */
-        .detail-sidebar {
-            position: fixed;
-            right: 0;
-            top: 0;
-            height: 100vh;
-            width: 340px;
-            background: var(--bg-primary);
-            border-left: 1px solid var(--border-subtle);
-            transform: translateX(100%);
-            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            z-index: 50;
-            overflow-y: auto;
-            box-shadow: -4px 0 20px rgba(0,0,0,0.05);
-        }
-        .detail-sidebar.open {
-            transform: translateX(0);
-        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg: #FAFBFC;
+      --fg: #1A2B3C;
+      --muted: #5C7089;
+      --accent: #3D6B99;
+      --card: #FFFFFF;
+      --border: #D8E1EB;
+      --bg-subtle: #F1F5F9;
+      --type-public: #3D6B99;
+      --type-private: #9A4C4C;
+      --type-hybrid: #4C7A6B;
+    }
 
-        /* Timeline Axis */
-        .time-axis {
-            height: 40px;
-            border-top: 1px solid var(--fg-muted);
-            background: var(--bg-secondary);
-        }
+    .dark {
+      --bg: #0F172A;
+      --fg: #E4EBF2;
+      --muted: #8BA3BC;
+      --accent: #93C5FD;
+      --card: #1E293B;
+      --border: #334155;
+      --bg-subtle: #172033;
+      --type-public: #60A5FA;
+      --type-private: #F87171;
+      --type-hybrid: #34D399;
+    }
 
-        /* Loading State */
-        #loading-indicator {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.5rem;
-            color: var(--fg-muted);
-            pointer-events: none;
-            transition: opacity 0.5s;
-        }
-    </style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: var(--bg-subtle); }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+
+    ::selection {
+      background-color: color-mix(in srgb, var(--accent) 20%, transparent);
+      color: var(--fg);
+    }
+    .dark ::selection {
+      background-color: color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      background-color: var(--bg);
+      color: var(--fg);
+      line-height: 1.5;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      border-top: 3px solid var(--accent);
+      -webkit-font-smoothing: antialiased;
+      position: relative;
+    }
+
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(61, 107, 153, 0.04) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(61, 107, 153, 0.03) 0%, transparent 50%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    .dark body::before {
+      background-image: 
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(147, 197, 253, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(147, 197, 253, 0.04) 0%, transparent 50%);
+    }
+
+    .main-content { 
+      flex: 1 0 auto; 
+      width: 100%; 
+      position: relative;
+      z-index: 1;
+    }
+    .site-footer { flex-shrink: 0; position: relative; z-index: 1; }
+
+    /* Header Styles */
+    .project-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: color-mix(in srgb, var(--card) 85%, transparent);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      transition: box-shadow 0.3s ease, background 0.3s ease;
+    }
+    
+    .project-header::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    
+    .project-header.scrolled::after { opacity: 0.4; }
+    .project-header.scrolled { 
+      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06); 
+      background: var(--card);
+    }
+    .dark .project-header.scrolled { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25); }
+
+    .project-header-inner {
+      max-width: 56rem;
+      margin: 0 auto;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .project-identity {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      text-decoration: none;
+      transition: opacity 0.25s ease;
+    }
+    .project-identity:hover { opacity: 0.85; }
+    .project-identity:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
+
+    .project-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 4px;
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+      border: 1px solid var(--border);
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .project-identity:hover .project-logo { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+
+    .project-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.125rem;
+      font-weight: 500;
+      color: var(--fg);
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+    }
+
+    .project-subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.625rem;
+      color: var(--muted);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-top: 1px;
+    }
+
+    .nav-controls { display: flex; align-items: center; gap: 1.25rem; }
+
+    .breadcrumb-nav {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.04em;
+    }
+
+    .breadcrumb-nav a {
+      color: var(--muted);
+      text-decoration: none;
+      padding: 0.25rem 0.5rem;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .breadcrumb-nav a::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: all 0.2s ease;
+      transform: translateX(-50%);
+    }
+    .breadcrumb-nav a:hover { color: var(--fg); }
+    .breadcrumb-nav a:hover::after { width: calc(100% - 1rem); }
+    .breadcrumb-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    .breadcrumb-separator { color: var(--border); font-weight: 300; user-select: none; }
+
+    .breadcrumb-current {
+      color: var(--fg);
+      font-weight: 500;
+      padding: 0.25rem 0.5rem;
+      background: var(--bg-subtle);
+      border-radius: 2px;
+      border: 1px solid var(--border);
+    }
+
+    .theme-toggle {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.25s ease;
+      flex-shrink: 0;
+      position: relative;
+    }
+    .theme-toggle:hover { color: var(--fg); border-color: var(--accent); transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+    .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    
+    .theme-toggle .icon-sun, 
+    .theme-toggle .icon-moon { 
+      position: absolute; 
+      transition: opacity 0.25s ease, transform 0.25s ease; 
+      width: 18px !important; 
+      height: 18px !important;
+    }
+
+    .theme-toggle .icon-moon { opacity: 1; transform: scale(1); }
+    .theme-toggle .icon-sun { opacity: 0; transform: scale(0.5); }
+    .dark .theme-toggle .icon-moon { opacity: 0; transform: scale(0.5); }
+    .dark .theme-toggle .icon-sun { opacity: 1; transform: scale(1); }
+
+    @media (max-width: 640px) {
+      .project-header-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 1rem; }
+      .nav-controls { width: 100%; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid var(--border); }
+    }
+
+    /* Typography */
+    .font-display { 
+      font-family: 'Cormorant Garamond', Georgia, serif; 
+      font-feature-settings: "kern", "liga";
+    }
+    .font-body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-meta { font-family: 'JetBrains Mono', monospace; }
+
+    .type-hero { font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; }
+    @media (min-width: 768px) { .type-hero { font-size: 4rem; } }
+    .type-section { font-size: 1.5rem; line-height: 1.3; }
+    .type-card-title { font-size: 1.25rem; line-height: 1.3; }
+    .type-data-value { font-size: 2rem; line-height: 1; }
+    .type-body { font-size: 1rem; line-height: 1.75; letter-spacing: 0.01em; }
+    .type-secondary { font-size: 0.875rem; line-height: 1.5; }
+    .type-label { font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.05em; }
+    .type-meta { font-size: 0.7rem; line-height: 1.4; }
+
+    /* Animations & Reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    
+    .delay-1 { transition-delay: 0.15s; }
+    .delay-2 { transition-delay: 0.3s; }
+    .delay-3 { transition-delay: 0.45s; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .reveal { opacity: 1; transform: none; transition: none; }
+    }
+
+    /* Control Buttons */
+    .control-btn {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.375rem 0.75rem;
+      background: var(--card); 
+      border: 1px solid var(--border);
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
+      color: var(--muted);
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02); 
+      cursor: pointer;
+      user-select: none;
+    }
+
+    .control-btn:hover {
+      color: var(--accent);
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+      background-color: color-mix(in srgb, var(--accent) 6%, var(--card));
+      box-shadow: 0 2px 8px rgba(61, 107, 153, 0.08);
+    }
+
+    .dark .control-btn:hover {
+      background-color: color-mix(in srgb, var(--accent) 10%, var(--card));
+      box-shadow: 0 2px 8px rgba(147, 197, 253, 0.12);
+    }
+
+    .control-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+    /* Legend Tags */
+    .legend-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+
+    .legend-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .legend-tag:hover .legend-dot {
+      transform: scale(1.3);
+    }
+
+    .legend-dot.public { background: var(--type-public); }
+    .legend-dot.private { background: var(--type-private); }
+    .legend-dot.hybrid { background: var(--type-hybrid); }
+
+    /* Vertical Canvas Container */
+    .canvas-container {
+      position: relative;
+      width: 100%;
+      height: 600px; /* Fixed height for vertical timeline */
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    #viz-canvas {
+      cursor: ns-resize; /* Vertical resize cursor */
+      display: block;
+    }
+
+    /* Tooltip */
+    .tooltip-box {
+      position: fixed;
+      background: var(--card);
+      border: 1px solid var(--border);
+      padding: 1rem 1.25rem;
+      pointer-events: none;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: opacity 0.15s ease;
+      z-index: 100;
+      max-width: 280px;
+      border-radius: 4px;
+    }
+
+    .tooltip-box.visible { opacity: 1; }
+
+    /* Detail Sidebar */
+    .detail-sidebar {
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 100vh;
+      width: 360px;
+      background: var(--card);
+      border-left: 1px solid var(--border);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 60;
+      overflow-y: auto;
+      box-shadow: -8px 0 32px rgba(0,0,0,0.08);
+    }
+    .detail-sidebar.open { transform: translateX(0); }
+    .dark .detail-sidebar { box-shadow: -8px 0 32px rgba(0,0,0,0.3); }
+
+    .sidebar-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .sidebar-close:hover { color: var(--fg); border-color: var(--accent); }
+
+    /* Event Timeline in Sidebar */
+    .event-item {
+      position: relative;
+      padding-left: 1.5rem;
+      transition: all 0.2s ease;
+    }
+    .event-item::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      transition: all 0.2s ease;
+    }
+    .event-item:hover::before {
+      background: var(--accent);
+      border-color: var(--accent);
+    }
+
+    /* Footer */
+    .site-footer { background: var(--card); border-top: 1px solid var(--border); }
+    .footer-identity { color: var(--fg); }
+    .footer-muted { color: var(--muted); }
+    .footer-label { color: var(--muted); opacity: 0.7; }
+    
+    .footer-link { 
+      color: var(--muted); 
+      transition: color 0.2s ease; 
+      position: relative;
+      text-decoration: none;
+    }
+    .footer-link::after {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background: var(--accent);
+      transition: width 0.3s ease;
+    }
+    .footer-link:hover { color: var(--fg); }
+    .footer-link:hover::after { width: 100%; }
+    .footer-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .footer-value { color: var(--fg); opacity: 0.85; }
+    .footer-divider { border-color: var(--border); }
+
+    .scroll-progress {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 2px;
+      background: var(--accent);
+      z-index: 101;
+      transform-origin: left;
+      transform: scaleX(0);
+      transition: transform 0.1s linear;
+    }
+
+    /* Section Divider */
+    .section-divider {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+    .section-divider::before, .section-divider::after {
+      content: '';
+      height: 1px;
+      flex: 1;
+      max-width: 120px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .section-divider .diamond { 
+      width: 6px; 
+      height: 6px; 
+      background: var(--border); 
+      transform: rotate(45deg); 
+    }
+
+    /* Loading */
+    #loading-indicator {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem;
+      color: var(--muted);
+      pointer-events: none;
+      transition: opacity 0.5s;
+    }
+  </style>
 </head>
-<body class="overflow-hidden">
+<body>
 
-    <!-- Header -->
-    <header class="control-panel py-4 px-6 flex justify-between items-center z-10 relative">
+  <!-- Project Header -->
+  <header class="project-header" id="projectHeader">
+    <div class="project-header-inner">
+      <a href="../index.html" class="project-identity" aria-label="Return to Index Gentium">
+        <div class="project-logo">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+            <path d="M2 12h20"/>
+          </svg>
+        </div>
         <div>
-            <h1 class="font-display text-2xl font-medium tracking-wide">New Zealand Actor Space</h1>
-            <p class="text-xs text-[var(--fg-muted)] uppercase tracking-widest mt-1">Event-Based Temporal Representation, 1800–Present</p>
+          <div class="project-title">Index Gentium</div>
+          <div class="project-subtitle">Laboratorium · Arbitristae</div>
         </div>
-        <div class="flex items-center gap-4 text-sm">
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-[var(--accent-public)]"></div>
-                <span>Public</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-[var(--accent-private)]"></div>
-                <span>Private</span>
-            </div>
-            <div class="flex items-center gap-2">
-                <div class="w-2 h-2 rounded-full bg-[var(--accent-hybrid)]"></div>
-                <span>Hybrid</span>
-            </div>
+      </a>
+
+      <div class="nav-controls">
+        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
+          <a href="index.html"><span>Gentium</span></a>
+          <span class="breadcrumb-separator">/</span>
+          <span class="breadcrumb-current">Actor Space</span>
+        </nav>
+
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" type="button">
+          <svg class="icon-moon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
+          </svg>
+          <svg class="icon-sun" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0a3.75 3.75 0 017.5 0z"/>
+          </svg>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
+
+  <div class="main-content w-full max-w-4xl mx-auto px-6 py-16 md:py-24">
+    
+    <!-- [1] Identity Layer -->
+    <header class="hero-grid reveal">
+      <div class="identity-column">
+        <h1 class="font-display type-hero font-medium text-fg mb-1">New Zealand Actor Space</h1>
+        <p class="font-display type-section italic text-muted" id="nativeName">Event-Based Temporal Representation</p>
+        <div class="flex flex-wrap gap-3 mt-4" id="tagContainer">
+          <div class="legend-tag">
+            <span class="legend-dot public"></span>
+            <span>Public</span>
+          </div>
+          <div class="legend-tag">
+            <span class="legend-dot private"></span>
+            <span>Private</span>
+          </div>
+          <div class="legend-tag">
+            <span class="legend-dot hybrid"></span>
+            <span>Hybrid</span>
+          </div>
         </div>
+      </div>
+
+      <div class="context-column">
+        <div class="definition-lead text-muted">
+          Visualizing the lifespan of sovereign entities from 1800 to present. 
+          Select an actor to inspect their event sequence.
+        </div>
+      </div>
     </header>
 
-    <!-- Main Visualization -->
-    <main class="relative flex flex-col" style="height: calc(100vh - 80px);">
+    <div class="section-divider reveal delay-1">
+      <span class="diamond"></span>
+    </div>
+
+    <!-- [2] Visualization Section -->
+    <section class="reveal delay-2">
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
+        <div>
+          <h2 class="font-display type-section text-fg mb-1">Temporal Registry</h2>
+          <p class="font-body type-secondary text-muted">Vertical Time Axis · 1800–Present</p>
+        </div>
+        <div class="flex items-center gap-2">
+          <button id="btn-zoom-in" class="control-btn">+ Zoom</button>
+          <button id="btn-zoom-out" class="control-btn">− Zoom</button>
+          <button id="btn-reset" class="control-btn">Reset</button>
+        </div>
+      </div>
+
+      <div class="canvas-container">
+        <canvas id="viz-canvas"></canvas>
+        <div id="loading-indicator">Loading actor-set.json...</div>
         
-        <!-- Filters / Controls -->
-        <div class="absolute top-4 left-4 z-20 flex gap-2">
-            <button id="btn-zoom-in" class="btn-classic px-3 py-1 text-sm rounded-sm">+</button>
-            <button id="btn-zoom-out" class="btn-classic px-3 py-1 text-sm rounded-sm">−</button>
-            <button id="btn-reset" class="btn-classic px-3 py-1 text-sm rounded-sm">Reset View</button>
+        <!-- Tooltip -->
+        <div id="tooltip" class="tooltip-box">
+          <div class="font-meta type-meta uppercase tracking-wider text-muted mb-1" id="tt-type">Event Type</div>
+          <div class="font-display text-lg font-medium text-fg" id="tt-actor">Actor Name</div>
+          <div class="font-body type-secondary text-muted italic mt-1" id="tt-desc">Description</div>
+          <div class="mt-3 pt-2 border-t border-[var(--border)] font-meta type-meta text-muted" id="tt-date">Date</div>
         </div>
+      </div>
+      
+      <p class="font-meta type-meta text-muted mt-3 text-right" id="actorCount">Loading...</p>
+    </section>
 
-        <!-- The Canvas -->
-        <div class="flex-1 relative">
-            <canvas id="viz-canvas"></canvas>
-            
-            <!-- Hover Tooltip -->
-            <div id="tooltip" class="tooltip-box font-display">
-                <div class="text-xs text-[var(--fg-muted)] uppercase tracking-wider" id="tt-type">Event Type</div>
-                <div class="text-lg font-medium" id="tt-actor">Actor Name</div>
-                <div class="text-sm italic" id="tt-desc">Description</div>
-                <div class="mt-2 text-xs font-mono" id="tt-date">Date</div>
-            </div>
+  </div>
 
-            <!-- Loading Message -->
-            <div id="loading-indicator">Loading actor-set.json...</div>
+  <!-- Detail Sidebar -->
+  <aside id="sidebar" class="detail-sidebar">
+    <button id="close-sidebar" class="sidebar-close" aria-label="Close sidebar">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M18 6L6 18M6 6l12 12"/>
+      </svg>
+    </button>
+    
+    <div class="p-6 pt-14">
+      <div class="border-b border-[var(--border)] pb-4 mb-6">
+        <h2 class="font-display text-2xl font-medium leading-tight text-fg" id="sb-name">Actor Name</h2>
+        <p class="font-meta type-meta uppercase tracking-wider text-muted mt-2" id="sb-role">Role</p>
+      </div>
+      
+      <div class="space-y-5">
+        <div>
+          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-1">Type</h3>
+          <p id="sb-type" class="font-body type-secondary font-medium text-fg">Public</p>
         </div>
-
-        <!-- Time Axis -->
-        <div class="time-axis relative z-10">
-            <canvas id="axis-canvas"></canvas>
+        <div>
+          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-1">Region</h3>
+          <p id="sb-region" class="font-body type-secondary text-fg">Region</p>
+        </div>
+        <div>
+          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-1">Description</h3>
+          <p id="sb-desc" class="font-body type-secondary text-muted italic leading-relaxed">Description text...</p>
         </div>
         
-    </main>
+        <div class="pt-4 border-t border-[var(--border)]">
+          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-4">Event Sequence</h3>
+          <div id="sb-timeline" class="space-y-5 pl-4 border-l-2 border-[var(--border)]">
+          </div>
+        </div>
+      </div>
+    </div>
+  </aside>
 
-    <!-- Detail Sidebar (Consolidated Actor View) -->
-    <aside id="sidebar" class="detail-sidebar p-6">
-        <button id="close-sidebar" class="absolute top-4 right-4 text-sm opacity-50 hover:opacity-100 transition-opacity p-2">✕</button>
-        <div class="border-b border-[var(--border-subtle)] pb-4 mb-4 mt-4">
-            <h2 class="font-display text-3xl font-medium leading-tight" id="sb-name">Actor Name</h2>
-            <p class="text-sm text-[var(--fg-muted)] uppercase tracking-wider mt-2" id="sb-role">Role</p>
+  <!-- Footer -->
+  <footer class="site-footer py-12 md:py-16 px-6">
+    <div class="max-w-4xl mx-auto">
+      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-6 mb-10">
+        <div class="md:col-span-5 text-center md:text-left">
+          <p class="font-display text-lg font-medium tracking-[0.2em] uppercase mb-2 footer-identity">Arbitristae</p>
+          <p class="font-body text-xs leading-relaxed max-w-xs mx-auto md:mx-0 footer-muted">
+            A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems.
+          </p>
         </div>
         
-        <div class="space-y-4">
-            <div>
-                <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)] mb-1">Type</h3>
-                <p id="sb-type" class="text-sm font-medium">Public</p>
-            </div>
-            <div>
-                <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)] mb-1">Region</h3>
-                <p id="sb-region" class="text-sm">Region</p>
-            </div>
-            <div>
-                <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)] mb-1">Description</h3>
-                <p id="sb-desc" class="text-sm italic leading-relaxed">Description text...</p>
-            </div>
-            
-            <!-- Consolidated Timeline in Sidebar -->
-            <div class="mt-8 pt-4 border-t border-[var(--border-subtle)]">
-                <h3 class="text-xs uppercase tracking-wider text-[var(--fg-muted)] mb-4">Consolidated Event Sequence</h3>
-                <div id="sb-timeline" class="space-y-6 pl-4 border-l-2 border-[var(--fg-muted)]">
-                    <!-- Events will be injected here -->
-                </div>
-            </div>
+        <div class="md:col-span-3 text-center md:text-left">
+          <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Navigation</p>
+          <nav id="footerLinks" class="flex flex-col items-center md:items-start gap-1.5" aria-label="Footer navigation">
+            <a href="index.html" class="footer-link font-body text-xs">Index Gentium</a>
+            <a href="#" class="footer-link font-body text-xs">Actor Registry</a>
+            <a href="#" class="footer-link font-body text-xs">Methodology</a>
+            <a href="#" class="footer-link font-body text-xs">Documentation</a>
+          </nav>
         </div>
-    </aside>
 
-    <!-- Fallback Data (Used if actor-set.json is missing) -->
-    <script type="application/json" id="fallback-data">
-    [
-        {
-            "id": "a1", "name": "New Zealand Company", "type": "private", "role": "Colonization", "regionOfActivity": "Wellington",
-            "description": "Private British company instrumental in the early colonization.",
-            "events": [
-                { "date": "1839-05-02", "category": "birth", "description": "Established in London" },
-                { "date": "1841-01-22", "category": "expansion", "description": "Wellington settlement founded" },
-                { "date": "1858-12-31", "category": "death", "description": "Dissolution" }
-            ]
-        },
-        {
-            "id": "a2", "name": "Parliament of New Zealand", "type": "public", "role": "Legislature", "regionOfActivity": "Wellington",
-            "description": "The supreme legislative body of New Zealand.",
-            "events": [
-                { "date": "1854-05-24", "category": "birth", "description": "First parliament convened" },
-                { "date": "1893-09-19", "category": "milestone", "description": "Women's suffrage granted" },
-                { "date": "1996-10-12", "category": "transformation", "description": "MMP system adopted" }
-            ]
-        },
-        {
-            "id": "a3", "name": "University of Otago", "type": "public", "role": "Education", "regionOfActivity": "Dunedin",
-            "description": "Oldest university in New Zealand.",
-            "events": [
-                { "date": "1869-01-01", "category": "birth", "description": "Founded" },
-                { "date": "1871-07-05", "category": "expansion", "description": "First classes began" }
-            ]
-        },
-        {
-            "id": "a4", "name": "Bank of New Zealand", "type": "private", "role": "Finance", "regionOfActivity": "Auckland",
-            "description": "One of New Zealand's largest banks.",
-            "events": [
-                { "date": "1861-07-29", "category": "birth", "description": "Founded in Auckland" },
-                { "date": "1945-01-01", "category": "milestone", "description": "Largest bank by assets" }
-            ]
-        },
-        {
-            "id": "a5", "name": "New Zealand Railways", "type": "public", "role": "Transport", "regionOfActivity": "National",
-            "description": "National railway system.",
-            "events": [
-                { "date": "1863-12-31", "category": "birth", "description": "First railway opened" },
-                { "date": "1993-07-01", "category": "privatization", "description": "Privatized" },
-                { "date": "2008-07-01", "category": "renationalization", "description": "Renationalized" }
-            ]
-        },
-        {
-            "id": "a6", "name": "Air New Zealand", "type": "hybrid", "role": "Aviation", "regionOfActivity": "National",
-            "description": "National airline carrier.",
-            "events": [
-                { "date": "1940-04-26", "category": "birth", "description": "TEAL formed" },
-                { "date": "1989-01-01", "category": "privatization", "description": "Privatized" },
-                { "date": "2001-09-13", "category": "renationalization", "description": "Govt bailout" }
-            ]
-        },
-        {
-            "id": "a7", "name": "Waitangi Tribunal", "type": "public", "role": "Justice", "regionOfActivity": "National",
-            "description": "Permanent commission of inquiry on Treaty claims.",
-            "events": [
-                { "date": "1975-10-10", "category": "birth", "description": "Established by Act" }
-            ]
-        },
-        {
-            "id": "a8", "name": "Fonterra", "type": "hybrid", "role": "Dairy", "regionOfActivity": "National",
-            "description": "New Zealand's largest dairy cooperative.",
-            "events": [
-                { "date": "2001-10-16", "category": "birth", "description": "Merger formed Fonterra" }
-            ]
-        },
-        {
-            "id": "a9", "name": "Māori King Movement", "type": "hybrid", "role": "Cultural Leadership", "regionOfActivity": "Waikato",
-            "description": "Māori sovereignty movement.",
-            "events": [
-                { "date": "1858-06-02", "category": "birth", "description": "First Māori King installed" },
-                { "date": "1863-07-12", "category": "conflict", "description": "Waikato War invasion" }
-            ]
-        },
-        {
-            "id": "a10", "name": "Reserve Bank of NZ", "type": "public", "role": "Finance", "regionOfActivity": "National",
-            "description": "Central bank.",
-            "events": [
-                { "date": "1934-08-01", "category": "birth", "description": "Established" }
-            ]
+        <div class="md:col-span-4 text-center md:text-right">
+          <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Status</p>
+          <div class="space-y-1.5 font-mono text-xs" id="footerMetadata">
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+              <span class="footer-muted">Entity Count</span>
+              <span class="font-medium tabular-nums footer-value" id="footerEntityCount">10</span>
+            </div>
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+              <span class="footer-muted">Temporal Range</span>
+              <span class="font-medium footer-value">1800–2025</span>
+            </div>
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+              <span class="footer-muted">Last Revised</span>
+              <span class="footer-value">MMXXV</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 footer-divider">
+        <p class="font-mono text-[10px] tracking-[0.15em] uppercase footer-muted">Index Gentium <span>v1.2</span></p>
+        <p class="font-display text-sm italic tracking-wide footer-muted">Ordo ex comparatione.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Fallback Data -->
+  <script type="application/json" id="fallback-data">
+  [
+    {
+      "id": "a1", "name": "New Zealand Company", "type": "private", "role": "Colonization", "regionOfActivity": "Wellington",
+      "description": "Private British company instrumental in the early colonization of New Zealand.",
+      "events": [
+        { "date": "1839-05-02", "category": "birth", "description": "Established in London" },
+        { "date": "1841-01-22", "category": "expansion", "description": "Wellington settlement founded" },
+        { "date": "1858-12-31", "category": "death", "description": "Dissolution" }
+      ]
+    },
+    {
+      "id": "a2", "name": "Parliament of New Zealand", "type": "public", "role": "Legislature", "regionOfActivity": "Wellington",
+      "description": "The supreme legislative body of New Zealand, established in 1854.",
+      "events": [
+        { "date": "1854-05-24", "category": "birth", "description": "First parliament convened" },
+        { "date": "1893-09-19", "category": "milestone", "description": "Women's suffrage granted" },
+        { "date": "1996-10-12", "category": "transformation", "description": "MMP system adopted" }
+      ]
+    },
+    {
+      "id": "a3", "name": "University of Otago", "type": "public", "role": "Education", "regionOfActivity": "Dunedin",
+      "description": "Oldest university in New Zealand, founded in 1869.",
+      "events": [
+        { "date": "1869-01-01", "category": "birth", "description": "Founded by ordinance" },
+        { "date": "1871-07-05", "category": "expansion", "description": "First classes began" }
+      ]
+    },
+    {
+      "id": "a4", "name": "Bank of New Zealand", "type": "private", "role": "Finance", "regionOfActivity": "Auckland",
+      "description": "One of New Zealand's largest banks, established in 1861.",
+      "events": [
+        { "date": "1861-07-29", "category": "birth", "description": "Founded in Auckland" },
+        { "date": "1945-01-01", "category": "milestone", "description": "Largest bank by assets" }
+      ]
+    },
+    {
+      "id": "a5", "name": "New Zealand Railways", "type": "public", "role": "Transport", "regionOfActivity": "National",
+      "description": "National railway system, undergoing multiple ownership transformations.",
+      "events": [
+        { "date": "1863-12-31", "category": "birth", "description": "First railway opened" },
+        { "date": "1993-07-01", "category": "privatization", "description": "Privatized" },
+        { "date": "2008-07-01", "category": "renationalization", "description": "Renationalized" }
+      ]
+    },
+    {
+      "id": "a6", "name": "Air New Zealand", "type": "hybrid", "role": "Aviation", "regionOfActivity": "National",
+      "description": "National airline carrier with mixed ownership history.",
+      "events": [
+        { "date": "1940-04-26", "category": "birth", "description": "TEAL formed" },
+        { "date": "1989-01-01", "category": "privatization", "description": "Privatized" },
+        { "date": "2001-09-13", "category": "renationalization", "description": "Government bailout" }
+      ]
+    },
+    {
+      "id": "a7", "name": "Waitangi Tribunal", "type": "public", "role": "Justice", "regionOfActivity": "National",
+      "description": "Permanent commission of inquiry on Treaty of Waitangi claims.",
+      "events": [
+        { "date": "1975-10-10", "category": "birth", "description": "Established by Act of Parliament" }
+      ]
+    },
+    {
+      "id": "a8", "name": "Fonterra", "type": "hybrid", "role": "Dairy", "regionOfActivity": "National",
+      "description": "New Zealand's largest dairy cooperative.",
+      "events": [
+        { "date": "2001-10-16", "category": "birth", "description": "Merger formed Fonterra" }
+      ]
+    },
+    {
+      "id": "a9", "name": "Maori King Movement", "type": "hybrid", "role": "Cultural Leadership", "regionOfActivity": "Waikato",
+      "description": "Maori sovereignty movement establishing a symbolic kingship.",
+      "events": [
+        { "date": "1858-06-02", "category": "birth", "description": "First Maori King installed" },
+        { "date": "1863-07-12", "category": "conflict", "description": "Waikato War invasion" }
+      ]
+    },
+    {
+      "id": "a10", "name": "Reserve Bank of NZ", "type": "public", "role": "Finance", "regionOfActivity": "National",
+      "description": "Central bank of New Zealand, established 1934.",
+      "events": [
+        { "date": "1934-08-01", "category": "birth", "description": "Established as central bank" }
+      ]
+    }
+  ]
+  </script>
+
+  <script>
+    // ==========================================
+    // THEME & SCROLL LOGIC
+    // ==========================================
+    const themeToggle = document.getElementById('themeToggle');
+    const scrollProgress = document.getElementById('scrollProgress');
+    const projectHeader = document.getElementById('projectHeader');
+    const htmlElement = document.documentElement;
+
+    const getSystemTheme = () => window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    const getStoredTheme = () => localStorage.getItem('index-gentium-theme');
+
+    function setTheme(theme) {
+      htmlElement.classList.toggle('dark', theme === 'dark');
+      localStorage.setItem('index-gentium-theme', theme);
+    }
+    
+    setTheme(getStoredTheme() || getSystemTheme());
+
+    themeToggle.addEventListener('click', () => {
+      const newTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
+      setTheme(newTheme);
+    });
+
+    function updateScrollProgress() {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+      scrollProgress.style.transform = `scaleX(${progress})`;
+      if (scrollTop > 10) projectHeader.classList.add('scrolled');
+      else projectHeader.classList.remove('scrolled');
+    }
+
+    window.addEventListener('scroll', updateScrollProgress, { passive: true });
+    updateScrollProgress();
+
+    // ==========================================
+    // REVEAL ANIMATIONS
+    // ==========================================
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce').matches;
+    
+    function initReveal() {
+      const reveals = document.querySelectorAll('.reveal');
+      if (prefersReducedMotion) {
+        reveals.forEach(el => el.classList.add('visible'));
+        return;
+      }
+      
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
+      
+      reveals.forEach(el => observer.observe(el));
+    }
+
+    // ==========================================
+    // DATA MODULE
+    // ==========================================
+    const DataModel = {
+      actors: [],
+      events: [],
+      selectedActor: null,
+
+      async init() {
+        const loadingEl = document.getElementById('loading-indicator');
+        
+        try {
+          const response = await fetch('actor-set.json');
+          if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
+          
+          const rawData = await response.json();
+          this.processData(rawData);
+        } catch (error) {
+          console.warn("Using fallback data.", error);
+          const fallbackText = document.getElementById('fallback-data').textContent;
+          const rawData = JSON.parse(fallbackText);
+          this.processData(rawData);
+        } finally {
+          loadingEl.style.opacity = '0';
+          setTimeout(() => loadingEl.style.display = 'none', 500);
         }
-    ]
-    </script>
+      },
 
-    <script>
-        // ==========================================
-        // DATA MODULE
-        // ==========================================
-        const DataModel = {
-            actors: [],
-            events: [], // Flattened event list for rendering
-            selectedActor: null,
+      processData(rawData) {
+        this.actors = rawData.actors || (Array.isArray(rawData) ? rawData : []);
+        
+        this.events = [];
+        this.actors.forEach(actor => {
+          if (!actor.events) return;
 
-            async init() {
-                const loadingEl = document.getElementById('loading-indicator');
-                
-                try {
-                    // Try to fetch the external file
-                    const response = await fetch('actor-set.json');
-                    
-                    if (!response.ok) {
-                        throw new Error(`HTTP Error: ${response.status}`);
-                    }
-                    
-                    const rawData = await response.json();
-                    console.log("Successfully loaded actor-set.json");
-                    this.processData(rawData);
-                    
-                } catch (error) {
-                    console.warn("Could not load actor-set.json (likely CORS or file missing). Using fallback data.", error);
-                    
-                    // Fallback: Load embedded JSON
-                    const fallbackText = document.getElementById('fallback-data').textContent;
-                    const rawData = JSON.parse(fallbackText);
-                    this.processData(rawData);
-                } finally {
-                    // Hide loading indicator
-                    loadingEl.style.opacity = '0';
-                }
-            },
+          actor.events.forEach(ev => {
+            const eventDate = new Date(ev.date);
+            if (isNaN(eventDate.getTime())) return;
 
-            processData(rawData) {
-                // Schema normalization: 
-                // The provided schema has a root object { metadata, region, actors }.
-                // The fallback data is just an array [actors].
-                // We handle both cases here.
-                this.actors = rawData.actors || (Array.isArray(rawData) ? rawData : []);
-                
-                // Flatten events for scalable rendering
-                this.events = [];
-                this.actors.forEach(actor => {
-                    // Ensure actor has events array
-                    if (!actor.events) return;
-
-                    actor.events.forEach(ev => {
-                        // Schema Mapping:
-                        // Schema: 'date', 'category', 'description'
-                        // Internal: 'date', 'type', 'desc'
-                        // We normalize 'category' -> 'type' and 'description' -> 'desc'
-                        
-                        const eventDate = new Date(ev.date);
-                        if (isNaN(eventDate.getTime())) return; // Skip invalid dates
-
-                        this.events.push({
-                            x: 0, y: 0, // To be calculated by renderer
-                            date: eventDate,
-                            type: ev.category || ev.type || 'general', // Prefer category (schema), fallback to type (old format)
-                            desc: ev.description || ev.desc || '',      // Prefer description (schema)
-                            actorId: actor.id,
-                            actorName: actor.name,
-                            actorType: actor.type
-                        });
-                    });
-                });
-
-                // Sort events by date
-                this.events.sort((a, b) => a.date - b.date);
-            },
-
-            getEvents() {
-                return this.events;
-            },
-
-            getActorById(id) {
-                return this.actors.find(a => a.id === id);
-            }
-        };
-
-        // ==========================================
-        // RENDERER MODULE (Canvas)
-        // ==========================================
-        const Renderer = {
-            canvas: null,
-            ctx: null,
-            axisCanvas: null,
-            axisCtx: null,
-            width: 0,
-            height: 0,
-            
-            // State
-            zoom: 1,
-            panX: 0,
-            isDragging: false,
-            dragStartX: 0,
-            panStartX: 0,
-            
-            // Time constraints
-            minDate: new Date('1800-01-01').getTime(),
-            maxDate: new Date('2025-12-31').getTime(), // Extended slightly
-            timeRange: 0,
-            
-            // Layout constants
-            marginTop: 60,
-            marginBottom: 40,
-            marginLeft: 50,
-            marginRight: 20,
-
-            init() {
-                this.canvas = document.getElementById('viz-canvas');
-                this.ctx = this.canvas.getContext('2d');
-                this.axisCanvas = document.getElementById('axis-canvas');
-                this.axisCtx = this.axisCanvas.getContext('2d');
-                
-                this.timeRange = this.maxDate - this.minDate;
-                
-                this.resize();
-                window.addEventListener('resize', () => this.resize());
-                
-                this.loop();
-            },
-
-            resize() {
-                const container = this.canvas.parentElement;
-                this.width = container.clientWidth;
-                this.height = container.clientHeight;
-                
-                // HiDPI support
-                const dpr = window.devicePixelRatio || 1;
-                this.canvas.width = this.width * dpr;
-                this.canvas.height = this.height * dpr;
-                this.ctx.scale(dpr, dpr);
-                this.canvas.style.width = this.width + 'px';
-                this.canvas.style.height = this.height + 'px';
-
-                // Axis canvas
-                this.axisCanvas.width = this.width * dpr;
-                this.axisCanvas.height = 40 * dpr;
-                this.axisCtx.scale(dpr, dpr);
-                this.axisCanvas.style.width = this.width + 'px';
-                this.axisCanvas.style.height = '40px';
-            },
-
-            mapDateToX(timestamp) {
-                // Normalized position 0..1
-                const normalized = (timestamp - this.minDate) / this.timeRange;
-                // Apply zoom and pan
-                const W = this.width - this.marginLeft - this.marginRight;
-                // Scaled position
-                const x = this.marginLeft + (normalized * W * this.zoom) + this.panX;
-                return x;
-            },
-
-            mapXToDate(x) {
-                 const W = this.width - this.marginLeft - this.marginRight;
-                 const normalized = (x - this.marginLeft - this.panX) / (W * this.zoom);
-                 return this.minDate + (normalized * this.timeRange);
-            },
-
-            drawAxis() {
-                const ctx = this.axisCtx;
-                ctx.clearRect(0, 0, this.width, 40);
-                
-                ctx.fillStyle = '#EDE9E0';
-                ctx.fillRect(0, 0, this.width, 40);
-                
-                ctx.strokeStyle = '#78716C';
-                ctx.fillStyle = '#4A4A4A';
-                ctx.font = '11px "EB Garamond", serif';
-                ctx.textAlign = 'center';
-
-                // Determine step based on zoom
-                const W = this.width - this.marginLeft - this.marginRight;
-                const ms_per_pixel = this.timeRange / (W * this.zoom);
-                
-                // Target: roughly 100px between ticks
-                const targetStepMs = ms_per_pixel * 100;
-                
-                // Define reasonable steps
-                const year = 31536000000;
-                let step = 10 * year;
-                
-                if (targetStepMs < 2 * year) step = 1 * year;
-                else if (targetStepMs < 6 * year) step = 5 * year;
-                else if (targetStepMs < 15 * year) step = 10 * year;
-                else step = 25 * year;
-
-                const startYear = 1800;
-                const endYear = 2025;
-                
-                // Find visible range
-                const leftDate = this.mapXToDate(this.marginLeft);
-                const rightDate = this.mapXToDate(this.width - this.marginRight);
-                
-                let current = new Date(leftDate);
-                current.setMonth(0, 1);
-                current.setHours(0,0,0,0);
-                
-                // Snap to step
-                let years = Math.floor((current.getFullYear() - startYear) / (step/year));
-                current.setFullYear(startYear + years * (step/year));
-
-                while (current.getTime() < rightDate) {
-                    if (current.getTime() > leftDate) {
-                        const x = this.mapDateToX(current.getTime());
-                        ctx.beginPath();
-                        ctx.moveTo(x, 0);
-                        ctx.lineTo(x, 10);
-                        ctx.stroke();
-                        ctx.fillText(current.getFullYear(), x, 26);
-                    }
-                    current = new Date(current.getTime() + step);
-                }
-            },
-
-            draw() {
-                const ctx = this.ctx;
-                ctx.clearRect(0, 0, this.width, this.height);
-
-                // Background
-                ctx.fillStyle = '#F6F4EF';
-                ctx.fillRect(0, 0, this.width, this.height);
-                
-                // Draw vertical "now" line (approximate)
-                // const nowX = this.mapDateToX(new Date().getTime());
-                // if (nowX > this.marginLeft && nowX < this.width) {
-                //     ctx.strokeStyle = 'rgba(0,0,0,0.1)';
-                //     ctx.beginPath();
-                //     ctx.moveTo(nowX, 0);
-                //     ctx.lineTo(nowX, this.height);
-                //     ctx.stroke();
-                // }
-                
-                // Determine layout bands for types
-                const bandHeight = (this.height - this.marginTop - this.marginBottom) / 3;
-
-                const bands = {
-                    'public': { y: this.marginTop, h: bandHeight, color: '#1E3A5F' },
-                    'hybrid': { y: this.marginTop + bandHeight, h: bandHeight, color: '#2D4A3E' },
-                    'private': { y: this.marginTop + bandHeight * 2, h: bandHeight, color: '#7F1D1D' }
-                };
-
-                // Draw band separators
-                ctx.strokeStyle = '#E0DCD2';
-                ctx.lineWidth = 1;
-                ctx.setLineDash([5, 5]);
-                Object.values(bands).forEach(b => {
-                    ctx.beginPath();
-                    ctx.moveTo(this.marginLeft, b.y + b.h);
-                    ctx.lineTo(this.width - this.marginRight, b.y + b.h);
-                    ctx.stroke();
-                });
-                ctx.setLineDash([]);
-
-                // Render Events
-                const events = DataModel.getEvents();
-                const selectedId = DataModel.selectedActor ? DataModel.selectedActor.id : null;
-                let selectedPoints = [];
-
-                events.forEach(ev => {
-                    const x = this.mapDateToX(ev.date.getTime());
-                    
-                    // Optimization: Skip rendering if off-screen
-                    if (x < this.marginLeft - 10 || x > this.width - this.marginRight + 10) return;
-
-                    const band = bands[ev.actorType];
-                    if (!band) return;
-
-                    // Deterministic Y position
-                    const centerY = band.y + band.h / 2;
-                    const spread = band.h * 0.35;
-                    
-                    // Hash ID for stable distribution
-                    const hash = ev.actorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-                    const y = centerY + ((hash % 10) / 10 - 0.5) * spread;
-
-                    ev.x = x;
-                    ev.y = y;
-
-                    const isSelected = ev.actorId === selectedId;
-                    const radius = isSelected ? 6 : 3.5;
-                    const alpha = selectedId ? (isSelected ? 1.0 : 0.1) : 0.8;
-
-                    ctx.beginPath();
-                    ctx.arc(x, y, radius, 0, Math.PI * 2);
-                    
-                    // Color handling
-                    let fillColor = band.color;
-                    if (ev.type === 'death') ctx.globalAlpha = alpha * 0.5;
-                    else ctx.globalAlpha = alpha;
-
-                    ctx.fillStyle = fillColor;
-                    ctx.fill();
-
-                    if (isSelected) {
-                        ctx.strokeStyle = '#000';
-                        ctx.lineWidth = 2;
-                        ctx.stroke();
-                        selectedPoints.push({x, y, date: ev.date, desc: ev.desc, type: ev.type});
-                    }
-                    
-                    ctx.globalAlpha = 1.0;
-                });
-
-                // Draw Connector Line for Selected Actor
-                if (selectedPoints.length > 1) {
-                    selectedPoints.sort((a,b) => a.x - b.x);
-                    
-                    ctx.beginPath();
-                    ctx.strokeStyle = '#1A1A1A'; // Dark ink color
-                    ctx.lineWidth = 1.5;
-                    ctx.setLineDash([4, 4]); // Dashed line for temporal connection
-                    
-                    ctx.moveTo(selectedPoints[0].x, selectedPoints[0].y);
-                    selectedPoints.forEach(p => ctx.lineTo(p.x, p.y));
-                    ctx.stroke();
-                    ctx.setLineDash([]);
-                }
-                
-                this.drawAxis();
-            },
-
-            loop() {
-                this.draw();
-                requestAnimationFrame(() => this.loop());
-            }
-        };
-
-        // ==========================================
-        // INTERACTION MODULE
-        // ==========================================
-        const Interaction = {
-            hoveredEvent: null,
-
-            init() {
-                const canvas = Renderer.canvas;
-                const tooltip = document.getElementById('tooltip');
-                const sidebar = document.getElementById('sidebar');
-
-                // Panning
-                canvas.addEventListener('mousedown', (e) => {
-                    if (e.button === 0) {
-                        Renderer.isDragging = true;
-                        Renderer.dragStartX = e.clientX;
-                        Renderer.panStartX = Renderer.panX;
-                        canvas.style.cursor = 'grabbing';
-                    }
-                });
-
-                window.addEventListener('mousemove', (e) => {
-                    if (Renderer.isDragging) {
-                        const dx = e.clientX - Renderer.dragStartX;
-                        Renderer.panX = Renderer.panStartX + dx;
-                    } else {
-                        // Hit detection only if not dragging
-                        const rect = canvas.getBoundingClientRect();
-                        this.handleHover(e.clientX - rect.left, e.clientY - rect.top, e.clientX, e.clientY);
-                    }
-                });
-
-                window.addEventListener('mouseup', () => {
-                    Renderer.isDragging = false;
-                    canvas.style.cursor = 'crosshair';
-                });
-
-                // Click to Select
-                canvas.addEventListener('click', (e) => {
-                    const rect = canvas.getBoundingClientRect();
-                    const hit = this.findEvent(e.clientX - rect.left, e.clientY - rect.top);
-                    if (hit) {
-                        this.selectActor(hit.actorId);
-                    } else {
-                        // Deselect if clicked on empty space (and not dragging)
-                        // Simple check: if mouse moved significantly, it was a drag
-                        this.deselectActor();
-                    }
-                });
-
-                // Zoom
-                canvas.addEventListener('wheel', (e) => {
-                    e.preventDefault();
-                    const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-                    
-                    const mouse_x = e.offsetX;
-                    const dateAtMouse = Renderer.mapXToDate(mouse_x);
-                    
-                    Renderer.zoom *= zoomFactor;
-                    Renderer.zoom = Math.max(0.5, Math.min(Renderer.zoom, 50)); 
-
-                    const new_x_for_date = Renderer.mapDateToX(dateAtMouse);
-                    Renderer.panX += (mouse_x - new_x_for_date);
-                }, { passive: false });
-
-                // Controls
-                document.getElementById('btn-zoom-in').addEventListener('click', () => {
-                    Renderer.zoom *= 1.2;
-                });
-                document.getElementById('btn-zoom-out').addEventListener('click', () => {
-                    Renderer.zoom *= 0.8;
-                });
-                document.getElementById('btn-reset').addEventListener('click', () => {
-                    Renderer.zoom = 1;
-                    Renderer.panX = 0;
-                });
-
-                // Sidebar Close
-                document.getElementById('close-sidebar').addEventListener('click', () => {
-                    this.deselectActor();
-                });
-            },
-
-            handleHover(canvasX, canvasY, clientX, clientY) {
-                const hit = this.findEvent(canvasX, canvasY);
-                const tooltip = document.getElementById('tooltip');
-                
-                if (hit) {
-                    // Ensure tooltip stays within viewport
-                    let left = clientX + 15;
-                    let top = clientY + 15;
-                    
-                    tooltip.style.left = left + 'px';
-                    tooltip.style.top = top + 'px';
-                    tooltip.style.opacity = 1;
-                    
-                    document.getElementById('tt-type').textContent = hit.type;
-                    document.getElementById('tt-actor').textContent = hit.actorName;
-                    document.getElementById('tt-desc').textContent = hit.desc;
-                    document.getElementById('tt-date').textContent = hit.date.toLocaleDateString(undefined, {
-                        year: 'numeric', month: 'short', day: 'numeric'
-                    });
-                } else {
-                    tooltip.style.opacity = 0;
-                }
-            },
-
-            findEvent(mx, my) {
-                const events = DataModel.getEvents();
-                const radius = 8; // Generous hit radius
-                
-                // Search backwards to find top-most rendered item first
-                for (let i = events.length - 1; i >= 0; i--) {
-                    const ev = events[i];
-                    const dx = ev.x - mx;
-                    const dy = ev.y - my;
-                    if (dx * dx + dy * dy < radius * radius) {
-                        return ev;
-                    }
-                }
-                return null;
-            },
-
-            selectActor(id) {
-                const actor = DataModel.getActorById(id);
-                DataModel.selectedActor = actor;
-                
-                // Populate Sidebar
-                const sb = document.getElementById('sidebar');
-                sb.classList.add('open');
-                
-                document.getElementById('sb-name').textContent = actor.name;
-                document.getElementById('sb-role').textContent = actor.role;
-                
-                // Capitalize type for display
-                const typeDisplay = actor.type.charAt(0).toUpperCase() + actor.type.slice(1);
-                document.getElementById('sb-type').textContent = typeDisplay;
-                
-                // Handle regionOfActivity (schema) vs region (fallback)
-                document.getElementById('sb-region').textContent = actor.regionOfActivity || actor.region || 'Unknown';
-                document.getElementById('sb-desc').textContent = actor.description || 'No description available.';
-                
-                // Timeline
-                const tl = document.getElementById('sb-timeline');
-                tl.innerHTML = '';
-
-                const sorted = [...actor.events].sort((a,b) => new Date(a.date) - new Date(b.date));
-                
-                sorted.forEach(ev => {
-                    const div = document.createElement('div');
-                    div.className = 'relative pl-6 group';
-                    
-                    // Determine color based on category
-                    let dotColor = 'var(--fg-primary)';
-                    if (ev.category === 'birth') dotColor = 'var(--accent-public)';
-                    if (ev.category === 'death') dotColor = 'var(--accent-private)';
-
-                    div.innerHTML = `
-                        <div class="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full border border-[var(--fg-primary)] bg-[var(--bg-primary)] group-hover:bg-[var(--fg-secondary)] transition-colors"></div>
-                        <div class="text-xs text-[var(--fg-muted)] font-mono mb-0.5">${new Date(ev.date).toLocaleDateString()}</div>
-                        <div class="text-sm font-medium text-[var(--fg-primary)] capitalize">${ev.category || ev.type || 'Event'}</div>
-                        <div class="text-sm text-[var(--fg-secondary)] leading-snug">${ev.description || ev.desc || ''}</div>
-                    `;
-                    tl.appendChild(div);
-                });
-
-                Renderer.draw();
-            },
-
-            deselectActor() {
-                DataModel.selectedActor = null;
-                document.getElementById('sidebar').classList.remove('open');
-                Renderer.draw();
-            }
-        };
-
-        // ==========================================
-        // BOOT
-        // ==========================================
-        window.addEventListener('DOMContentLoaded', () => {
-            // Initialize Data (Async fetch)
-            DataModel.init().then(() => {
-                // Once data is loaded (or failed over), init visuals
-                Renderer.init();
-                Interaction.init();
+            this.events.push({
+              x: 0, y: 0,
+              date: eventDate,
+              type: ev.category || ev.type || 'general',
+              desc: ev.description || ev.desc || '',
+              actorId: actor.id,
+              actorName: actor.name,
+              actorType: actor.type
             });
+          });
         });
 
-    </script>
+        this.events.sort((a, b) => a.date - b.date);
+        
+        document.getElementById('actorCount').textContent = `${this.actors.length} Actors`;
+        document.getElementById('footerEntityCount').textContent = this.actors.length;
+      },
+
+      getEvents() { return this.events; },
+      getActorById(id) { return this.actors.find(a => a.id === id); }
+    };
+
+    // ==========================================
+    // RENDERER MODULE (VERTICAL)
+    // ==========================================
+    const Renderer = {
+      canvas: null,
+      ctx: null,
+      width: 0,
+      height: 0,
+      
+      zoom: 1,
+      panY: 0,
+      isDragging: false,
+      dragStartY: 0,
+      panStartY: 0,
+      
+      minDate: new Date('1800-01-01').getTime(),
+      maxDate: new Date('2025-12-31').getTime(),
+      timeRange: 0,
+      
+      marginTop: 40,
+      marginBottom: 40,
+      marginLeft: 50,
+      marginRight: 20,
+
+      init() {
+        this.canvas = document.getElementById('viz-canvas');
+        this.ctx = this.canvas.getContext('2d');
+        
+        this.timeRange = this.maxDate - this.minDate;
+        
+        this.resize();
+        window.addEventListener('resize', () => this.resize());
+        
+        this.loop();
+      },
+
+      resize() {
+        const container = this.canvas.parentElement;
+        this.width = container.clientWidth;
+        this.height = container.clientHeight;
+        
+        const dpr = window.devicePixelRatio || 1;
+        this.canvas.width = this.width * dpr;
+        this.canvas.height = this.height * dpr;
+        this.ctx.scale(dpr, dpr);
+        this.canvas.style.width = this.width + 'px';
+        this.canvas.style.height = this.height + 'px';
+      },
+
+      mapDateToY(timestamp) {
+        // Vertical: Top is old, Bottom is new
+        const normalized = (timestamp - this.minDate) / this.timeRange;
+        const H = this.height - this.marginTop - this.marginBottom;
+        // y increases downwards, so higher timestamp = higher y
+        return this.marginTop + (normalized * H * this.zoom) + this.panY;
+      },
+
+      mapYToDate(y) {
+        const H = this.height - this.marginTop - this.marginBottom;
+        const normalized = (y - this.marginTop - this.panY) / (H * this.zoom);
+        return this.minDate + (normalized * this.timeRange);
+      },
+
+      mapTypeToX(type) {
+        // 3 Columns for types
+        const W = this.width - this.marginLeft - this.marginRight;
+        const colW = W / 3;
+        
+        if (type === 'public') return this.marginLeft + colW * 0.5;
+        if (type === 'hybrid') return this.marginLeft + colW * 1.5;
+        if (type === 'private') return this.marginLeft + colW * 2.5;
+        return this.marginLeft + W / 2;
+      },
+
+      getColors() {
+        const isDark = document.documentElement.classList.contains('dark');
+        return {
+          bg: isDark ? '#0F172A' : '#FFFFFF',
+          bgSubtle: isDark ? '#172033' : '#F1F5F9',
+          fg: isDark ? '#E4EBF2' : '#1A2B3C',
+          muted: isDark ? '#8BA3BC' : '#5C7089',
+          border: isDark ? '#334155' : '#D8E1EB',
+          public: isDark ? '#60A5FA' : '#3D6B99',
+          private: isDark ? '#F87171' : '#9A4C4C',
+          hybrid: isDark ? '#34D399' : '#4C7A6B'
+        };
+      },
+
+      draw() {
+        const ctx = this.ctx;
+        const colors = this.getColors();
+        
+        ctx.clearRect(0, 0, this.width, this.height);
+        ctx.fillStyle = colors.bg;
+        ctx.fillRect(0, 0, this.width, this.height);
+
+        const W = this.width - this.marginLeft - this.marginRight;
+        const colW = W / 3;
+
+        // Draw Columns
+        const cols = [
+          { label: 'PUBLIC', x: this.marginLeft, color: colors.public },
+          { label: 'HYBRID', x: this.marginLeft + colW, color: colors.hybrid },
+          { label: 'PRIVATE', x: this.marginLeft + colW * 2, color: colors.private }
+        ];
+
+        // Column separators
+        ctx.strokeStyle = colors.border;
+        ctx.lineWidth = 1;
+        ctx.setLineDash([4, 4]);
+        
+        cols.forEach((col, i) => {
+          if (i > 0) {
+            ctx.beginPath();
+            ctx.moveTo(col.x, this.marginTop);
+            ctx.lineTo(col.x, this.height - this.marginBottom);
+            ctx.stroke();
+          }
+        });
+        ctx.setLineDash([]);
+
+        // Column Headers
+        ctx.font = '10px "JetBrains Mono", monospace';
+        ctx.fillStyle = colors.muted;
+        ctx.textAlign = 'center';
+        
+        cols.forEach(col => {
+          ctx.fillText(col.label, col.x + colW / 2, 24);
+        });
+
+        // Time Axis (Horizontal lines)
+        ctx.fillStyle = colors.muted;
+        ctx.font = '11px "JetBrains Mono", monospace';
+        ctx.textAlign = 'right';
+        
+        const H = this.height - this.marginTop - this.marginBottom;
+        const ms_per_pixel = this.timeRange / (H * this.zoom);
+        const targetStepMs = ms_per_pixel * 60;
+        
+        const year = 31536000000;
+        let step = 25 * year;
+        
+        if (targetStepMs < 2 * year) step = 1 * year;
+        else if (targetStepMs < 6 * year) step = 5 * year;
+        else if (targetStepMs < 15 * year) step = 10 * year;
+
+        const topDate = this.mapYToDate(this.marginTop);
+        const bottomDate = this.mapYToDate(this.height - this.marginBottom);
+
+        let current = new Date(topDate);
+        current.setMonth(0, 1);
+        current.setHours(0,0,0,0);
+        
+        const startYear = 1800;
+        let years = Math.floor((current.getFullYear() - startYear) / (step/year));
+        current.setFullYear(startYear + years * (step/year));
+
+        while (current.getTime() < bottomDate) {
+          if (current.getTime() > topDate) {
+            const y = this.mapDateToY(current.getTime());
+            
+            ctx.strokeStyle = colors.border;
+            ctx.globalAlpha = 0.3;
+            ctx.beginPath();
+            ctx.moveTo(this.marginLeft, y);
+            ctx.lineTo(this.width - this.marginRight, y);
+            ctx.stroke();
+            ctx.globalAlpha = 1.0;
+            
+            ctx.fillStyle = colors.muted;
+            ctx.fillText(current.getFullYear().toString(), this.marginLeft - 10, y + 4);
+          }
+          current = new Date(current.getTime() + step);
+        }
+
+        // Render Events
+        const events = DataModel.getEvents();
+        const selectedId = DataModel.selectedActor ? DataModel.selectedActor.id : null;
+        let selectedPoints = [];
+
+        events.forEach(ev => {
+          const y = this.mapDateToY(ev.date.getTime());
+          
+          // Skip if off-screen
+          if (y < this.marginTop - 10 || y > this.height - this.marginBottom + 10) return;
+
+          const x = this.mapTypeToX(ev.actorType);
+          const colIndex = ev.actorType === 'public' ? 0 : (ev.actorType === 'hybrid' ? 1 : 2);
+          
+          // Spread events within column
+          const hash = ev.actorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
+          const colW = W / 3;
+          const spread = colW * 0.4;
+          const offsetX = ((hash % 10) / 10 - 0.5) * spread;
+          
+          ev.x = x + offsetX;
+          ev.y = y;
+
+          const isSelected = ev.actorId === selectedId;
+          const radius = isSelected ? 7 : 4;
+          const alpha = selectedId ? (isSelected ? 1.0 : 0.15) : 0.75;
+
+          ctx.beginPath();
+          ctx.arc(ev.x, ev.y, radius, 0, Math.PI * 2);
+          
+          if (ev.type === 'death') ctx.globalAlpha = alpha * 0.5;
+          else ctx.globalAlpha = alpha;
+
+          ctx.fillStyle = cols[colIndex].color;
+          ctx.fill();
+
+          if (isSelected) {
+            ctx.strokeStyle = colors.fg;
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            selectedPoints.push({x: ev.x, y: ev.y, date: ev.date, desc: ev.desc, type: ev.type});
+          }
+          
+          ctx.globalAlpha = 1.0;
+        });
+
+        // Connector line for selected actor
+        if (selectedPoints.length > 1) {
+          selectedPoints.sort((a,b) => a.y - b.y);
+          
+          ctx.beginPath();
+          ctx.strokeStyle = colors.fg;
+          ctx.lineWidth = 1.5;
+          ctx.setLineDash([3, 3]);
+          
+          ctx.moveTo(selectedPoints[0].x, selectedPoints[0].y);
+          selectedPoints.forEach(p => ctx.lineTo(p.x, p.y));
+          ctx.stroke();
+          ctx.setLineDash([]);
+        }
+      },
+
+      loop() {
+        this.draw();
+        requestAnimationFrame(() => this.loop());
+      }
+    };
+
+    // ==========================================
+    // INTERACTION MODULE
+    // ==========================================
+    const Interaction = {
+      init() {
+        const canvas = Renderer.canvas;
+        const tooltip = document.getElementById('tooltip');
+
+        // Panning (Vertical)
+        canvas.addEventListener('mousedown', (e) => {
+          if (e.button === 0) {
+            Renderer.isDragging = true;
+            Renderer.dragStartY = e.clientY;
+            Renderer.panStartY = Renderer.panY;
+            canvas.style.cursor = 'grabbing';
+          }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+          if (Renderer.isDragging) {
+            const dy = e.clientY - Renderer.dragStartY;
+            Renderer.panY = Renderer.panStartY + dy;
+          } else {
+            const rect = canvas.getBoundingClientRect();
+            this.handleHover(e.clientX - rect.left, e.clientY - rect.top, e.clientX, e.clientY);
+          }
+        });
+
+        window.addEventListener('mouseup', () => {
+          Renderer.isDragging = false;
+          canvas.style.cursor = 'ns-resize';
+        });
+
+        canvas.addEventListener('click', (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const hit = this.findEvent(e.clientX - rect.left, e.clientY - rect.top);
+          if (hit) {
+            this.selectActor(hit.actorId);
+          }
+        });
+
+        // Zoom
+        canvas.addEventListener('wheel', (e) => {
+          e.preventDefault();
+          const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
+          
+          const mouse_y = e.offsetY;
+          const dateAtMouse = Renderer.mapYToDate(mouse_y);
+          
+          Renderer.zoom *= zoomFactor;
+          Renderer.zoom = Math.max(0.5, Math.min(Renderer.zoom, 20)); 
+
+          const new_y_for_date = Renderer.mapDateToY(dateAtMouse);
+          Renderer.panY += (mouse_y - new_y_for_date);
+        }, { passive: false });
+
+        // Controls
+        document.getElementById('btn-zoom-in').addEventListener('click', () => {
+          Renderer.zoom *= 1.3;
+        });
+        document.getElementById('btn-zoom-out').addEventListener('click', () => {
+          Renderer.zoom *= 0.7;
+        });
+        document.getElementById('btn-reset').addEventListener('click', () => {
+          Renderer.zoom = 1;
+          Renderer.panY = 0;
+        });
+
+        // Sidebar Close
+        document.getElementById('close-sidebar').addEventListener('click', () => {
+          this.deselectActor();
+        });
+
+        // Keyboard
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') this.deselectActor();
+        });
+      },
+
+      handleHover(canvasX, canvasY, clientX, clientY) {
+        const hit = this.findEvent(canvasX, canvasY);
+        const tooltip = document.getElementById('tooltip');
+        
+        if (hit) {
+          let left = clientX + 15;
+          let top = clientY + 15;
+          
+          if (left + 280 > window.innerWidth) left = clientX - 295;
+          if (top + 150 > window.innerHeight) top = clientY - 165;
+          
+          tooltip.style.left = left + 'px';
+          tooltip.style.top = top + 'px';
+          tooltip.classList.add('visible');
+          
+          document.getElementById('tt-type').textContent = hit.type.toUpperCase();
+          document.getElementById('tt-actor').textContent = hit.actorName;
+          document.getElementById('tt-desc').textContent = hit.desc;
+          document.getElementById('tt-date').textContent = hit.date.toLocaleDateString(undefined, {
+            year: 'numeric', month: 'short', day: 'numeric'
+          });
+        } else {
+          tooltip.classList.remove('visible');
+        }
+      },
+
+      findEvent(mx, my) {
+        const events = DataModel.getEvents();
+        const radius = 10;
+        
+        for (let i = events.length - 1; i >= 0; i--) {
+          const ev = events[i];
+          const dx = ev.x - mx;
+          const dy = ev.y - my;
+          if (dx * dx + dy * dy < radius * radius) {
+            return ev;
+          }
+        }
+        return null;
+      },
+
+      selectActor(id) {
+        const actor = DataModel.getActorById(id);
+        DataModel.selectedActor = actor;
+        
+        const sb = document.getElementById('sidebar');
+        sb.classList.add('open');
+        
+        document.getElementById('sb-name').textContent = actor.name;
+        document.getElementById('sb-role').textContent = actor.role;
+        
+        const typeDisplay = actor.type.charAt(0).toUpperCase() + actor.type.slice(1);
+        document.getElementById('sb-type').textContent = typeDisplay;
+        
+        document.getElementById('sb-region').textContent = actor.regionOfActivity || actor.region || 'Unknown';
+        document.getElementById('sb-desc').textContent = actor.description || 'No description available.';
+        
+        const tl = document.getElementById('sb-timeline');
+        tl.innerHTML = '';
+
+        const sorted = [...actor.events].sort((a,b) => new Date(a.date) - new Date(b.date));
+        
+        sorted.forEach(ev => {
+          const div = document.createElement('div');
+          div.className = 'event-item';
+          
+          div.innerHTML = `
+            <div class="font-meta type-meta text-muted mb-1">${new Date(ev.date).toLocaleDateString()}</div>
+            <div class="font-body text-sm font-medium text-fg capitalize">${ev.category || ev.type || 'Event'}</div>
+            <div class="font-body type-secondary text-muted leading-snug">${ev.description || ev.desc || ''}</div>
+          `;
+          tl.appendChild(div);
+        });
+
+        Renderer.draw();
+      },
+
+      deselectActor() {
+        DataModel.selectedActor = null;
+        document.getElementById('sidebar').classList.remove('open');
+        Renderer.draw();
+      }
+    };
+
+    // ==========================================
+    // BOOT
+    // ==========================================
+    window.addEventListener('DOMContentLoaded', () => {
+      initReveal();
+      
+      DataModel.init().then(() => {
+        Renderer.init();
+        Interaction.init();
+      });
+    });
+  </script>
 </body>
 </html>
