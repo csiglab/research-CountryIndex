@@ -1,0 +1,661 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorium Arbitristae · The Obsidian Archive</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=JetBrains+Mono:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --bg-void: #000000;
+            --bg-deep: #050505;
+            --bg-card: #0a0a0a;
+            --bg-elevated: #111111;
+            
+            --text-primary: #e0e0e0;
+            --text-secondary: #888888;
+            --text-muted: #444444;
+            
+            --accent-primary: #00ff9d; /* Neon Mint */
+            --accent-glow: rgba(0, 255, 157, 0.15);
+            --accent-dim: #1a1a1a;
+            
+            --border-subtle: rgba(255, 255, 255, 0.05);
+            --border-strong: rgba(255, 255, 255, 0.1);
+            
+            --font-display: 'Cormorant Garamond', serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            
+            --radius-lg: 4px; /* Brutalist sharp corners */
+            --transition-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 14px;
+            line-height: 1.6;
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* Subtle noise texture overlay */
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.03'/%3E%3C/svg%3E");
+        }
+
+        /* --- Abstract Background Composition --- */
+        .bg-gradient-mesh {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            z-index: 0;
+            pointer-events: none;
+            background: 
+                radial-gradient(circle at 0% 0%, rgba(0, 255, 157, 0.03) 0%, transparent 40%),
+                radial-gradient(circle at 100% 100%, rgba(100, 100, 100, 0.05) 0%, transparent 40%);
+        }
+
+        .container {
+            position: relative;
+            z-index: 1;
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 4rem 2rem;
+        }
+
+        /* --- Header: Editorial Style --- */
+        header {
+            text-align: center;
+            margin-bottom: 6rem;
+            position: relative;
+        }
+
+        .header-deco {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            color: var(--text-muted);
+            font-size: 0.7rem;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+        }
+        .header-deco::before, .header-deco::after {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--accent-primary);
+            opacity: 0.5;
+        }
+
+        .coat-image {
+            width: 60px;
+            opacity: 0.6;
+            filter: grayscale(100%) contrast(1.2);
+            margin-bottom: 2rem;
+        }
+
+        h1 {
+            font-family: var(--font-display);
+            font-size: clamp(3rem, 8vw, 6rem);
+            font-weight: 300;
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            line-height: 1;
+            margin-bottom: 1rem;
+            font-style: italic;
+        }
+
+        h2 {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: var(--accent-primary);
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .subtitle {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 500px;
+            margin: 0 auto;
+            font-style: italic;
+            opacity: 0.7;
+        }
+
+        /* --- Controls: Industrial Terminal --- */
+        .controls-panel {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        .search-container {
+            width: 100%;
+            max-width: 500px;
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            background: var(--bg-deep);
+            border: 1px solid var(--border-strong);
+            padding: 1.2rem 1.5rem;
+            color: var(--text-primary);
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .search-box::placeholder { color: var(--text-muted); }
+        .search-box:focus {
+            outline: none;
+            border-color: var(--accent-primary);
+            background: var(--bg-card);
+            box-shadow: 0 0 20px var(--accent-glow);
+        }
+
+        .search-suggestions {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: var(--bg-elevated);
+            border: 1px solid var(--border-strong);
+            border-top: none;
+            z-index: 10;
+            max-height: 300px;
+            overflow-y: auto;
+            display: none;
+        }
+        .search-suggestions.active { display: block; }
+        
+        .suggestion-item {
+            padding: 1rem 1.5rem;
+            cursor: pointer;
+            border-bottom: 1px solid var(--border-subtle);
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        .suggestion-item:hover { background: var(--bg-deep); }
+        .suggestion-text { font-weight: 500; color: var(--text-primary); }
+        .suggestion-snippet { font-size: 0.8rem; color: var(--text-secondary); }
+        .suggestion-match { color: var(--accent-primary); }
+
+        .filter-chips {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .chip {
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-secondary);
+            padding: 0.5rem 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .chip:hover {
+            border-color: var(--text-primary);
+            color: var(--text-primary);
+        }
+        .chip.active {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: var(--bg-void);
+            font-weight: 700;
+        }
+
+        /* --- The Card: Specimen Slide --- */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .firm-card {
+            position: relative;
+            background: var(--bg-card);
+            border: 1px solid var(--border-subtle);
+            padding: 2rem;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transition: all 0.4s var(--transition-smooth);
+        }
+
+        /* Watermark Effect */
+        .card-watermark {
+            position: absolute;
+            top: -20%;
+            right: -10%;
+            font-size: 12rem;
+            opacity: 0.03;
+            pointer-events: none;
+            filter: grayscale(100%);
+            transition: all 0.6s var(--transition-smooth);
+            z-index: 1;
+        }
+        
+        /* Content Layer */
+        .card-content {
+            position: relative;
+            z-index: 2;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 2rem;
+        }
+        .firm-category {
+            font-size: 0.7rem;
+            color: var(--accent-primary);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            border: 1px solid var(--accent-primary);
+            padding: 0.2rem 0.5rem;
+            background: var(--accent-glow);
+        }
+        .card-id {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            font-family: var(--font-mono);
+        }
+
+        /* Body */
+        .card-body {
+            flex: 1;
+        }
+        .firm-name {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            line-height: 0.9;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 1rem;
+            font-style: italic;
+            transition: color 0.3s;
+        }
+        .firm-description {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            max-width: 90%;
+            line-height: 1.7;
+        }
+
+        /* Footer & Action */
+        .card-footer {
+            margin-top: auto;
+            border-top: 1px solid var(--border-subtle);
+            padding-top: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .footer-meta {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .btn-enter {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: transparent;
+            border: 1px solid var(--text-muted);
+            color: var(--text-secondary);
+            padding: 0.6rem 1rem;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            text-decoration: none;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .btn-enter i { transition: transform 0.3s; }
+
+        /* --- Interaction: The Hover State --- */
+        .firm-card:hover {
+            border-color: var(--accent-primary);
+            background: var(--bg-elevated);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+        }
+        .firm-card:hover .card-watermark {
+            opacity: 0.06;
+            transform: scale(1.1) rotate(-5deg);
+        }
+        .firm-card:hover .firm-name {
+            color: #ffffff;
+        }
+        .firm-card:hover .btn-enter {
+            background: var(--accent-primary);
+            border-color: var(--accent-primary);
+            color: var(--bg-void);
+            box-shadow: 0 0 15px var(--accent-glow);
+        }
+        .firm-card:hover .btn-enter i {
+            transform: translateX(4px);
+        }
+
+        /* Pagination */
+        .pagination-container { margin-top: 6rem; display: flex; flex-direction: column; align-items: center; }
+        .pagination-controls { display: flex; align-items: center; gap: 1rem; }
+        .nav-button { background: transparent; border: 1px solid var(--border-strong); color: var(--text-secondary); padding: 0.8rem 1.5rem; font-family: var(--font-mono); font-size: 0.8rem; cursor: pointer; transition: all 0.2s; }
+        .nav-button:not(:disabled):hover { border-color: var(--accent-primary); color: var(--accent-primary); }
+        .nav-button:disabled { opacity: 0.2; cursor: not-allowed; }
+        .dots-track { display: flex; gap: 0.5rem; }
+        .pagination-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--text-muted); border: none; cursor: pointer; transition: all 0.3s; }
+        .pagination-dot.active { background: var(--accent-primary); box-shadow: 0 0 10px var(--accent-glow); transform: scale(2); }
+        
+        /* Utilities */
+        .loading-state, .empty-state { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 4rem 2rem; text-align: center; color: var(--text-muted); }
+        .empty-state.active { display: flex; } .empty-state { display: none; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container { padding: 2rem 1rem; }
+            .firm-card { height: auto; min-height: 350px; }
+            .firm-name { font-size: 2.5rem; }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-gradient-mesh"></div>
+    
+    <div class="container">
+        <header>
+            <img src="logo.png" alt="Seal" class="coat-image">
+            <div class="header-deco">Est. MMXXIV</div>
+            <h1>Index Gentium</h1>
+            <h2>Laboratorium Arbitristae</h2>
+            <p class="subtitle">An encyclopedic registry of sovereign entities, observed through the lens of data.</p>
+        </header>
+
+        <div class="controls-panel">
+            <div class="search-container">
+                <input type="text" class="search-box" id="searchInput" placeholder="Initiate Search Protocol..." autocomplete="off">
+                <div class="search-suggestions" id="searchSuggestions"></div>
+            </div>
+            <div class="filter-chips" id="filterChips">
+                <div class="chip active" data-tag="">Index All</div>
+            </div>
+        </div>
+
+        <div class="loading-state" id="loadingState">
+            <i class="fas fa-spinner fa-spin" style="font-size: 2rem; margin-bottom: 1rem;"></i>
+            <p>Accessing Archives...</p>
+        </div>
+
+        <div class="empty-state" id="emptyState">
+            <i class="fas fa-file-circle-question" style="font-size: 2rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+            <h3>NO DATA RETRIEVED</h3>
+            <p style="margin-top: 0.5rem;">Query returned void. Adjust parameters.</p>
+        </div>
+
+        <div class="cards-grid" id="cardsGrid" style="display: none;"></div>
+
+        <div class="pagination-container" id="paginationContainer" style="display: none;">
+            <div class="pagination-controls">
+                <button class="nav-button prev" id="prevArrow"><i class="fas fa-arrow-left"></i> Prev</button>
+                <div class="dots-track" id="dotsContainer"></div>
+                <button class="nav-button next" id="nextArrow">Next <i class="fas fa-arrow-right"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- Core Logic ---
+        const $ = (id) => document.getElementById(id);
+        
+        // State
+        let allFirms = [];
+        let filteredFirms = [];
+        let currentPage = 1;
+        let itemsPerPage = 6;
+        let totalPages = 1;
+
+        // Elements
+        const grid = $('cardsGrid');
+        const searchInput = $('searchInput');
+        const suggestionsBox = $('searchSuggestions');
+        const paginationContainer = $('paginationContainer');
+        const dotsContainer = $('dotsContainer');
+
+        // Fetch Data
+        fetch("catalog.json")
+            .then(res => res.json())
+            .then(data => {
+                allFirms = data.countries;
+                filteredFirms = [...allFirms];
+                $('loadingState').style.display = 'none';
+                grid.style.display = 'grid';
+                initApp();
+            })
+            .catch(err => {
+                $('loadingState').innerHTML = `<p style="color: red;">Error: Cannot access archives.</p>`;
+                console.error(err);
+            });
+
+        function initApp() {
+            // 1. Theme Switcher (Implicit via system or manual toggle if added)
+            // For this design, we stick to the dark "Obsidian" theme as per the aesthetic directive.
+            // The toggle is removed to maintain visual coherence.
+
+            // 2. Generate Chips
+            const tags = [...new Set(allFirms.map(f => f.tags))];
+            const chipContainer = $('filterChips');
+            tags.forEach(tag => {
+                const div = document.createElement('div');
+                div.className = 'chip';
+                div.dataset.tag = tag;
+                div.textContent = tag;
+                chipContainer.appendChild(div);
+            });
+
+            // 3. Render Everything
+            renderCards();
+            renderPagination();
+
+            // 4. Event Listeners
+            setupSearch();
+            setupFilters();
+            setupPagination();
+        }
+
+        // --- CARD RENDERING (The Specimen Slide) ---
+        function renderCards() {
+            grid.innerHTML = '';
+            const start = (currentPage - 1) * itemsPerPage;
+            const pageItems = filteredFirms.slice(start, start + itemsPerPage);
+
+            if (pageItems.length === 0) {
+                grid.style.display = 'none';
+                $('emptyState').classList.add('active');
+                paginationContainer.style.display = 'none';
+                return;
+            }
+
+            grid.style.display = 'grid';
+            $('emptyState').classList.remove('active');
+
+            pageItems.forEach((firm, i) => {
+                const card = document.createElement('article');
+                card.className = 'firm-card';
+                card.style.animation = `fadeIn 0.6s ${i * 0.1}s backwards`;
+                
+                // Generate a pseudo-random ID for aesthetic purposes
+                const displayId = `IDX-${firm.name.substring(0,3).toUpperCase()}-${Math.floor(Math.random() * 900) + 100}`;
+
+                card.innerHTML = `
+                    <div class="card-watermark">${firm.icon}</div>
+                    <div class="card-content">
+                        <div class="card-header">
+                            <span class="firm-category">${firm.tags}</span>
+                            <span class="card-id">${displayId}</span>
+                        </div>
+                        <div class="card-body">
+                            <h3 class="firm-name">${firm.name}</h3>
+                            <p class="firm-description">${firm.description}</p>
+                        </div>
+                        <div class="card-footer">
+                            <span class="footer-meta">
+                                <i class="fas fa-circle" style="color: var(--accent-primary); font-size: 6px; vertical-align: middle;"></i>
+                                Active
+                            </span>
+                            <a href="${firm.link}" target="_blank" class="btn-enter">
+                                Enter <i class="fas fa-arrow-right"></i>
+                            </a>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- SEARCH LOGIC ---
+        function setupSearch() {
+            searchInput.addEventListener('input', (e) => {
+                const term = e.target.value;
+                updateSuggestions(term);
+                applyFilter(term, getActiveTag());
+            });
+
+            searchInput.addEventListener('focus', () => {
+                if(searchInput.value) updateSuggestions(searchInput.value);
+            });
+
+            document.addEventListener('click', (e) => {
+                if (!e.target.closest('.search-container')) suggestionsBox.classList.remove('active');
+            });
+        }
+
+        function updateSuggestions(term) {
+            if (!term) { suggestionsBox.classList.remove('active'); return; }
+            
+            const results = allFirms.filter(f => 
+                f.name.toLowerCase().includes(term.toLowerCase()) || 
+                f.description.toLowerCase().includes(term.toLowerCase())
+            ).slice(0, 4);
+
+            if (results.length === 0) {
+                suggestionsBox.innerHTML = `<div class="suggestion-item" style="pointer-events: none;">No Results</div>`;
+            } else {
+                suggestionsBox.innerHTML = results.map(f => `
+                    <div class="suggestion-item" data-name="${f.name}">
+                        <div class="suggestion-text">${highlight(f.name, term)}</div>
+                        <div class="suggestion-snippet">${highlight(f.description.substring(0,40), term)}...</div>
+                    </div>
+                `).join('');
+            }
+            suggestionsBox.classList.add('active');
+
+            suggestionsBox.querySelectorAll('.suggestion-item').forEach(item => {
+                item.addEventListener('click', () => {
+                    searchInput.value = item.dataset.name;
+                    suggestionsBox.classList.remove('active');
+                    applyFilter(searchInput.value, getActiveTag());
+                });
+            });
+        }
+
+        function highlight(text, term) {
+            const regex = new RegExp(`(${term})`, 'gi');
+            return text.replace(regex, '<span class="suggestion-match">$1</span>');
+        }
+
+        // --- FILTER LOGIC ---
+        function setupFilters() {
+            $('filterChips').addEventListener('click', (e) => {
+                if (e.target.classList.contains('chip')) {
+                    document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
+                    e.target.classList.add('active');
+                    searchInput.value = '';
+                    suggestionsBox.classList.remove('active');
+                    applyFilter('', getActiveTag());
+                }
+            });
+        }
+
+        function getActiveTag() {
+            const active = document.querySelector('.chip.active');
+            return active ? active.dataset.tag : '';
+        }
+
+        function applyFilter(term, tag) {
+            filteredFirms = allFirms.filter(f => {
+                const matchSearch = !term || 
+                    f.name.toLowerCase().includes(term.toLowerCase()) || 
+                    f.description.toLowerCase().includes(term.toLowerCase());
+                const matchTag = !tag || f.tags === tag;
+                return matchSearch && matchTag;
+            });
+            currentPage = 1;
+            renderCards();
+            renderPagination();
+        }
+
+        // --- PAGINATION LOGIC ---
+        function setupPagination() {
+            $('prevArrow').addEventListener('click', () => changePage(currentPage - 1));
+            $('nextArrow').addEventListener('click', () => changePage(currentPage + 1));
+            window.addEventListener('resize', () => {
+                itemsPerPage = window.innerWidth < 768 ? 4 : 6;
+                renderCards();
+                renderPagination();
+            });
+        }
+
+        function renderPagination() {
+            totalPages = Math.ceil(filteredFirms.length / itemsPerPage);
+            if (totalPages <= 1) { paginationContainer.style.display = 'none'; return; }
+            
+            paginationContainer.style.display = 'flex';
+            $('prevArrow').disabled = currentPage === 1;
+            $('nextArrow').disabled = currentPage === totalPages;
+
+            dotsContainer.innerHTML = '';
+            let start = Math.max(1, currentPage - 2);
+            let end = Math.min(totalPages, start + 4);
+            
+            for (let i = start; i <= end; i++) {
+                const dot = document.createElement('button');
+                dot.className = 'pagination-dot' + (i === currentPage ? ' active' : '');
+                dot.onclick = () => changePage(i);
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function changePage(p) {
+            if (p < 1 || p > totalPages) return;
+            currentPage = p;
+            renderCards();
+            renderPagination();
+            window.scrollTo({ top: grid.offsetTop - 100, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
