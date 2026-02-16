@@ -419,7 +419,7 @@
 
     #nativeName { letter-spacing: 0.04em; margin-bottom: 1rem; display: block; }
 
-    /* Tags */
+    /* Tags - Elegant non-moving interaction */
     .tag-pill {
       display: inline-flex;
       align-items: center;
@@ -435,19 +435,36 @@
       transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
       box-shadow: 0 1px 2px rgba(0,0,0,0.02); 
       user-select: none;
+      position: relative;
+    }
+
+    .tag-pill::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: 1px;
     }
 
     .tag-pill:hover {
       color: var(--accent);
-      border-color: var(--accent);
-      background-color: rgba(61, 107, 153, 0.06); 
-      transform: translateY(-1px); 
-      box-shadow: 0 4px 6px rgba(0,0,0,0.04);
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+      background-color: color-mix(in srgb, var(--accent) 6%, var(--card));
+      box-shadow: 0 2px 8px rgba(61, 107, 153, 0.08);
+    }
+
+    .tag-pill:hover::after {
+      width: calc(100% - 1rem);
     }
 
     .dark .tag-pill:hover {
-      background-color: rgba(147, 197, 253, 0.1); 
-      box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+      background-color: color-mix(in srgb, var(--accent) 10%, var(--card));
+      box-shadow: 0 2px 8px rgba(147, 197, 253, 0.12);
     }
 
     /* Section Divider */
@@ -883,7 +900,7 @@
     updateScrollProgress();
 
     // Reveal Animation
-    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce').matches;
     if (!prefersReducedMotion) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
