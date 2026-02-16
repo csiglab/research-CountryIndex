@@ -104,7 +104,7 @@
       }
     }
 
-    /* Search Module - Static flow layout to prevent overlap */
+    /* Search Module */
     .search-module {
       position: relative;
     }
@@ -124,23 +124,80 @@
       box-shadow: 0 0 0 3px rgba(74, 111, 165, 0.12);
     }
 
-    /* Dropdown panel - Static block element (Normal Flow) */
-    /* This ensures it pushes content down instead of overlapping */
+    /* Tag Row - Refined taxonomic style */
+    .tag-row {
+      width: 100%;
+      margin-top: 12px;
+      overflow-x: auto;
+      overflow-y: hidden;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    .tag-row::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tag-container {
+      display: flex;
+      flex-wrap: nowrap;
+      gap: 8px;
+      padding-bottom: 2px;
+    }
+
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 5px 12px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 400;
+      letter-spacing: 0.04em;
+      text-transform: none;
+      color: var(--muted);
+      background: transparent;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      white-space: nowrap;
+      cursor: pointer;
+      transition: all 100ms ease-out;
+      flex-shrink: 0;
+    }
+
+    .tag-pill:hover:not(.selected) {
+      color: var(--fg);
+      border-color: #CBD5E1;
+      background: rgba(0, 0, 0, 0.01);
+    }
+
+    .tag-pill.selected {
+      color: var(--fg);
+      background: rgba(30, 41, 59, 0.06);
+      border-color: var(--fg);
+      font-weight: 500;
+    }
+
+    .tag-pill:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    /* Dropdown panel */
     .search-dropdown {
-      position: relative; /* Static flow */
+      position: relative;
       margin-top: 8px;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: 8px;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.12);
       
-      display: none; /* Hidden by default */
+      display: none;
       opacity: 0;
       transform: translateY(-8px);
       transition: opacity 150ms ease-out, transform 150ms ease-out;
       
       overflow: hidden;
-      max-height: 420px; /* Approx height for 5 items + metadata */
+      max-height: 420px;
     }
 
     .search-dropdown.open {
@@ -149,7 +206,6 @@
       transform: translateY(0);
     }
 
-    /* Metadata summary section */
     .dropdown-metadata {
       padding: 12px 16px;
       background: rgba(74, 111, 165, 0.03);
@@ -188,11 +244,10 @@
       color: var(--muted);
     }
 
-    /* Results section */
     .dropdown-results {
-      max-height: 300px; /* Limits visible area to ~5 items */
+      max-height: 300px;
       overflow-y: auto;
-      overscroll-behavior: contain; /* Prevents scroll chaining */
+      overscroll-behavior: contain;
     }
 
     .dropdown-results-header {
@@ -234,7 +289,6 @@
       background-color: rgba(74, 111, 165, 0.08);
     }
 
-    /* Scroll hint */
     .scroll-indicator {
       padding: 10px 16px;
       text-align: center;
@@ -293,23 +347,6 @@
 
     .btn-arrow {
       transition: transform 150ms ease-out;
-    }
-
-    /* Filter pill */
-    .filter-pill {
-      transition: background-color 120ms ease-out, border-color 120ms ease-out, color 120ms ease-out;
-    }
-
-    .filter-pill.active {
-      background-color: var(--accent);
-      border-color: var(--accent);
-      color: white;
-      border-width: 1.5px;
-    }
-
-    .filter-pill:not(.active):hover {
-      background-color: rgba(74, 111, 165, 0.05);
-      border-color: var(--accent);
     }
 
     /* View CTA */
@@ -514,9 +551,21 @@
               </button>
             </div>
           </div>
+
+          <!-- Tag Row - Immediately below search field -->
+          <div class="tag-row" id="tagRow" role="tablist" aria-label="Filter by classification">
+            <div class="tag-container" id="tagContainer">
+              <!-- Static "All Nations" tag -->
+              <button class="tag-pill selected" data-filter="all" role="tab" aria-selected="true">
+                All Nations
+              </button>
+              <!-- Dynamic tags rendered by JS -->
+            </div>
+          </div>
+
           <p id="searchHelp" class="sr-only">Type to search through sovereign entities, regions, or classifications</p>
 
-          <!-- Dropdown Panel - Static flow, pushes content down -->
+          <!-- Dropdown Panel -->
           <div 
             id="searchDropdown" 
             class="search-dropdown" 
@@ -541,17 +590,6 @@
               Scroll or use arrow keys to see more results
             </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- [4] Classification Filter Layer -->
-    <section class="py-10 px-6">
-      <div class="max-w-6xl mx-auto animate-entrance delay-5">
-        <div class="flex flex-wrap justify-center gap-3" role="tablist" aria-label="Filter by classification">
-          <button class="filter-pill active px-5 py-2 border border-border rounded-full text-sm font-medium" data-filter="all" role="tab" aria-selected="true">
-            All Nations
-          </button>
         </div>
       </div>
     </section>
@@ -659,7 +697,7 @@
     const paginationSection = document.getElementById('paginationSection');
     const prevBtn = document.getElementById('prevBtn');
     const nextBtn = document.getElementById('nextBtn');
-    const filterPills = document.querySelectorAll('.filter-pill');
+    const tagContainer = document.getElementById('tagContainer');
 
     function getClassificationCounts() {
       const counts = {};
@@ -668,6 +706,49 @@
         counts[tag] = (counts[tag] || 0) + 1;
       });
       return counts;
+    }
+
+    function renderTags() {
+      const classCounts = getClassificationCounts();
+      const tagNames = Object.keys(classCounts);
+      
+      // Clear existing dynamic tags (keep "All Nations")
+      const allNationsTag = tagContainer.querySelector('[data-filter="all"]');
+      tagContainer.innerHTML = '';
+      tagContainer.appendChild(allNationsTag);
+      
+      // Render dynamic tags
+      tagNames.forEach(tagName => {
+        const tag = document.createElement('button');
+        tag.className = 'tag-pill';
+        tag.setAttribute('data-filter', tagName);
+        tag.setAttribute('role', 'tab');
+        tag.setAttribute('aria-selected', 'false');
+        tag.textContent = tagName;
+        tagContainer.appendChild(tag);
+      });
+
+      // Attach event listeners to all tags
+      attachTagListeners();
+    }
+
+    function attachTagListeners() {
+      const tags = tagContainer.querySelectorAll('.tag-pill');
+      tags.forEach(tag => {
+        tag.addEventListener('click', () => {
+          // Update selection state
+          tags.forEach(t => {
+            t.classList.remove('selected');
+            t.setAttribute('aria-selected', 'false');
+          });
+          tag.classList.add('selected');
+          tag.setAttribute('aria-selected', 'true');
+          
+          // Update filter
+          currentFilter = tag.dataset.filter;
+          filterEntities();
+        });
+      });
     }
 
     function renderMetadata(matchCount) {
@@ -709,6 +790,8 @@
         entities = data.countries || [];
         filteredEntities = [...entities];
 
+        // Render dynamic tags from catalog
+        renderTags();
 
         loadingSkeleton.classList.add('hidden');
         entityGrid.classList.remove('hidden');
@@ -791,7 +874,6 @@
         return;
       }
 
-      // Render all matches; container max-height shows 5 at a time
       dropdownResults.innerHTML = currentMatches.map((entity, idx) => `
         <div 
           class="search-dropdown-item" 
@@ -810,7 +892,6 @@
         </div>
       `).join('');
 
-      // Show scroll indicator if more than 5 items
       if (currentMatches.length > VISIBLE_ITEMS) {
         scrollIndicator.classList.remove('hidden');
         scrollIndicator.textContent = `${currentMatches.length - VISIBLE_ITEMS} more — scroll or use arrow keys`;
@@ -818,7 +899,6 @@
         scrollIndicator.classList.add('hidden');
       }
 
-      // Attach event listeners
       const items = dropdownResults.querySelectorAll('.search-dropdown-item');
       items.forEach((item, idx) => {
         item.addEventListener('mouseenter', () => {
@@ -992,26 +1072,11 @@
     // Click outside to close
     document.addEventListener('click', (e) => {
       const isInsideSearchModule = searchModule.contains(e.target);
-      const isFilterPill = e.target.closest('.filter-pill');
+      const isTagPill = e.target.closest('.tag-pill');
       
-      if (!isInsideSearchModule && !isFilterPill) {
+      if (!isInsideSearchModule && !isTagPill) {
         closeDropdown();
       }
-    });
-
-    // Filter pills interaction
-    filterPills.forEach(pill => {
-      pill.addEventListener('click', () => {
-        filterPills.forEach(p => {
-          p.classList.remove('active');
-          p.setAttribute('aria-selected', 'false');
-        });
-        pill.classList.add('active');
-        pill.setAttribute('aria-selected', 'true');
-        currentFilter = pill.dataset.filter;
-        filterEntities();
-        // Dropdown stays open per spec
-      });
     });
 
     // Pagination buttons
