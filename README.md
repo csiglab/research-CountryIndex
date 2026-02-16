@@ -24,6 +24,17 @@ Implementation Global Rules:
 
 - `./build.sh`
 
+## Prototype Strategy
+
+- **Canonical Artifact**: `prototype.html`
+- **Versioning Policy**: Every Git commit that modifies `prototype.html` constitutes a new prototype version.
+- **Version Materialization**: Each historical version of `prototype.html` must be extracted and materialized into a target directory `<<dir>>`.
+- **Extraction Command**:
+
+  ```bash
+  ./bin/explode-prototype <prototype_path> <target_dir>
+  ```
+
 ## References
 
 - [viz-country-institutional-evolution](https://github.com/csiglab/viz-country-institutional-evolution)
