@@ -51,7 +51,6 @@
       --type-public: #3D6B99;
       --type-private: #9A4C4C;
       --type-hybrid: #4C7A6B;
-      --present-color: rgba(220, 38, 38, 0.6);
     }
 
     .dark {
@@ -65,7 +64,6 @@
       --type-public: #60A5FA;
       --type-private: #F87171;
       --type-hybrid: #34D399;
-      --present-color: rgba(248, 113, 113, 0.7);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -537,7 +535,7 @@
       background: var(--card);
     }
 
-    /* P2: Actor Search */
+    /* Actor Search */
     .search-container {
       position: absolute;
       top: 60px;
@@ -748,7 +746,7 @@
       margin: 4px 0;
     }
 
-    /* P3: Zoom Level Display */
+    /* Zoom Level Display */
     .zoom-level-display {
       font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
@@ -937,7 +935,7 @@
       color: var(--muted);
     }
 
-    /* P2: Event Type Filters */
+    /* Event Type Filters */
     .filter-tags-container {
       margin-top: 0.5rem;
       display: flex;
@@ -1231,7 +1229,7 @@
       <div class="mb-6 text-center">
         <h2 class="font-display type-section text-fg mb-2">Temporal Visualization</h2>
         <p class="font-body text-sm text-muted max-w-2xl mx-auto mb-6">
-          Explore the chronological evolution of New Zealand's institutional actors. The vertical axis represents time flowing downward from 1800 to present. 
+          Explore the chronological evolution of New Zealand's institutional actors. The vertical axis represents time flowing downward from 1800 to present.
           Each point marks a significant event—founding, transformation, or dissolution—organized by actor type.
         </p>
         
@@ -1251,7 +1249,7 @@
           </button>
         </div>
 
-        <!-- P2: Event Type Filters -->
+        <!-- Event Type Filters -->
         <div class="filter-tags-container" id="eventFilters">
           <button class="filter-tag active" data-filter="birth">Birth</button>
           <button class="filter-tag active" data-filter="death">Death</button>
@@ -1274,7 +1272,7 @@
             <input type="number" id="yearInput" class="year-input" placeholder="Year" min="1800" max="2027" aria-label="Jump to year">
           </div>
 
-          <!-- P2: Actor Search -->
+          <!-- Actor Search -->
           <div class="search-container">
             <input type="text" id="actorSearch" class="search-input" placeholder="Search actors..." aria-label="Search actors">
             <div class="search-results" id="searchResults"></div>
@@ -1301,7 +1299,7 @@
           <!-- Navigation Strip -->
           <div class="nav-strip" id="navStrip">
             <div class="nav-strip-controls">
-              <!-- P2: History -->
+              <!-- History -->
               <button id="btn-back" class="nav-strip-btn" aria-label="Go back" title="Go Back" disabled>
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
               </button>
@@ -1319,7 +1317,7 @@
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
               </button>
               
-              <!-- P3: Zoom Level -->
+              <!-- Zoom Level -->
               <div class="zoom-level-display" id="zoomLevel">100%</div>
 
               <button id="btn-fit-all" class="nav-strip-btn" aria-label="Fit all data" title="Fit All (F)">
@@ -1334,7 +1332,6 @@
             <div class="nav-strip-minimap" id="minimapArea">
               <canvas id="minimap-canvas" class="minimap-canvas"></canvas>
               <div class="minimap-viewport" id="minimapViewport"></div>
-              <!-- CORRECTED LABELS -->
               <div class="minimap-label top" id="minimapTop">1800</div>
               <div class="minimap-label bottom" id="minimapBottom">2027</div>
             </div>
@@ -1530,7 +1527,6 @@
             if (isNaN(eventDate.getTime())) return;
 
             let category = (ev.category || 'other').toLowerCase();
-            // Normalize category names
             if (!['birth', 'death', 'milestone', 'transformation', 'expansion'].includes(category)) {
               category = 'other';
             }
@@ -1554,7 +1550,7 @@
       updateStats() {
         document.getElementById('stat-actors').textContent = this.actors.length;
         document.getElementById('stat-events').textContent = this.events.length;
-        document.getElementById('stat-range').textContent = '227'; // Approx span
+        document.getElementById('stat-range').textContent = '227';
         document.getElementById('stat-decades').textContent = '23';
         
         document.getElementById('count-public').textContent = this.actors.filter(a => a.type === 'public').length;
@@ -1572,7 +1568,7 @@
     };
 
     // ==========================================
-    // P2 & P3: HISTORY & BOOKMARKS
+    // HISTORY & BOOKMARKS
     // ==========================================
     const HistoryManager = {
       stack: [],
@@ -1583,7 +1579,6 @@
         if (this.isNavigating) return;
         
         const state = { zoom, panY };
-        // If we pushed new state after going back, truncate forward history
         if (this.pointer < this.stack.length - 1) {
           this.stack = this.stack.slice(0, this.pointer + 1);
         }
@@ -1746,8 +1741,7 @@
           border: isDark ? '#334155' : '#D8E1EB',
           public: isDark ? '#60A5FA' : '#3D6B99',
           private: isDark ? '#F87171' : '#9A4C4C',
-          hybrid: isDark ? '#34D399' : '#4C7A6B',
-          present: isDark ? 'rgba(248, 113, 113, 0.7)' : 'rgba(220, 38, 38, 0.6)'
+          hybrid: isDark ? '#34D399' : '#4C7A6B'
         };
       },
 
@@ -1776,24 +1770,6 @@
         ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
         ctx.fillRect(this.marginLeft + colW * 2, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
         ctx.globalAlpha = 1.0;
-
-        // P3: Present Day Marker
-        const presentY = this.mapDateToY(this.today);
-        if (presentY > this.marginTop && presentY < this.height - this.marginBottom) {
-          ctx.strokeStyle = colors.present;
-          ctx.lineWidth = 1;
-          ctx.setLineDash([4, 4]);
-          ctx.beginPath();
-          ctx.moveTo(this.marginLeft, presentY);
-          ctx.lineTo(this.width - this.marginRight, presentY);
-          ctx.stroke();
-          ctx.setLineDash([]);
-          
-          ctx.fillStyle = colors.present;
-          ctx.font = '10px "JetBrains Mono", monospace';
-          ctx.textAlign = 'left';
-          ctx.fillText('PRESENT', this.marginLeft + 5, presentY - 4);
-        }
 
         // Events
         const events = DataModel.getEvents();
@@ -1881,7 +1857,7 @@
         document.getElementById('rangeStart').textContent = new Date(topDate).getFullYear();
         document.getElementById('rangeEnd').textContent = new Date(bottomDate).getFullYear();
         
-        // P3: Zoom Level
+        // Zoom Level
         document.getElementById('zoomLevel').textContent = Math.round(this.zoom * 100) + '%';
         
         // Decade Links
@@ -1951,7 +1927,7 @@
         document.getElementById('btn-fit-all').addEventListener('click', () => this.fitAllData());
         document.getElementById('btn-reset').addEventListener('click', () => this.resetView());
         
-        // P2: History
+        // History
         document.getElementById('btn-back').addEventListener('click', () => HistoryManager.back());
         document.getElementById('btn-forward').addEventListener('click', () => HistoryManager.forward());
 
@@ -1976,7 +1952,7 @@
           });
         });
 
-        // P2: Event Filters
+        // Event Filters
         document.querySelectorAll('.filter-tag').forEach(tag => {
           tag.addEventListener('click', () => {
             const filter = tag.dataset.filter;
@@ -1986,7 +1962,7 @@
           });
         });
 
-        // P2: Actor Search
+        // Actor Search
         const searchInput = document.getElementById('actorSearch');
         const searchResults = document.getElementById('searchResults');
         
@@ -2006,7 +1982,6 @@
           if (item) {
             const actor = DataModel.getActorById(item.dataset.id);
             if (actor && actor.events.length > 0) {
-              // Jump to first event
               this.jumpToYear(new Date(actor.events[0].date).getFullYear());
               this.selectActor(actor.id);
             }
@@ -2123,7 +2098,7 @@
 
       findEvent(mx, my) {
         const events = DataModel.getEvents();
-        let closest = null, minD = 400; // 20px radius
+        let closest = null, minD = 400;
         events.forEach(ev => {
           const d = (ev.x - mx)**2 + (ev.y - my)**2;
           if (d < minD) { minD = d; closest = ev; }
@@ -2198,7 +2173,6 @@
       Renderer.init();
       Interaction.init();
       
-      // P3: Initialize state
       if (!HistoryManager.loadFromHash()) {
         HistoryManager.pushState(Renderer.zoom, Renderer.panY);
       }
