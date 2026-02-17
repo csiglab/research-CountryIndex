@@ -405,7 +405,7 @@
       display: block;
     }
 
-    /* Canvas Overlays for Labels */
+    /* Canvas Overlays for Labels - REDESIGNED ELEGANT TAGS */
     .canvas-label-overlay {
       position: absolute;
       top: 0;
@@ -416,31 +416,84 @@
       z-index: 2;
     }
 
-    .canvas-col-label {
+    .viz-column-tag {
       position: absolute;
-      top: 12px;
+      top: 24px;
       transform: translateX(-50%);
+      text-align: center;
+      pointer-events: auto; /* Allow hover */
+      padding: 0.5rem 1.5rem;
+      /* Glass effect */
+      background: color-mix(in srgb, var(--card) 80%, transparent);
+      backdrop-filter: blur(8px);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      transition: all 0.3s ease;
+    }
+
+    .viz-column-tag:hover {
+      border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      transform: translateX(-50%) translateY(-2px);
+    }
+
+    .tag-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--fg);
+      font-style: italic;
+      letter-spacing: 0.02em;
+      line-height: 1.2;
+      position: relative;
+      display: inline-block;
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.25rem;
+    }
+
+    /* The Elegant Underline */
+    .tag-title::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 60%;
+      height: 2px;
+      background: var(--border);
+      transition: all 0.3s ease;
+    }
+
+    /* Color Underlines based on Type */
+    .tag-public .tag-title::after { background: var(--type-public); }
+    .tag-private .tag-title::after { background: var(--type-private); }
+    .tag-hybrid .tag-title::after { background: var(--type-hybrid); }
+
+    .viz-column-tag:hover .tag-title::after {
+      width: 100%;
+    }
+
+    .tag-meta {
+      display: block;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.625rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--muted);
-      background: var(--card);
-      padding: 2px 8px;
-      border-radius: 2px;
-      border: 1px solid var(--border);
-      white-space: nowrap;
     }
 
     .canvas-time-label {
       position: absolute;
-      right: 12px;
-      bottom: 12px;
+      right: 16px;
+      bottom: 16px;
       font-family: 'Cormorant Garamond', serif;
-      font-size: 0.875rem;
+      font-size: 1rem;
       font-style: italic;
       color: var(--muted);
       opacity: 0.6;
+      pointer-events: none;
+      user-select: none;
     }
 
     /* Tooltip */
@@ -732,7 +785,6 @@
         <p class="font-body type-secondary text-muted">Overview of Data Points</p>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="statsGrid">
-        <!-- Cards injected by JS -->
         <div class="data-card">
           <div class="font-display type-data-value font-medium text-fg" id="stat-actors">—</div>
           <div class="font-body type-label text-muted uppercase font-medium">Total Actors</div>
@@ -776,7 +828,7 @@
           
           <!-- Overlay Labels -->
           <div class="canvas-label-overlay" id="canvasLabels">
-             <!-- Injected by JS based on canvas width -->
+             <!-- Injected by JS -->
           </div>
           
           <div id="loading-indicator">Loading actor-set.json...</div>
@@ -1036,7 +1088,8 @@
         totalActors: 0,
         totalEvents: 0,
         startYear: 2025,
-        endYear: 1800
+        endYear: 1800,
+        counts: { public: 0, private: 0, hybrid: 0 }
       },
 
       async init() {
@@ -1064,6 +1117,11 @@
         
         this.events = [];
         this.actors.forEach(actor => {
+          // Count types
+          if (actor.type === 'public') this.stats.counts.public++;
+          else if (actor.type === 'private') this.stats.counts.private++;
+          else if (actor.type === 'hybrid') this.stats.counts.hybrid++;
+
           if (!actor.events) return;
 
           actor.events.forEach(ev => {
@@ -1128,7 +1186,7 @@
       maxDate: new Date('2025-12-31').getTime(),
       timeRange: 0,
       
-      marginTop: 60, // Increased top margin for labels
+      marginTop: 100, // Space for elegant tags
       marginBottom: 40,
       marginLeft: 60,
       marginRight: 20,
@@ -1169,16 +1227,24 @@
         const colW = W / 3;
 
         const cols = [
-          { label: 'Public', x: this.marginLeft + colW * 0.5 },
-          { label: 'Hybrid', x: this.marginLeft + colW * 1.5 },
-          { label: 'Private', x: this.marginLeft + colW * 2.5 }
+          { label: 'Public', type: 'public', x: this.marginLeft + colW * 0.5 },
+          { label: 'Hybrid', type: 'hybrid', x: this.marginLeft + colW * 1.5 },
+          { label: 'Private', type: 'private', x: this.marginLeft + colW * 2.5 }
         ];
 
         cols.forEach(c => {
           const div = document.createElement('div');
-          div.className = 'canvas-col-label';
+          // Add specific class for color styling
+          div.className = `viz-column-tag tag-${c.type}`;
           div.style.left = `${c.x}px`;
-          div.textContent = c.label;
+          
+          const count = DataModel.stats.counts[c.type] || 0;
+          
+          div.innerHTML = `
+            <div class="tag-title">${c.label}</div>
+            <span class="tag-meta">${count} Actors</span>
+          `;
+          
           container.appendChild(div);
         });
 
@@ -1330,7 +1396,6 @@
           if (ev.type === 'death') ctx.globalAlpha = alpha * 0.5;
           else ctx.globalAlpha = alpha;
 
-          // Get color based on column
           const evColor = colIndex === 0 ? colors.public : (colIndex === 1 ? colors.hybrid : colors.private);
           ctx.fillStyle = evColor;
           ctx.fill();
