@@ -377,136 +377,6 @@
       transform: rotate(180deg);
     }
 
-    /* Column Labels (Inside Canvas - Subtle) */
-    .column-label {
-      position: absolute;
-      bottom: 16px;
-      transform: translateX(-50%);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.625rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12em;
-      color: var(--muted);
-      opacity: 0.5;
-      pointer-events: none;
-      user-select: none;
-    }
-
-    /* Filter Tags Above Visualization */
-    .filter-tags-container {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1.5rem;
-    }
-
-    .filter-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      border-radius: 9999px;
-      border: 1px solid var(--border);
-      background: var(--card);
-      font-family: 'Inter', sans-serif;
-      font-size: 0.8125rem;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
-      user-select: none;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .filter-tag::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: currentColor;
-      opacity: 0;
-      transition: opacity 0.2s ease;
-    }
-
-    .filter-tag:hover {
-      border-color: var(--accent);
-      color: var(--fg);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-
-    .filter-tag:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .filter-tag.active {
-      border-color: currentColor;
-      color: var(--fg);
-    }
-
-    .filter-tag.active::before {
-      opacity: 0.08;
-    }
-
-    .tag-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .filter-tag:hover .tag-indicator {
-      transform: scale(1.2);
-    }
-
-    .filter-tag.active .tag-indicator {
-      box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 30%, transparent);
-    }
-
-    .tag-label {
-      position: relative;
-      z-index: 1;
-    }
-
-    .tag-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6875rem;
-      font-weight: 500;
-      padding: 0.125rem 0.5rem;
-      background: var(--bg-subtle);
-      border-radius: 9999px;
-      color: var(--muted);
-      transition: all 0.2s ease;
-      position: relative;
-      z-index: 1;
-    }
-
-    .filter-tag.active .tag-count {
-      background: color-mix(in srgb, currentColor 15%, var(--bg-subtle));
-      color: inherit;
-    }
-
-    /* Tag Type Colors */
-    .filter-tag[data-type="public"] { --tag-color: var(--type-public); }
-    .filter-tag[data-type="private"] { --tag-color: var(--type-private); }
-    .filter-tag[data-type="hybrid"] { --tag-color: var(--type-hybrid); }
-
-    .filter-tag .tag-indicator { background: var(--tag-color); }
-    .filter-tag[data-type="public"].active { color: var(--type-public); }
-    .filter-tag[data-type="private"].active { color: var(--type-private); }
-    .filter-tag[data-type="hybrid"].active { color: var(--type-hybrid); }
-
-    /* All Active State */
-    .filter-tag[data-type="all"] .tag-indicator {
-      background: linear-gradient(135deg, var(--type-public) 33%, var(--type-hybrid) 66%, var(--type-private) 100%);
-    }
-
-    .filter-tag[data-type="all"].active {
-      color: var(--fg);
-    }
-
     /* Discrete Controls (Top Right) */
     .canvas-controls {
       position: absolute;
@@ -617,16 +487,6 @@
     @media (max-width: 768px) {
       .definition-lead::before { display: none; }
       .definition-lead { font-size: 1.25rem; }
-    }
-
-    /* Visualization Intro */
-    .viz-intro {
-      font-family: 'Inter', system-ui, sans-serif;
-      font-size: 0.9375rem;
-      line-height: 1.7;
-      color: var(--muted);
-      max-width: 58rem;
-      margin-bottom: 1.5rem;
     }
 
     /* Detail Sidebar */
@@ -762,6 +622,121 @@
       pointer-events: none;
       transition: opacity 0.5s;
     }
+
+    /* === NEW: Visualization Control Tags === */
+    .viz-controls-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      padding: 0 1rem;
+    }
+
+    .viz-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 9999px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    }
+
+    .viz-tag:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .viz-tag.active {
+      background: var(--bg);
+      color: var(--fg);
+      border-color: currentColor;
+    }
+
+    .viz-tag.disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
+    }
+
+    .viz-tag-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .viz-tag[data-type="public"] .viz-tag-indicator { background: var(--type-public); }
+    .viz-tag[data-type="hybrid"] .viz-tag-indicator { background: var(--type-hybrid); }
+    .viz-tag[data-type="private"] .viz-tag-indicator { background: var(--type-private); }
+
+    .viz-tag[data-type="public"] { --hover-color: var(--type-public); }
+    .viz-tag[data-type="hybrid"] { --hover-color: var(--type-hybrid); }
+    .viz-tag[data-type="private"] { --hover-color: var(--type-private); }
+
+    .viz-tag:hover:not(.disabled) {
+      border-color: var(--hover-color);
+      color: var(--hover-color);
+    }
+
+    .viz-tag.active[data-type="public"] { border-color: var(--type-public); color: var(--type-public); }
+    .viz-tag.active[data-type="hybrid"] { border-color: var(--type-hybrid); color: var(--type-hybrid); }
+    .viz-tag.active[data-type="private"] { border-color: var(--type-private); color: var(--type-private); }
+
+    .viz-tag-count {
+      font-size: 0.65rem;
+      opacity: 0.7;
+      margin-left: 0.25rem;
+    }
+
+    /* Column headers inside canvas area */
+    .viz-column-headers {
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      height: 40px;
+      display: flex;
+      justify-content: space-around;
+      padding: 0 60px;
+      pointer-events: none;
+      z-index: 3;
+    }
+
+    .viz-column-header {
+      text-align: center;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.125rem;
+      font-style: italic;
+      color: var(--muted);
+      opacity: 0.6;
+      transition: opacity 0.3s ease;
+    }
+
+    .viz-column-header.active {
+      opacity: 1;
+      color: var(--fg);
+    }
+
+    .viz-column-header::after {
+      content: '';
+      display: block;
+      width: 40px;
+      height: 2px;
+      margin: 0.5rem auto 0;
+      background: currentColor;
+      opacity: 0.3;
+    }
   </style>
 </head>
 <body>
@@ -856,42 +831,32 @@
     </div>
 
     <!-- [3] Visualization Section -->
-    <section class="reveal delay-4" id="vizSection">
-      <div class="mb-6">
-        <h2 class="font-display type-section text-fg mb-1">Temporal Visualization</h2>
-        <p class="font-body type-secondary text-muted">Vertical Timeline · Interactive</p>
-      </div>
-
-      <!-- Intro Paragraph -->
-      <p class="viz-intro">
-        This vertical timeline maps the lifespan and key events of registered actors across two centuries. 
-        Each column represents an actor category—public institutions, hybrid organizations, and private enterprises—allowing 
-        for comparative analysis of institutional development patterns. Use the filter tags to highlight specific categories, 
-        scroll to navigate temporally, and click any node to explore an actor's complete event history.
-      </p>
-
-      <!-- Filter Tags -->
-      <div class="filter-tags-container" id="filterTags" role="group" aria-label="Filter by actor type">
-        <button class="filter-tag active" data-type="all" aria-pressed="true">
-          <span class="tag-indicator"></span>
-          <span class="tag-label">All Actors</span>
-          <span class="tag-count" id="tag-count-all">—</span>
-        </button>
-        <button class="filter-tag" data-type="public" aria-pressed="false">
-          <span class="tag-indicator"></span>
-          <span class="tag-label">Public</span>
-          <span class="tag-count" id="tag-count-public">—</span>
-        </button>
-        <button class="filter-tag" data-type="hybrid" aria-pressed="false">
-          <span class="tag-indicator"></span>
-          <span class="tag-label">Hybrid</span>
-          <span class="tag-count" id="tag-count-hybrid">—</span>
-        </button>
-        <button class="filter-tag" data-type="private" aria-pressed="false">
-          <span class="tag-indicator"></span>
-          <span class="tag-label">Private</span>
-          <span class="tag-count" id="tag-count-private">—</span>
-        </button>
+    <section class="reveal delay-4">
+      <div class="mb-6 text-center">
+        <h2 class="font-display type-section text-fg mb-2">Temporal Visualization</h2>
+        <p class="font-body type-secondary text-muted max-w-2xl mx-auto mb-6">
+          Explore the chronological evolution of New Zealand's institutional actors. The vertical axis represents time flowing downward from 1800 to present. 
+          Each point marks a significant event—founding, transformation, or dissolution—organized by actor type across three governance categories.
+        </p>
+        
+        <!-- Interactive Legend Tags -->
+        <div class="viz-controls-bar" id="vizLegend">
+          <button class="viz-tag active" data-type="public" aria-pressed="true">
+            <span class="viz-tag-indicator"></span>
+            <span>Public</span>
+            <span class="viz-tag-count" id="count-public">0</span>
+          </button>
+          <button class="viz-tag active" data-type="hybrid" aria-pressed="true">
+            <span class="viz-tag-indicator"></span>
+            <span>Hybrid</span>
+            <span class="viz-tag-count" id="count-hybrid">0</span>
+          </button>
+          <button class="viz-tag active" data-type="private" aria-pressed="true">
+            <span class="viz-tag-indicator"></span>
+            <span>Private</span>
+            <span class="viz-tag-count" id="count-private">0</span>
+          </button>
+        </div>
       </div>
 
       <div class="canvas-wrapper">
@@ -1169,7 +1134,7 @@
       actors: [],
       events: [],
       selectedActor: null,
-      activeFilter: 'all',
+      activeTypes: { public: true, private: true, hybrid: true },
       stats: {
         totalActors: 0,
         totalEvents: 0,
@@ -1202,8 +1167,6 @@
         this.actors = rawData.actors || (Array.isArray(rawData) ? rawData : []);
         
         this.events = [];
-        this.stats.counts = { public: 0, private: 0, hybrid: 0 };
-        
         this.actors.forEach(actor => {
           if (actor.type === 'public') this.stats.counts.public++;
           else if (actor.type === 'private') this.stats.counts.private++;
@@ -1225,8 +1188,7 @@
               desc: ev.description || ev.desc || '',
               actorId: actor.id,
               actorName: actor.name,
-              actorType: actor.type,
-              visible: true
+              actorType: actor.type
             });
           });
         });
@@ -1237,7 +1199,7 @@
         this.stats.totalEvents = this.events.length;
         
         this.updateStatsUI();
-        this.updateFilterTags();
+        this.updateLegendCounts();
       },
 
       updateStatsUI() {
@@ -1251,34 +1213,20 @@
         document.getElementById('footerEntityCount').textContent = this.stats.totalActors;
       },
 
-      updateFilterTags() {
-        document.getElementById('tag-count-all').textContent = this.stats.totalActors;
-        document.getElementById('tag-count-public').textContent = this.stats.counts.public;
-        document.getElementById('tag-count-hybrid').textContent = this.stats.counts.hybrid;
-        document.getElementById('tag-count-private').textContent = this.stats.counts.private;
+      updateLegendCounts() {
+        document.getElementById('count-public').textContent = this.stats.counts.public;
+        document.getElementById('count-hybrid').textContent = this.stats.counts.hybrid;
+        document.getElementById('count-private').textContent = this.stats.counts.private;
       },
 
-      setFilter(filterType) {
-        this.activeFilter = filterType;
-        
-        this.events.forEach(ev => {
-          ev.visible = (filterType === 'all' || ev.actorType === filterType);
-        });
-
-        // Update tag states
-        document.querySelectorAll('.filter-tag').forEach(tag => {
-          const isActive = tag.dataset.type === filterType;
-          tag.classList.toggle('active', isActive);
-          tag.setAttribute('aria-pressed', isActive);
-        });
+      toggleType(type) {
+        this.activeTypes[type] = !this.activeTypes[type];
+        return this.activeTypes[type];
       },
 
-      getVisibleEvents() { 
-        return this.events.filter(ev => ev.visible); 
+      getEvents() { 
+        return this.events.filter(ev => this.activeTypes[ev.actorType]); 
       },
-      
-      getEvents() { return this.events; },
-      
       getActorById(id) { return this.actors.find(a => a.id === id); }
     };
 
@@ -1301,7 +1249,7 @@
       maxDate: new Date('2025-12-31').getTime(),
       timeRange: 0,
       
-      marginTop: 60,
+      marginTop: 60, // Space for time label
       marginBottom: 60,
       marginLeft: 60,
       marginRight: 20,
@@ -1337,29 +1285,13 @@
         const container = document.getElementById('canvasLabels');
         container.innerHTML = '';
         
-        const W = this.width - this.marginLeft - this.marginRight;
-        const colW = W / 3;
-
         // Time Flow Label (Top Left)
         const timeFlow = document.createElement('div');
         timeFlow.className = 'canvas-time-flow';
-        timeFlow.innerHTML = `<span class="time-flow-text">Time Flow</span>`;
+        timeFlow.innerHTML = `
+          <span class="time-flow-text">Time Flow</span>
+        `;
         container.appendChild(timeFlow);
-
-        // Subtle Column Labels (Bottom, inside canvas)
-        const cols = [
-          { label: 'Public', x: this.marginLeft + colW * 0.5 },
-          { label: 'Hybrid', x: this.marginLeft + colW * 1.5 },
-          { label: 'Private', x: this.marginLeft + colW * 2.5 }
-        ];
-
-        cols.forEach(c => {
-          const label = document.createElement('div');
-          label.className = 'column-label';
-          label.style.left = `${c.x}px`;
-          label.textContent = c.label;
-          container.appendChild(label);
-        });
       },
 
       mapDateToY(timestamp) {
@@ -1401,7 +1333,6 @@
       draw() {
         const ctx = this.ctx;
         const colors = this.getColors();
-        const activeFilter = DataModel.activeFilter;
         
         ctx.clearRect(0, 0, this.width, this.height);
         ctx.fillStyle = colors.bg;
@@ -1410,22 +1341,11 @@
         const W = this.width - this.marginLeft - this.marginRight;
         const colW = W / 3;
 
-        // Draw Columns Background Stripes (with filter awareness)
+        // Draw Columns Background Stripes
+        ctx.fillStyle = colors.bgSubtle;
         ctx.globalAlpha = 0.3;
-        
-        if (activeFilter === 'all' || activeFilter === 'public') {
-          ctx.fillStyle = colors.public;
-          ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
-        }
-        if (activeFilter === 'all' || activeFilter === 'hybrid') {
-          ctx.fillStyle = colors.hybrid;
-          ctx.fillRect(this.marginLeft + colW, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
-        }
-        if (activeFilter === 'all' || activeFilter === 'private') {
-          ctx.fillStyle = colors.private;
-          ctx.fillRect(this.marginLeft + colW * 2, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
-        }
-        
+        ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
+        ctx.fillRect(this.marginLeft + colW * 2, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
         ctx.globalAlpha = 1.0;
 
         // Column separators
@@ -1492,9 +1412,6 @@
         let selectedPoints = [];
 
         events.forEach(ev => {
-          // Skip hidden events based on filter
-          if (!ev.visible) return;
-          
           const y = this.mapDateToY(ev.date.getTime());
           
           if (y < this.marginTop - 10 || y > this.height - this.marginBottom + 10) return;
@@ -1563,7 +1480,17 @@
         const canvas = Renderer.canvas;
         const tooltip = document.getElementById('tooltip');
 
-        // Drag/Pan
+        // Legend tag interactions
+        const tags = document.querySelectorAll('.viz-tag');
+        tags.forEach(tag => {
+          tag.addEventListener('click', (e) => {
+            const type = tag.dataset.type;
+            const isActive = DataModel.toggleType(type);
+            tag.classList.toggle('active', isActive);
+            tag.setAttribute('aria-pressed', isActive);
+          });
+        });
+
         canvas.addEventListener('mousedown', (e) => {
           if (e.button === 0) {
             Renderer.isDragging = true;
@@ -1588,7 +1515,6 @@
           canvas.style.cursor = 'ns-resize';
         });
 
-        // Click to select
         canvas.addEventListener('click', (e) => {
           const rect = canvas.getBoundingClientRect();
           const hit = this.findEvent(e.clientX - rect.left, e.clientY - rect.top);
@@ -1597,7 +1523,6 @@
           }
         });
 
-        // Wheel zoom
         canvas.addEventListener('wheel', (e) => {
           e.preventDefault();
           const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
@@ -1624,29 +1549,12 @@
           Renderer.panY = 0;
         });
 
-        // Sidebar close
         document.getElementById('close-sidebar').addEventListener('click', () => {
           this.deselectActor();
         });
 
-        // Escape key
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') this.deselectActor();
-        });
-
-        // Filter Tags
-        this.initFilterTags();
-      },
-
-      initFilterTags() {
-        const tags = document.querySelectorAll('.filter-tag');
-        
-        tags.forEach(tag => {
-          tag.addEventListener('click', () => {
-            const filterType = tag.dataset.type;
-            DataModel.setFilter(filterType);
-            Renderer.updateHTMLLabels();
-          });
         });
       },
 
@@ -1677,7 +1585,7 @@
       },
 
       findEvent(mx, my) {
-        const events = DataModel.getVisibleEvents();
+        const events = DataModel.getEvents();
         const radius = 10;
         
         for (let i = events.length - 1; i >= 0; i--) {
