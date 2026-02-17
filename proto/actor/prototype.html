@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en" class="h-full">
 <head>
   <meta charset="UTF-8">
@@ -13,10 +12,10 @@
     })();
   </script>
   
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com "></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com ">
+  <link rel="preconnect" href="https://fonts.gstatic.com " crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital ,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -466,7 +465,7 @@
     .canvas-future-fade {
       position: absolute;
       bottom: 0;
-      left: 0;
+      left: 48px;
       right: 56px;
       height: 60px;
       background: linear-gradient(to top, var(--card), transparent);
@@ -484,84 +483,34 @@
       z-index: 2;
     }
 
-    .canvas-time-flow {
-      position: absolute;
-      top: 24px;
-      left: 24px;
-      pointer-events: none;
-      user-select: none;
-    }
-    
-    .time-flow-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.625rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      opacity: 0.8;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-    }
-
-    /* Year Quick-Jump */
-    .year-jump-panel {
+    /* Search Tools Panel - Actor Search Only */
+    .search-tools-panel {
       position: absolute;
       top: 20px;
-      left: 20px;
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
+      left: 48px;
       z-index: 10;
       pointer-events: auto;
-    }
-
-    .year-input {
-      width: 72px;
-      height: 32px;
-      padding: 0 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--fg);
-      background: color-mix(in srgb, var(--card) 80%, transparent);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      text-align: center;
-      transition: all 0.2s ease;
-    }
-
-    .year-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      background: var(--card);
-    }
-
-    /* Actor Search */
-    .search-container {
-      position: absolute;
-      top: 60px;
-      left: 20px;
-      z-index: 10;
-      pointer-events: auto;
-      width: 240px;
     }
 
     .search-input {
-      width: 100%;
+      width: 260px;
       height: 32px;
-      padding: 0 10px;
+      padding: 0 12px;
       font-family: 'Inter', sans-serif;
       font-size: 13px;
       color: var(--fg);
-      background: var(--card);
+      background: color-mix(in srgb, var(--card) 90%, transparent);
       border: 1px solid var(--border);
       border-radius: 4px;
       transition: all 0.2s ease;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.04);
     }
 
     .search-input:focus {
       outline: none;
       border-color: var(--accent);
+      background: var(--card);
       box-shadow: 0 4px 16px rgba(0,0,0,0.08);
     }
 
@@ -611,31 +560,7 @@
       margin-left: 8px;
     }
 
-    /* Visible Range Indicator */
-    .visible-range-indicator {
-      position: absolute;
-      top: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      background: color-mix(in srgb, var(--card) 80%, transparent);
-      backdrop-filter: blur(8px);
-      padding: 6px 12px;
-      border-radius: 3px;
-      border: 1px solid var(--border);
-      z-index: 10;
-      pointer-events: none;
-      white-space: nowrap;
-    }
-
-    .visible-range-indicator span {
-      color: var(--fg);
-      font-weight: 500;
-    }
-
-    /* Decade Quick-Links */
+    /* Decade Links - Bottom Center */
     .decade-links-container {
       position: absolute;
       bottom: 20px;
@@ -681,6 +606,68 @@
       height: 16px;
       background: var(--border);
       margin: 0 2px;
+    }
+
+    /* Vertical Time Axis - Left */
+    .time-axis {
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: 0;
+      width: 48px;
+      background: color-mix(in srgb, var(--bg-subtle) 30%, transparent);
+      border-right: 1px solid var(--border);
+      z-index: 8;
+      pointer-events: auto;
+    }
+
+    .time-axis-line {
+      position: absolute;
+      left: 32px;
+      top: 60px;
+      bottom: 60px;
+      width: 1px;
+      background: var(--border);
+    }
+
+    .time-axis-tick {
+      position: absolute;
+      left: 28px;
+      width: 10px;
+      height: 1px;
+      background: var(--border);
+      pointer-events: none;
+    }
+
+    .time-axis-tick.major {
+      width: 14px;
+      left: 26px;
+      background: var(--muted);
+    }
+
+    .time-axis-label {
+      position: absolute;
+      left: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 500;
+      color: var(--muted);
+      transform: translateY(-50%);
+      pointer-events: auto;
+      cursor: pointer;
+      padding: 2px;
+      border-radius: 2px;
+      transition: all 0.2s ease;
+    }
+
+    .time-axis-label:hover {
+      color: var(--fg);
+      background: var(--bg-subtle);
+    }
+
+    .time-axis-label.major {
+      font-size: 10px;
+      color: var(--fg);
     }
 
     /* Navigation Strip */
@@ -1267,23 +1254,18 @@
           <div class="canvas-future-fade"></div>
           <div class="canvas-label-overlay" id="canvasLabels"></div>
 
-          <!-- Year Quick-Jump -->
-          <div class="year-jump-panel">
-            <input type="number" id="yearInput" class="year-input" placeholder="Year" min="1800" max="2027" aria-label="Jump to year">
+          <!-- Time Axis - Vertical Left -->
+          <div class="time-axis" id="timeAxis">
+            <div class="time-axis-line"></div>
           </div>
 
-          <!-- Actor Search -->
-          <div class="search-container">
+          <!-- Search Tools Panel - Actor Search Only -->
+          <div class="search-tools-panel">
             <input type="text" id="actorSearch" class="search-input" placeholder="Search actors..." aria-label="Search actors">
             <div class="search-results" id="searchResults"></div>
           </div>
 
-          <!-- Visible Range -->
-          <div class="visible-range-indicator" id="visibleRange">
-            Viewing: <span id="rangeStart">1800</span> – <span id="rangeEnd">2027</span>
-          </div>
-
-          <!-- Decade Links -->
+          <!-- Decade Links - Bottom Center -->
           <div class="decade-links-container" id="decadeLinks">
             <button class="decade-link" data-decade="1800">1800</button>
             <div class="decade-separator"></div>
@@ -1658,13 +1640,15 @@
       
       marginTop: 60,
       marginBottom: 60,
-      marginLeft: 60,
+      marginLeft: 48,
       marginRight: 76,
 
       minimapCanvas: null,
       minimapCtx: null,
       minimapArea: null,
       minimapWidth: 56,
+
+      timeAxisEl: null,
 
       init() {
         this.canvas = document.getElementById('viz-canvas');
@@ -1673,12 +1657,14 @@
         this.minimapCanvas = document.getElementById('minimap-canvas');
         this.minimapCtx = this.minimapCanvas.getContext('2d');
         this.minimapArea = document.getElementById('minimapArea');
+        this.timeAxisEl = document.getElementById('timeAxis');
         
         this.timeRange = this.maxDate - this.minDate;
         
         this.resize();
         window.addEventListener('resize', () => this.resize());
         
+        this.buildTimeAxis();
         this.loop();
       },
 
@@ -1702,13 +1688,50 @@
         this.minimapCtx.scale(dpr, dpr);
         this.minimapCanvas.style.width = this.minimapWidth + 'px';
         this.minimapCanvas.style.height = minimapHeight + 'px';
-
-        this.updateHTMLLabels();
       },
 
-      updateHTMLLabels() {
-        const container = document.getElementById('canvasLabels');
-        container.innerHTML = '<div class="canvas-time-flow"><span class="time-flow-text">Time Flow</span></div>';
+      buildTimeAxis() {
+        const axis = this.timeAxisEl;
+        const line = axis.querySelector('.time-axis-line');
+        axis.innerHTML = '';
+        axis.appendChild(line);
+        
+        // Generate ticks and labels from 1800 to 2025
+        for (let year = 1800; year <= 2025; year += 25) {
+          const normalized = (new Date(year, 0, 1).getTime() - this.minDate) / this.timeRange;
+          const y = this.marginTop + normalized * (this.height - this.marginTop - this.marginBottom);
+          
+          // Tick
+          const tick = document.createElement('div');
+          tick.className = 'time-axis-tick major';
+          tick.style.top = y + 'px';
+          axis.appendChild(tick);
+          
+          // Label
+          const label = document.createElement('div');
+          label.className = 'time-axis-label major';
+          label.style.top = y + 'px';
+          label.textContent = year;
+          label.dataset.year = year;
+          label.addEventListener('click', () => Interaction.jumpToYear(year));
+          axis.appendChild(label);
+        }
+        
+        // Add minor ticks (every 5 years)
+        for (let year = 1805; year <= 2025; year += 25) {
+          for (let offset = 0; offset < 20; offset += 5) {
+            const y = year + offset;
+            if (y % 25 === 0) continue;
+            
+            const normalized = (new Date(y, 0, 1).getTime() - this.minDate) / this.timeRange;
+            const yPos = this.marginTop + normalized * (this.height - this.marginTop - this.marginBottom);
+            
+            const tick = document.createElement('div');
+            tick.className = 'time-axis-tick';
+            tick.style.top = yPos + 'px';
+            axis.appendChild(tick);
+          }
+        }
       },
 
       mapDateToY(timestamp) {
@@ -1851,16 +1874,10 @@
       },
 
       updateUI() {
-        // Range
-        const topDate = this.mapYToDate(this.marginTop);
-        const bottomDate = this.mapYToDate(this.height - this.marginBottom);
-        document.getElementById('rangeStart').textContent = new Date(topDate).getFullYear();
-        document.getElementById('rangeEnd').textContent = new Date(bottomDate).getFullYear();
-        
         // Zoom Level
         document.getElementById('zoomLevel').textContent = Math.round(this.zoom * 100) + '%';
         
-        // Decade Links
+        // Decade Links (Bottom)
         const centerYear = new Date(this.mapYToDate(this.height / 2)).getFullYear();
         document.querySelectorAll('.decade-link').forEach(link => {
           const decade = parseInt(link.dataset.decade);
@@ -1931,15 +1948,7 @@
         document.getElementById('btn-back').addEventListener('click', () => HistoryManager.back());
         document.getElementById('btn-forward').addEventListener('click', () => HistoryManager.forward());
 
-        // Year Jump
-        document.getElementById('yearInput').addEventListener('keydown', e => {
-          if (e.key === 'Enter') {
-            this.jumpToYear(e.target.value);
-            e.target.value = '';
-          }
-        });
-
-        // Decades
+        // Decades (Bottom)
         document.querySelectorAll('.decade-link').forEach(link => {
           link.addEventListener('click', () => this.jumpToYear(parseInt(link.dataset.decade) + 25));
         });
@@ -2160,7 +2169,7 @@
             case '?': e.preventDefault(); document.getElementById('helpModal').classList.toggle('visible'); break;
           }
         });
-        
+
         window.addEventListener('hashchange', () => HistoryManager.loadFromHash());
       }
     };
@@ -2179,4 +2188,4 @@
     });
   </script>
 </body>
-</html>
+</html>"
