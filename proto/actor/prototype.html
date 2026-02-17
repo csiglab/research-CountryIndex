@@ -51,6 +51,7 @@
       --type-public: #3D6B99;
       --type-private: #9A4C4C;
       --type-hybrid: #4C7A6B;
+      --present-color: rgba(220, 38, 38, 0.6);
     }
 
     .dark {
@@ -64,6 +65,7 @@
       --type-public: #60A5FA;
       --type-private: #F87171;
       --type-hybrid: #34D399;
+      --present-color: rgba(248, 113, 113, 0.7);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -298,13 +300,7 @@
     .type-hero { font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; }
     @media (min-width: 768px) { .type-hero { font-size: 4rem; } }
     .type-section { font-size: 1.5rem; line-height: 1.3; }
-    .type-card-title { font-size: 1.25rem; line-height: 1.3; }
-    .type-data-value { font-size: 2rem; line-height: 1; }
-    .type-body { font-size: 1rem; line-height: 1.75; letter-spacing: 0.01em; }
-    .type-secondary { font-size: 0.875rem; line-height: 1.5; }
-    .type-label { font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.05em; }
-    .type-meta { font-size: 0.7rem; line-height: 1.4; }
-
+    
     /* Hero Grid */
     .hero-grid {
       display: grid;
@@ -334,28 +330,8 @@
     .delay-3 { transition-delay: 0.45s; }
     .delay-4 { transition-delay: 0.6s; }
 
-    #statsGrid .data-card {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: 
-        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
-        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-        border-color 0.3s ease, 
-        box-shadow 0.3s ease;
-    }
-    
-    .reveal.visible #statsGrid .data-card {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    
-    .reveal.visible #statsGrid .data-card:nth-child(1) { transition-delay: 0.05s; }
-    .reveal.visible #statsGrid .data-card:nth-child(2) { transition-delay: 0.15s; }
-    .reveal.visible #statsGrid .data-card:nth-child(3) { transition-delay: 0.25s; }
-    .reveal.visible #statsGrid .data-card:nth-child(4) { transition-delay: 0.35s; }
-
     @media (prefers-reduced-motion: reduce) {
-      .reveal, #statsGrid .data-card { opacity: 1; transform: none; transition: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
     }
 
     /* Definition Lead */
@@ -368,7 +344,6 @@
       position: relative;
       hyphens: auto;
       max-width: 52rem;
-      transition: color 0.3s ease;
     }
     
     .definition-lead::before {
@@ -379,7 +354,6 @@
       bottom: 0.25rem;
       width: 2px;
       background: var(--border);
-      transition: background 0.3s ease, height 0.3s ease;
     }
 
     .definition-lead:hover::before {
@@ -422,10 +396,6 @@
       text-align: center;
       transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
       position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.75rem;
     }
     
     .data-card::before { 
@@ -446,8 +416,6 @@
       box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06); 
       border-color: var(--accent); 
     }
-    .data-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .data-card:hover .type-data-value { color: var(--accent); }
 
     /* Canvas Wrapper */
     .canvas-wrapper {
@@ -501,7 +469,7 @@
       position: absolute;
       bottom: 0;
       left: 0;
-      right: 0;
+      right: 56px;
       height: 60px;
       background: linear-gradient(to top, var(--card), transparent);
       pointer-events: none;
@@ -522,10 +490,6 @@
       position: absolute;
       top: 24px;
       left: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
       pointer-events: none;
       user-select: none;
     }
@@ -573,34 +537,80 @@
       background: var(--card);
     }
 
-    .year-input::placeholder {
-      color: var(--muted);
+    /* P2: Actor Search */
+    .search-container {
+      position: absolute;
+      top: 60px;
+      left: 20px;
+      z-index: 10;
+      pointer-events: auto;
+      width: 240px;
     }
 
-    .year-jump-btn {
-      width: 32px;
+    .search-input {
+      width: 100%;
       height: 32px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--card) 70%, transparent);
-      backdrop-filter: blur(8px);
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .year-jump-btn:hover {
+      padding: 0 10px;
+      font-family: 'Inter', sans-serif;
+      font-size: 13px;
+      color: var(--fg);
       background: var(--card);
-      color: var(--accent);
-      border-color: var(--accent);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
     }
 
-    .year-jump-btn svg {
-      width: 14px;
-      height: 14px;
+    .search-input:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.08);
+    }
+
+    .search-input::placeholder {
+      color: var(--muted);
+    }
+
+    .search-results {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      margin-top: 4px;
+      max-height: 200px;
+      overflow-y: auto;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
+      display: none;
+    }
+
+    .search-results.visible {
+      display: block;
+    }
+
+    .search-result-item {
+      padding: 8px 12px;
+      cursor: pointer;
+      font-size: 13px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s ease;
+    }
+
+    .search-result-item:last-child {
+      border-bottom: none;
+    }
+
+    .search-result-item:hover {
+      background: var(--bg-subtle);
+    }
+
+    .search-result-item .result-type {
+      font-size: 10px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-left: 8px;
     }
 
     /* Visible Range Indicator */
@@ -656,7 +666,6 @@
       border-radius: 3px;
       cursor: pointer;
       transition: all 0.2s ease;
-      white-space: nowrap;
     }
 
     .decade-link:hover {
@@ -664,18 +673,9 @@
       color: var(--fg);
     }
 
-    .decade-link:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 1px;
-    }
-
     .decade-link.active {
       background: var(--accent);
       color: white;
-    }
-
-    .dark .decade-link.active {
-      color: var(--bg);
     }
 
     .decade-separator {
@@ -685,9 +685,7 @@
       margin: 0 2px;
     }
 
-    /* ========================================
-       OPTION 3: NAVIGATION STRIP (RIGHT)
-       ======================================== */
+    /* Navigation Strip */
     .nav-strip {
       position: absolute;
       right: 0;
@@ -702,7 +700,6 @@
       flex-direction: column;
     }
 
-    /* Controls Section (Top) */
     .nav-strip-controls {
       display: flex;
       flex-direction: column;
@@ -734,21 +731,14 @@
       box-shadow: 0 2px 8px rgba(0,0,0,0.08);
     }
 
-    .nav-strip-btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
+    .nav-strip-btn:disabled {
+      opacity: 0.4;
+      cursor: not-allowed;
     }
 
     .nav-strip-btn svg {
       width: 16px;
       height: 16px;
-    }
-
-    .nav-strip-btn.help-btn {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1rem;
-      font-weight: 600;
-      font-style: italic;
     }
 
     .nav-strip-divider {
@@ -758,7 +748,17 @@
       margin: 4px 0;
     }
 
-    /* Minimap Section (Bottom/Fill) */
+    /* P3: Zoom Level Display */
+    .zoom-level-display {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--muted);
+      text-align: center;
+      margin-top: -2px;
+      margin-bottom: 4px;
+    }
+
+    /* Minimap */
     .nav-strip-minimap {
       flex: 1;
       position: relative;
@@ -789,10 +789,6 @@
       background: color-mix(in srgb, var(--accent) 30%, transparent);
     }
 
-    .minimap-viewport.dragging {
-      background: color-mix(in srgb, var(--accent) 40%, transparent);
-    }
-
     .minimap-label {
       position: absolute;
       left: 4px;
@@ -813,7 +809,6 @@
       inset: 0;
       background: rgba(0, 0, 0, 0.4);
       backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
       opacity: 0;
       visibility: hidden;
       transition: opacity 0.3s ease, visibility 0.3s ease;
@@ -826,10 +821,6 @@
     .help-modal-backdrop.visible {
       opacity: 1;
       visibility: visible;
-    }
-
-    .dark .help-modal-backdrop {
-      background: rgba(0, 0, 0, 0.6);
     }
 
     .help-modal {
@@ -851,10 +842,6 @@
       opacity: 1;
     }
 
-    .dark .help-modal {
-      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.4);
-    }
-
     .help-modal-header {
       padding: 1.25rem 1.5rem;
       border-bottom: 1px solid var(--border);
@@ -868,7 +855,6 @@
       font-size: 1.25rem;
       font-weight: 500;
       color: var(--fg);
-      letter-spacing: 0.02em;
     }
 
     .help-modal-close {
@@ -888,26 +874,15 @@
     .help-modal-close:hover {
       background: var(--bg-subtle);
       color: var(--fg);
-      border-color: var(--accent);
-    }
-
-    .help-modal-close:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
     }
 
     .help-modal-body {
       padding: 1rem 1.5rem 1.5rem;
       overflow-y: auto;
-      max-height: calc(85vh - 80px);
     }
 
     .help-section {
       margin-bottom: 1.25rem;
-    }
-
-    .help-section:last-child {
-      margin-bottom: 0;
     }
 
     .help-section-title {
@@ -928,16 +903,6 @@
       padding: 0.5rem 0;
     }
 
-    .help-row:not(:last-child) {
-      border-bottom: 1px dashed color-mix(in srgb, var(--border) 50%, transparent);
-    }
-
-    .help-keys {
-      display: flex;
-      align-items: center;
-      gap: 0.25rem;
-    }
-
     .key {
       display: inline-flex;
       align-items: center;
@@ -952,11 +917,6 @@
       background: var(--bg-subtle);
       border: 1px solid var(--border);
       border-radius: 4px;
-      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-    }
-
-    .key.wide {
-      min-width: 36px;
     }
 
     .help-action {
@@ -970,9 +930,6 @@
       background: var(--bg-subtle);
       border-top: 1px solid var(--border);
       text-align: center;
-    }
-
-    .help-footer-text {
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.625rem;
       text-transform: uppercase;
@@ -980,14 +937,112 @@
       color: var(--muted);
     }
 
-    .help-footer-text kbd {
-      display: inline-block;
-      padding: 2px 5px;
-      background: var(--card);
+    /* P2: Event Type Filters */
+    .filter-tags-container {
+      margin-top: 0.5rem;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      justify-content: center;
+    }
+
+    .filter-tag {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.25rem 0.5rem;
+      background: var(--bg-subtle);
       border: 1px solid var(--border);
       border-radius: 3px;
-      font-size: 9px;
-      margin: 0 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-tag:hover {
+      border-color: var(--accent);
+      color: var(--fg);
+    }
+
+    .filter-tag.active {
+      background: var(--fg);
+      color: var(--bg);
+      border-color: var(--fg);
+    }
+
+    /* Sidebar */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(2px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 55;
+    }
+
+    .sidebar-backdrop.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .detail-sidebar {
+      position: fixed;
+      right: 0;
+      top: 0;
+      height: 100vh;
+      width: 360px;
+      background: var(--card);
+      border-left: 1px solid var(--border);
+      transform: translateX(100%);
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      z-index: 60;
+      overflow-y: auto;
+      box-shadow: -8px 0 32px rgba(0,0,0,0.08);
+    }
+    .detail-sidebar.open { transform: translateX(0); }
+
+    .sidebar-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+    }
+    .sidebar-close:hover { color: var(--fg); border-color: var(--accent); }
+
+    .event-item {
+      position: relative;
+      padding-left: 1.5rem;
+    }
+    .event-item::before {
+      content: '';
+      position: absolute;
+      left: -5px;
+      top: 6px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card);
+      transition: all 0.2s ease;
+    }
+    .event-item:hover::before {
+      background: var(--accent);
+      border-color: var(--accent);
     }
 
     /* Tooltip */
@@ -1007,114 +1062,12 @@
 
     .tooltip-box.visible { opacity: 1; }
 
-    /* Sidebar Backdrop */
-    .sidebar-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.3);
-      backdrop-filter: blur(2px);
-      -webkit-backdrop-filter: blur(2px);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-      z-index: 55;
-    }
-
-    .sidebar-backdrop.visible {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .dark .sidebar-backdrop {
-      background: rgba(0, 0, 0, 0.5);
-    }
-
-    .detail-sidebar {
-      position: fixed;
-      right: 0;
-      top: 0;
-      height: 100vh;
-      width: 360px;
-      background: var(--card);
-      border-left: 1px solid var(--border);
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-      z-index: 60;
-      overflow-y: auto;
-      box-shadow: -8px 0 32px rgba(0,0,0,0.08);
-    }
-    .detail-sidebar.open { transform: translateX(0); }
-    .dark .detail-sidebar { box-shadow: -8px 0 32px rgba(0,0,0,0.3); }
-
-    .sidebar-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      width: 40px;
-      height: 40px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--muted);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-    }
-    .sidebar-close:hover { color: var(--fg); border-color: var(--accent); background: var(--bg-subtle); }
-    .sidebar-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-    .event-item {
-      position: relative;
-      padding-left: 1.5rem;
-      transition: all 0.2s ease;
-    }
-    .event-item::before {
-      content: '';
-      position: absolute;
-      left: -5px;
-      top: 6px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--card);
-      transition: all 0.2s ease;
-    }
-    .event-item:hover::before {
-      background: var(--accent);
-      border-color: var(--accent);
-    }
-
     /* Footer */
     .site-footer { background: var(--card); border-top: 1px solid var(--border); }
-    .footer-identity { color: var(--fg); }
     .footer-muted { color: var(--muted); }
-    .footer-label { color: var(--muted); opacity: 0.7; }
-    
-    .footer-link { 
-      color: var(--muted); 
-      transition: color 0.2s ease; 
-      position: relative;
-      text-decoration: none;
-    }
-    .footer-link::after {
-      content: '';
-      position: absolute;
-      bottom: -2px;
-      left: 0;
-      width: 0;
-      height: 1px;
-      background: var(--accent);
-      transition: width 0.3s ease;
-    }
+    .footer-link { color: var(--muted); text-decoration: none; transition: color 0.2s ease; }
     .footer-link:hover { color: var(--fg); }
-    .footer-link:hover::after { width: 100%; }
-    .footer-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .footer-value { color: var(--fg); opacity: 0.85; }
-    .footer-divider { border-color: var(--border); }
-
+    
     .scroll-progress {
       position: fixed;
       top: 0;
@@ -1124,7 +1077,6 @@
       z-index: 101;
       transform-origin: left;
       transform: scaleX(0);
-      transition: transform 0.1s linear;
     }
 
     #loading-indicator {
@@ -1148,7 +1100,7 @@
       gap: 0.75rem;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.5rem;
       padding: 0 1rem;
     }
 
@@ -1163,69 +1115,10 @@
       font-family: 'Inter', sans-serif;
       font-size: 0.6875rem;
       font-weight: 500;
-      letter-spacing: 0.02em;
       text-transform: uppercase;
       color: var(--muted);
       cursor: pointer;
       transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-      user-select: none;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
-      position: relative;
-    }
-
-    .viz-tag-shape {
-      width: 10px;
-      height: 10px;
-      flex-shrink: 0;
-    }
-
-    .viz-tag-shape.circle {
-      border-radius: 50%;
-      border: 2px solid currentColor;
-      background: transparent;
-    }
-
-    .viz-tag-shape.square {
-      border-radius: 1px;
-      border: 2px solid currentColor;
-      background: transparent;
-    }
-
-    .viz-tag-shape.diamond {
-      width: 9px;
-      height: 9px;
-      transform: rotate(45deg);
-      border: 2px solid currentColor;
-      background: transparent;
-    }
-
-    .viz-tag::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 2px;
-      background: var(--accent);
-      transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-      border-radius: 1px;
-    }
-
-    .viz-tag:hover:not(.disabled) {
-      color: var(--fg);
-      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
-      background-color: color-mix(in srgb, var(--accent) 6%, var(--card));
-      box-shadow: 0 2px 8px rgba(61, 107, 153, 0.08);
-    }
-
-    .viz-tag:hover::after {
-      width: calc(100% - 1rem);
-    }
-
-    .dark .viz-tag:hover {
-      background-color: color-mix(in srgb, var(--accent) 10%, var(--card));
-      box-shadow: 0 2px 8px rgba(147, 197, 253, 0.12);
     }
 
     .viz-tag.active {
@@ -1233,33 +1126,13 @@
       color: var(--fg);
     }
 
-    .viz-tag.disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
     .viz-tag[data-type="public"] { --type-color: var(--type-public); }
     .viz-tag[data-type="hybrid"] { --type-color: var(--type-hybrid); }
     .viz-tag[data-type="private"] { --type-color: var(--type-private); }
 
-    .viz-tag.active[data-type="public"] { 
-      border-color: var(--type-public); 
-      color: var(--type-public); 
-    }
-    .viz-tag.active[data-type="hybrid"] { 
-      border-color: var(--type-hybrid); 
-      color: var(--type-hybrid); 
-    }
-    .viz-tag.active[data-type="private"] { 
-      border-color: var(--type-private); 
-      color: var(--type-private); 
-    }
-
-    .viz-tag-count {
-      font-size: 0.65rem;
-      opacity: 0.7;
-      margin-left: 0.25rem;
-    }
+    .viz-tag.active[data-type="public"] { border-color: var(--type-public); color: var(--type-public); }
+    .viz-tag.active[data-type="hybrid"] { border-color: var(--type-hybrid); color: var(--type-hybrid); }
+    .viz-tag.active[data-type="private"] { border-color: var(--type-private); color: var(--type-private); }
   </style>
 </head>
 <body>
@@ -1308,7 +1181,7 @@
     <header class="hero-grid reveal">
       <div class="identity-column">
         <h1 class="font-display type-hero text-fg mb-1">Actor Space</h1>
-        <p class="font-mono text-sm tracking-wide text-muted mb-4" id="nativeName" style="letter-spacing: 0.08em; text-transform: uppercase;">New Zealand, 1800–Present</p>
+        <p class="font-mono text-sm tracking-wide text-muted mb-4" style="letter-spacing: 0.08em; text-transform: uppercase;">New Zealand, 1800–Present</p>
       </div>
 
       <div class="context-column">
@@ -1327,24 +1200,24 @@
     <section class="reveal delay-2" id="statsSection">
       <div class="text-center mb-6">
         <h2 class="font-display type-section text-fg mb-1">Registry Statistics</h2>
-        <p class="font-body type-secondary text-muted">Overview of Data Points</p>
+        <p class="font-body text-sm text-muted">Overview of Data Points</p>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="statsGrid">
         <div class="data-card" tabindex="0">
-          <div class="font-display type-data-value font-medium text-fg" id="stat-actors">—</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Total Actors</div>
+          <div class="font-display text-2xl font-medium text-fg" id="stat-actors">—</div>
+          <div class="font-body text-xs text-muted uppercase font-medium">Total Actors</div>
         </div>
         <div class="data-card" tabindex="0">
-          <div class="font-display type-data-value font-medium text-fg" id="stat-events">—</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Total Events</div>
+          <div class="font-display text-2xl font-medium text-fg" id="stat-events">—</div>
+          <div class="font-body text-xs text-muted uppercase font-medium">Total Events</div>
         </div>
         <div class="data-card" tabindex="0">
-          <div class="font-display type-data-value font-medium text-fg" id="stat-range">—</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Year Span</div>
+          <div class="font-display text-2xl font-medium text-fg" id="stat-range">—</div>
+          <div class="font-body text-xs text-muted uppercase font-medium">Year Span</div>
         </div>
          <div class="data-card" tabindex="0">
-          <div class="font-display type-data-value font-medium text-fg" id="stat-decades">—</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Decades</div>
+          <div class="font-display text-2xl font-medium text-fg" id="stat-decades">—</div>
+          <div class="font-body text-xs text-muted uppercase font-medium">Decades</div>
         </div>
       </div>
     </section>
@@ -1357,28 +1230,35 @@
     <section class="reveal delay-4">
       <div class="mb-6 text-center">
         <h2 class="font-display type-section text-fg mb-2">Temporal Visualization</h2>
-        <p class="font-body type-secondary text-muted max-w-2xl mx-auto mb-6">
+        <p class="font-body text-sm text-muted max-w-2xl mx-auto mb-6">
           Explore the chronological evolution of New Zealand's institutional actors. The vertical axis represents time flowing downward from 1800 to present. 
-          Each point marks a significant event—founding, transformation, or dissolution—organized by actor type across three governance categories.
+          Each point marks a significant event—founding, transformation, or dissolution—organized by actor type.
         </p>
         
         <!-- Interactive Legend Tags -->
         <div class="viz-controls-bar" id="vizLegend">
           <button class="viz-tag active" data-type="public" aria-pressed="true">
-            <span class="viz-tag-shape circle"></span>
             <span>Public</span>
             <span class="viz-tag-count" id="count-public">0</span>
           </button>
           <button class="viz-tag active" data-type="hybrid" aria-pressed="true">
-            <span class="viz-tag-shape diamond"></span>
             <span>Hybrid</span>
             <span class="viz-tag-count" id="count-hybrid">0</span>
           </button>
           <button class="viz-tag active" data-type="private" aria-pressed="true">
-            <span class="viz-tag-shape square"></span>
             <span>Private</span>
             <span class="viz-tag-count" id="count-private">0</span>
           </button>
+        </div>
+
+        <!-- P2: Event Type Filters -->
+        <div class="filter-tags-container" id="eventFilters">
+          <button class="filter-tag active" data-filter="birth">Birth</button>
+          <button class="filter-tag active" data-filter="death">Death</button>
+          <button class="filter-tag active" data-filter="milestone">Milestone</button>
+          <button class="filter-tag active" data-filter="transformation">Transformation</button>
+          <button class="filter-tag active" data-filter="expansion">Expansion</button>
+          <button class="filter-tag active" data-filter="other">Other</button>
         </div>
       </div>
 
@@ -1391,18 +1271,13 @@
 
           <!-- Year Quick-Jump -->
           <div class="year-jump-panel">
-            <input type="number" 
-                   id="yearInput" 
-                   class="year-input" 
-                   placeholder="Year" 
-                   min="1800" 
-                   max="2027" 
-                   aria-label="Jump to year">
-            <button id="btn-jump-year" class="year-jump-btn" aria-label="Go to year">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M5 12h14M12 5l7 7-7 7"/>
-              </svg>
-            </button>
+            <input type="number" id="yearInput" class="year-input" placeholder="Year" min="1800" max="2027" aria-label="Jump to year">
+          </div>
+
+          <!-- P2: Actor Search -->
+          <div class="search-container">
+            <input type="text" id="actorSearch" class="search-input" placeholder="Search actors..." aria-label="Search actors">
+            <div class="search-results" id="searchResults"></div>
           </div>
 
           <!-- Visible Range -->
@@ -1423,34 +1298,45 @@
             <button class="decade-link" data-decade="2000">2000</button>
           </div>
 
-          <!-- OPTION 3: Navigation Strip (Right) -->
+          <!-- Navigation Strip -->
           <div class="nav-strip" id="navStrip">
-            <!-- Controls Section -->
             <div class="nav-strip-controls">
+              <!-- P2: History -->
+              <button id="btn-back" class="nav-strip-btn" aria-label="Go back" title="Go Back" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button id="btn-forward" class="nav-strip-btn" aria-label="Go forward" title="Go Forward" disabled>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
+              
+              <div class="nav-strip-divider"></div>
+
+              <!-- Zoom -->
               <button id="btn-zoom-in" class="nav-strip-btn" aria-label="Zoom In" title="Zoom In (+)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
               </button>
               <button id="btn-zoom-out" class="nav-strip-btn" aria-label="Zoom Out" title="Zoom Out (-)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
               </button>
-              <button id="btn-fit-all" class="nav-strip-btn" aria-label="Fit all data" title="Fit All Events (F)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-                </svg>
+              
+              <!-- P3: Zoom Level -->
+              <div class="zoom-level-display" id="zoomLevel">100%</div>
+
+              <button id="btn-fit-all" class="nav-strip-btn" aria-label="Fit all data" title="Fit All (F)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
               </button>
-              <button id="btn-reset" class="nav-strip-btn" aria-label="Reset View" title="Reset View (Esc)">
+              <button id="btn-reset" class="nav-strip-btn" aria-label="Reset View" title="Reset (Esc)">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h5M20 20v-5h-5"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L4 4m16 16l-1.64-1.64A9 9 0 0 1 3.51 15"/></svg>
               </button>
-              <div class="nav-strip-divider"></div>
-              <button id="btn-help" class="nav-strip-btn help-btn" aria-label="Keyboard shortcuts" title="Help (?)">?</button>
+              <button id="btn-help" class="nav-strip-btn" aria-label="Help" title="Help (?)" style="font-family: 'Cormorant Garamond', serif; font-weight: 600; font-style: italic;">?</button>
             </div>
             
-            <!-- Minimap Section -->
             <div class="nav-strip-minimap" id="minimapArea">
               <canvas id="minimap-canvas" class="minimap-canvas"></canvas>
               <div class="minimap-viewport" id="minimapViewport"></div>
-              <div class="minimap-label top" id="minimapTop">2027</div>
-              <div class="minimap-label bottom" id="minimapBottom">1800</div>
+              <!-- CORRECTED LABELS -->
+              <div class="minimap-label top" id="minimapTop">1800</div>
+              <div class="minimap-label bottom" id="minimapBottom">2027</div>
             </div>
           </div>
           
@@ -1458,10 +1344,10 @@
           
           <!-- Tooltip -->
           <div id="tooltip" class="tooltip-box">
-            <div class="font-meta type-meta uppercase tracking-wider text-muted mb-1" id="tt-type">Event Type</div>
+            <div class="font-mono text-xs uppercase tracking-wider text-muted mb-1" id="tt-type">Event Type</div>
             <div class="font-display text-lg font-medium text-fg" id="tt-actor">Actor Name</div>
-            <div class="font-body type-secondary text-muted italic mt-1" id="tt-desc">Description</div>
-            <div class="mt-3 pt-2 border-t border-[var(--border)] font-meta type-meta text-muted" id="tt-date">Date</div>
+            <div class="font-body text-sm text-muted italic mt-1" id="tt-desc">Description</div>
+            <div class="mt-3 pt-2 border-t border-[var(--border)] font-mono text-xs text-muted" id="tt-date">Date</div>
           </div>
         </div>
       </div>
@@ -1483,25 +1369,25 @@
     <div class="p-6 pt-14">
       <div class="border-b border-[var(--border)] pb-4 mb-6">
         <h2 class="font-display text-2xl font-medium leading-tight text-fg" id="sb-name">Actor Name</h2>
-        <p class="font-meta type-meta uppercase tracking-wider text-muted mt-2" id="sb-role">Role</p>
+        <p class="font-mono text-xs uppercase tracking-wider text-muted mt-2" id="sb-role">Role</p>
       </div>
       
       <div class="space-y-5">
         <div>
-          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-1">Type</h3>
-          <p id="sb-type" class="font-body type-secondary font-medium text-fg">Public</p>
+          <h3 class="font-mono text-xs uppercase tracking-wider text-muted mb-1">Type</h3>
+          <p id="sb-type" class="font-body text-sm font-medium text-fg">Public</p>
         </div>
         <div>
-          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-1">Region</h3>
-          <p id="sb-region" class="font-body type-secondary text-fg">Region</p>
+          <h3 class="font-mono text-xs uppercase tracking-wider text-muted mb-1">Region</h3>
+          <p id="sb-region" class="font-body text-sm text-fg">Region</p>
         </div>
         <div>
-          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-1">Description</h3>
-          <p id="sb-desc" class="font-body type-secondary text-muted italic leading-relaxed">Description text...</p>
+          <h3 class="font-mono text-xs uppercase tracking-wider text-muted mb-1">Description</h3>
+          <p id="sb-desc" class="font-body text-sm text-muted italic leading-relaxed">Description text...</p>
         </div>
         
         <div class="pt-4 border-t border-[var(--border)]">
-          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-4">Event Sequence</h3>
+          <h3 class="font-mono text-xs uppercase tracking-wider text-muted mb-4">Event Sequence</h3>
           <div id="sb-timeline" class="space-y-5 pl-4 border-l-2 border-[var(--border)]">
           </div>
         </div>
@@ -1510,10 +1396,10 @@
   </aside>
 
   <!-- Help Modal -->
-  <div class="help-modal-backdrop" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
+  <div class="help-modal-backdrop" id="helpModal" role="dialog" aria-modal="true">
     <div class="help-modal">
       <div class="help-modal-header">
-        <h2 class="help-modal-title" id="helpModalTitle">Keyboard Shortcuts</h2>
+        <h2 class="help-modal-title">Keyboard Shortcuts</h2>
         <button class="help-modal-close" id="helpModalClose" aria-label="Close">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M18 6L6 18M6 6l12 12"/>
@@ -1524,290 +1410,109 @@
       <div class="help-modal-body">
         <div class="help-section">
           <div class="help-section-title">Navigation</div>
-          <div class="help-row">
-            <span class="help-action">Pan up</span>
-            <div class="help-keys"><span class="key">↑</span></div>
-          </div>
-          <div class="help-row">
-            <span class="help-action">Pan down</span>
-            <div class="help-keys"><span class="key">↓</span></div>
-          </div>
-          <div class="help-row">
-            <span class="help-action">Go to start (1800)</span>
-            <div class="help-keys"><span class="key wide">Home</span></div>
-          </div>
-          <div class="help-row">
-            <span class="help-action">Go to end (2027)</span>
-            <div class="help-keys"><span class="key wide">End</span></div>
-          </div>
+          <div class="help-row"><span class="help-action">Pan up/down</span><span class="key">↑</span><span class="key">↓</span></div>
+          <div class="help-row"><span class="help-action">Go to start/end</span><span class="key">Home</span><span class="key">End</span></div>
+          <div class="help-row"><span class="help-action">History back/forward</span><span class="key">[</span><span class="key">]</span></div>
         </div>
 
         <div class="help-section">
           <div class="help-section-title">Zoom</div>
-          <div class="help-row">
-            <span class="help-action">Zoom in</span>
-            <div class="help-keys"><span class="key">+</span></div>
-          </div>
-          <div class="help-row">
-            <span class="help-action">Zoom out</span>
-            <div class="help-keys"><span class="key">−</span></div>
-          </div>
-          <div class="help-row">
-            <span class="help-action">Fit all events</span>
-            <div class="help-keys"><span class="key">F</span></div>
-          </div>
+          <div class="help-row"><span class="help-action">Zoom in/out</span><span class="key">+</span><span class="key">-</span></div>
+          <div class="help-row"><span class="help-action">Fit all events</span><span class="key">F</span></div>
         </div>
 
         <div class="help-section">
           <div class="help-section-title">General</div>
-          <div class="help-row">
-            <span class="help-action">Reset view</span>
-            <div class="help-keys"><span class="key wide">Esc</span></div>
-          </div>
-          <div class="help-row">
-            <span class="help-action">Show this help</span>
-            <div class="help-keys"><span class="key">?</span></div>
-          </div>
-        </div>
-
-        <div class="help-section">
-          <div class="help-section-title">Mouse & Gestures</div>
-          <div class="help-row">
-            <span class="help-action">Pan timeline</span>
-            <span class="help-action" style="font-style: italic;">Click + Drag</span>
-          </div>
-          <div class="help-row">
-            <span class="help-action">Zoom</span>
-            <span class="help-action" style="font-style: italic;">Scroll wheel</span>
-          </div>
-          <div class="help-row">
-            <span class="help-action">Select actor</span>
-            <span class="help-action" style="font-style: italic;">Click event</span>
-          </div>
+          <div class="help-row"><span class="help-action">Reset view</span><span class="key">Esc</span></div>
+          <div class="help-row"><span class="help-action">Help</span><span class="key">?</span></div>
         </div>
       </div>
       
       <div class="help-footer">
-        <span class="help-footer-text">Press <kbd>?</kbd> anytime to toggle this panel</span>
+        Press <kbd style="background: var(--card); padding: 2px 5px; border-radius: 3px; border: 1px solid var(--border); font-size: 9px;">?</kbd> anytime to toggle this panel
       </div>
     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="site-footer py-12 md:py-16 px-6">
-    <div class="max-w-4xl mx-auto">
-      <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-6 mb-10">
-        <div class="md:col-span-5 text-center md:text-left">
-          <p class="font-display text-lg font-medium tracking-[0.2em] uppercase mb-2 footer-identity">Arbitristae</p>
-          <p class="font-body text-xs leading-relaxed max-w-xs mx-auto md:mx-0 footer-muted">
-            A research laboratory dedicated to the structured classification and comparative analysis of sovereign systems.
-          </p>
-        </div>
-        
-        <div class="md:col-span-3 text-center md:text-left">
-          <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Navigation</p>
-          <nav id="footerLinks" class="flex flex-col items-center md:items-start gap-1.5" aria-label="Footer navigation">
-            <a href="index.html" class="footer-link font-body text-xs">Index Gentium</a>
-            <a href="#" class="footer-link font-body text-xs">Actor Registry</a>
-            <a href="#" class="footer-link font-body text-xs">Methodology</a>
-            <a href="#" class="footer-link font-body text-xs">Documentation</a>
-          </nav>
-        </div>
-
-        <div class="md:col-span-4 text-center md:text-right">
-          <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Status</p>
-          <div class="space-y-1.5 font-mono text-xs" id="footerMetadata">
-            <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Entity Count</span>
-              <span class="font-medium tabular-nums footer-value" id="footerEntityCount">10</span>
-            </div>
-            <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Temporal Range</span>
-              <span class="font-medium footer-value" id="footerRange">1800–2025</span>
-            </div>
-            <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Last Revised</span>
-              <span class="footer-value">MMXXV</span>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div class="pt-6 border-t flex flex-col sm:flex-row items-center justify-between gap-3 footer-divider">
-        <p class="font-mono text-[10px] tracking-[0.15em] uppercase footer-muted">Index Gentium <span>v1.2</span></p>
-        <p class="font-display text-sm italic tracking-wide footer-muted">Ordo ex comparatione.</p>
-      </div>
+  <footer class="site-footer py-12 px-6">
+    <div class="max-w-4xl mx-auto text-center">
+      <p class="font-mono text-xs tracking-[0.15em] uppercase text-muted">Index Gentium <span>v1.3</span></p>
     </div>
   </footer>
 
   <!-- Fallback Data -->
   <script type="application/json" id="fallback-data">
   [
-    {
-      "id": "a1", "name": "New Zealand Company", "type": "private", "role": "Colonization", "regionOfActivity": "Wellington",
-      "description": "Private British company instrumental in the early colonization of New Zealand.",
-      "events": [
-        { "date": "1839-05-02", "category": "birth", "description": "Established in London" },
-        { "date": "1841-01-22", "category": "expansion", "description": "Wellington settlement founded" },
-        { "date": "1858-12-31", "category": "death", "description": "Dissolution" }
-      ]
-    },
-    {
-      "id": "a2", "name": "Parliament of New Zealand", "type": "public", "role": "Legislature", "regionOfActivity": "Wellington",
-      "description": "The supreme legislative body of New Zealand, established in 1854.",
-      "events": [
-        { "date": "1854-05-24", "category": "birth", "description": "First parliament convened" },
-        { "date": "1893-09-19", "category": "milestone", "description": "Women's suffrage granted" },
-        { "date": "1996-10-12", "category": "transformation", "description": "MMP system adopted" }
-      ]
-    },
-    {
-      "id": "a3", "name": "University of Otago", "type": "public", "role": "Education", "regionOfActivity": "Dunedin",
-      "description": "Oldest university in New Zealand, founded in 1869.",
-      "events": [
-        { "date": "1869-01-01", "category": "birth", "description": "Founded by ordinance" },
-        { "date": "1871-07-05", "category": "expansion", "description": "First classes began" }
-      ]
-    },
-    {
-      "id": "a4", "name": "Bank of New Zealand", "type": "private", "role": "Finance", "regionOfActivity": "Auckland",
-      "description": "One of New Zealand's largest banks, established in 1861.",
-      "events": [
-        { "date": "1861-07-29", "category": "birth", "description": "Founded in Auckland" },
-        { "date": "1945-01-01", "category": "milestone", "description": "Largest bank by assets" }
-      ]
-    },
-    {
-      "id": "a5", "name": "New Zealand Railways", "type": "public", "role": "Transport", "regionOfActivity": "National",
-      "description": "National railway system, undergoing multiple ownership transformations.",
-      "events": [
-        { "date": "1863-12-31", "category": "birth", "description": "First railway opened" },
-        { "date": "1993-07-01", "category": "privatization", "description": "Privatized" },
-        { "date": "2008-07-01", "category": "renationalization", "description": "Renationalized" }
-      ]
-    },
-    {
-      "id": "a6", "name": "Air New Zealand", "type": "hybrid", "role": "Aviation", "regionOfActivity": "National",
-      "description": "National airline carrier with mixed ownership history.",
-      "events": [
-        { "date": "1940-04-26", "category": "birth", "description": "TEAL formed" },
-        { "date": "1989-01-01", "category": "privatization", "description": "Privatized" },
-        { "date": "2001-09-13", "category": "renationalization", "description": "Government bailout" }
-      ]
-    },
-    {
-      "id": "a7", "name": "Waitangi Tribunal", "type": "public", "role": "Justice", "regionOfActivity": "National",
-      "description": "Permanent commission of inquiry on Treaty of Waitangi claims.",
-      "events": [
-        { "date": "1975-10-10", "category": "birth", "description": "Established by Act of Parliament" }
-      ]
-    },
-    {
-      "id": "a8", "name": "Fonterra", "type": "hybrid", "role": "Dairy", "regionOfActivity": "National",
-      "description": "New Zealand's largest dairy cooperative.",
-      "events": [
-        { "date": "2001-10-16", "category": "birth", "description": "Merger formed Fonterra" }
-      ]
-    },
-    {
-      "id": "a9", "name": "Maori King Movement", "type": "hybrid", "role": "Cultural Leadership", "regionOfActivity": "Waikato",
-      "description": "Maori sovereignty movement establishing a symbolic kingship.",
-      "events": [
-        { "date": "1858-06-02", "category": "birth", "description": "First Maori King installed" },
-        { "date": "1863-07-12", "category": "conflict", "description": "Waikato War invasion" }
-      ]
-    },
-    {
-      "id": "a10", "name": "Reserve Bank of NZ", "type": "public", "role": "Finance", "regionOfActivity": "National",
-      "description": "Central bank of New Zealand, established 1934.",
-      "events": [
-        { "date": "1934-08-01", "category": "birth", "description": "Established as central bank" }
-      ]
-    }
+    {"id": "a1", "name": "New Zealand Company", "type": "private", "role": "Colonization", "regionOfActivity": "Wellington", "description": "Private British company instrumental in the early colonization of New Zealand.", "events": [{"date": "1839-05-02", "category": "birth", "description": "Established in London"}, {"date": "1841-01-22", "category": "expansion", "description": "Wellington settlement founded"}, {"date": "1858-12-31", "category": "death", "description": "Dissolution"}]},
+    {"id": "a2", "name": "Parliament of New Zealand", "type": "public", "role": "Legislature", "regionOfActivity": "Wellington", "description": "The supreme legislative body of New Zealand, established in 1854.", "events": [{"date": "1854-05-24", "category": "birth", "description": "First parliament convened"}, {"date": "1893-09-19", "category": "milestone", "description": "Women's suffrage granted"}, {"date": "1996-10-12", "category": "transformation", "description": "MMP system adopted"}]},
+    {"id": "a3", "name": "University of Otago", "type": "public", "role": "Education", "regionOfActivity": "Dunedin", "description": "Oldest university in New Zealand, founded in 1869.", "events": [{"date": "1869-01-01", "category": "birth", "description": "Founded by ordinance"}, {"date": "1871-07-05", "category": "expansion", "description": "First classes began"}]},
+    {"id": "a4", "name": "Bank of New Zealand", "type": "private", "role": "Finance", "regionOfActivity": "Auckland", "description": "One of New Zealand's largest banks, established in 1861.", "events": [{"date": "1861-07-29", "category": "birth", "description": "Founded in Auckland"}, {"date": "1945-01-01", "category": "milestone", "description": "Largest bank by assets"}]},
+    {"id": "a5", "name": "New Zealand Railways", "type": "public", "role": "Transport", "regionOfActivity": "National", "description": "National railway system.", "events": [{"date": "1863-12-31", "category": "birth", "description": "First railway opened"}, {"date": "1993-07-01", "category": "transformation", "description": "Privatized"}, {"date": "2008-07-01", "category": "transformation", "description": "Renationalized"}]},
+    {"id": "a6", "name": "Air New Zealand", "type": "hybrid", "role": "Aviation", "regionOfActivity": "National", "description": "National airline carrier.", "events": [{"date": "1940-04-26", "category": "birth", "description": "TEAL formed"}, {"date": "2001-09-13", "category": "transformation", "description": "Government bailout"}]},
+    {"id": "a7", "name": "Waitangi Tribunal", "type": "public", "role": "Justice", "regionOfActivity": "National", "description": "Permanent commission of inquiry.", "events": [{"date": "1975-10-10", "category": "birth", "description": "Established by Act of Parliament"}]},
+    {"id": "a8", "name": "Fonterra", "type": "hybrid", "role": "Dairy", "regionOfActivity": "National", "description": "New Zealand's largest dairy cooperative.", "events": [{"date": "2001-10-16", "category": "birth", "description": "Merger formed Fonterra"}]},
+    {"id": "a9", "name": "Maori King Movement", "type": "hybrid", "role": "Cultural Leadership", "regionOfActivity": "Waikato", "description": "Maori sovereignty movement.", "events": [{"date": "1858-06-02", "category": "birth", "description": "First Maori King installed"}, {"date": "1863-07-12", "category": "milestone", "description": "Waikato War invasion"}]},
+    {"id": "a10", "name": "Reserve Bank of NZ", "type": "public", "role": "Finance", "regionOfActivity": "National", "description": "Central bank of New Zealand.", "events": [{"date": "1934-08-01", "category": "birth", "description": "Established as central bank"}]}
   ]
   </script>
 
   <script>
     // ==========================================
-    // THEME & SCROLL LOGIC
+    // THEME & SCROLL
     // ==========================================
     const themeToggle = document.getElementById('themeToggle');
     const scrollProgress = document.getElementById('scrollProgress');
     const projectHeader = document.getElementById('projectHeader');
-    const htmlElement = document.documentElement;
 
     themeToggle.addEventListener('click', () => {
-      const newTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
-      htmlElement.classList.toggle('dark', newTheme === 'dark');
-      localStorage.setItem('index-gentium-theme', newTheme);
+      document.documentElement.classList.toggle('dark');
+      localStorage.setItem('index-gentium-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
     });
 
-    function updateScrollProgress() {
-      const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? scrollTop / docHeight : 0;
+    window.addEventListener('scroll', () => {
+      const progress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) || 0;
       scrollProgress.style.transform = `scaleX(${progress})`;
-      if (scrollTop > 10) projectHeader.classList.add('scrolled');
-      else projectHeader.classList.remove('scrolled');
-    }
-
-    window.addEventListener('scroll', updateScrollProgress, { passive: true });
-    updateScrollProgress();
+      projectHeader.classList.toggle('scrolled', window.scrollY > 10);
+    }, { passive: true });
 
     // ==========================================
     // REVEAL ANIMATIONS
     // ==========================================
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce').matches;
-    
-    function initReveal() {
-      const reveals = document.querySelectorAll('.reveal');
+    document.querySelectorAll('.reveal').forEach(el => {
       if (prefersReducedMotion) {
-        reveals.forEach(el => el.classList.add('visible'));
+        el.classList.add('visible');
         return;
       }
-      
       const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-            observer.unobserve(entry.target);
-          }
-        });
-      }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-      
-      reveals.forEach(el => observer.observe(el));
-    }
+        if (entries[0].isIntersecting) {
+          el.classList.add('visible');
+          observer.unobserve(el);
+        }
+      }, { threshold: 0.1 });
+      observer.observe(el);
+    });
 
     // ==========================================
-    // DATA MODULE
+    // DATA MODEL
     // ==========================================
     const DataModel = {
       actors: [],
       events: [],
       selectedActor: null,
       activeTypes: { public: true, private: true, hybrid: true },
-      stats: {
-        totalActors: 0,
-        totalEvents: 0,
-        startYear: 2027,
-        endYear: 1800,
-        counts: { public: 0, private: 0, hybrid: 0 }
-      },
-
+      activeFilters: new Set(['birth', 'death', 'milestone', 'transformation', 'expansion', 'other']),
+      
       async init() {
         const loadingEl = document.getElementById('loading-indicator');
-        
         try {
           const response = await fetch('actor-set.json');
-          if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-          
-          const rawData = await response.json();
-          this.processData(rawData);
+          if (!response.ok) throw new Error('Network response was not ok');
+          this.processData(await response.json());
         } catch (error) {
           console.warn("Using fallback data.", error);
-          const fallbackText = document.getElementById('fallback-data').textContent;
-          const rawData = JSON.parse(fallbackText);
-          this.processData(rawData);
+          this.processData(JSON.parse(document.getElementById('fallback-data').textContent));
         } finally {
           loadingEl.style.opacity = '0';
           setTimeout(() => loadingEl.style.display = 'none', 500);
@@ -1816,27 +1521,25 @@
 
       processData(rawData) {
         this.actors = rawData.actors || (Array.isArray(rawData) ? rawData : []);
-        
         this.events = [];
+        
         this.actors.forEach(actor => {
-          if (actor.type === 'public') this.stats.counts.public++;
-          else if (actor.type === 'private') this.stats.counts.private++;
-          else if (actor.type === 'hybrid') this.stats.counts.hybrid++;
-
           if (!actor.events) return;
-
           actor.events.forEach(ev => {
             const eventDate = new Date(ev.date);
             if (isNaN(eventDate.getTime())) return;
 
-            if (eventDate.getFullYear() < this.stats.startYear) this.stats.startYear = eventDate.getFullYear();
-            if (eventDate.getFullYear() > this.stats.endYear) this.stats.endYear = eventDate.getFullYear();
+            let category = (ev.category || 'other').toLowerCase();
+            // Normalize category names
+            if (!['birth', 'death', 'milestone', 'transformation', 'expansion'].includes(category)) {
+              category = 'other';
+            }
 
             this.events.push({
               x: 0, y: 0,
               date: eventDate,
-              type: ev.category || ev.type || 'general',
-              desc: ev.description || ev.desc || '',
+              type: category,
+              desc: ev.description || '',
               actorId: actor.id,
               actorName: actor.name,
               actorType: actor.type
@@ -1845,45 +1548,101 @@
         });
 
         this.events.sort((a, b) => a.date - b.date);
+        this.updateStats();
+      },
+
+      updateStats() {
+        document.getElementById('stat-actors').textContent = this.actors.length;
+        document.getElementById('stat-events').textContent = this.events.length;
+        document.getElementById('stat-range').textContent = '227'; // Approx span
+        document.getElementById('stat-decades').textContent = '23';
         
-        this.stats.totalActors = this.actors.length;
-        this.stats.totalEvents = this.events.length;
-        
-        this.updateStatsUI();
-        this.updateLegendCounts();
+        document.getElementById('count-public').textContent = this.actors.filter(a => a.type === 'public').length;
+        document.getElementById('count-hybrid').textContent = this.actors.filter(a => a.type === 'hybrid').length;
+        document.getElementById('count-private').textContent = this.actors.filter(a => a.type === 'private').length;
       },
 
-      updateStatsUI() {
-        document.getElementById('stat-actors').textContent = this.stats.totalActors;
-        document.getElementById('stat-events').textContent = this.stats.totalEvents;
-        
-        const span = this.stats.endYear - this.stats.startYear;
-        document.getElementById('stat-range').textContent = span;
-        document.getElementById('stat-decades').textContent = Math.ceil(span / 10);
-
-        document.getElementById('footerEntityCount').textContent = this.stats.totalActors;
-        document.getElementById('footerRange').textContent = `${this.stats.startYear}–${this.stats.endYear}`;
+      getEvents() {
+        return this.events.filter(ev => 
+          this.activeTypes[ev.actorType] && this.activeFilters.has(ev.type)
+        );
       },
-
-      updateLegendCounts() {
-        document.getElementById('count-public').textContent = this.stats.counts.public;
-        document.getElementById('count-hybrid').textContent = this.stats.counts.hybrid;
-        document.getElementById('count-private').textContent = this.stats.counts.private;
-      },
-
-      toggleType(type) {
-        this.activeTypes[type] = !this.activeTypes[type];
-        return this.activeTypes[type];
-      },
-
-      getEvents() { 
-        return this.events.filter(ev => this.activeTypes[ev.actorType]); 
-      },
+      
       getActorById(id) { return this.actors.find(a => a.id === id); }
     };
 
     // ==========================================
-    // RENDERER MODULE
+    // P2 & P3: HISTORY & BOOKMARKS
+    // ==========================================
+    const HistoryManager = {
+      stack: [],
+      pointer: -1,
+      isNavigating: false,
+      
+      pushState(zoom, panY) {
+        if (this.isNavigating) return;
+        
+        const state = { zoom, panY };
+        // If we pushed new state after going back, truncate forward history
+        if (this.pointer < this.stack.length - 1) {
+          this.stack = this.stack.slice(0, this.pointer + 1);
+        }
+        this.stack.push(state);
+        this.pointer++;
+        this.updateButtons();
+        this.updateHash(state);
+      },
+      
+      back() {
+        if (this.pointer > 0) {
+          this.pointer--;
+          this.applyState();
+        }
+      },
+      
+      forward() {
+        if (this.pointer < this.stack.length - 1) {
+          this.pointer++;
+          this.applyState();
+        }
+      },
+      
+      applyState() {
+        this.isNavigating = true;
+        const state = this.stack[this.pointer];
+        Renderer.zoom = state.zoom;
+        Renderer.panY = state.panY;
+        this.updateButtons();
+        this.updateHash(state);
+        setTimeout(() => { this.isNavigating = false; }, 100);
+      },
+      
+      updateButtons() {
+        document.getElementById('btn-back').disabled = this.pointer <= 0;
+        document.getElementById('btn-forward').disabled = this.pointer >= this.stack.length - 1;
+      },
+      
+      updateHash(state) {
+        const z = Math.round(state.zoom * 100);
+        const p = Math.round(state.panY);
+        history.replaceState(null, '', `#z=${z}&p=${p}`);
+      },
+      
+      loadFromHash() {
+        const hash = window.location.hash.slice(1);
+        const params = new URLSearchParams(hash);
+        if (params.has('z') && params.has('p')) {
+          Renderer.zoom = parseInt(params.get('z')) / 100;
+          Renderer.panY = parseInt(params.get('p'));
+          this.pushState(Renderer.zoom, Renderer.panY);
+          return true;
+        }
+        return false;
+      }
+    };
+
+    // ==========================================
+    // RENDERER
     // ==========================================
     const Renderer = {
       canvas: null,
@@ -1900,6 +1659,7 @@
       minDate: new Date('1800-01-01').getTime(),
       maxDate: new Date('2027-12-31').getTime(),
       timeRange: 0,
+      today: new Date().getTime(),
       
       marginTop: 60,
       marginBottom: 60,
@@ -1939,7 +1699,6 @@
         this.canvas.style.width = this.width + 'px';
         this.canvas.style.height = this.height + 'px';
 
-        // Minimap resize - based on the minimap area container
         const minimapRect = this.minimapArea.getBoundingClientRect();
         const minimapHeight = minimapRect.height;
         
@@ -1954,12 +1713,7 @@
 
       updateHTMLLabels() {
         const container = document.getElementById('canvasLabels');
-        container.innerHTML = '';
-        
-        const timeFlow = document.createElement('div');
-        timeFlow.className = 'canvas-time-flow';
-        timeFlow.innerHTML = `<span class="time-flow-text">Time Flow</span>`;
-        container.appendChild(timeFlow);
+        container.innerHTML = '<div class="canvas-time-flow"><span class="time-flow-text">Time Flow</span></div>';
       },
 
       mapDateToY(timestamp) {
@@ -1977,11 +1731,9 @@
       mapTypeToX(type) {
         const W = this.width - this.marginLeft - this.marginRight;
         const colW = W / 3;
-        
         if (type === 'public') return this.marginLeft + colW * 0.5;
         if (type === 'hybrid') return this.marginLeft + colW * 1.5;
-        if (type === 'private') return this.marginLeft + colW * 2.5;
-        return this.marginLeft + W / 2;
+        return this.marginLeft + colW * 2.5;
       },
 
       getColors() {
@@ -1994,24 +1746,17 @@
           border: isDark ? '#334155' : '#D8E1EB',
           public: isDark ? '#60A5FA' : '#3D6B99',
           private: isDark ? '#F87171' : '#9A4C4C',
-          hybrid: isDark ? '#34D399' : '#4C7A6B'
+          hybrid: isDark ? '#34D399' : '#4C7A6B',
+          present: isDark ? 'rgba(248, 113, 113, 0.7)' : 'rgba(220, 38, 38, 0.6)'
         };
       },
 
       drawShape(ctx, x, y, type, size) {
         ctx.beginPath();
-        
-        if (type === 'public') {
-          ctx.arc(x, y, size, 0, Math.PI * 2);
-        } else if (type === 'hybrid') {
-          ctx.moveTo(x, y - size);
-          ctx.lineTo(x + size, y);
-          ctx.lineTo(x, y + size);
-          ctx.lineTo(x - size, y);
-          ctx.closePath();
-        } else {
-          ctx.rect(x - size, y - size, size * 2, size * 2);
-        }
+        if (type === 'public') ctx.arc(x, y, size, 0, Math.PI * 2);
+        else if (type === 'hybrid') {
+          ctx.moveTo(x, y - size); ctx.lineTo(x + size, y); ctx.lineTo(x, y + size); ctx.lineTo(x - size, y); ctx.closePath();
+        } else ctx.rect(x - size, y - size, size * 2, size * 2);
       },
 
       draw() {
@@ -2025,83 +1770,44 @@
         const W = this.width - this.marginLeft - this.marginRight;
         const colW = W / 3;
 
+        // Column backgrounds
         ctx.fillStyle = colors.bgSubtle;
         ctx.globalAlpha = 0.3;
         ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
         ctx.fillRect(this.marginLeft + colW * 2, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
         ctx.globalAlpha = 1.0;
 
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        ctx.setLineDash([4, 4]);
-        
-        for(let i = 1; i < 3; i++) {
+        // P3: Present Day Marker
+        const presentY = this.mapDateToY(this.today);
+        if (presentY > this.marginTop && presentY < this.height - this.marginBottom) {
+          ctx.strokeStyle = colors.present;
+          ctx.lineWidth = 1;
+          ctx.setLineDash([4, 4]);
           ctx.beginPath();
-          ctx.moveTo(this.marginLeft + colW * i, this.marginTop);
-          ctx.lineTo(this.marginLeft + colW * i, this.height - this.marginBottom);
+          ctx.moveTo(this.marginLeft, presentY);
+          ctx.lineTo(this.width - this.marginRight, presentY);
           ctx.stroke();
-        }
-        ctx.setLineDash([]);
-
-        ctx.fillStyle = colors.muted;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        
-        const H = this.height - this.marginTop - this.marginBottom;
-        const ms_per_pixel = this.timeRange / (H * this.zoom);
-        const targetStepMs = ms_per_pixel * 60;
-        
-        const year = 31536000000;
-        let step = 25 * year;
-        
-        if (targetStepMs < 2 * year) step = 1 * year;
-        else if (targetStepMs < 6 * year) step = 5 * year;
-        else if (targetStepMs < 15 * year) step = 10 * year;
-
-        const topDate = this.mapYToDate(this.marginTop);
-        const bottomDate = this.mapYToDate(this.height - this.marginBottom);
-
-        let current = new Date(topDate);
-        current.setMonth(0, 1);
-        current.setHours(0, 0, 0, 0);
-        
-        const startYear = 1800;
-        let years = Math.floor((current.getFullYear() - startYear) / (step / year));
-        current.setFullYear(startYear + years * (step / year));
-
-        while (current.getTime() < bottomDate) {
-          if (current.getTime() > topDate) {
-            const y = this.mapDateToY(current.getTime());
-            
-            ctx.strokeStyle = colors.border;
-            ctx.globalAlpha = 0.3;
-            ctx.beginPath();
-            ctx.moveTo(this.marginLeft, y);
-            ctx.lineTo(this.width - this.marginRight, y);
-            ctx.stroke();
-            ctx.globalAlpha = 1.0;
-            
-            ctx.fillStyle = colors.muted;
-            ctx.fillText(current.getFullYear().toString(), this.marginLeft - 10, y + 4);
-          }
-          current = new Date(current.getTime() + step);
+          ctx.setLineDash([]);
+          
+          ctx.fillStyle = colors.present;
+          ctx.font = '10px "JetBrains Mono", monospace';
+          ctx.textAlign = 'left';
+          ctx.fillText('PRESENT', this.marginLeft + 5, presentY - 4);
         }
 
+        // Events
         const events = DataModel.getEvents();
         const selectedId = DataModel.selectedActor ? DataModel.selectedActor.id : null;
-        let selectedPoints = [];
 
         events.forEach(ev => {
           const y = this.mapDateToY(ev.date.getTime());
-          
           if (y < this.marginTop - 10 || y > this.height - this.marginBottom + 10) return;
 
           const x = this.mapTypeToX(ev.actorType);
           const colIndex = ev.actorType === 'public' ? 0 : (ev.actorType === 'hybrid' ? 1 : 2);
           
           const hash = ev.actorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-          const spread = colW * 0.35;
-          const offsetX = ((hash % 10) / 10 - 0.5) * spread;
+          const offsetX = ((hash % 10) / 10 - 0.5) * colW * 0.35;
           
           ev.x = x + offsetX;
           ev.y = y;
@@ -2110,9 +1816,7 @@
           const radius = isSelected ? 7 : 5;
           const alpha = selectedId ? (isSelected ? 1.0 : 0.2) : 0.8;
 
-          if (ev.type === 'death') ctx.globalAlpha = alpha * 0.6;
-          else ctx.globalAlpha = alpha;
-
+          ctx.globalAlpha = alpha;
           const evColor = colIndex === 0 ? colors.public : (colIndex === 1 ? colors.hybrid : colors.private);
           ctx.fillStyle = evColor;
           
@@ -2123,46 +1827,20 @@
             ctx.strokeStyle = colors.fg;
             ctx.lineWidth = 2;
             ctx.stroke();
-            selectedPoints.push({x: ev.x, y: ev.y, date: ev.date, desc: ev.desc, type: ev.type, actorType: ev.actorType});
-          } else {
-            ctx.strokeStyle = evColor;
-            ctx.lineWidth = 1;
-            ctx.globalAlpha = alpha * 0.5;
-            ctx.stroke();
           }
-          
           ctx.globalAlpha = 1.0;
         });
 
-        if (selectedPoints.length > 1) {
-          selectedPoints.sort((a, b) => a.y - b.y);
-          
-          ctx.beginPath();
-          ctx.strokeStyle = colors.fg;
-          ctx.lineWidth = 1.5;
-          ctx.setLineDash([3, 3]);
-          
-          ctx.moveTo(selectedPoints[0].x, selectedPoints[0].y);
-          selectedPoints.forEach(p => ctx.lineTo(p.x, p.y));
-          ctx.stroke();
-          ctx.setLineDash([]);
-        }
-
         this.drawMinimap();
-        this.updateVisibleRange();
-        this.updateDecadeLinks();
+        this.updateUI();
       },
 
       drawMinimap() {
         const ctx = this.minimapCtx;
         const colors = this.getColors();
-        
         const minimapHeight = this.minimapCanvas.height / (window.devicePixelRatio || 1);
         
         ctx.clearRect(0, 0, this.minimapWidth, minimapHeight);
-        
-        ctx.fillStyle = 'transparent';
-        ctx.fillRect(0, 0, this.minimapWidth, minimapHeight);
 
         const events = DataModel.getEvents();
         const contentHeight = minimapHeight - this.marginTop - this.marginBottom;
@@ -2170,19 +1848,14 @@
         events.forEach(ev => {
           const normalized = (ev.date.getTime() - this.minDate) / this.timeRange;
           const y = this.marginTop + normalized * contentHeight;
-          
           const colIndex = ev.actorType === 'public' ? 0 : (ev.actorType === 'hybrid' ? 1 : 2);
-          const evColor = colIndex === 0 ? colors.public : (colIndex === 1 ? colors.hybrid : colors.private);
-          
-          ctx.fillStyle = evColor;
+          ctx.fillStyle = colIndex === 0 ? colors.public : (colIndex === 1 ? colors.hybrid : colors.private);
           ctx.globalAlpha = 0.6;
           ctx.beginPath();
           ctx.arc(this.minimapWidth / 2, y, 1.5, 0, Math.PI * 2);
           ctx.fill();
         });
-        
         ctx.globalAlpha = 1.0;
-
         this.updateMinimapViewport();
       },
 
@@ -2191,47 +1864,31 @@
         const minimapHeight = this.minimapCanvas.height / (window.devicePixelRatio || 1);
         const contentHeight = minimapHeight - this.marginTop - this.marginBottom;
         
-        const topY = this.marginTop;
-        const bottomY = this.height - this.marginBottom;
-        
-        const topDate = this.mapYToDate(topY);
-        const bottomDate = this.mapYToDate(bottomY);
+        const topDate = this.mapYToDate(this.marginTop);
+        const bottomDate = this.mapYToDate(this.height - this.marginBottom);
         
         const topNorm = (topDate - this.minDate) / this.timeRange;
         const bottomNorm = (bottomDate - this.minDate) / this.timeRange;
         
-        const vpTop = this.marginTop + topNorm * contentHeight;
-        const vpHeight = Math.max(10, (bottomNorm - topNorm) * contentHeight);
-        
-        viewport.style.top = vpTop + 'px';
-        viewport.style.height = vpHeight + 'px';
+        viewport.style.top = (this.marginTop + topNorm * contentHeight) + 'px';
+        viewport.style.height = Math.max(10, (bottomNorm - topNorm) * contentHeight) + 'px';
       },
 
-      updateVisibleRange() {
+      updateUI() {
+        // Range
         const topDate = this.mapYToDate(this.marginTop);
         const bottomDate = this.mapYToDate(this.height - this.marginBottom);
+        document.getElementById('rangeStart').textContent = new Date(topDate).getFullYear();
+        document.getElementById('rangeEnd').textContent = new Date(bottomDate).getFullYear();
         
-        const startYear = Math.max(1800, Math.min(2027, new Date(topDate).getFullYear()));
-        const endYear = Math.max(1800, Math.min(2027, new Date(bottomDate).getFullYear()));
+        // P3: Zoom Level
+        document.getElementById('zoomLevel').textContent = Math.round(this.zoom * 100) + '%';
         
-        document.getElementById('rangeStart').textContent = startYear;
-        document.getElementById('rangeEnd').textContent = endYear;
-      },
-
-      updateDecadeLinks() {
-        const centerDate = this.mapYToDate(this.height / 2);
-        const centerYear = new Date(centerDate).getFullYear();
-        
-        const links = document.querySelectorAll('.decade-link');
-        links.forEach(link => {
+        // Decade Links
+        const centerYear = new Date(this.mapYToDate(this.height / 2)).getFullYear();
+        document.querySelectorAll('.decade-link').forEach(link => {
           const decade = parseInt(link.dataset.decade);
-          const nextDecade = decade + 50;
-          
-          if (centerYear >= decade && centerYear < nextDecade) {
-            link.classList.add('active');
-          } else {
-            link.classList.remove('active');
-          }
+          link.classList.toggle('active', centerYear >= decade && centerYear < decade + 50);
         });
       },
 
@@ -2242,83 +1899,28 @@
     };
 
     // ==========================================
-    // HELP MODAL
-    // ==========================================
-    const HelpModal = {
-      modal: null,
-      
-      init() {
-        this.modal = document.getElementById('helpModal');
-        const closeBtn = document.getElementById('helpModalClose');
-        const helpBtn = document.getElementById('btn-help');
-        
-        helpBtn.addEventListener('click', () => this.open());
-        closeBtn.addEventListener('click', () => this.close());
-        
-        this.modal.addEventListener('click', (e) => {
-          if (e.target === this.modal) this.close();
-        });
-      },
-      
-      open() {
-        this.modal.classList.add('visible');
-        document.getElementById('helpModalClose').focus();
-      },
-      
-      close() {
-        this.modal.classList.remove('visible');
-        document.getElementById('btn-help').focus();
-      },
-      
-      toggle() {
-        if (this.modal.classList.contains('visible')) {
-          this.close();
-        } else {
-          this.open();
-        }
-      }
-    };
-
-    // ==========================================
-    // INTERACTION MODULE
+    // INTERACTION
     // ==========================================
     const Interaction = {
       hoveredEvent: null,
       minimapDragging: false,
-      minimapDragStartY: 0,
-      minimapPanStartY: 0,
       
       init() {
         const canvas = Renderer.canvas;
-        const tooltip = document.getElementById('tooltip');
-        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
-
-        const tags = document.querySelectorAll('.viz-tag');
-        tags.forEach(tag => {
-          tag.addEventListener('click', (e) => {
-            const type = tag.dataset.type;
-            const isActive = DataModel.toggleType(type);
-            tag.classList.toggle('active', isActive);
-            tag.setAttribute('aria-pressed', isActive);
-          });
-        });
-
-        canvas.setAttribute('tabindex', '0');
         
-        canvas.addEventListener('mousedown', (e) => {
+        // Dragging
+        canvas.addEventListener('mousedown', e => {
           if (e.button === 0) {
             Renderer.isDragging = true;
             Renderer.dragStartY = e.clientY;
             Renderer.panStartY = Renderer.panY;
             canvas.style.cursor = 'grabbing';
-            canvas.focus();
           }
         });
 
-        window.addEventListener('mousemove', (e) => {
+        window.addEventListener('mousemove', e => {
           if (Renderer.isDragging) {
-            const dy = e.clientY - Renderer.dragStartY;
-            Renderer.panY = Renderer.panStartY + dy;
+            Renderer.panY = Renderer.panStartY + (e.clientY - Renderer.dragStartY);
           } else if (this.minimapDragging) {
             this.handleMinimapDrag(e.clientY);
           } else {
@@ -2328,295 +1930,192 @@
         });
 
         window.addEventListener('mouseup', () => {
+          if (Renderer.isDragging) {
+            HistoryManager.pushState(Renderer.zoom, Renderer.panY);
+          }
           Renderer.isDragging = false;
           canvas.style.cursor = this.hoveredEvent ? 'pointer' : 'grab';
-          
           this.minimapDragging = false;
           document.getElementById('minimapViewport').classList.remove('dragging');
         });
 
-        canvas.addEventListener('click', (e) => {
-          const rect = canvas.getBoundingClientRect();
-          const hit = this.findEvent(e.clientX - rect.left, e.clientY - rect.top);
-          if (hit) {
-            this.selectActor(hit.actorId);
-          }
-        });
-
-        canvas.addEventListener('wheel', (e) => {
+        // Canvas Wheel
+        canvas.addEventListener('wheel', e => {
           e.preventDefault();
-          const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-          this.applyZoom(zoomFactor, e.offsetY);
+          this.applyZoom(e.deltaY > 0 ? 0.9 : 1.1, e.offsetY);
         }, { passive: false });
 
-        document.getElementById('btn-zoom-in').addEventListener('click', () => {
-          this.applyZoom(1.3, Renderer.height / 2);
-        });
+        // Buttons
+        document.getElementById('btn-zoom-in').addEventListener('click', () => this.applyZoom(1.3, Renderer.height / 2));
+        document.getElementById('btn-zoom-out').addEventListener('click', () => this.applyZoom(0.7, Renderer.height / 2));
+        document.getElementById('btn-fit-all').addEventListener('click', () => this.fitAllData());
+        document.getElementById('btn-reset').addEventListener('click', () => this.resetView());
         
-        document.getElementById('btn-zoom-out').addEventListener('click', () => {
-          this.applyZoom(0.7, Renderer.height / 2);
-        });
+        // P2: History
+        document.getElementById('btn-back').addEventListener('click', () => HistoryManager.back());
+        document.getElementById('btn-forward').addEventListener('click', () => HistoryManager.forward());
 
-        document.getElementById('btn-fit-all').addEventListener('click', () => {
-          this.fitAllData();
-        });
-        
-        document.getElementById('btn-reset').addEventListener('click', () => {
-          Renderer.zoom = 1;
-          Renderer.panY = 0;
-        });
-
-        const yearInput = document.getElementById('yearInput');
-        yearInput.addEventListener('keydown', (e) => {
+        // Year Jump
+        document.getElementById('yearInput').addEventListener('keydown', e => {
           if (e.key === 'Enter') {
-            this.jumpToYear(yearInput.value);
-            e.preventDefault();
+            this.jumpToYear(e.target.value);
+            e.target.value = '';
           }
         });
-        
-        document.getElementById('btn-jump-year').addEventListener('click', () => {
-          this.jumpToYear(yearInput.value);
+
+        // Decades
+        document.querySelectorAll('.decade-link').forEach(link => {
+          link.addEventListener('click', () => this.jumpToYear(parseInt(link.dataset.decade) + 25));
         });
 
-        const decadeLinks = document.querySelectorAll('.decade-link');
-        decadeLinks.forEach(link => {
-          link.addEventListener('click', () => {
-            const decade = parseInt(link.dataset.decade);
-            this.jumpToDecade(decade);
+        // Type Filters
+        document.querySelectorAll('.viz-tag').forEach(tag => {
+          tag.addEventListener('click', () => {
+            DataModel.activeTypes[tag.dataset.type] = !DataModel.activeTypes[tag.dataset.type];
+            tag.classList.toggle('active');
           });
         });
 
+        // P2: Event Filters
+        document.querySelectorAll('.filter-tag').forEach(tag => {
+          tag.addEventListener('click', () => {
+            const filter = tag.dataset.filter;
+            if (DataModel.activeFilters.has(filter)) DataModel.activeFilters.delete(filter);
+            else DataModel.activeFilters.add(filter);
+            tag.classList.toggle('active');
+          });
+        });
+
+        // P2: Actor Search
+        const searchInput = document.getElementById('actorSearch');
+        const searchResults = document.getElementById('searchResults');
+        
+        searchInput.addEventListener('input', e => {
+          const query = e.target.value.toLowerCase();
+          if (!query) { searchResults.classList.remove('visible'); return; }
+          
+          const matches = DataModel.actors.filter(a => a.name.toLowerCase().includes(query));
+          searchResults.innerHTML = matches.slice(0, 5).map(a => 
+            `<div class="search-result-item" data-id="${a.id}">${a.name}<span class="result-type">${a.type}</span></div>`
+          ).join('');
+          searchResults.classList.add('visible');
+        });
+        
+        searchResults.addEventListener('click', e => {
+          const item = e.target.closest('.search-result-item');
+          if (item) {
+            const actor = DataModel.getActorById(item.dataset.id);
+            if (actor && actor.events.length > 0) {
+              // Jump to first event
+              this.jumpToYear(new Date(actor.events[0].date).getFullYear());
+              this.selectActor(actor.id);
+            }
+            searchInput.value = '';
+            searchResults.classList.remove('visible');
+          }
+        });
+
+        // Minimap
         this.initMinimapInteraction();
 
-        sidebarBackdrop.addEventListener('click', () => {
-          this.deselectActor();
-        });
+        // Sidebar
+        document.getElementById('sidebarBackdrop').addEventListener('click', () => this.deselectActor());
+        document.getElementById('close-sidebar').addEventListener('click', () => this.deselectActor());
 
-        document.getElementById('close-sidebar').addEventListener('click', () => {
-          this.deselectActor();
-        });
-
-        this.initKeyboardNavigation();
+        // Keyboard
+        this.initKeyboard();
         
-        HelpModal.init();
-      },
-
-      initKeyboardNavigation() {
-        document.addEventListener('keydown', (e) => {
-          if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
-            return;
-          }
-
-          const panAmount = 50;
-          const zoomFactor = 1.2;
-          
-          switch(e.key) {
-            case 'ArrowUp':
-              e.preventDefault();
-              Renderer.panY += panAmount;
-              break;
-              
-            case 'ArrowDown':
-              e.preventDefault();
-              Renderer.panY -= panAmount;
-              break;
-              
-            case '+':
-            case '=':
-              e.preventDefault();
-              this.applyZoom(zoomFactor, Renderer.height / 2);
-              break;
-              
-            case '-':
-            case '_':
-              e.preventDefault();
-              this.applyZoom(1 / zoomFactor, Renderer.height / 2);
-              break;
-              
-            case 'Home':
-              e.preventDefault();
-              this.jumpToStart();
-              break;
-              
-            case 'End':
-              e.preventDefault();
-              this.jumpToEnd();
-              break;
-              
-            case 'Escape':
-              if (document.getElementById('helpModal').classList.contains('visible')) {
-                HelpModal.close();
-              } else if (document.getElementById('sidebar').classList.contains('open')) {
-                this.deselectActor();
-              } else {
-                e.preventDefault();
-                this.resetView();
-              }
-              break;
-              
-            case 'f':
-            case 'F':
-              e.preventDefault();
-              this.fitAllData();
-              break;
-              
-            case '?':
-              e.preventDefault();
-              HelpModal.toggle();
-              break;
-          }
+        // Help
+        document.getElementById('btn-help').addEventListener('click', () => document.getElementById('helpModal').classList.add('visible'));
+        document.getElementById('helpModalClose').addEventListener('click', () => document.getElementById('helpModal').classList.remove('visible'));
+        document.getElementById('helpModal').addEventListener('click', e => {
+          if (e.target.id === 'helpModal') e.target.classList.remove('visible');
         });
       },
 
-      jumpToStart() {
-        const targetDate = Renderer.minDate;
-        const centerY = Renderer.height / 2;
-        const currentYForDate = Renderer.mapDateToY(targetDate);
-        Renderer.panY = centerY - currentYForDate + Renderer.panY;
+      applyZoom(factor, pos) {
+        const date = Renderer.mapYToDate(pos);
+        Renderer.zoom = Math.max(0.5, Math.min(20, Renderer.zoom * factor));
+        Renderer.panY += pos - Renderer.mapDateToY(date);
+        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
       },
 
-      jumpToEnd() {
-        const targetDate = Renderer.maxDate;
-        const centerY = Renderer.height / 2;
-        const currentYForDate = Renderer.mapDateToY(targetDate);
-        Renderer.panY = centerY - currentYForDate + Renderer.panY;
+      fitAllData() {
+        const events = DataModel.getEvents();
+        if (!events.length) return;
+        let minT = Math.min(...events.map(e => e.date.getTime()));
+        let maxT = Math.max(...events.map(e => e.date.getTime()));
+        const pad = Renderer.timeRange * 0.05;
+        minT -= pad; maxT += pad;
+        
+        const H = Renderer.height - Renderer.marginTop - Renderer.marginBottom;
+        Renderer.zoom = Math.min(20, Renderer.timeRange / (maxT - minT) * 0.9);
+        Renderer.panY = (Renderer.marginTop + H/2) - Renderer.mapDateToY((minT + maxT)/2);
+        
+        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
       },
 
       resetView() {
         Renderer.zoom = 1;
         Renderer.panY = 0;
+        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
       },
 
-      jumpToDecade(decade) {
-        const targetYear = decade + 25;
-        this.jumpToYear(targetYear);
-      },
-
-      applyZoom(zoomFactor, centerPosY) {
-        const dateAtCenter = Renderer.mapYToDate(centerPosY);
-        
-        Renderer.zoom *= zoomFactor;
-        Renderer.zoom = Math.max(0.5, Math.min(Renderer.zoom, 20));
-        
-        const newYForDate = Renderer.mapDateToY(dateAtCenter);
-        Renderer.panY += (centerPosY - newYForDate);
-      },
-
-      fitAllData() {
-        const events = DataModel.getEvents();
-        if (events.length === 0) return;
-        
-        let minTime = Renderer.maxDate;
-        let maxTime = Renderer.minDate;
-        
-        events.forEach(ev => {
-          if (ev.date.getTime() < minTime) minTime = ev.date.getTime();
-          if (ev.date.getTime() > maxTime) maxTime = ev.date.getTime();
-        });
-        
-        const padding = Renderer.timeRange * 0.05;
-        minTime -= padding;
-        maxTime += padding;
-        
-        const dateRange = maxTime - minTime;
-        const H = Renderer.height - Renderer.marginTop - Renderer.marginBottom;
-        const requiredZoom = Renderer.timeRange / dateRange;
-        
-        Renderer.zoom = Math.min(requiredZoom * 0.9, 20);
-        
-        const middleTime = (minTime + maxTime) / 2;
-        const middleY = Renderer.mapDateToY(middleTime);
-        const targetY = Renderer.marginTop + H / 2;
-        
-        Renderer.panY = targetY - middleY + Renderer.panY;
-      },
-
-      jumpToYear(yearStr) {
-        const year = parseInt(yearStr);
-        if (isNaN(year) || year < 1800 || year > 2027) return;
-        
-        const targetDate = new Date(year, 5, 15).getTime();
-        const centerY = Renderer.height / 2;
-        const currentYForDate = Renderer.mapDateToY(targetDate);
-        
-        Renderer.panY = centerY - currentYForDate + Renderer.panY;
-        
-        document.getElementById('yearInput').value = '';
+      jumpToYear(y) {
+        const year = parseInt(y);
+        if (isNaN(year)) return;
+        const target = new Date(year, 5, 15).getTime();
+        const center = Renderer.height / 2;
+        Renderer.panY = center - Renderer.mapDateToY(target);
+        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
       },
 
       initMinimapInteraction() {
-        const minimapCanvas = Renderer.minimapCanvas;
-        const viewport = document.getElementById('minimapViewport');
+        const mm = Renderer.minimapCanvas;
+        const vp = document.getElementById('minimapViewport');
         
-        minimapCanvas.addEventListener('click', (e) => {
-          if (this.minimapDragging) return;
-          
-          const rect = minimapCanvas.getBoundingClientRect();
-          const y = e.clientY - rect.top;
-          
-          this.jumpToMinimapPosition(y);
+        mm.addEventListener('click', e => {
+          const rect = mm.getBoundingClientRect();
+          const h = mm.height / (window.devicePixelRatio || 1);
+          const norm = (e.clientY - rect.top - Renderer.marginTop) / (h - Renderer.marginTop - Renderer.marginBottom);
+          Renderer.panY = Renderer.height/2 - Renderer.mapDateToY(Renderer.minDate + norm * Renderer.timeRange);
+          HistoryManager.pushState(Renderer.zoom, Renderer.panY);
         });
         
-        viewport.addEventListener('mousedown', (e) => {
+        vp.addEventListener('mousedown', e => {
           e.preventDefault();
           this.minimapDragging = true;
           this.minimapDragStartY = e.clientY;
           this.minimapPanStartY = Renderer.panY;
-          viewport.classList.add('dragging');
-        });
-        
-        viewport.addEventListener('click', (e) => {
-          e.stopPropagation();
+          vp.classList.add('dragging');
         });
       },
-
+      
       handleMinimapDrag(clientY) {
         const dy = clientY - this.minimapDragStartY;
-        const minimapHeight = Renderer.minimapCanvas.height / (window.devicePixelRatio || 1);
-        const contentHeight = minimapHeight - Renderer.marginTop - Renderer.marginBottom;
-        const H = Renderer.height - Renderer.marginTop - Renderer.marginBottom;
-        const panScale = (H * Renderer.zoom) / contentHeight;
-        
-        Renderer.panY = this.minimapPanStartY - dy * panScale;
+        const h = Renderer.minimapCanvas.height / (window.devicePixelRatio || 1);
+        const contentH = h - Renderer.marginTop - Renderer.marginBottom;
+        const scale = ((Renderer.height - Renderer.marginTop - Renderer.marginBottom) * Renderer.zoom) / contentH;
+        Renderer.panY = this.minimapPanStartY - dy * scale;
       },
 
-      jumpToMinimapPosition(y) {
-        const minimapHeight = Renderer.minimapCanvas.height / (window.devicePixelRatio || 1);
-        const contentHeight = minimapHeight - Renderer.marginTop - Renderer.marginBottom;
-        const normalized = (y - Renderer.marginTop) / contentHeight;
-        
-        const targetTime = Renderer.minDate + normalized * Renderer.timeRange;
-        const centerY = Renderer.height / 2;
-        const currentYForDate = Renderer.mapDateToY(targetTime);
-        
-        Renderer.panY = centerY - currentYForDate + Renderer.panY;
-      },
-
-      handleHover(canvasX, canvasY, clientX, clientY) {
-        const hit = this.findEvent(canvasX, canvasY);
+      handleHover(x, y, cx, cy) {
+        const hit = this.findEvent(x, y);
         const tooltip = document.getElementById('tooltip');
-        const canvas = Renderer.canvas;
-
+        Renderer.canvas.style.cursor = hit ? 'pointer' : 'grab';
         this.hoveredEvent = hit;
-        canvas.style.cursor = hit ? 'pointer' : 'grab';
 
         if (hit) {
-          let left = clientX + 15;
-          let top = clientY + 15;
-          
-          if (left + 280 > window.innerWidth) left = clientX - 295;
-          if (top + 150 > window.innerHeight) top = clientY - 165;
-          
-          tooltip.style.left = left + 'px';
-          tooltip.style.top = top + 'px';
+          let l = cx + 15, t = cy + 15;
+          if (l + 280 > window.innerWidth) l = cx - 295;
+          if (t + 150 > window.innerHeight) t = cy - 165;
+          tooltip.style.left = l + 'px';
+          tooltip.style.top = t + 'px';
           tooltip.classList.add('visible');
-          
           document.getElementById('tt-type').textContent = hit.type.toUpperCase();
           document.getElementById('tt-actor').textContent = hit.actorName;
           document.getElementById('tt-desc').textContent = hit.desc;
-          document.getElementById('tt-date').textContent = hit.date.toLocaleDateString(undefined, {
-            year: 'numeric', month: 'short', day: 'numeric'
-          });
+          document.getElementById('tt-date').textContent = hit.date.toLocaleDateString();
         } else {
           tooltip.classList.remove('visible');
         }
@@ -2624,81 +2123,85 @@
 
       findEvent(mx, my) {
         const events = DataModel.getEvents();
-        const hitRadius = 20;
-        let closest = null;
-        let closestDist = hitRadius * hitRadius;
-        
-        for (let i = events.length - 1; i >= 0; i--) {
-          const ev = events[i];
-          const dx = ev.x - mx;
-          const dy = ev.y - my;
-          const dist = dx * dx + dy * dy;
-          
-          if (dist < closestDist) {
-            closestDist = dist;
-            closest = ev;
-          }
-        }
+        let closest = null, minD = 400; // 20px radius
+        events.forEach(ev => {
+          const d = (ev.x - mx)**2 + (ev.y - my)**2;
+          if (d < minD) { minD = d; closest = ev; }
+        });
         return closest;
       },
 
       selectActor(id) {
         const actor = DataModel.getActorById(id);
         DataModel.selectedActor = actor;
-        
-        const sb = document.getElementById('sidebar');
-        const backdrop = document.getElementById('sidebarBackdrop');
-        
-        sb.classList.add('open');
-        backdrop.classList.add('visible');
+        document.getElementById('sidebar').classList.add('open');
+        document.getElementById('sidebarBackdrop').classList.add('visible');
         
         document.getElementById('sb-name').textContent = actor.name;
         document.getElementById('sb-role').textContent = actor.role;
-        
-        const typeDisplay = actor.type.charAt(0).toUpperCase() + actor.type.slice(1);
-        document.getElementById('sb-type').textContent = typeDisplay;
-        
-        document.getElementById('sb-region').textContent = actor.regionOfActivity || actor.region || 'Unknown';
-        document.getElementById('sb-desc').textContent = actor.description || 'No description available.';
+        document.getElementById('sb-type').textContent = actor.type.charAt(0).toUpperCase() + actor.type.slice(1);
+        document.getElementById('sb-region').textContent = actor.regionOfActivity || 'Unknown';
+        document.getElementById('sb-desc').textContent = actor.description || 'No description.';
         
         const tl = document.getElementById('sb-timeline');
-        tl.innerHTML = '';
-
-        const sorted = [...actor.events].sort((a, b) => new Date(a.date) - new Date(b.date));
-        
-        sorted.forEach(ev => {
-          const div = document.createElement('div');
-          div.className = 'event-item';
-
-          div.innerHTML = `
-            <div class="font-meta type-meta text-muted mb-1">${new Date(ev.date).toLocaleDateString()}</div>
-            <div class="font-body text-sm font-medium text-fg capitalize">${ev.category || ev.type || 'Event'}</div>
-            <div class="font-body type-secondary text-muted leading-snug">${ev.description || ev.desc || ''}</div>
-          `;
-          tl.appendChild(div);
-        });
-
-        Renderer.draw();
+        tl.innerHTML = [...actor.events].sort((a,b) => new Date(a.date) - new Date(b.date)).map(ev => `
+          <div class="event-item">
+            <div class="font-mono text-xs text-muted mb-1">${new Date(ev.date).toLocaleDateString()}</div>
+            <div class="font-body text-sm font-medium text-fg capitalize">${ev.category || 'Event'}</div>
+            <div class="font-body text-sm text-muted">${ev.description || ''}</div>
+          </div>
+        `).join('');
       },
 
       deselectActor() {
         DataModel.selectedActor = null;
         document.getElementById('sidebar').classList.remove('open');
         document.getElementById('sidebarBackdrop').classList.remove('visible');
-        Renderer.draw();
+      },
+      
+      initKeyboard() {
+        document.addEventListener('keydown', e => {
+          if (e.target.tagName === 'INPUT') return;
+          
+          switch(e.key) {
+            case 'ArrowUp': e.preventDefault(); Renderer.panY += 50; break;
+            case 'ArrowDown': e.preventDefault(); Renderer.panY -= 50; break;
+            case '+': case '=': e.preventDefault(); this.applyZoom(1.2, Renderer.height/2); break;
+            case '-': e.preventDefault(); this.applyZoom(0.8, Renderer.height/2); break;
+            case '[': e.preventDefault(); HistoryManager.back(); break;
+            case ']': e.preventDefault(); HistoryManager.forward(); break;
+            case 'Home': e.preventDefault(); this.jumpToYear(1800); break;
+            case 'End': e.preventDefault(); this.jumpToYear(2025); break;
+            case 'Escape': 
+              if (document.getElementById('helpModal').classList.contains('visible')) {
+                document.getElementById('helpModal').classList.remove('visible');
+              } else if (document.getElementById('sidebar').classList.contains('open')) {
+                this.deselectActor();
+              } else {
+                this.resetView();
+              }
+              break;
+            case 'f': case 'F': e.preventDefault(); this.fitAllData(); break;
+            case '?': e.preventDefault(); document.getElementById('helpModal').classList.toggle('visible'); break;
+          }
+        });
+        
+        window.addEventListener('hashchange', () => HistoryManager.loadFromHash());
       }
     };
 
     // ==========================================
     // BOOT
     // ==========================================
-    window.addEventListener('DOMContentLoaded', () => {
-      initReveal();
+    window.addEventListener('DOMContentLoaded', async () => {
+      await DataModel.init();
+      Renderer.init();
+      Interaction.init();
       
-      DataModel.init().then(() => {
-        Renderer.init();
-        Interaction.init();
-      });
+      // P3: Initialize state
+      if (!HistoryManager.loadFromHash()) {
+        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
+      }
     });
   </script>
 </body>
