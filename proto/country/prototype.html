@@ -322,69 +322,6 @@
       .reveal, #statsGrid .data-card { opacity: 1; transform: none; transition: none; }
     }
 
-    /* Control Buttons */
-    .control-btn {
-      display: inline-flex;
-      align-items: center;
-      padding: 0.375rem 0.75rem;
-      background: var(--card); 
-      border: 1px solid var(--border);
-      border-radius: 3px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6875rem;
-      font-weight: 500;
-      letter-spacing: 0.02em;
-      color: var(--muted);
-      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-      box-shadow: 0 1px 2px rgba(0,0,0,0.02); 
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .control-btn:hover {
-      color: var(--accent);
-      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
-      background-color: color-mix(in srgb, var(--accent) 6%, var(--card));
-      box-shadow: 0 2px 8px rgba(61, 107, 153, 0.08);
-    }
-
-    .dark .control-btn:hover {
-      background-color: color-mix(in srgb, var(--accent) 10%, var(--card));
-      box-shadow: 0 2px 8px rgba(147, 197, 253, 0.12);
-    }
-
-    .control-btn:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-    /* Legend Tags */
-    .legend-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6875rem;
-      letter-spacing: 0.04em;
-      color: var(--muted);
-      padding: 0.25rem 0;
-      transition: color 0.2s ease;
-    }
-    .legend-tag:hover { color: var(--fg); }
-
-    .legend-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
-    }
-
-    .legend-tag:hover .legend-dot {
-      transform: scale(1.4);
-      box-shadow: 0 0 8px currentColor;
-    }
-
-    .legend-dot.public { background: var(--type-public); }
-    .legend-dot.private { background: var(--type-private); }
-    .legend-dot.hybrid { background: var(--type-hybrid); }
-
     /* Vertical Canvas Container */
     .canvas-wrapper {
       position: relative;
@@ -397,7 +334,7 @@
     .canvas-container {
       position: relative;
       width: 100%;
-      height: 800px; /* Increased vertical height */
+      height: 800px; 
     }
 
     #viz-canvas {
@@ -405,30 +342,54 @@
       display: block;
     }
 
-    /* Canvas Overlays for Labels - REDESIGNED ELEGANT TAGS */
+    /* Canvas Overlays for Labels */
     .canvas-label-overlay {
       position: absolute;
       top: 0;
       left: 0;
       width: 100%;
       height: 100%;
-      pointer-events: none; /* Let clicks pass through */
+      pointer-events: none; 
       z-index: 2;
     }
 
-    .viz-column-tag {
+    /* Time Flow Label (Top Left) */
+    .canvas-time-flow {
       position: absolute;
       top: 24px;
+      left: 24px;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.5rem;
+      pointer-events: none;
+      user-select: none;
+    }
+    
+    .time-flow-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.625rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+      opacity: 0.6;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    /* Elegant Column Tags (Bottom) */
+    .viz-column-tag {
+      position: absolute;
+      bottom: 24px; /* Moved to bottom */
       transform: translateX(-50%);
       text-align: center;
-      pointer-events: auto; /* Allow hover */
-      padding: 0.5rem 1.5rem;
-      /* Glass effect */
-      background: color-mix(in srgb, var(--card) 80%, transparent);
+      pointer-events: auto;
+      padding: 0.75rem 1.5rem;
+      background: color-mix(in srgb, var(--card) 85%, transparent);
       backdrop-filter: blur(8px);
       border: 1px solid var(--border);
       border-radius: 4px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.05);
+      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
       transition: all 0.3s ease;
     }
 
@@ -440,7 +401,7 @@
 
     .tag-title {
       font-family: 'Cormorant Garamond', serif;
-      font-size: 1.5rem;
+      font-size: 1.25rem;
       font-weight: 600;
       color: var(--fg);
       font-style: italic;
@@ -483,17 +444,44 @@
       color: var(--muted);
     }
 
-    .canvas-time-label {
+    /* Discrete Controls (Top Right) */
+    .canvas-controls {
       position: absolute;
-      right: 16px;
-      bottom: 16px;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1rem;
-      font-style: italic;
+      top: 20px;
+      right: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      z-index: 10;
+      pointer-events: auto;
+    }
+
+    .discrete-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--card) 70%, transparent);
+      backdrop-filter: blur(8px);
       color: var(--muted);
-      opacity: 0.6;
-      pointer-events: none;
-      user-select: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .discrete-btn:hover {
+      background: var(--card);
+      color: var(--fg);
+      border-color: var(--accent);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+
+    .discrete-btn svg {
+      width: 16px;
+      height: 16px;
     }
 
     /* Tooltip */
@@ -526,7 +514,7 @@
       flex-direction: column;
       justify-content: center;
       gap: 0.5rem;
-      opacity: 0; /* Start hidden for reveal */
+      opacity: 0; 
       transform: translateY(10px);
     }
     .data-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--accent); transition: width 0.3s ease; }
@@ -750,20 +738,6 @@
       <div class="identity-column">
         <h1 class="font-display type-hero font-medium text-fg mb-1">Actor Space</h1>
         <p class="font-display type-section italic text-muted" id="nativeName">New Zealand, 1800–Present</p>
-        <div class="flex flex-wrap gap-3 mt-4" id="tagContainer">
-          <div class="legend-tag">
-            <span class="legend-dot public"></span>
-            <span>Public</span>
-          </div>
-          <div class="legend-tag">
-            <span class="legend-dot private"></span>
-            <span>Private</span>
-          </div>
-          <div class="legend-tag">
-            <span class="legend-dot hybrid"></span>
-            <span>Hybrid</span>
-          </div>
-        </div>
       </div>
 
       <div class="context-column">
@@ -810,16 +784,9 @@
 
     <!-- [3] Visualization Section -->
     <section class="reveal delay-4">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 mb-4">
-        <div>
-          <h2 class="font-display type-section text-fg mb-1">Temporal Visualization</h2>
-          <p class="font-body type-secondary text-muted">Vertical Axis · Time Flow</p>
-        </div>
-        <div class="flex items-center gap-2">
-          <button id="btn-zoom-in" class="control-btn">+ Zoom</button>
-          <button id="btn-zoom-out" class="control-btn">− Zoom</button>
-          <button id="btn-reset" class="control-btn">Reset</button>
-        </div>
+      <div class="mb-6">
+        <h2 class="font-display type-section text-fg mb-1">Temporal Visualization</h2>
+        <p class="font-body type-secondary text-muted">Vertical Timeline · Interactive</p>
       </div>
 
       <div class="canvas-wrapper">
@@ -829,6 +796,19 @@
           <!-- Overlay Labels -->
           <div class="canvas-label-overlay" id="canvasLabels">
              <!-- Injected by JS -->
+          </div>
+
+          <!-- Discrete Controls -->
+          <div class="canvas-controls" id="vizControls">
+             <button id="btn-zoom-in" class="discrete-btn" aria-label="Zoom In">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+             </button>
+             <button id="btn-zoom-out" class="discrete-btn" aria-label="Zoom Out">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
+             </button>
+             <button id="btn-reset" class="discrete-btn" aria-label="Reset View">
+               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h5M20 20v-5h-5"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L4 4m16 16l-1.64-1.64A9 9 0 0 1 3.51 15"/></svg>
+             </button>
           </div>
           
           <div id="loading-indicator">Loading actor-set.json...</div>
@@ -1117,7 +1097,6 @@
         
         this.events = [];
         this.actors.forEach(actor => {
-          // Count types
           if (actor.type === 'public') this.stats.counts.public++;
           else if (actor.type === 'private') this.stats.counts.private++;
           else if (actor.type === 'hybrid') this.stats.counts.hybrid++;
@@ -1128,7 +1107,6 @@
             const eventDate = new Date(ev.date);
             if (isNaN(eventDate.getTime())) return;
 
-            // Track Stats
             if (eventDate.getFullYear() < this.stats.startYear) this.stats.startYear = eventDate.getFullYear();
             if (eventDate.getFullYear() > this.stats.endYear) this.stats.endYear = eventDate.getFullYear();
 
@@ -1168,7 +1146,7 @@
     };
 
     // ==========================================
-    // RENDERER MODULE (VERTICAL)
+    // RENDERER MODULE
     // ==========================================
     const Renderer = {
       canvas: null,
@@ -1186,8 +1164,8 @@
       maxDate: new Date('2025-12-31').getTime(),
       timeRange: 0,
       
-      marginTop: 100, // Space for elegant tags
-      marginBottom: 40,
+      marginTop: 60, // Space for time label
+      marginBottom: 100, // Space for bottom tags
       marginLeft: 60,
       marginRight: 20,
 
@@ -1218,7 +1196,6 @@
         this.updateHTMLLabels();
       },
 
-      // Use HTML overlays for crisp text labels
       updateHTMLLabels() {
         const container = document.getElementById('canvasLabels');
         container.innerHTML = '';
@@ -1226,6 +1203,15 @@
         const W = this.width - this.marginLeft - this.marginRight;
         const colW = W / 3;
 
+        // 1. Time Flow Label (Top Left)
+        const timeFlow = document.createElement('div');
+        timeFlow.className = 'canvas-time-flow';
+        timeFlow.innerHTML = `
+          <span class="time-flow-text">Time Flow</span>
+        `;
+        container.appendChild(timeFlow);
+
+        // 2. Column Tags (Bottom)
         const cols = [
           { label: 'Public', type: 'public', x: this.marginLeft + colW * 0.5 },
           { label: 'Hybrid', type: 'hybrid', x: this.marginLeft + colW * 1.5 },
@@ -1234,7 +1220,6 @@
 
         cols.forEach(c => {
           const div = document.createElement('div');
-          // Add specific class for color styling
           div.className = `viz-column-tag tag-${c.type}`;
           div.style.left = `${c.x}px`;
           
@@ -1247,11 +1232,6 @@
           
           container.appendChild(div);
         });
-
-        const timeLabel = document.createElement('div');
-        timeLabel.className = 'canvas-time-label';
-        timeLabel.textContent = 'Time Flow ↓';
-        container.appendChild(timeLabel);
       },
 
       mapDateToY(timestamp) {
@@ -1301,7 +1281,7 @@
         const W = this.width - this.marginLeft - this.marginRight;
         const colW = W / 3;
 
-        // Draw Columns Background Stripes (Subtle)
+        // Draw Columns Background Stripes
         ctx.fillStyle = colors.bgSubtle;
         ctx.globalAlpha = 0.3;
         ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
@@ -1321,7 +1301,7 @@
         }
         ctx.setLineDash([]);
 
-        // Time Axis (Horizontal lines)
+        // Time Axis
         ctx.fillStyle = colors.muted;
         ctx.font = '11px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
@@ -1440,7 +1420,6 @@
         const canvas = Renderer.canvas;
         const tooltip = document.getElementById('tooltip');
 
-        // Panning (Vertical)
         canvas.addEventListener('mousedown', (e) => {
           if (e.button === 0) {
             Renderer.isDragging = true;
@@ -1473,7 +1452,6 @@
           }
         });
 
-        // Zoom
         canvas.addEventListener('wheel', (e) => {
           e.preventDefault();
           const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
@@ -1500,12 +1478,10 @@
           Renderer.panY = 0;
         });
 
-        // Sidebar Close
         document.getElementById('close-sidebar').addEventListener('click', () => {
           this.deselectActor();
         });
 
-        // Keyboard
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') this.deselectActor();
         });
