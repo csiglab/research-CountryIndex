@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Zealand Actor Space — Index Gentium</title>
+  <title>Loading... · Collectio</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,10 +38,11 @@
       --accent: #3D6B99;
       --card: #FFFFFF;
       --border: #D8E1EB;
+      --status-pending: #8A9FB0;
       --bg-subtle: #F1F5F9;
-      --type-public: #3D6B99;
-      --type-private: #9A4C4C;
-      --type-hybrid: #4C7A6B;
+      --type-temporal: #6B4C9A;
+      --type-spatial: #2D7D9A;
+      --type-network: #9A6B4C;
     }
 
     .dark {
@@ -51,20 +52,33 @@
       --accent: #93C5FD;
       --card: #1E293B;
       --border: #334155;
+      --status-pending: #64748B;
       --bg-subtle: #172033;
-      --type-public: #60A5FA;
-      --type-private: #F87171;
-      --type-hybrid: #34D399;
+      --type-temporal: #A78BFA;
+      --type-spatial: #22D3EE;
+      --type-network: #FBBF24;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; font-size: 16px; }
     
-    ::-webkit-scrollbar { width: 8px; height: 8px; }
-    ::-webkit-scrollbar-track { background: var(--bg-subtle); }
-    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
-    ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: var(--bg-subtle);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: var(--border);
+      border-radius: 4px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: var(--muted);
+    }
 
+    /* Custom Text Selection */
     ::selection {
       background-color: color-mix(in srgb, var(--accent) 20%, transparent);
       color: var(--fg);
@@ -142,10 +156,11 @@
     }
     .dark .project-header.scrolled { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25); }
 
+    /* Improvement: Tighter Header Padding */
     .project-header-inner {
       max-width: 56rem;
       margin: 0 auto;
-      padding: 0.75rem 1.5rem;
+      padding: 0.75rem 1.5rem; /* Adjusted from 0.875rem */
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -171,12 +186,9 @@
       transition: transform 0.3s ease, box-shadow 0.3s ease;
       box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
       border: 1px solid var(--border);
-      background: var(--bg-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
     .project-identity:hover .project-logo { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+    .project-logo img { width: 100%; height: 100%; object-fit: cover; display: block; }
 
     .project-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
@@ -241,9 +253,13 @@
       border: 1px solid var(--border);
     }
 
+    /* =========================================
+       THEME TOGGLE FIX
+       Reduced size for better navbar integration
+    ========================================= */
     .theme-toggle {
-      width: 32px;
-      height: 32px;
+      width: 32px; /* Reduced from 36px */
+      height: 32px; /* Reduced from 36px */
       border-radius: 50%;
       border: 1px solid var(--border);
       background: var(--card);
@@ -259,6 +275,7 @@
     .theme-toggle:hover { color: var(--fg); border-color: var(--accent); transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
     .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     
+    /* Adjusted icon sizes to fit new 32px container */
     .theme-toggle .icon-sun, 
     .theme-toggle .icon-moon { 
       position: absolute; 
@@ -277,24 +294,6 @@
       .nav-controls { width: 100%; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid var(--border); }
     }
 
-    /* Typography */
-    .font-display { 
-      font-family: 'Cormorant Garamond', Georgia, serif; 
-      font-feature-settings: "kern", "liga";
-    }
-    .font-body { font-family: 'Inter', system-ui, sans-serif; }
-    .font-meta { font-family: 'JetBrains Mono', monospace; }
-
-    .type-hero { font-size: 2.5rem; line-height: 1.1; letter-spacing: -0.02em; }
-    @media (min-width: 768px) { .type-hero { font-size: 3.25rem; } }
-    .type-section { font-size: 1.5rem; line-height: 1.3; }
-    .type-card-title { font-size: 1.25rem; line-height: 1.3; }
-    .type-data-value { font-size: 2rem; line-height: 1; }
-    .type-body { font-size: 1rem; line-height: 1.75; letter-spacing: 0.01em; }
-    .type-secondary { font-size: 0.875rem; line-height: 1.5; }
-    .type-label { font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.05em; }
-    .type-meta { font-size: 0.7rem; line-height: 1.4; }
-
     /* Animations & Reveal */
     .reveal {
       opacity: 0;
@@ -303,161 +302,101 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     
+    /* Improvement: Staggered Grid Reveal */
+    #statsGrid .data-card,
+    #worksGrid .entity-card {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 
+        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.3s ease, 
+        box-shadow 0.3s ease;
+    }
+
+    .reveal.visible #statsGrid .data-card,
+    .reveal.visible #worksGrid .entity-card {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .reveal.visible #statsGrid .data-card:nth-child(1) { transition-delay: 0.05s; }
+    .reveal.visible #statsGrid .data-card:nth-child(2) { transition-delay: 0.15s; }
+    .reveal.visible #statsGrid .data-card:nth-child(3) { transition-delay: 0.25s; }
+    .reveal.visible #statsGrid .data-card:nth-child(4) { transition-delay: 0.35s; }
+
+    .reveal.visible #worksGrid .entity-card:nth-child(1) { transition-delay: 0.1s; }
+    .reveal.visible #worksGrid .entity-card:nth-child(2) { transition-delay: 0.2s; }
+    .reveal.visible #worksGrid .entity-card:nth-child(3) { transition-delay: 0.3s; }
+
     .delay-1 { transition-delay: 0.15s; }
     .delay-2 { transition-delay: 0.3s; }
     .delay-3 { transition-delay: 0.45s; }
     .delay-4 { transition-delay: 0.6s; }
 
-    /* Staggered Grid Reveal for Stats */
-    .reveal.visible #statsGrid .data-card {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .reveal.visible #statsGrid .data-card:nth-child(1) { transition-delay: 0.1s; }
-    .reveal.visible #statsGrid .data-card:nth-child(2) { transition-delay: 0.2s; }
-    .reveal.visible #statsGrid .data-card:nth-child(3) { transition-delay: 0.3s; }
-    .reveal.visible #statsGrid .data-card:nth-child(4) { transition-delay: 0.4s; }
-
     @media (prefers-reduced-motion: reduce) {
-      .reveal, #statsGrid .data-card { opacity: 1; transform: none; transition: none; }
+      .reveal, #statsGrid .data-card, #worksGrid .entity-card { opacity: 1; transform: none; transition: none; }
     }
 
-    /* Vertical Canvas Container */
-    .canvas-wrapper {
-      position: relative;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      overflow: hidden;
+    /* Typography */
+    .font-display { 
+      font-family: 'Cormorant Garamond', Georgia, serif; 
+      font-feature-settings: "kern", "liga";
+    }
+    .font-body { font-family: 'Inter', system-ui, sans-serif; }
+    .font-meta { font-family: 'JetBrains Mono', monospace; }
+
+    .type-hero { font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; }
+    @media (min-width: 768px) { .type-hero { font-size: 4rem; } }
+    .type-section { font-size: 1.5rem; line-height: 1.3; }
+    .type-card-title { font-size: 1.25rem; line-height: 1.3; }
+    .type-data-value { font-size: 2rem; line-height: 1; }
+    .type-body { font-size: 1rem; line-height: 1.75; letter-spacing: 0.01em; }
+    .type-secondary { font-size: 0.875rem; line-height: 1.5; }
+    .type-label { font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.05em; }
+    .type-meta { font-size: 0.7rem; line-height: 1.4; }
+
+    /* Hero Grid System */
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 2rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+    }
+    @media (min-width: 768px) {
+      .hero-grid {
+        grid-template-columns: 1fr 1.4fr; 
+        gap: 4rem;
+        align-items: start; 
+      }
     }
 
-    .canvas-container {
-      position: relative;
-      width: 100%;
-      height: 800px; 
-    }
-
-    #viz-canvas {
-      cursor: ns-resize;
-      display: block;
-    }
-
-    /* Canvas Overlays for Labels */
-    .canvas-label-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none; 
-      z-index: 2;
-    }
-
-    /* Time Flow Label (Top Left) */
-    .canvas-time-flow {
-      position: absolute;
-      top: 24px;
-      left: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-      pointer-events: none;
-      user-select: none;
-    }
-    
-    .time-flow-text {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.625rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      opacity: 0.6;
-      writing-mode: vertical-rl;
-      transform: rotate(180deg);
-    }
-
-    /* Discrete Controls (Top Right) */
-    .canvas-controls {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      z-index: 10;
-      pointer-events: auto;
-    }
-
-    .discrete-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--card) 70%, transparent);
-      backdrop-filter: blur(8px);
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-      font-size: 1rem;
+    /* Flag Icon */
+    .flag-link {
+      display: inline-block;
+      text-decoration: none;
+      transition: opacity 0.25s ease;
       cursor: pointer;
     }
-
-    .discrete-btn:hover {
-      background: var(--card);
-      color: var(--fg);
-      border-color: var(--accent);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .discrete-btn svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    /* Tooltip */
-    .tooltip-box {
-      position: fixed;
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 1rem 1.25rem;
-      pointer-events: none;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.1);
-      opacity: 0;
-      transition: opacity 0.15s ease;
-      z-index: 100;
-      max-width: 280px;
-      border-radius: 4px;
-    }
-
-    .tooltip-box.visible { opacity: 1; }
-
-    /* Data Cards */
-    .data-card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 4px; 
-      padding: 1.5rem 1rem;
-      text-align: center;
-      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      gap: 0.5rem;
-      opacity: 0; 
-      transform: translateY(10px);
-    }
-    .data-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--accent); transition: width 0.3s ease; }
     
-    .data-card:hover::before { width: 40px; }
-    .data-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06); border-color: var(--accent); }
-    .data-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    .data-card:hover .type-data-value { color: var(--accent); }
+    .flag-link:hover { opacity: 0.85; }
+    .flag-link:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 4px; }
 
-    /* Definition Lead */
+    .flag-icon-large {
+      font-size: 3.5rem;
+      line-height: 1;
+      display: block;
+      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.06));
+      transition: transform 0.3s ease, filter 0.3s ease;
+    }
+
+    .flag-link:hover .flag-icon-large {
+      transform: scale(1.05); 
+      filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.1));
+    }
+
+    /* Definition */
     .definition-lead {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 1.35rem;
@@ -466,6 +405,8 @@
       font-weight: 400;
       position: relative;
       hyphens: auto;
+      transition: color 0.3s ease;
+      /* Improvement: Max width for readability */
       max-width: 52rem; 
     }
     
@@ -489,64 +430,277 @@
       .definition-lead { font-size: 1.25rem; }
     }
 
-    /* Detail Sidebar */
-    .detail-sidebar {
-      position: fixed;
-      right: 0;
-      top: 0;
-      height: 100vh;
-      width: 360px;
-      background: var(--card);
-      border-left: 1px solid var(--border);
-      transform: translateX(100%);
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
-      z-index: 60;
-      overflow-y: auto;
-      box-shadow: -8px 0 32px rgba(0,0,0,0.08);
-    }
-    .detail-sidebar.open { transform: translateX(0); }
-    .dark .detail-sidebar { box-shadow: -8px 0 32px rgba(0,0,0,0.3); }
+    #nativeName { letter-spacing: 0.04em; margin-bottom: 1rem; display: block; }
 
-    .sidebar-close {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
+    /* Tags - Elegant non-moving interaction */
+    .tag-pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 0.375rem 0.75rem;
+      background-color: var(--card); 
       border: 1px solid var(--border);
-      background: var(--card);
+      border-radius: 3px;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      letter-spacing: 0.02em;
       color: var(--muted);
-      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02); 
+      user-select: none;
+      position: relative;
+    }
+
+    .tag-pill::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--accent);
+      transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: 1px;
+    }
+
+    .tag-pill:hover {
+      color: var(--accent);
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+      background-color: color-mix(in srgb, var(--accent) 6%, var(--card));
+      box-shadow: 0 2px 8px rgba(61, 107, 153, 0.08);
+    }
+
+    .tag-pill:hover::after {
+      width: calc(100% - 1rem);
+    }
+
+    .dark .tag-pill:hover {
+      background-color: color-mix(in srgb, var(--accent) 10%, var(--card));
+      box-shadow: 0 2px 8px rgba(147, 197, 253, 0.12);
+    }
+
+    /* Section Divider */
+    .section-divider {
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
+      gap: 1rem;
+      margin: 2rem 0;
     }
-    .sidebar-close:hover { color: var(--fg); border-color: var(--accent); }
+    .section-divider::before, .section-divider::after {
+      content: '';
+      height: 1px;
+      flex: 1;
+      max-width: 120px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    .section-divider .diamond { 
+      width: 6px; 
+      height: 6px; 
+      background: var(--border); 
+      transform: rotate(45deg); 
+    }
 
-    /* Event Timeline in Sidebar */
-    .event-item {
+    /* Data Cards */
+    .data-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px; 
+      padding: 1.5rem 1rem;
+      text-align: center;
+      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
       position: relative;
-      padding-left: 1.5rem;
-      transition: all 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0.75rem;
     }
-    .event-item::before {
+    .data-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--accent); transition: width 0.3s ease; }
+    
+    /* Improvement: Active hover state for data cards */
+    .data-card:hover::before { width: 40px; }
+    .data-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06); border-color: var(--accent); }
+    .data-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    .data-card:hover .type-data-value { color: var(--accent); }
+
+    .data-indicator { height: 3px; background: var(--bg-subtle); border-radius: 2px; overflow: hidden; margin-top: 0.5rem; }
+    .data-indicator-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+
+    /* ========================================
+       ENTITY CARD SYSTEM - REFINED
+       ======================================== */
+    
+    .entity-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px; 
+      overflow: hidden;
+      transition: all 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+      text-decoration: none;
+      display: block;
+      position: relative;
+      height: 100%; 
+    }
+    
+    .entity-card[data-state="pending"] {
+      border-style: dashed;
+    }
+
+    .entity-card::before {
       content: '';
       position: absolute;
-      left: -5px;
-      top: 6px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--card);
-      transition: all 0.2s ease;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: var(--status-pending);
+      transition: background 0.3s ease;
+      z-index: 1;
     }
-    .event-item:hover::before {
+    
+    .entity-card[data-state="active"]::before {
       background: var(--accent);
-      border-color: var(--accent);
     }
+    
+    .entity-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+    
+    .entity-card[data-state="active"]:hover { 
+      transform: translateY(-4px); 
+      box-shadow: 0 16px 32px -12px rgba(0,0,0,0.08); 
+      border-color: var(--accent); 
+    }
+    
+    .entity-card[data-state="pending"] {
+      opacity: 0.65;
+    }
+    
+    .entity-card[data-state="pending"]:hover {
+      opacity: 0.8;
+    }
+    
+    .card-preview {
+      height: 88px;
+      background: var(--bg-subtle);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .card-preview::before { 
+      content: ''; 
+      position: absolute; 
+      inset: 0; 
+      background: linear-gradient(135deg, transparent 40%, rgba(61, 107, 153, 0.03) 100%); 
+      opacity: 0; 
+      transition: opacity 0.3s ease; 
+    }
+    
+    .entity-card[data-state="active"]:hover .card-preview::before { opacity: 1; }
+    
+    .card-preview svg { 
+      width: 36px; 
+      height: 36px; 
+      color: var(--muted); 
+      opacity: 0.4; 
+      transition: all 0.3s ease; 
+    }
+    
+    .entity-card[data-state="active"]:hover .card-preview svg { 
+      opacity: 0.7; 
+      transform: scale(1.1); 
+    }
+
+    .card-content { 
+      padding: 1.25rem 1.25rem 1.5rem; 
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 88px);
+    }
+
+    .card-title {
+      transition: color 0.3s ease;
+    }
+
+    .entity-card[data-state="active"]:hover .card-title {
+      color: var(--accent);
+    }
+
+    .card-description {
+      flex-grow: 1;
+      margin-bottom: 1rem;
+    }
+
+    .card-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      background: transparent;
+      color: var(--muted);
+      font-family: 'JetBrains Mono', monospace;
+      padding: 0.2rem 0.5rem;
+      border-radius: 2px;
+      border: none;
+      font-weight: 400;
+      font-size: 0.65rem;
+      transition: color 0.2s ease;
+      text-transform: none;
+      letter-spacing: 0.02em;
+    }
+    
+    .card-tag[data-type="Temporal"] { --type-color: var(--type-temporal); }
+    .card-tag[data-type="Spatial"] { --type-color: var(--type-spatial); }
+    .card-tag[data-type="Network"] { --type-color: var(--type-network); }
+    
+    .card-tag .type-icon {
+      width: 12px;
+      height: 12px;
+      opacity: 0.6;
+    }
+    
+    .entity-card[data-state="active"]:hover .card-tag { color: var(--type-color); }
+    .entity-card[data-state="active"]:hover .card-tag .type-icon { opacity: 1; }
+
+    .status-badge { 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 0.4rem; 
+      color: var(--muted); 
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem;
+      text-transform: capitalize;
+      letter-spacing: 0.02em;
+    }
+    
+    .status-dot { 
+      width: 5px; 
+      height: 5px; 
+      border-radius: 50%; 
+      transition: transform 0.2s ease, box-shadow 0.2s ease; 
+    }
+    
+    .status-dot[data-state="active"] { background: var(--accent); }
+    .status-dot[data-state="pending"] { background: var(--status-pending); }
+    
+    .entity-card[data-state="active"]:hover .status-dot { 
+      transform: scale(1.4);
+      box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 50%, transparent);
+    }
+
+    .card-cta { 
+      display: inline-flex; 
+      align-items: center; 
+      gap: 0.375rem; 
+      font-weight: 500; 
+      color: var(--accent); 
+      transition: gap 0.25s ease; 
+      font-size: 0.8125rem;
+    }
+    
+    .entity-card[data-state="active"]:hover .card-cta { gap: 0.75rem; }
 
     /* Footer */
     .site-footer { background: var(--card); border-top: 1px solid var(--border); }
@@ -587,157 +741,8 @@
       transform: scaleX(0);
       transition: transform 0.1s linear;
     }
-
-    /* Section Divider */
-    .section-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin: 2rem 0;
-    }
-    .section-divider::before, .section-divider::after {
-      content: '';
-      height: 1px;
-      flex: 1;
-      max-width: 120px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-    }
-    .section-divider .diamond { 
-      width: 6px; 
-      height: 6px; 
-      background: var(--border); 
-      transform: rotate(45deg); 
-    }
-
-    /* Loading */
-    #loading-indicator {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      color: var(--muted);
-      pointer-events: none;
-      transition: opacity 0.5s;
-    }
-
-    /* === NEW: Visualization Control Tags === */
-    .viz-controls-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 1.5rem;
-      padding: 0 1rem;
-    }
-
-    .viz-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 9999px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      user-select: none;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
-    }
-
-    .viz-tag:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .viz-tag.active {
-      background: var(--bg);
-      color: var(--fg);
-      border-color: currentColor;
-    }
-
-    .viz-tag.disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
-    }
-
-    .viz-tag-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-
-    .viz-tag[data-type="public"] .viz-tag-indicator { background: var(--type-public); }
-    .viz-tag[data-type="hybrid"] .viz-tag-indicator { background: var(--type-hybrid); }
-    .viz-tag[data-type="private"] .viz-tag-indicator { background: var(--type-private); }
-
-    .viz-tag[data-type="public"] { --hover-color: var(--type-public); }
-    .viz-tag[data-type="hybrid"] { --hover-color: var(--type-hybrid); }
-    .viz-tag[data-type="private"] { --hover-color: var(--type-private); }
-
-    .viz-tag:hover:not(.disabled) {
-      border-color: var(--hover-color);
-      color: var(--hover-color);
-    }
-
-    .viz-tag.active[data-type="public"] { border-color: var(--type-public); color: var(--type-public); }
-    .viz-tag.active[data-type="hybrid"] { border-color: var(--type-hybrid); color: var(--type-hybrid); }
-    .viz-tag.active[data-type="private"] { border-color: var(--type-private); color: var(--type-private); }
-
-    .viz-tag-count {
-      font-size: 0.65rem;
-      opacity: 0.7;
-      margin-left: 0.25rem;
-    }
-
-    /* Column headers inside canvas area */
-    .viz-column-headers {
-      position: absolute;
-      top: 60px;
-      left: 0;
-      right: 0;
-      height: 40px;
-      display: flex;
-      justify-content: space-around;
-      padding: 0 60px;
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    .viz-column-header {
-      text-align: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.125rem;
-      font-style: italic;
-      color: var(--muted);
-      opacity: 0.6;
-      transition: opacity 0.3s ease;
-    }
-
-    .viz-column-header.active {
-      opacity: 1;
-      color: var(--fg);
-    }
-
-    .viz-column-header::after {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 2px;
-      margin: 0.5rem auto 0;
-      background: currentColor;
-      opacity: 0.3;
-    }
   </style>
+<base target="_blank">
 </head>
 <body>
 
@@ -746,11 +751,7 @@
     <div class="project-header-inner">
       <a href="../index.html" class="project-identity" aria-label="Return to Index Gentium">
         <div class="project-logo">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            <path d="M2 12h20"/>
-          </svg>
+          <img src="../logo.png" alt="Index Gentium Logo" onerror="this.style.display='none'">
         </div>
         <div>
           <div class="project-title">Index Gentium</div>
@@ -762,7 +763,7 @@
         <nav class="breadcrumb-nav" aria-label="Breadcrumb">
           <a href="index.html"><span>Gentium</span></a>
           <span class="breadcrumb-separator">/</span>
-          <span class="breadcrumb-current">Actor Space</span>
+          <span class="breadcrumb-current" id="breadcrumbCurrent">Loading...</span>
         </nav>
 
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" type="button">
@@ -784,15 +785,18 @@
     <!-- [1] Identity Layer -->
     <header class="hero-grid reveal">
       <div class="identity-column">
-        <h1 class="font-display type-hero font-medium text-fg mb-1">Actor Space</h1>
-        <p class="font-display type-section italic text-muted" id="nativeName">New Zealand, 1800–Present</p>
+        <!-- Flag Link -->
+        <a href="index.html" class="flag-link" id="flagLink" aria-label="Return to Index">
+          <span class="flag-icon-large" id="flagIcon" aria-hidden="true">...</span>
+        </a>
+        
+        <h1 class="font-display type-hero font-medium text-fg mb-1" id="countryName">...</h1>
+        <p class="font-display type-section italic text-muted" id="nativeName">...</p>
+        <div class="flex flex-wrap gap-2" id="tagContainer"></div>
       </div>
 
       <div class="context-column">
-        <div class="definition-lead text-muted">
-          A vertical temporal registry mapping the lifespans and key events of sovereign, corporate, and cultural entities. 
-          Click nodes to inspect the consolidated timeline of each actor.
-        </div>
+        <div class="definition-lead text-muted" id="definitionText">Loading definition...</div>
       </div>
     </header>
 
@@ -801,137 +805,30 @@
     </div>
 
     <!-- [2] Vital Statistics -->
-    <section class="reveal delay-2" id="statsSection">
+    <section class="reveal delay-2">
       <div class="text-center mb-6">
-        <h2 class="font-display type-section text-fg mb-1">Registry Statistics</h2>
-        <p class="font-body type-secondary text-muted">Overview of Data Points</p>
+        <h2 class="font-display type-section text-fg mb-1">Overview</h2>
+        <p class="font-body type-secondary text-muted">Vital Statistics</p>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="statsGrid">
-        <div class="data-card">
-          <div class="font-display type-data-value font-medium text-fg" id="stat-actors">—</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Total Actors</div>
-        </div>
-        <div class="data-card">
-          <div class="font-display type-data-value font-medium text-fg" id="stat-events">—</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Total Events</div>
-        </div>
-        <div class="data-card">
-          <div class="font-display type-data-value font-medium text-fg" id="stat-range">—</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Year Span</div>
-        </div>
-         <div class="data-card">
-          <div class="font-display type-data-value font-medium text-fg" id="stat-decades">—</div>
-          <div class="font-body type-label text-muted uppercase font-medium">Decades</div>
-        </div>
-      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="statsGrid"></div>
     </section>
 
-    <div class="section-divider reveal delay-3">
+    <div class="section-divider reveal delay-2">
       <span class="diamond"></span>
     </div>
 
-    <!-- [3] Visualization Section -->
-    <section class="reveal delay-4">
-      <div class="mb-6 text-center">
-        <h2 class="font-display type-section text-fg mb-2">Temporal Visualization</h2>
-        <p class="font-body type-secondary text-muted max-w-2xl mx-auto mb-6">
-          Explore the chronological evolution of New Zealand's institutional actors. The vertical axis represents time flowing downward from 1800 to present. 
-          Each point marks a significant event—founding, transformation, or dissolution—organized by actor type across three governance categories.
+    <!-- [3] Registry of Works -->
+    <section class="reveal delay-3">
+      <div class="text-center mb-6">
+        <h2 class="font-display type-section text-fg mb-1">Representation & Explanation</h2>
+        <p class="font-body type-secondary text-muted max-w-lg mx-auto">
+          Analytical Representations of Social Reality that Render The Dynamics Intelligible.
         </p>
-        
-        <!-- Interactive Legend Tags -->
-        <div class="viz-controls-bar" id="vizLegend">
-          <button class="viz-tag active" data-type="public" aria-pressed="true">
-            <span class="viz-tag-indicator"></span>
-            <span>Public</span>
-            <span class="viz-tag-count" id="count-public">0</span>
-          </button>
-          <button class="viz-tag active" data-type="hybrid" aria-pressed="true">
-            <span class="viz-tag-indicator"></span>
-            <span>Hybrid</span>
-            <span class="viz-tag-count" id="count-hybrid">0</span>
-          </button>
-          <button class="viz-tag active" data-type="private" aria-pressed="true">
-            <span class="viz-tag-indicator"></span>
-            <span>Private</span>
-            <span class="viz-tag-count" id="count-private">0</span>
-          </button>
-        </div>
       </div>
-
-      <div class="canvas-wrapper">
-        <div class="canvas-container">
-          <canvas id="viz-canvas"></canvas>
-          
-          <!-- Overlay Labels -->
-          <div class="canvas-label-overlay" id="canvasLabels">
-             <!-- Injected by JS -->
-          </div>
-
-          <!-- Discrete Controls -->
-          <div class="canvas-controls" id="vizControls">
-             <button id="btn-zoom-in" class="discrete-btn" aria-label="Zoom In">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-             </button>
-             <button id="btn-zoom-out" class="discrete-btn" aria-label="Zoom Out">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
-             </button>
-             <button id="btn-reset" class="discrete-btn" aria-label="Reset View">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h5M20 20v-5h-5"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L4 4m16 16l-1.64-1.64A9 9 0 0 1 3.51 15"/></svg>
-             </button>
-          </div>
-          
-          <div id="loading-indicator">Loading actor-set.json...</div>
-          
-          <!-- Tooltip -->
-          <div id="tooltip" class="tooltip-box">
-            <div class="font-meta type-meta uppercase tracking-wider text-muted mb-1" id="tt-type">Event Type</div>
-            <div class="font-display text-lg font-medium text-fg" id="tt-actor">Actor Name</div>
-            <div class="font-body type-secondary text-muted italic mt-1" id="tt-desc">Description</div>
-            <div class="mt-3 pt-2 border-t border-[var(--border)] font-meta type-meta text-muted" id="tt-date">Date</div>
-          </div>
-        </div>
-      </div>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5" id="worksGrid"></div>
     </section>
 
   </div>
-
-  <!-- Detail Sidebar -->
-  <aside id="sidebar" class="detail-sidebar">
-    <button id="close-sidebar" class="sidebar-close" aria-label="Close sidebar">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6L6 18M6 6l12 12"/>
-      </svg>
-    </button>
-    
-    <div class="p-6 pt-14">
-      <div class="border-b border-[var(--border)] pb-4 mb-6">
-        <h2 class="font-display text-2xl font-medium leading-tight text-fg" id="sb-name">Actor Name</h2>
-        <p class="font-meta type-meta uppercase tracking-wider text-muted mt-2" id="sb-role">Role</p>
-      </div>
-      
-      <div class="space-y-5">
-        <div>
-          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-1">Type</h3>
-          <p id="sb-type" class="font-body type-secondary font-medium text-fg">Public</p>
-        </div>
-        <div>
-          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-1">Region</h3>
-          <p id="sb-region" class="font-body type-secondary text-fg">Region</p>
-        </div>
-        <div>
-          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-1">Description</h3>
-          <p id="sb-desc" class="font-body type-secondary text-muted italic leading-relaxed">Description text...</p>
-        </div>
-        
-        <div class="pt-4 border-t border-[var(--border)]">
-          <h3 class="font-meta type-meta uppercase tracking-wider text-muted mb-4">Event Sequence</h3>
-          <div id="sb-timeline" class="space-y-5 pl-4 border-l-2 border-[var(--border)]">
-          </div>
-        </div>
-      </div>
-    </div>
-  </aside>
 
   <!-- Footer -->
   <footer class="site-footer py-12 md:py-16 px-6">
@@ -946,30 +843,14 @@
         
         <div class="md:col-span-3 text-center md:text-left">
           <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Navigation</p>
+
           <nav id="footerLinks" class="flex flex-col items-center md:items-start gap-1.5" aria-label="Footer navigation">
-            <a href="index.html" class="footer-link font-body text-xs">Index Gentium</a>
-            <a href="#" class="footer-link font-body text-xs">Actor Registry</a>
-            <a href="#" class="footer-link font-body text-xs">Methodology</a>
-            <a href="#" class="footer-link font-body text-xs">Documentation</a>
           </nav>
         </div>
 
         <div class="md:col-span-4 text-center md:text-right">
           <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Status</p>
-          <div class="space-y-1.5 font-mono text-xs" id="footerMetadata">
-            <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Entity Count</span>
-              <span class="font-medium tabular-nums footer-value" id="footerEntityCount">10</span>
-            </div>
-            <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Temporal Range</span>
-              <span class="font-medium footer-value">1800–2025</span>
-            </div>
-            <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Last Revised</span>
-              <span class="footer-value">MMXXV</span>
-            </div>
-          </div>
+          <div class="space-y-1.5 font-mono text-xs" id="footerMetadata"></div>
         </div>
       </div>
       
@@ -980,97 +861,22 @@
     </div>
   </footer>
 
-  <!-- Fallback Data -->
-  <script type="application/json" id="fallback-data">
-  [
-    {
-      "id": "a1", "name": "New Zealand Company", "type": "private", "role": "Colonization", "regionOfActivity": "Wellington",
-      "description": "Private British company instrumental in the early colonization of New Zealand.",
-      "events": [
-        { "date": "1839-05-02", "category": "birth", "description": "Established in London" },
-        { "date": "1841-01-22", "category": "expansion", "description": "Wellington settlement founded" },
-        { "date": "1858-12-31", "category": "death", "description": "Dissolution" }
-      ]
-    },
-    {
-      "id": "a2", "name": "Parliament of New Zealand", "type": "public", "role": "Legislature", "regionOfActivity": "Wellington",
-      "description": "The supreme legislative body of New Zealand, established in 1854.",
-      "events": [
-        { "date": "1854-05-24", "category": "birth", "description": "First parliament convened" },
-        { "date": "1893-09-19", "category": "milestone", "description": "Women's suffrage granted" },
-        { "date": "1996-10-12", "category": "transformation", "description": "MMP system adopted" }
-      ]
-    },
-    {
-      "id": "a3", "name": "University of Otago", "type": "public", "role": "Education", "regionOfActivity": "Dunedin",
-      "description": "Oldest university in New Zealand, founded in 1869.",
-      "events": [
-        { "date": "1869-01-01", "category": "birth", "description": "Founded by ordinance" },
-        { "date": "1871-07-05", "category": "expansion", "description": "First classes began" }
-      ]
-    },
-    {
-      "id": "a4", "name": "Bank of New Zealand", "type": "private", "role": "Finance", "regionOfActivity": "Auckland",
-      "description": "One of New Zealand's largest banks, established in 1861.",
-      "events": [
-        { "date": "1861-07-29", "category": "birth", "description": "Founded in Auckland" },
-        { "date": "1945-01-01", "category": "milestone", "description": "Largest bank by assets" }
-      ]
-    },
-    {
-      "id": "a5", "name": "New Zealand Railways", "type": "public", "role": "Transport", "regionOfActivity": "National",
-      "description": "National railway system, undergoing multiple ownership transformations.",
-      "events": [
-        { "date": "1863-12-31", "category": "birth", "description": "First railway opened" },
-        { "date": "1993-07-01", "category": "privatization", "description": "Privatized" },
-        { "date": "2008-07-01", "category": "renationalization", "description": "Renationalized" }
-      ]
-    },
-    {
-      "id": "a6", "name": "Air New Zealand", "type": "hybrid", "role": "Aviation", "regionOfActivity": "National",
-      "description": "National airline carrier with mixed ownership history.",
-      "events": [
-        { "date": "1940-04-26", "category": "birth", "description": "TEAL formed" },
-        { "date": "1989-01-01", "category": "privatization", "description": "Privatized" },
-        { "date": "2001-09-13", "category": "renationalization", "description": "Government bailout" }
-      ]
-    },
-    {
-      "id": "a7", "name": "Waitangi Tribunal", "type": "public", "role": "Justice", "regionOfActivity": "National",
-      "description": "Permanent commission of inquiry on Treaty of Waitangi claims.",
-      "events": [
-        { "date": "1975-10-10", "category": "birth", "description": "Established by Act of Parliament" }
-      ]
-    },
-    {
-      "id": "a8", "name": "Fonterra", "type": "hybrid", "role": "Dairy", "regionOfActivity": "National",
-      "description": "New Zealand's largest dairy cooperative.",
-      "events": [
-        { "date": "2001-10-16", "category": "birth", "description": "Merger formed Fonterra" }
-      ]
-    },
-    {
-      "id": "a9", "name": "Maori King Movement", "type": "hybrid", "role": "Cultural Leadership", "regionOfActivity": "Waikato",
-      "description": "Maori sovereignty movement establishing a symbolic kingship.",
-      "events": [
-        { "date": "1858-06-02", "category": "birth", "description": "First Maori King installed" },
-        { "date": "1863-07-12", "category": "conflict", "description": "Waikato War invasion" }
-      ]
-    },
-    {
-      "id": "a10", "name": "Reserve Bank of NZ", "type": "public", "role": "Finance", "regionOfActivity": "National",
-      "description": "Central bank of New Zealand, established 1934.",
-      "events": [
-        { "date": "1934-08-01", "category": "birth", "description": "Established as central bank" }
-      ]
-    }
-  ]
-  </script>
-
   <script>
-    // ==========================================
-    // THEME & SCROLL LOGIC
-    // ==========================================
+    // Type-specific mini icons
+    const typeIcons = {
+      Temporal: `<svg class="type-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M3 12V8M6 12V5M9 12V9M12 12V4" stroke-linecap="round"/></svg>`,
+      Spatial: `<svg class="type-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 3L13 6V10L8 13L3 10V6L8 3Z" stroke-linejoin="round"/></svg>`,
+      Network: `<svg class="type-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="8" cy="8" r="1.5"/><circle cx="4" cy="5" r="1"/><circle cx="12" cy="11" r="1"/><path d="M8 6.5L4.5 5.5M8 9.5L11.5 10.5" stroke-linecap="round"/></svg>`
+    };
+
+    // Preview icons
+    const previewIcons = {
+      Temporal: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M8 40V24M16 40V16M24 40V28M32 40V12M40 40V20" stroke-linecap="round"/></svg>`,
+      Spatial: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M24 8L40 18V30L24 40L8 30V18L24 8Z" stroke-linejoin="round"/></svg>`,
+      Network: `<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><circle cx="24" cy="24" r="4"/><circle cx="12" cy="14" r="3"/><circle cx="36" cy="34" r="3"/><path d="M24 20L12 17M24 28L36 31" stroke-linecap="round"/></svg>`
+    };
+
+    // Theme & Scroll Logic
     const themeToggle = document.getElementById('themeToggle');
     const scrollProgress = document.getElementById('scrollProgress');
     const projectHeader = document.getElementById('projectHeader');
@@ -1103,18 +909,9 @@
     window.addEventListener('scroll', updateScrollProgress, { passive: true });
     updateScrollProgress();
 
-    // ==========================================
-    // REVEAL ANIMATIONS
-    // ==========================================
+    // Reveal Animation
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce').matches;
-    
-    function initReveal() {
-      const reveals = document.querySelectorAll('.reveal');
-      if (prefersReducedMotion) {
-        reveals.forEach(el => el.classList.add('visible'));
-        return;
-      }
-      
+    if (!prefersReducedMotion) {
       const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
           if (entry.isIntersecting) {
@@ -1123,536 +920,158 @@
           }
         });
       }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
-      
-      reveals.forEach(el => observer.observe(el));
+      document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+    } else {
+      document.querySelectorAll('.reveal').forEach(el => el.classList.add('visible'));
     }
 
-    // ==========================================
-    // DATA MODULE
-    // ==========================================
-    const DataModel = {
-      actors: [],
-      events: [],
-      selectedActor: null,
-      activeTypes: { public: true, private: true, hybrid: true },
-      stats: {
-        totalActors: 0,
-        totalEvents: 0,
-        startYear: 2025,
-        endYear: 1800,
-        counts: { public: 0, private: 0, hybrid: 0 }
-      },
+    // Data Loading & Rendering
+    async function initPage() {
+      try {
+        const response = await fetch('country.json');
+        if (!response.ok) throw new Error('Network response was not ok');
+        const data = await response.json();
+        renderData(data);
+      } catch (error) {
+        console.error('Failed to load country data:', error);
+        document.getElementById('definitionText').textContent = "Error loading data. Please check console.";
+      }
+    }
 
-      async init() {
-        const loadingEl = document.getElementById('loading-indicator');
-        
-        try {
-          const response = await fetch('actor-set.json');
-          if (!response.ok) throw new Error(`HTTP Error: ${response.status}`);
-          
-          const rawData = await response.json();
-          this.processData(rawData);
-        } catch (error) {
-          console.warn("Using fallback data.", error);
-          const fallbackText = document.getElementById('fallback-data').textContent;
-          const rawData = JSON.parse(fallbackText);
-          this.processData(rawData);
-        } finally {
-          loadingEl.style.opacity = '0';
-          setTimeout(() => loadingEl.style.display = 'none', 500);
-        }
-      },
-
-      processData(rawData) {
-        this.actors = rawData.actors || (Array.isArray(rawData) ? rawData : []);
-        
-        this.events = [];
-        this.actors.forEach(actor => {
-          if (actor.type === 'public') this.stats.counts.public++;
-          else if (actor.type === 'private') this.stats.counts.private++;
-          else if (actor.type === 'hybrid') this.stats.counts.hybrid++;
-
-          if (!actor.events) return;
-
-          actor.events.forEach(ev => {
-            const eventDate = new Date(ev.date);
-            if (isNaN(eventDate.getTime())) return;
-
-            if (eventDate.getFullYear() < this.stats.startYear) this.stats.startYear = eventDate.getFullYear();
-            if (eventDate.getFullYear() > this.stats.endYear) this.stats.endYear = eventDate.getFullYear();
-
-            this.events.push({
-              x: 0, y: 0,
-              date: eventDate,
-              type: ev.category || ev.type || 'general',
-              desc: ev.description || ev.desc || '',
-              actorId: actor.id,
-              actorName: actor.name,
-              actorType: actor.type
-            });
-          });
-        });
-
-        this.events.sort((a, b) => a.date - b.date);
-        
-        this.stats.totalActors = this.actors.length;
-        this.stats.totalEvents = this.events.length;
-        
-        this.updateStatsUI();
-        this.updateLegendCounts();
-      },
-
-      updateStatsUI() {
-        document.getElementById('stat-actors').textContent = this.stats.totalActors;
-        document.getElementById('stat-events').textContent = this.stats.totalEvents;
-        
-        const span = this.stats.endYear - this.stats.startYear;
-        document.getElementById('stat-range').textContent = span;
-        document.getElementById('stat-decades').textContent = Math.ceil(span / 10);
-
-        document.getElementById('footerEntityCount').textContent = this.stats.totalActors;
-      },
-
-      updateLegendCounts() {
-        document.getElementById('count-public').textContent = this.stats.counts.public;
-        document.getElementById('count-hybrid').textContent = this.stats.counts.hybrid;
-        document.getElementById('count-private').textContent = this.stats.counts.private;
-      },
-
-      toggleType(type) {
-        this.activeTypes[type] = !this.activeTypes[type];
-        return this.activeTypes[type];
-      },
-
-      getEvents() { 
-        return this.events.filter(ev => this.activeTypes[ev.actorType]); 
-      },
-      getActorById(id) { return this.actors.find(a => a.id === id); }
-    };
-
-    // ==========================================
-    // RENDERER MODULE
-    // ==========================================
-    const Renderer = {
-      canvas: null,
-      ctx: null,
-      width: 0,
-      height: 0,
-      
-      zoom: 1,
-      panY: 0,
-      isDragging: false,
-      dragStartY: 0,
-      panStartY: 0,
-      
-      minDate: new Date('1800-01-01').getTime(),
-      maxDate: new Date('2025-12-31').getTime(),
-      timeRange: 0,
-      
-      marginTop: 60, // Space for time label
-      marginBottom: 60,
-      marginLeft: 60,
-      marginRight: 20,
-
-      init() {
-        this.canvas = document.getElementById('viz-canvas');
-        this.ctx = this.canvas.getContext('2d');
-        
-        this.timeRange = this.maxDate - this.minDate;
-        
-        this.resize();
-        window.addEventListener('resize', () => this.resize());
-        
-        this.loop();
-      },
-
-      resize() {
-        const container = this.canvas.parentElement;
-        this.width = container.clientWidth;
-        this.height = container.clientHeight;
-        
-        const dpr = window.devicePixelRatio || 1;
-        this.canvas.width = this.width * dpr;
-        this.canvas.height = this.height * dpr;
-        this.ctx.scale(dpr, dpr);
-        this.canvas.style.width = this.width + 'px';
-        this.canvas.style.height = this.height + 'px';
-
-        this.updateHTMLLabels();
-      },
-
-      updateHTMLLabels() {
-        const container = document.getElementById('canvasLabels');
-        container.innerHTML = '';
-        
-        // Time Flow Label (Top Left)
-        const timeFlow = document.createElement('div');
-        timeFlow.className = 'canvas-time-flow';
-        timeFlow.innerHTML = `
-          <span class="time-flow-text">Time Flow</span>
+    function renderFooter(data) {
+        // Footer Metadata
+        const footerMeta = document.getElementById('footerMetadata');
+        footerMeta.innerHTML = `
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span class="footer-muted">Entity Code</span>
+            <span class="font-medium tabular-nums footer-value">${data.footer.entityCode}</span>
+            </div>
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span class="footer-muted">Region</span>
+            <span class="font-medium footer-value">${data.footer.region}</span>
+            </div>
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+            <span class="footer-muted">Last Revised</span>
+            <span class="footer-value">${data.footer.lastRevised}</span>
+            </div>
         `;
-        container.appendChild(timeFlow);
-      },
-
-      mapDateToY(timestamp) {
-        const normalized = (timestamp - this.minDate) / this.timeRange;
-        const H = this.height - this.marginTop - this.marginBottom;
-        return this.marginTop + (normalized * H * this.zoom) + this.panY;
-      },
-
-      mapYToDate(y) {
-        const H = this.height - this.marginTop - this.marginBottom;
-        const normalized = (y - this.marginTop - this.panY) / (H * this.zoom);
-        return this.minDate + (normalized * this.timeRange);
-      },
-
-      mapTypeToX(type) {
-        const W = this.width - this.marginLeft - this.marginRight;
-        const colW = W / 3;
         
-        if (type === 'public') return this.marginLeft + colW * 0.5;
-        if (type === 'hybrid') return this.marginLeft + colW * 1.5;
-        if (type === 'private') return this.marginLeft + colW * 2.5;
-        return this.marginLeft + W / 2;
-      },
+        // Dynamic Links
+        const linksContainer = document.getElementById("footerLinks");
+        linksContainer.innerHTML = "";
 
-      getColors() {
-        const isDark = document.documentElement.classList.contains('dark');
-        return {
-          bg: isDark ? '#0F172A' : '#FFFFFF',
-          bgSubtle: isDark ? '#172033' : '#F1F5F9',
-          fg: isDark ? '#E4EBF2' : '#1A2B3C',
-          muted: isDark ? '#8BA3BC' : '#5C7089',
-          border: isDark ? '#334155' : '#D8E1EB',
-          public: isDark ? '#60A5FA' : '#3D6B99',
-          private: isDark ? '#F87171' : '#9A4C4C',
-          hybrid: isDark ? '#34D399' : '#4C7A6B'
-        };
-      },
-
-      draw() {
-        const ctx = this.ctx;
-        const colors = this.getColors();
-        
-        ctx.clearRect(0, 0, this.width, this.height);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, this.width, this.height);
-
-        const W = this.width - this.marginLeft - this.marginRight;
-        const colW = W / 3;
-
-        // Draw Columns Background Stripes
-        ctx.fillStyle = colors.bgSubtle;
-        ctx.globalAlpha = 0.3;
-        ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
-        ctx.fillRect(this.marginLeft + colW * 2, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
-        ctx.globalAlpha = 1.0;
-
-        // Column separators
-        ctx.strokeStyle = colors.border;
-        ctx.lineWidth = 1;
-        ctx.setLineDash([4, 4]);
-        
-        for(let i=1; i<3; i++) {
-            ctx.beginPath();
-            ctx.moveTo(this.marginLeft + colW * i, this.marginTop);
-            ctx.lineTo(this.marginLeft + colW * i, this.height - this.marginBottom);
-            ctx.stroke();
-        }
-        ctx.setLineDash([]);
-
-        // Time Axis
-        ctx.fillStyle = colors.muted;
-        ctx.font = '11px "JetBrains Mono", monospace';
-        ctx.textAlign = 'right';
-        
-        const H = this.height - this.marginTop - this.marginBottom;
-        const ms_per_pixel = this.timeRange / (H * this.zoom);
-        const targetStepMs = ms_per_pixel * 60;
-        
-        const year = 31536000000;
-        let step = 25 * year;
-        
-        if (targetStepMs < 2 * year) step = 1 * year;
-        else if (targetStepMs < 6 * year) step = 5 * year;
-        else if (targetStepMs < 15 * year) step = 10 * year;
-
-        const topDate = this.mapYToDate(this.marginTop);
-        const bottomDate = this.mapYToDate(this.height - this.marginBottom);
-
-        let current = new Date(topDate);
-        current.setMonth(0, 1);
-        current.setHours(0,0,0,0);
-        
-        const startYear = 1800;
-        let years = Math.floor((current.getFullYear() - startYear) / (step/year));
-        current.setFullYear(startYear + years * (step/year));
-
-        while (current.getTime() < bottomDate) {
-          if (current.getTime() > topDate) {
-            const y = this.mapDateToY(current.getTime());
-            
-            ctx.strokeStyle = colors.border;
-            ctx.globalAlpha = 0.3;
-            ctx.beginPath();
-            ctx.moveTo(this.marginLeft, y);
-            ctx.lineTo(this.width - this.marginRight, y);
-            ctx.stroke();
-            ctx.globalAlpha = 1.0;
-            
-            ctx.fillStyle = colors.muted;
-            ctx.fillText(current.getFullYear().toString(), this.marginLeft - 10, y + 4);
-          }
-          current = new Date(current.getTime() + step);
-        }
-
-        // Render Events
-        const events = DataModel.getEvents();
-        const selectedId = DataModel.selectedActor ? DataModel.selectedActor.id : null;
-        let selectedPoints = [];
-
-        events.forEach(ev => {
-          const y = this.mapDateToY(ev.date.getTime());
-          
-          if (y < this.marginTop - 10 || y > this.height - this.marginBottom + 10) return;
-
-          const x = this.mapTypeToX(ev.actorType);
-          const colIndex = ev.actorType === 'public' ? 0 : (ev.actorType === 'hybrid' ? 1 : 2);
-          
-          const hash = ev.actorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-          const spread = colW * 0.35;
-          const offsetX = ((hash % 10) / 10 - 0.5) * spread;
-          
-          ev.x = x + offsetX;
-          ev.y = y;
-
-          const isSelected = ev.actorId === selectedId;
-          const radius = isSelected ? 7 : 4;
-          const alpha = selectedId ? (isSelected ? 1.0 : 0.15) : 0.75;
-
-          ctx.beginPath();
-          ctx.arc(ev.x, ev.y, radius, 0, Math.PI * 2);
-          
-          if (ev.type === 'death') ctx.globalAlpha = alpha * 0.5;
-          else ctx.globalAlpha = alpha;
-
-          const evColor = colIndex === 0 ? colors.public : (colIndex === 1 ? colors.hybrid : colors.private);
-          ctx.fillStyle = evColor;
-          ctx.fill();
-
-          if (isSelected) {
-            ctx.strokeStyle = colors.fg;
-            ctx.lineWidth = 2;
-            ctx.stroke();
-            selectedPoints.push({x: ev.x, y: ev.y, date: ev.date, desc: ev.desc, type: ev.type});
-          }
-          
-          ctx.globalAlpha = 1.0;
+        data.footer.links.forEach(link => {
+            const a = document.createElement("a");
+            a.href = link.href;
+            a.textContent = link.label;
+            a.className = "footer-link font-body text-xs";
+            linksContainer.appendChild(a);
         });
+    }
 
-        // Connector line for selected actor
-        if (selectedPoints.length > 1) {
-          selectedPoints.sort((a,b) => a.y - b.y);
-          
-          ctx.beginPath();
-          ctx.strokeStyle = colors.fg;
-          ctx.lineWidth = 1.5;
-          ctx.setLineDash([3, 3]);
-          
-          ctx.moveTo(selectedPoints[0].x, selectedPoints[0].y);
-          selectedPoints.forEach(p => ctx.lineTo(p.x, p.y));
-          ctx.stroke();
-          ctx.setLineDash([]);
-        }
-      },
 
-      loop() {
-        this.draw();
-        requestAnimationFrame(() => this.loop());
-      }
-    };
+    function renderData(data) {
+      // Meta
+      document.title = data.meta.title;
+      document.getElementById('breadcrumbCurrent').textContent = data.meta.breadcrumbName;
 
-    // ==========================================
-    // INTERACTION MODULE
-    // ==========================================
-    const Interaction = {
-      init() {
-        const canvas = Renderer.canvas;
-        const tooltip = document.getElementById('tooltip');
+      // Identity
+      document.getElementById('flagIcon').textContent = data.meta.flagEmoji;
+      document.getElementById('countryName').textContent = data.identity.name;
+      document.getElementById('nativeName').textContent = data.identity.nativeName;
 
-        // Legend tag interactions
-        const tags = document.querySelectorAll('.viz-tag');
-        tags.forEach(tag => {
-          tag.addEventListener('click', (e) => {
-            const type = tag.dataset.type;
-            const isActive = DataModel.toggleType(type);
-            tag.classList.toggle('active', isActive);
-            tag.setAttribute('aria-pressed', isActive);
-          });
-        });
-
-        canvas.addEventListener('mousedown', (e) => {
-          if (e.button === 0) {
-            Renderer.isDragging = true;
-            Renderer.dragStartY = e.clientY;
-            Renderer.panStartY = Renderer.panY;
-            canvas.style.cursor = 'grabbing';
-          }
-        });
-
-        window.addEventListener('mousemove', (e) => {
-          if (Renderer.isDragging) {
-            const dy = e.clientY - Renderer.dragStartY;
-            Renderer.panY = Renderer.panStartY + dy;
-          } else {
-            const rect = canvas.getBoundingClientRect();
-            this.handleHover(e.clientX - rect.left, e.clientY - rect.top, e.clientX, e.clientY);
-          }
-        });
-
-        window.addEventListener('mouseup', () => {
-          Renderer.isDragging = false;
-          canvas.style.cursor = 'ns-resize';
-        });
-
-        canvas.addEventListener('click', (e) => {
-          const rect = canvas.getBoundingClientRect();
-          const hit = this.findEvent(e.clientX - rect.left, e.clientY - rect.top);
-          if (hit) {
-            this.selectActor(hit.actorId);
-          }
-        });
-
-        canvas.addEventListener('wheel', (e) => {
-          e.preventDefault();
-          const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-          
-          const mouse_y = e.offsetY;
-          const dateAtMouse = Renderer.mapYToDate(mouse_y);
-          
-          Renderer.zoom *= zoomFactor;
-          Renderer.zoom = Math.max(0.5, Math.min(Renderer.zoom, 20)); 
-
-          const new_y_for_date = Renderer.mapDateToY(dateAtMouse);
-          Renderer.panY += (mouse_y - new_y_for_date);
-        }, { passive: false });
-
-        // Controls
-        document.getElementById('btn-zoom-in').addEventListener('click', () => {
-          Renderer.zoom *= 1.3;
-        });
-        document.getElementById('btn-zoom-out').addEventListener('click', () => {
-          Renderer.zoom *= 0.7;
-        });
-        document.getElementById('btn-reset').addEventListener('click', () => {
-          Renderer.zoom = 1;
-          Renderer.panY = 0;
-        });
-
-        document.getElementById('close-sidebar').addEventListener('click', () => {
-          this.deselectActor();
-        });
-
-        document.addEventListener('keydown', (e) => {
-          if (e.key === 'Escape') this.deselectActor();
-        });
-      },
-
-      handleHover(canvasX, canvasY, clientX, clientY) {
-        const hit = this.findEvent(canvasX, canvasY);
-        const tooltip = document.getElementById('tooltip');
-        
-        if (hit) {
-          let left = clientX + 15;
-          let top = clientY + 15;
-          
-          if (left + 280 > window.innerWidth) left = clientX - 295;
-          if (top + 150 > window.innerHeight) top = clientY - 165;
-          
-          tooltip.style.left = left + 'px';
-          tooltip.style.top = top + 'px';
-          tooltip.classList.add('visible');
-          
-          document.getElementById('tt-type').textContent = hit.type.toUpperCase();
-          document.getElementById('tt-actor').textContent = hit.actorName;
-          document.getElementById('tt-desc').textContent = hit.desc;
-          document.getElementById('tt-date').textContent = hit.date.toLocaleDateString(undefined, {
-            year: 'numeric', month: 'short', day: 'numeric'
-          });
-        } else {
-          tooltip.classList.remove('visible');
-        }
-      },
-
-      findEvent(mx, my) {
-        const events = DataModel.getEvents();
-        const radius = 10;
-        
-        for (let i = events.length - 1; i >= 0; i--) {
-          const ev = events[i];
-          const dx = ev.x - mx;
-          const dy = ev.y - my;
-          if (dx * dx + dy * dy < radius * radius) {
-            return ev;
-          }
-        }
-        return null;
-      },
-
-      selectActor(id) {
-        const actor = DataModel.getActorById(id);
-        DataModel.selectedActor = actor;
-        
-        const sb = document.getElementById('sidebar');
-        sb.classList.add('open');
-        
-        document.getElementById('sb-name').textContent = actor.name;
-        document.getElementById('sb-role').textContent = actor.role;
-        
-        const typeDisplay = actor.type.charAt(0).toUpperCase() + actor.type.slice(1);
-        document.getElementById('sb-type').textContent = typeDisplay;
-        
-        document.getElementById('sb-region').textContent = actor.regionOfActivity || actor.region || 'Unknown';
-        document.getElementById('sb-desc').textContent = actor.description || 'No description available.';
-        
-        const tl = document.getElementById('sb-timeline');
-        tl.innerHTML = '';
-
-        const sorted = [...actor.events].sort((a,b) => new Date(a.date) - new Date(b.date));
-        
-        sorted.forEach(ev => {
-          const div = document.createElement('div');
-          div.className = 'event-item';
-          
-          div.innerHTML = `
-            <div class="font-meta type-meta text-muted mb-1">${new Date(ev.date).toLocaleDateString()}</div>
-            <div class="font-body text-sm font-medium text-fg capitalize">${ev.category || ev.type || 'Event'}</div>
-            <div class="font-body type-secondary text-muted leading-snug">${ev.description || ev.desc || ''}</div>
-          `;
-          tl.appendChild(div);
-        });
-
-        Renderer.draw();
-      },
-
-      deselectActor() {
-        DataModel.selectedActor = null;
-        document.getElementById('sidebar').classList.remove('open');
-        Renderer.draw();
-      }
-    };
-
-    // ==========================================
-    // BOOT
-    // ==========================================
-    window.addEventListener('DOMContentLoaded', () => {
-      initReveal();
-      
-      DataModel.init().then(() => {
-        Renderer.init();
-        Interaction.init();
+      const tagContainer = document.getElementById('tagContainer');
+      tagContainer.innerHTML = '';
+      data.identity.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'tag-pill';
+        span.textContent = tag;
+        tagContainer.appendChild(span);
       });
-    });
+
+      // Definition
+      document.getElementById('definitionText').textContent = data.definition.text;
+
+      // Statistics
+      const statsGrid = document.getElementById('statsGrid');
+      statsGrid.innerHTML = '';
+      data.statistics.forEach(stat => {
+        const card = document.createElement('div');
+        card.className = 'data-card';
+        card.tabIndex = 0;
+        
+        let indicatorHtml = '';
+        if (stat.hasIndicator) {
+          indicatorHtml = `<div class="data-indicator"><div class="data-indicator-fill" style="width: ${stat.indicatorValue}%;"></div></div>`;
+        }
+
+        let labelHtml = stat.label;
+        if (stat.id === 'area') {
+          labelHtml = `Area km<sup>2</sup>`;
+        }
+
+        card.innerHTML = `
+          <div class="font-display type-data-value font-medium text-fg">${stat.value}</div>
+          <div class="font-body type-label text-muted uppercase font-medium">${labelHtml}</div>
+          ${indicatorHtml}
+        `;
+        statsGrid.appendChild(card);
+      });
+
+      // Works
+      const worksGrid = document.getElementById('worksGrid');
+      worksGrid.innerHTML = '';
+      
+      data.works.forEach(work => {
+        const isActive = work.status === 'active';
+        const tagType = isActive ? 'a' : 'div';
+        const card = document.createElement(tagType);
+
+        card.className = 'entity-card group';
+        card.setAttribute('data-state', work.status);
+        card.setAttribute('data-type', work.type);
+        card.setAttribute('data-work-id', work.id);
+        
+        if (isActive) {
+          card.setAttribute('href', work.link || '#');
+          card.setAttribute('target', '_blank');
+          card.setAttribute('aria-label', `View ${work.title} dataset`);
+        } else {
+          card.setAttribute('aria-disabled', 'true');
+          card.setAttribute('role', 'article');
+        }
+
+        const previewSvg = previewIcons[work.type] || previewIcons['Temporal'];
+        const typeIconSvg = typeIcons[work.type] || typeIcons['Temporal'];
+        const statusText = isActive ? 'Active' : 'Pending';
+
+        const ctaHtml = isActive 
+          ? `<span class="card-cta type-secondary">View<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>`
+          : `<span class="font-meta type-meta text-muted uppercase">Coming MMXXV</span>`;
+
+        card.innerHTML = `
+          <div class="card-preview">${previewSvg}</div>
+          <div class="card-content">
+            <div class="flex items-center justify-between mb-3">
+              <span class="card-tag" data-type="${work.type}">${typeIconSvg}${work.type}</span>
+              <span class="status-badge">
+                <span class="status-dot" data-state="${work.status}"></span>
+                ${statusText}
+              </span>
+            </div>
+            <h3 class="font-display type-card-title font-medium text-fg mb-1.5 card-title">${work.title}</h3>
+            <p class="font-body type-secondary text-muted leading-relaxed card-description">${work.description}</p>
+            ${ctaHtml}
+          </div>
+        `;
+
+        worksGrid.appendChild(card);
+      });
+
+      renderFooter(data)
+    }
+
+    initPage();
   </script>
 </body>
 </html>
