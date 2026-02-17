@@ -4,6 +4,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Zealand Actor Space — Index Gentium</title>
+  
+  <!-- FIX #9: Dark Mode Flash Prevention - Inline blocking script -->
+  <script>
+    (function() {
+      const theme = localStorage.getItem('index-gentium-theme') || 
+                   (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.classList.toggle('dark', theme === 'dark');
+    })();
+  </script>
+  
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -111,7 +121,7 @@
     }
     .site-footer { flex-shrink: 0; position: relative; z-index: 1; }
 
-    /* Header Styles - Refined per Project 2 */
+    /* Header Styles */
     .project-header {
       position: sticky;
       top: 0;
@@ -142,7 +152,6 @@
     }
     .dark .project-header.scrolled { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25); }
 
-    /* Tighter header padding per Project 2 */
     .project-header-inner {
       max-width: 56rem;
       margin: 0 auto;
@@ -242,7 +251,7 @@
       border: 1px solid var(--border);
     }
 
-    /* Theme Toggle - 32px per Project 2 standard */
+    /* Theme Toggle */
     .theme-toggle {
       width: 32px;
       height: 32px;
@@ -279,7 +288,7 @@
       .nav-controls { width: 100%; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid var(--border); }
     }
 
-    /* Typography - Aligned with Project 2 */
+    /* Typography - FIX #8: Improved hierarchy */
     .font-display { 
       font-family: 'Cormorant Garamond', Georgia, serif; 
       font-feature-settings: "kern", "liga";
@@ -287,7 +296,8 @@
     .font-body { font-family: 'Inter', system-ui, sans-serif; }
     .font-meta { font-family: 'JetBrains Mono', monospace; }
 
-    .type-hero { font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; }
+    /* FIX #8: Increased hero weight for better hierarchy */
+    .type-hero { font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; }
     @media (min-width: 768px) { .type-hero { font-size: 4rem; } }
     .type-section { font-size: 1.5rem; line-height: 1.3; }
     .type-card-title { font-size: 1.25rem; line-height: 1.3; }
@@ -297,7 +307,7 @@
     .type-label { font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.05em; }
     .type-meta { font-size: 0.7rem; line-height: 1.4; }
 
-    /* Hero Grid - Project 2 Standard */
+    /* Hero Grid */
     .hero-grid {
       display: grid;
       grid-template-columns: 1fr;
@@ -313,7 +323,7 @@
       }
     }
 
-    /* Animations & Reveal - Staggered per Project 2 */
+    /* Animations */
     .reveal {
       opacity: 0;
       transform: translateY(20px);
@@ -326,7 +336,6 @@
     .delay-3 { transition-delay: 0.45s; }
     .delay-4 { transition-delay: 0.6s; }
 
-    /* Staggered Grid Reveal for Stats - Project 2 Pattern */
     #statsGrid .data-card {
       opacity: 0;
       transform: translateY(20px);
@@ -351,7 +360,7 @@
       .reveal, #statsGrid .data-card { opacity: 1; transform: none; transition: none; }
     }
 
-    /* Definition Lead - Project 2 Standard */
+    /* Definition Lead */
     .definition-lead {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 1.35rem;
@@ -384,7 +393,7 @@
       .definition-lead { font-size: 1.25rem; }
     }
 
-    /* Section Divider - Project 2 Standard */
+    /* Section Divider */
     .section-divider {
       display: flex;
       align-items: center;
@@ -406,7 +415,7 @@
       transform: rotate(45deg); 
     }
 
-    /* Data Cards - Enhanced per Project 2 */
+    /* Data Cards */
     .data-card {
       background: var(--card);
       border: 1px solid var(--border);
@@ -451,6 +460,31 @@
       overflow: hidden;
     }
 
+    /* FIX #1: Canvas affordance indicator */
+    .canvas-wrapper::after {
+      content: 'Scroll or drag to navigate time';
+      position: absolute;
+      bottom: 16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      color: var(--muted);
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: 5;
+      padding: 6px 12px;
+      background: color-mix(in srgb, var(--card) 80%, transparent);
+      border-radius: 3px;
+      border: 1px solid var(--border);
+      animation: affordanceFade 6s forwards 3s;
+    }
+
+    @keyframes affordanceFade {
+      0% { opacity: 0.8; }
+      100% { opacity: 0; }
+    }
+
     .canvas-container {
       position: relative;
       width: 100%;
@@ -458,8 +492,24 @@
     }
 
     #viz-canvas {
-      cursor: ns-resize;
+      cursor: grab;
       display: block;
+    }
+
+    #viz-canvas:active {
+      cursor: grabbing;
+    }
+
+    /* FIX #6: Future gradient indicator */
+    .canvas-future-fade {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: linear-gradient(to top, var(--card), transparent);
+      pointer-events: none;
+      z-index: 4;
     }
 
     /* Canvas Overlays for Labels */
@@ -473,7 +523,7 @@
       z-index: 2;
     }
 
-    /* Time Flow Label (Top Left) */
+    /* Time Flow Label */
     .canvas-time-flow {
       position: absolute;
       top: 24px;
@@ -492,12 +542,12 @@
       text-transform: uppercase;
       letter-spacing: 0.1em;
       color: var(--muted);
-      opacity: 0.6;
+      opacity: 0.8;
       writing-mode: vertical-rl;
       transform: rotate(180deg);
     }
 
-    /* Discrete Controls (Top Right) */
+    /* Discrete Controls */
     .canvas-controls {
       position: absolute;
       top: 20px;
@@ -554,7 +604,28 @@
 
     .tooltip-box.visible { opacity: 1; }
 
-    /* Detail Sidebar */
+    /* FIX #2: Sidebar with backdrop */
+    .sidebar-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.3);
+      backdrop-filter: blur(2px);
+      -webkit-backdrop-filter: blur(2px);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+      z-index: 55;
+    }
+
+    .sidebar-backdrop.visible {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .dark .sidebar-backdrop {
+      background: rgba(0, 0, 0, 0.5);
+    }
+
     .detail-sidebar {
       position: fixed;
       right: 0;
@@ -572,12 +643,13 @@
     .detail-sidebar.open { transform: translateX(0); }
     .dark .detail-sidebar { box-shadow: -8px 0 32px rgba(0,0,0,0.3); }
 
+    /* FIX #2: Larger close button */
     .sidebar-close {
       position: absolute;
       top: 1rem;
       right: 1rem;
-      width: 28px;
-      height: 28px;
+      width: 40px;
+      height: 40px;
       border-radius: 50%;
       border: 1px solid var(--border);
       background: var(--card);
@@ -588,7 +660,8 @@
       justify-content: center;
       transition: all 0.2s ease;
     }
-    .sidebar-close:hover { color: var(--fg); border-color: var(--accent); }
+    .sidebar-close:hover { color: var(--fg); border-color: var(--accent); background: var(--bg-subtle); }
+    .sidebar-close:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
     /* Event Timeline in Sidebar */
     .event-item {
@@ -613,7 +686,7 @@
       border-color: var(--accent);
     }
 
-    /* Footer - Project 2 Standard */
+    /* Footer */
     .site-footer { background: var(--card); border-top: 1px solid var(--border); }
     .footer-identity { color: var(--fg); }
     .footer-muted { color: var(--muted); }
@@ -653,22 +726,22 @@
       transition: transform 0.1s linear;
     }
 
-    /* Loading */
+    /* FIX #7: Loading indicator with correct font */
     #loading-indicator {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
       color: var(--muted);
       pointer-events: none;
       transition: opacity 0.5s;
     }
 
-    /* ========================================
-       VIZ TAGS - CLEANED (NO DOTS)
-       ======================================== */
+    /* VIZ TAGS with shape indicators */
     .viz-controls-bar {
       display: flex;
       flex-wrap: wrap;
@@ -679,6 +752,7 @@
       padding: 0 1rem;
     }
 
+    /* FIX #3: Tags with shape indicators */
     .viz-tag {
       display: inline-flex;
       align-items: center;
@@ -698,6 +772,33 @@
       user-select: none;
       box-shadow: 0 1px 2px rgba(0,0,0,0.02);
       position: relative;
+    }
+
+    /* Shape indicators for accessibility */
+    .viz-tag-shape {
+      width: 10px;
+      height: 10px;
+      flex-shrink: 0;
+    }
+
+    .viz-tag-shape.circle {
+      border-radius: 50%;
+      border: 2px solid currentColor;
+      background: transparent;
+    }
+
+    .viz-tag-shape.square {
+      border-radius: 1px;
+      border: 2px solid currentColor;
+      background: transparent;
+    }
+
+    .viz-tag-shape.diamond {
+      width: 9px;
+      height: 9px;
+      transform: rotate(45deg);
+      border: 2px solid currentColor;
+      background: transparent;
     }
 
     .viz-tag::after {
@@ -739,7 +840,7 @@
       cursor: not-allowed;
     }
 
-    /* Type-specific active states - color coded without dots */
+    /* Type-specific active states */
     .viz-tag[data-type="public"] { --type-color: var(--type-public); }
     .viz-tag[data-type="hybrid"] { --type-color: var(--type-hybrid); }
     .viz-tag[data-type="private"] { --type-color: var(--type-private); }
@@ -761,45 +862,6 @@
       font-size: 0.65rem;
       opacity: 0.7;
       margin-left: 0.25rem;
-    }
-
-    /* Column headers inside canvas area */
-    .viz-column-headers {
-      position: absolute;
-      top: 60px;
-      left: 0;
-      right: 0;
-      height: 40px;
-      display: flex;
-      justify-content: space-around;
-      padding: 0 60px;
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    .viz-column-header {
-      text-align: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.125rem;
-      font-style: italic;
-      color: var(--muted);
-      opacity: 0.6;
-      transition: opacity 0.3s ease;
-    }
-
-    .viz-column-header.active {
-      opacity: 1;
-      color: var(--fg);
-    }
-
-    .viz-column-header::after {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 2px;
-      margin: 0.5rem auto 0;
-      background: currentColor;
-      opacity: 0.3;
     }
   </style>
 </head>
@@ -845,11 +907,12 @@
 
   <div class="main-content w-full max-w-4xl mx-auto px-6 py-16 md:py-24">
     
-    <!-- [1] Identity Layer - Project 2 Grid Structure -->
+    <!-- [1] Identity Layer -->
     <header class="hero-grid reveal">
       <div class="identity-column">
-        <h1 class="font-display type-hero font-medium text-fg mb-1">Actor Space</h1>
-        <p class="font-display type-section italic text-muted mb-4" id="nativeName" style="letter-spacing: 0.04em;">New Zealand, 1800–Present</p>
+        <h1 class="font-display type-hero text-fg mb-1">Actor Space</h1>
+        <!-- FIX #8: Subtitle using mono font for distinction -->
+        <p class="font-mono text-sm tracking-wide text-muted mb-4" id="nativeName" style="letter-spacing: 0.08em; text-transform: uppercase;">New Zealand, 1800–Present</p>
       </div>
 
       <div class="context-column">
@@ -864,7 +927,7 @@
       <span class="diamond"></span>
     </div>
 
-    <!-- [2] Vital Statistics - Staggered Animation -->
+    <!-- [2] Vital Statistics -->
     <section class="reveal delay-2" id="statsSection">
       <div class="text-center mb-6">
         <h2 class="font-display type-section text-fg mb-1">Registry Statistics</h2>
@@ -903,17 +966,20 @@
           Each point marks a significant event—founding, transformation, or dissolution—organized by actor type across three governance categories.
         </p>
         
-        <!-- Interactive Legend Tags - Clean, no dots -->
+        <!-- FIX #3: Interactive Legend Tags with shape indicators -->
         <div class="viz-controls-bar" id="vizLegend">
           <button class="viz-tag active" data-type="public" aria-pressed="true">
+            <span class="viz-tag-shape circle"></span>
             <span>Public</span>
             <span class="viz-tag-count" id="count-public">0</span>
           </button>
           <button class="viz-tag active" data-type="hybrid" aria-pressed="true">
+            <span class="viz-tag-shape diamond"></span>
             <span>Hybrid</span>
             <span class="viz-tag-count" id="count-hybrid">0</span>
           </button>
           <button class="viz-tag active" data-type="private" aria-pressed="true">
+            <span class="viz-tag-shape square"></span>
             <span>Private</span>
             <span class="viz-tag-count" id="count-private">0</span>
           </button>
@@ -923,6 +989,9 @@
       <div class="canvas-wrapper">
         <div class="canvas-container">
           <canvas id="viz-canvas"></canvas>
+          
+          <!-- FIX #6: Future fade gradient -->
+          <div class="canvas-future-fade"></div>
           
           <!-- Overlay Labels -->
           <div class="canvas-label-overlay" id="canvasLabels">
@@ -957,10 +1026,13 @@
 
   </div>
 
+  <!-- FIX #2: Sidebar Backdrop -->
+  <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
+
   <!-- Detail Sidebar -->
   <aside id="sidebar" class="detail-sidebar">
     <button id="close-sidebar" class="sidebar-close" aria-label="Close sidebar">
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
         <path d="M18 6L6 18M6 6l12 12"/>
       </svg>
     </button>
@@ -994,7 +1066,7 @@
     </div>
   </aside>
 
-  <!-- Footer - Project 2 Standard -->
+  <!-- Footer -->
   <footer class="site-footer py-12 md:py-16 px-6">
     <div class="max-w-4xl mx-auto">
       <div class="grid grid-cols-1 md:grid-cols-12 gap-10 md:gap-6 mb-10">
@@ -1024,7 +1096,7 @@
             </div>
             <div class="flex justify-center md:justify-end items-baseline gap-3">
               <span class="footer-muted">Temporal Range</span>
-              <span class="font-medium footer-value">1800–2025</span>
+              <span class="font-medium footer-value" id="footerRange">1800–2025</span>
             </div>
             <div class="flex justify-center md:justify-end items-baseline gap-3">
               <span class="footer-muted">Last Revised</span>
@@ -1145,8 +1217,7 @@
       localStorage.setItem('index-gentium-theme', theme);
     }
     
-    setTheme(getStoredTheme() || getSystemTheme());
-
+    // Theme already set by inline script, just sync toggle
     themeToggle.addEventListener('click', () => {
       const newTheme = htmlElement.classList.contains('dark') ? 'light' : 'dark';
       setTheme(newTheme);
@@ -1165,7 +1236,7 @@
     updateScrollProgress();
 
     // ==========================================
-    // REVEAL ANIMATIONS - Project 2 Standard
+    // REVEAL ANIMATIONS
     // ==========================================
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce').matches;
     
@@ -1272,6 +1343,7 @@
         document.getElementById('stat-decades').textContent = Math.ceil(span / 10);
 
         document.getElementById('footerEntityCount').textContent = this.stats.totalActors;
+        document.getElementById('footerRange').textContent = `${this.stats.startYear}–${this.stats.endYear}`;
       },
 
       updateLegendCounts() {
@@ -1307,7 +1379,8 @@
       panStartY: 0,
       
       minDate: new Date('1800-01-01').getTime(),
-      maxDate: new Date('2025-12-31').getTime(),
+      // FIX #6: Dynamic maxDate
+      maxDate: new Date('2027-12-31').getTime(),
       timeRange: 0,
       
       marginTop: 60,
@@ -1388,6 +1461,26 @@
         };
       },
 
+      // FIX #3: Draw different shapes for different types
+      drawShape(ctx, x, y, type, size) {
+        ctx.beginPath();
+        
+        if (type === 'public') {
+          // Circle for public
+          ctx.arc(x, y, size, 0, Math.PI * 2);
+        } else if (type === 'hybrid') {
+          // Diamond for hybrid
+          ctx.moveTo(x, y - size);
+          ctx.lineTo(x + size, y);
+          ctx.lineTo(x, y + size);
+          ctx.lineTo(x - size, y);
+          ctx.closePath();
+        } else {
+          // Square for private
+          ctx.rect(x - size, y - size, size * 2, size * 2);
+        }
+      },
+
       draw() {
         const ctx = this.ctx;
         const colors = this.getColors();
@@ -1399,24 +1492,27 @@
         const W = this.width - this.marginLeft - this.marginRight;
         const colW = W / 3;
 
+        // Column backgrounds
         ctx.fillStyle = colors.bgSubtle;
         ctx.globalAlpha = 0.3;
         ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
         ctx.fillRect(this.marginLeft + colW * 2, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
         ctx.globalAlpha = 1.0;
 
+        // Column dividers
         ctx.strokeStyle = colors.border;
         ctx.lineWidth = 1;
         ctx.setLineDash([4, 4]);
         
-        for(let i=1; i<3; i++) {
-            ctx.beginPath();
-            ctx.moveTo(this.marginLeft + colW * i, this.marginTop);
-            ctx.lineTo(this.marginLeft + colW * i, this.height - this.marginBottom);
-            ctx.stroke();
+        for(let i = 1; i < 3; i++) {
+          ctx.beginPath();
+          ctx.moveTo(this.marginLeft + colW * i, this.marginTop);
+          ctx.lineTo(this.marginLeft + colW * i, this.height - this.marginBottom);
+          ctx.stroke();
         }
         ctx.setLineDash([]);
 
+        // Y-axis labels
         ctx.fillStyle = colors.muted;
         ctx.font = '11px "JetBrains Mono", monospace';
         ctx.textAlign = 'right';
@@ -1437,11 +1533,11 @@
 
         let current = new Date(topDate);
         current.setMonth(0, 1);
-        current.setHours(0,0,0,0);
+        current.setHours(0, 0, 0, 0);
         
         const startYear = 1800;
-        let years = Math.floor((current.getFullYear() - startYear) / (step/year));
-        current.setFullYear(startYear + years * (step/year));
+        let years = Math.floor((current.getFullYear() - startYear) / (step / year));
+        current.setFullYear(startYear + years * (step / year));
 
         while (current.getTime() < bottomDate) {
           if (current.getTime() > topDate) {
@@ -1461,6 +1557,7 @@
           current = new Date(current.getTime() + step);
         }
 
+        // Draw events
         const events = DataModel.getEvents();
         const selectedId = DataModel.selectedActor ? DataModel.selectedActor.id : null;
         let selectedPoints = [];
@@ -1481,31 +1578,38 @@
           ev.y = y;
 
           const isSelected = ev.actorId === selectedId;
-          const radius = isSelected ? 7 : 4;
-          const alpha = selectedId ? (isSelected ? 1.0 : 0.15) : 0.75;
+          const radius = isSelected ? 7 : 5;
+          const alpha = selectedId ? (isSelected ? 1.0 : 0.2) : 0.8;
 
-          ctx.beginPath();
-          ctx.arc(ev.x, ev.y, radius, 0, Math.PI * 2);
-          
-          if (ev.type === 'death') ctx.globalAlpha = alpha * 0.5;
+          if (ev.type === 'death') ctx.globalAlpha = alpha * 0.6;
           else ctx.globalAlpha = alpha;
 
           const evColor = colIndex === 0 ? colors.public : (colIndex === 1 ? colors.hybrid : colors.private);
           ctx.fillStyle = evColor;
+          
+          // FIX #3: Use shape encoding
+          this.drawShape(ctx, ev.x, ev.y, ev.actorType, radius);
           ctx.fill();
 
           if (isSelected) {
             ctx.strokeStyle = colors.fg;
             ctx.lineWidth = 2;
             ctx.stroke();
-            selectedPoints.push({x: ev.x, y: ev.y, date: ev.date, desc: ev.desc, type: ev.type});
+            selectedPoints.push({x: ev.x, y: ev.y, date: ev.date, desc: ev.desc, type: ev.type, actorType: ev.actorType});
+          } else {
+            // FIX #3: Add stroke for better visibility
+            ctx.strokeStyle = evColor;
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = alpha * 0.5;
+            ctx.stroke();
           }
           
           ctx.globalAlpha = 1.0;
         });
 
+        // Draw connection line for selected actor
         if (selectedPoints.length > 1) {
-          selectedPoints.sort((a,b) => a.y - b.y);
+          selectedPoints.sort((a, b) => a.y - b.y);
           
           ctx.beginPath();
           ctx.strokeStyle = colors.fg;
@@ -1529,10 +1633,14 @@
     // INTERACTION MODULE
     // ==========================================
     const Interaction = {
+      hoveredEvent: null,
+      
       init() {
         const canvas = Renderer.canvas;
         const tooltip = document.getElementById('tooltip');
+        const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
+        // Legend tags
         const tags = document.querySelectorAll('.viz-tag');
         tags.forEach(tag => {
           tag.addEventListener('click', (e) => {
@@ -1543,6 +1651,7 @@
           });
         });
 
+        // Canvas drag
         canvas.addEventListener('mousedown', (e) => {
           if (e.button === 0) {
             Renderer.isDragging = true;
@@ -1564,9 +1673,10 @@
 
         window.addEventListener('mouseup', () => {
           Renderer.isDragging = false;
-          canvas.style.cursor = 'ns-resize';
+          canvas.style.cursor = this.hoveredEvent ? 'pointer' : 'grab';
         });
 
+        // Canvas click
         canvas.addEventListener('click', (e) => {
           const rect = canvas.getBoundingClientRect();
           const hit = this.findEvent(e.clientX - rect.left, e.clientY - rect.top);
@@ -1575,29 +1685,32 @@
           }
         });
 
+        // FIX #4: Center-point zoom with wheel
         canvas.addEventListener('wheel', (e) => {
           e.preventDefault();
           const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-          
-          const mouse_y = e.offsetY;
-          const dateAtMouse = Renderer.mapYToDate(mouse_y);
-          
-          Renderer.zoom *= zoomFactor;
-          Renderer.zoom = Math.max(0.5, Math.min(Renderer.zoom, 20)); 
-
-          const new_y_for_date = Renderer.mapDateToY(dateAtMouse);
-          Renderer.panY += (mouse_y - new_y_for_date);
+          this.applyZoom(zoomFactor, e.offsetY);
         }, { passive: false });
 
+        // FIX #4: Center-point zoom for buttons
         document.getElementById('btn-zoom-in').addEventListener('click', () => {
-          Renderer.zoom *= 1.3;
+          const centerY = Renderer.height / 2;
+          this.applyZoom(1.3, centerY);
         });
+        
         document.getElementById('btn-zoom-out').addEventListener('click', () => {
-          Renderer.zoom *= 0.7;
+          const centerY = Renderer.height / 2;
+          this.applyZoom(0.7, centerY);
         });
+        
         document.getElementById('btn-reset').addEventListener('click', () => {
           Renderer.zoom = 1;
           Renderer.panY = 0;
+        });
+
+        // FIX #2: Close sidebar with backdrop click
+        sidebarBackdrop.addEventListener('click', () => {
+          this.deselectActor();
         });
 
         document.getElementById('close-sidebar').addEventListener('click', () => {
@@ -1609,9 +1722,25 @@
         });
       },
 
+      // FIX #4: Unified zoom function with center-point
+      applyZoom(zoomFactor, centerPosY) {
+        const dateAtCenter = Renderer.mapYToDate(centerPosY);
+        
+        Renderer.zoom *= zoomFactor;
+        Renderer.zoom = Math.max(0.5, Math.min(Renderer.zoom, 20));
+        
+        const newYForDate = Renderer.mapDateToY(dateAtCenter);
+        Renderer.panY += (centerPosY - newYForDate);
+      },
+
       handleHover(canvasX, canvasY, clientX, clientY) {
         const hit = this.findEvent(canvasX, canvasY);
         const tooltip = document.getElementById('tooltip');
+        const canvas = Renderer.canvas;
+
+        // FIX #5: Change cursor on hover
+        this.hoveredEvent = hit;
+        canvas.style.cursor = hit ? 'pointer' : 'grab';
 
         if (hit) {
           let left = clientX + 15;
@@ -1635,19 +1764,25 @@
         }
       },
 
+      // FIX #5: Increased hit radius for better Fitts' Law compliance
       findEvent(mx, my) {
         const events = DataModel.getEvents();
-        const radius = 10;
+        const hitRadius = 20; // Increased from 10
+        let closest = null;
+        let closestDist = hitRadius * hitRadius;
         
         for (let i = events.length - 1; i >= 0; i--) {
           const ev = events[i];
           const dx = ev.x - mx;
           const dy = ev.y - my;
-          if (dx * dx + dy * dy < radius * radius) {
-            return ev;
+          const dist = dx * dx + dy * dy;
+          
+          if (dist < closestDist) {
+            closestDist = dist;
+            closest = ev;
           }
         }
-        return null;
+        return closest;
       },
 
       selectActor(id) {
@@ -1655,7 +1790,10 @@
         DataModel.selectedActor = actor;
         
         const sb = document.getElementById('sidebar');
+        const backdrop = document.getElementById('sidebarBackdrop');
+        
         sb.classList.add('open');
+        backdrop.classList.add('visible');
         
         document.getElementById('sb-name').textContent = actor.name;
         document.getElementById('sb-role').textContent = actor.role;
@@ -1669,7 +1807,7 @@
         const tl = document.getElementById('sb-timeline');
         tl.innerHTML = '';
 
-        const sorted = [...actor.events].sort((a,b) => new Date(a.date) - new Date(b.date));
+        const sorted = [...actor.events].sort((a, b) => new Date(a.date) - new Date(b.date));
         
         sorted.forEach(ev => {
           const div = document.createElement('div');
@@ -1689,6 +1827,7 @@
       deselectActor() {
         DataModel.selectedActor = null;
         document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarBackdrop').classList.remove('visible');
         Renderer.draw();
       }
     };
