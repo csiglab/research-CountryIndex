@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>New Zealand Actor Space — Index Gentium</title>
   
-  <!-- Dark Mode Flash Prevention -->
   <script>
     (function() {
       const theme = localStorage.getItem('index-gentium-theme') || 
@@ -542,101 +541,6 @@
       transform: rotate(180deg);
     }
 
-    .canvas-controls {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-      z-index: 10;
-      pointer-events: auto;
-    }
-
-    .discrete-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--card) 70%, transparent);
-      backdrop-filter: blur(8px);
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-      font-size: 1rem;
-      cursor: pointer;
-    }
-
-    .discrete-btn:hover {
-      background: var(--card);
-      color: var(--fg);
-      border-color: var(--accent);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .discrete-btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
-    }
-
-    .discrete-btn svg {
-      width: 16px;
-      height: 16px;
-    }
-
-    /* Minimap */
-    .minimap-container {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 56px;
-      background: color-mix(in srgb, var(--bg-subtle) 50%, transparent);
-      border-left: 1px solid var(--border);
-      z-index: 8;
-      pointer-events: auto;
-    }
-
-    .minimap-canvas {
-      display: block;
-      cursor: pointer;
-    }
-
-    .minimap-viewport {
-      position: absolute;
-      left: 2px;
-      right: 2px;
-      background: color-mix(in srgb, var(--accent) 20%, transparent);
-      border: 1px solid var(--accent);
-      border-radius: 2px;
-      pointer-events: auto;
-      cursor: ns-resize;
-      transition: background 0.15s ease;
-    }
-
-    .minimap-viewport:hover {
-      background: color-mix(in srgb, var(--accent) 30%, transparent);
-    }
-
-    .minimap-viewport.dragging {
-      background: color-mix(in srgb, var(--accent) 40%, transparent);
-    }
-
-    .minimap-label {
-      position: absolute;
-      left: 4px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      color: var(--muted);
-      pointer-events: none;
-      opacity: 0.8;
-    }
-
-    .minimap-label.top { top: 6px; }
-    .minimap-label.bottom { bottom: 6px; }
-
     /* Year Quick-Jump */
     .year-jump-panel {
       position: absolute;
@@ -782,8 +686,128 @@
     }
 
     /* ========================================
-       ELEGANT HELP MODAL
+       OPTION 3: NAVIGATION STRIP (RIGHT)
        ======================================== */
+    .nav-strip {
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 56px;
+      background: color-mix(in srgb, var(--bg-subtle) 40%, transparent);
+      border-left: 1px solid var(--border);
+      z-index: 8;
+      pointer-events: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Controls Section (Top) */
+    .nav-strip-controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 12px 0;
+      gap: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .nav-strip-btn {
+      width: 32px;
+      height: 32px;
+      border-radius: 4px;
+      border: 1px solid var(--border);
+      background: color-mix(in srgb, var(--card) 70%, transparent);
+      backdrop-filter: blur(8px);
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .nav-strip-btn:hover {
+      background: var(--card);
+      color: var(--fg);
+      border-color: var(--accent);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    }
+
+    .nav-strip-btn:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .nav-strip-btn svg {
+      width: 16px;
+      height: 16px;
+    }
+
+    .nav-strip-btn.help-btn {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1rem;
+      font-weight: 600;
+      font-style: italic;
+    }
+
+    .nav-strip-divider {
+      width: 24px;
+      height: 1px;
+      background: var(--border);
+      margin: 4px 0;
+    }
+
+    /* Minimap Section (Bottom/Fill) */
+    .nav-strip-minimap {
+      flex: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+    }
+
+    .minimap-canvas {
+      display: block;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .minimap-viewport {
+      position: absolute;
+      left: 2px;
+      right: 2px;
+      background: color-mix(in srgb, var(--accent) 20%, transparent);
+      border: 1px solid var(--accent);
+      border-radius: 2px;
+      pointer-events: auto;
+      cursor: ns-resize;
+      transition: background 0.15s ease;
+    }
+
+    .minimap-viewport:hover {
+      background: color-mix(in srgb, var(--accent) 30%, transparent);
+    }
+
+    .minimap-viewport.dragging {
+      background: color-mix(in srgb, var(--accent) 40%, transparent);
+    }
+
+    .minimap-label {
+      position: absolute;
+      left: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: var(--muted);
+      pointer-events: none;
+      opacity: 0.8;
+      z-index: 1;
+    }
+
+    .minimap-label.top { top: 6px; }
+    .minimap-label.bottom { bottom: 6px; }
+
+    /* Help Modal */
     .help-modal-backdrop {
       position: fixed;
       inset: 0;
@@ -935,12 +959,6 @@
       min-width: 36px;
     }
 
-    .key-plus {
-      font-size: 10px;
-      color: var(--muted);
-      font-weight: 300;
-    }
-
     .help-action {
       font-family: 'Inter', sans-serif;
       font-size: 0.8125rem;
@@ -970,38 +988,6 @@
       border-radius: 3px;
       font-size: 9px;
       margin: 0 2px;
-    }
-
-    /* Help Button */
-    .help-btn {
-      width: 32px;
-      height: 32px;
-      border-radius: 4px;
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--card) 70%, transparent);
-      backdrop-filter: blur(8px);
-      color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
-      cursor: pointer;
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1rem;
-      font-weight: 600;
-      font-style: italic;
-    }
-
-    .help-btn:hover {
-      background: var(--card);
-      color: var(--accent);
-      border-color: var(--accent);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .help-btn:focus-visible {
-      outline: 2px solid var(--accent);
-      outline-offset: 2px;
     }
 
     /* Tooltip */
@@ -1424,26 +1410,6 @@
             Viewing: <span id="rangeStart">1800</span> – <span id="rangeEnd">2027</span>
           </div>
 
-          <!-- Canvas Controls -->
-          <div class="canvas-controls" id="vizControls">
-             <button id="btn-zoom-in" class="discrete-btn" aria-label="Zoom In">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-             </button>
-             <button id="btn-zoom-out" class="discrete-btn" aria-label="Zoom Out">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
-             </button>
-             <button id="btn-fit-all" class="discrete-btn" aria-label="Fit all data">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                 <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
-               </svg>
-             </button>
-             <button id="btn-reset" class="discrete-btn" aria-label="Reset View">
-               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h5M20 20v-5h-5"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L4 4m16 16l-1.64-1.64A9 9 0 0 1 3.51 15"/></svg>
-             </button>
-             <!-- Help Button -->
-             <button id="btn-help" class="help-btn" aria-label="Keyboard shortcuts">?</button>
-          </div>
-
           <!-- Decade Links -->
           <div class="decade-links-container" id="decadeLinks">
             <button class="decade-link" data-decade="1800">1800</button>
@@ -1457,12 +1423,35 @@
             <button class="decade-link" data-decade="2000">2000</button>
           </div>
 
-          <!-- Minimap -->
-          <div class="minimap-container" id="minimapContainer">
-            <canvas id="minimap-canvas" class="minimap-canvas"></canvas>
-            <div class="minimap-viewport" id="minimapViewport"></div>
-            <div class="minimap-label top" id="minimapTop">2027</div>
-            <div class="minimap-label bottom" id="minimapBottom">1800</div>
+          <!-- OPTION 3: Navigation Strip (Right) -->
+          <div class="nav-strip" id="navStrip">
+            <!-- Controls Section -->
+            <div class="nav-strip-controls">
+              <button id="btn-zoom-in" class="nav-strip-btn" aria-label="Zoom In" title="Zoom In (+)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
+              </button>
+              <button id="btn-zoom-out" class="nav-strip-btn" aria-label="Zoom Out" title="Zoom Out (-)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
+              </button>
+              <button id="btn-fit-all" class="nav-strip-btn" aria-label="Fit all data" title="Fit All Events (F)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/>
+                </svg>
+              </button>
+              <button id="btn-reset" class="nav-strip-btn" aria-label="Reset View" title="Reset View (Esc)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h5M20 20v-5h-5"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L4 4m16 16l-1.64-1.64A9 9 0 0 1 3.51 15"/></svg>
+              </button>
+              <div class="nav-strip-divider"></div>
+              <button id="btn-help" class="nav-strip-btn help-btn" aria-label="Keyboard shortcuts" title="Help (?)">?</button>
+            </div>
+            
+            <!-- Minimap Section -->
+            <div class="nav-strip-minimap" id="minimapArea">
+              <canvas id="minimap-canvas" class="minimap-canvas"></canvas>
+              <div class="minimap-viewport" id="minimapViewport"></div>
+              <div class="minimap-label top" id="minimapTop">2027</div>
+              <div class="minimap-label bottom" id="minimapBottom">1800</div>
+            </div>
           </div>
           
           <div id="loading-indicator">Loading actor-set.json...</div>
@@ -1520,7 +1509,7 @@
     </div>
   </aside>
 
-  <!-- ELEGANT HELP MODAL -->
+  <!-- Help Modal -->
   <div class="help-modal-backdrop" id="helpModal" role="dialog" aria-modal="true" aria-labelledby="helpModalTitle">
     <div class="help-modal">
       <div class="help-modal-header">
@@ -1533,76 +1522,54 @@
       </div>
       
       <div class="help-modal-body">
-        <!-- Navigation -->
         <div class="help-section">
           <div class="help-section-title">Navigation</div>
           <div class="help-row">
             <span class="help-action">Pan up</span>
-            <div class="help-keys">
-              <span class="key">↑</span>
-            </div>
+            <div class="help-keys"><span class="key">↑</span></div>
           </div>
           <div class="help-row">
             <span class="help-action">Pan down</span>
-            <div class="help-keys">
-              <span class="key">↓</span>
-            </div>
+            <div class="help-keys"><span class="key">↓</span></div>
           </div>
           <div class="help-row">
             <span class="help-action">Go to start (1800)</span>
-            <div class="help-keys">
-              <span class="key wide">Home</span>
-            </div>
+            <div class="help-keys"><span class="key wide">Home</span></div>
           </div>
           <div class="help-row">
             <span class="help-action">Go to end (2027)</span>
-            <div class="help-keys">
-              <span class="key wide">End</span>
-            </div>
+            <div class="help-keys"><span class="key wide">End</span></div>
           </div>
         </div>
 
-        <!-- Zoom -->
         <div class="help-section">
           <div class="help-section-title">Zoom</div>
           <div class="help-row">
             <span class="help-action">Zoom in</span>
-            <div class="help-keys">
-              <span class="key">+</span>
-            </div>
+            <div class="help-keys"><span class="key">+</span></div>
           </div>
           <div class="help-row">
             <span class="help-action">Zoom out</span>
-            <div class="help-keys">
-              <span class="key">−</span>
-            </div>
+            <div class="help-keys"><span class="key">−</span></div>
           </div>
           <div class="help-row">
             <span class="help-action">Fit all events</span>
-            <div class="help-keys">
-              <span class="key">F</span>
-            </div>
+            <div class="help-keys"><span class="key">F</span></div>
           </div>
         </div>
 
-        <!-- General -->
         <div class="help-section">
           <div class="help-section-title">General</div>
           <div class="help-row">
             <span class="help-action">Reset view</span>
-            <div class="help-keys">
-              <span class="key wide">Esc</span>
-            </div>
+            <div class="help-keys"><span class="key wide">Esc</span></div>
           </div>
           <div class="help-row">
             <span class="help-action">Show this help</span>
-            <div class="help-keys">
-              <span class="key">?</span>
-            </div>
+            <div class="help-keys"><span class="key">?</span></div>
           </div>
         </div>
 
-        <!-- Mouse -->
         <div class="help-section">
           <div class="help-section-title">Mouse & Gestures</div>
           <div class="help-row">
@@ -1941,8 +1908,8 @@
 
       minimapCanvas: null,
       minimapCtx: null,
+      minimapArea: null,
       minimapWidth: 56,
-      minimapHeight: 0,
 
       init() {
         this.canvas = document.getElementById('viz-canvas');
@@ -1950,6 +1917,7 @@
         
         this.minimapCanvas = document.getElementById('minimap-canvas');
         this.minimapCtx = this.minimapCanvas.getContext('2d');
+        this.minimapArea = document.getElementById('minimapArea');
         
         this.timeRange = this.maxDate - this.minDate;
         
@@ -1971,12 +1939,15 @@
         this.canvas.style.width = this.width + 'px';
         this.canvas.style.height = this.height + 'px';
 
-        this.minimapHeight = this.height;
+        // Minimap resize - based on the minimap area container
+        const minimapRect = this.minimapArea.getBoundingClientRect();
+        const minimapHeight = minimapRect.height;
+        
         this.minimapCanvas.width = this.minimapWidth * dpr;
-        this.minimapCanvas.height = this.minimapHeight * dpr;
+        this.minimapCanvas.height = minimapHeight * dpr;
         this.minimapCtx.scale(dpr, dpr);
         this.minimapCanvas.style.width = this.minimapWidth + 'px';
-        this.minimapCanvas.style.height = this.minimapHeight + 'px';
+        this.minimapCanvas.style.height = minimapHeight + 'px';
 
         this.updateHTMLLabels();
       },
@@ -2186,15 +2157,15 @@
         const ctx = this.minimapCtx;
         const colors = this.getColors();
         
-        ctx.clearRect(0, 0, this.minimapWidth, this.minimapHeight);
+        const minimapHeight = this.minimapCanvas.height / (window.devicePixelRatio || 1);
         
-        ctx.fillStyle = colors.bgSubtle;
-        ctx.globalAlpha = 0.5;
-        ctx.fillRect(0, 0, this.minimapWidth, this.minimapHeight);
-        ctx.globalAlpha = 1.0;
+        ctx.clearRect(0, 0, this.minimapWidth, minimapHeight);
+        
+        ctx.fillStyle = 'transparent';
+        ctx.fillRect(0, 0, this.minimapWidth, minimapHeight);
 
         const events = DataModel.getEvents();
-        const contentHeight = this.minimapHeight - this.marginTop - this.marginBottom;
+        const contentHeight = minimapHeight - this.marginTop - this.marginBottom;
         
         events.forEach(ev => {
           const normalized = (ev.date.getTime() - this.minDate) / this.timeRange;
@@ -2217,7 +2188,8 @@
 
       updateMinimapViewport() {
         const viewport = document.getElementById('minimapViewport');
-        const contentHeight = this.minimapHeight - this.marginTop - this.marginBottom;
+        const minimapHeight = this.minimapCanvas.height / (window.devicePixelRatio || 1);
+        const contentHeight = minimapHeight - this.marginTop - this.marginBottom;
         
         const topY = this.marginTop;
         const bottomY = this.height - this.marginBottom;
@@ -2280,13 +2252,9 @@
         const closeBtn = document.getElementById('helpModalClose');
         const helpBtn = document.getElementById('btn-help');
         
-        // Open modal
         helpBtn.addEventListener('click', () => this.open());
-        
-        // Close modal
         closeBtn.addEventListener('click', () => this.close());
         
-        // Close on backdrop click
         this.modal.addEventListener('click', (e) => {
           if (e.target === this.modal) this.close();
         });
@@ -2325,7 +2293,6 @@
         const tooltip = document.getElementById('tooltip');
         const sidebarBackdrop = document.getElementById('sidebarBackdrop');
 
-        // Legend tags
         const tags = document.querySelectorAll('.viz-tag');
         tags.forEach(tag => {
           tag.addEventListener('click', (e) => {
@@ -2336,7 +2303,6 @@
           });
         });
 
-        // Canvas focus
         canvas.setAttribute('tabindex', '0');
         
         canvas.addEventListener('mousedown', (e) => {
@@ -2383,7 +2349,6 @@
           this.applyZoom(zoomFactor, e.offsetY);
         }, { passive: false });
 
-        // Buttons
         document.getElementById('btn-zoom-in').addEventListener('click', () => {
           this.applyZoom(1.3, Renderer.height / 2);
         });
@@ -2401,7 +2366,6 @@
           Renderer.panY = 0;
         });
 
-        // Year jump
         const yearInput = document.getElementById('yearInput');
         yearInput.addEventListener('keydown', (e) => {
           if (e.key === 'Enter') {
@@ -2414,7 +2378,6 @@
           this.jumpToYear(yearInput.value);
         });
 
-        // Decade links
         const decadeLinks = document.querySelectorAll('.decade-link');
         decadeLinks.forEach(link => {
           link.addEventListener('click', () => {
@@ -2423,10 +2386,8 @@
           });
         });
 
-        // Minimap
         this.initMinimapInteraction();
 
-        // Sidebar
         sidebarBackdrop.addEventListener('click', () => {
           this.deselectActor();
         });
@@ -2435,16 +2396,13 @@
           this.deselectActor();
         });
 
-        // Keyboard
         this.initKeyboardNavigation();
         
-        // Init help modal
         HelpModal.init();
       },
 
       initKeyboardNavigation() {
         document.addEventListener('keydown', (e) => {
-          // Skip if typing in input
           if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
             return;
           }
@@ -2486,7 +2444,6 @@
               break;
               
             case 'Escape':
-              // Close help modal first, then sidebar, then reset
               if (document.getElementById('helpModal').classList.contains('visible')) {
                 HelpModal.close();
               } else if (document.getElementById('sidebar').classList.contains('open')) {
@@ -2615,7 +2572,8 @@
 
       handleMinimapDrag(clientY) {
         const dy = clientY - this.minimapDragStartY;
-        const contentHeight = Renderer.minimapHeight - Renderer.marginTop - Renderer.marginBottom;
+        const minimapHeight = Renderer.minimapCanvas.height / (window.devicePixelRatio || 1);
+        const contentHeight = minimapHeight - Renderer.marginTop - Renderer.marginBottom;
         const H = Renderer.height - Renderer.marginTop - Renderer.marginBottom;
         const panScale = (H * Renderer.zoom) / contentHeight;
         
@@ -2623,7 +2581,8 @@
       },
 
       jumpToMinimapPosition(y) {
-        const contentHeight = Renderer.minimapHeight - Renderer.marginTop - Renderer.marginBottom;
+        const minimapHeight = Renderer.minimapCanvas.height / (window.devicePixelRatio || 1);
+        const contentHeight = minimapHeight - Renderer.marginTop - Renderer.marginBottom;
         const normalized = (y - Renderer.marginTop) / contentHeight;
         
         const targetTime = Renderer.minDate + normalized * Renderer.timeRange;
