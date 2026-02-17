@@ -230,7 +230,7 @@
     .breadcrumb-nav a:hover::after { width: calc(100% - 1rem); }
     .breadcrumb-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
-    .breadcrumb-separator { color: var(--border); font-weight: 300; user-select: none; }
+    .breadcrumb-separator { color: var(--border); font-weight: 300; user-select: no; }
 
     .breadcrumb-current {
       color: var(--fg);
@@ -285,8 +285,9 @@
     .font-body { font-family: 'Inter', system-ui, sans-serif; }
     .font-meta { font-family: 'JetBrains Mono', monospace; }
 
-    .type-hero { font-size: 2.5rem; line-height: 1.1; letter-spacing: -0.02em; }
-    @media (min-width: 768px) { .type-hero { font-size: 3.25rem; } }
+    .type-hero { font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; }
+    @media (min-width: 768px) { .type-hero { font-size: 4rem; } }
+    
     .type-section { font-size: 1.5rem; line-height: 1.3; }
     .type-card-title { font-size: 1.25rem; line-height: 1.3; }
     .type-data-value { font-size: 2rem; line-height: 1; }
@@ -303,20 +304,30 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     
-    .delay-1 { transition-delay: 0.15s; }
-    .delay-2 { transition-delay: 0.3s; }
-    .delay-3 { transition-delay: 0.45s; }
-    .delay-4 { transition-delay: 0.6s; }
+    #statsGrid .data-card {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: 
+        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
+        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
+        border-color 0.3s ease, 
+        box-shadow 0.3s ease;
+    }
 
-    /* Staggered Grid Reveal for Stats */
     .reveal.visible #statsGrid .data-card {
       opacity: 1;
       transform: translateY(0);
     }
-    .reveal.visible #statsGrid .data-card:nth-child(1) { transition-delay: 0.1s; }
-    .reveal.visible #statsGrid .data-card:nth-child(2) { transition-delay: 0.2s; }
-    .reveal.visible #statsGrid .data-card:nth-child(3) { transition-delay: 0.3s; }
-    .reveal.visible #statsGrid .data-card:nth-child(4) { transition-delay: 0.4s; }
+
+    .reveal.visible #statsGrid .data-card:nth-child(1) { transition-delay: 0.05s; }
+    .reveal.visible #statsGrid .data-card:nth-child(2) { transition-delay: 0.15s; }
+    .reveal.visible #statsGrid .data-card:nth-child(3) { transition-delay: 0.25s; }
+    .reveal.visible #statsGrid .data-card:nth-child(4) { transition-delay: 0.35s; }
+
+    .delay-1 { transition-delay: 0.15s; }
+    .delay-2 { transition-delay: 0.3s; }
+    .delay-3 { transition-delay: 0.45s; }
+    .delay-4 { transition-delay: 0.6s; }
 
     @media (prefers-reduced-motion: reduce) {
       .reveal, #statsGrid .data-card { opacity: 1; transform: none; transition: none; }
@@ -342,28 +353,17 @@
       display: block;
     }
 
-    /* Canvas Overlays for Labels */
     .canvas-label-overlay {
       position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none; 
-      z-index: 2;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none; z-index: 2;
     }
 
-    /* Time Flow Label (Top Left) */
     .canvas-time-flow {
       position: absolute;
-      top: 24px;
-      left: 24px;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 0.5rem;
-      pointer-events: none;
-      user-select: none;
+      top: 24px; left: 24px;
+      display: flex; flex-direction: column; align-items: flex-start; gap: 0.5rem;
+      pointer-events: none; user-select: none;
     }
     
     .time-flow-text {
@@ -377,29 +377,22 @@
       transform: rotate(180deg);
     }
 
-    /* Discrete Controls (Top Right) */
     .canvas-controls {
       position: absolute;
-      top: 20px;
-      right: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+      top: 20px; right: 20px;
+      display: flex; flex-direction: column; gap: 0.5rem;
       z-index: 10;
       pointer-events: auto;
     }
 
     .discrete-btn {
-      width: 32px;
-      height: 32px;
+      width: 32px; height: 32px;
       border-radius: 4px;
       border: 1px solid var(--border);
       background: color-mix(in srgb, var(--card) 70%, transparent);
       backdrop-filter: blur(8px);
       color: var(--muted);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      display: flex; align-items: center; justify-content: center;
       transition: all 0.2s ease;
       font-size: 1rem;
       cursor: pointer;
@@ -412,10 +405,7 @@
       box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    .discrete-btn svg {
-      width: 16px;
-      height: 16px;
-    }
+    .discrete-btn svg { width: 16px; height: 16px; }
 
     /* Tooltip */
     .tooltip-box {
@@ -441,19 +431,16 @@
       border-radius: 4px; 
       padding: 1.5rem 1rem;
       text-align: center;
-      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
       position: relative;
       display: flex;
       flex-direction: column;
       justify-content: center;
-      gap: 0.5rem;
-      opacity: 0; 
-      transform: translateY(10px);
+      gap: 0.75rem;
     }
     .data-card::before { content: ''; position: absolute; top: 0; left: 50%; transform: translateX(-50%); width: 0; height: 2px; background: var(--accent); transition: width 0.3s ease; }
     
     .data-card:hover::before { width: 40px; }
-    .data-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06); border-color: var(--accent); }
+    .data-card:hover { transform: translateY(-4px); box-shadow: 0 16px 32px -12px rgba(0,0,0,0.08); border-color: var(--accent); }
     .data-card:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
     .data-card:hover .type-data-value { color: var(--accent); }
 
@@ -466,7 +453,7 @@
       font-weight: 400;
       position: relative;
       hyphens: auto;
-      max-width: 52rem; 
+      max-width: 52rem;
     }
     
     .definition-lead::before {
@@ -610,7 +597,6 @@
       transform: rotate(45deg); 
     }
 
-    /* Loading */
     #loading-indicator {
       position: absolute;
       top: 50%;
@@ -623,7 +609,7 @@
       transition: opacity 0.5s;
     }
 
-    /* === NEW: Visualization Control Tags === */
+    /* === Visualization Control Tags - Refined === */
     .viz-controls-bar {
       display: flex;
       flex-wrap: wrap;
@@ -641,101 +627,80 @@
       padding: 0.5rem 1rem;
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 9999px;
-      font-family: 'JetBrains Mono', monospace;
+      border-radius: 3px; 
+      font-family: 'Inter', sans-serif; 
       font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
+      font-weight: 500;
+      letter-spacing: 0.02em;
       color: var(--muted);
       cursor: pointer;
-      transition: all 0.2s ease;
+      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
       user-select: none;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+      box-shadow: 0 1px 2px rgba(0,0,0,0.02);
+      position: relative;
+    }
+
+    .viz-tag::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: currentColor; /* Uses text color */
+      transition: width 0.25s cubic-bezier(0.22, 1, 0.36, 1);
+      border-radius: 1px;
     }
 
     .viz-tag:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+      background-color: color-mix(in srgb, var(--accent) 6%, var(--card));
+      box-shadow: 0 2px 8px rgba(61, 107, 153, 0.08);
+    }
+    
+    .dark .viz-tag:hover {
+      background-color: color-mix(in srgb, var(--accent) 10%, var(--card));
+      box-shadow: 0 2px 8px rgba(147, 197, 253, 0.12);
+    }
+
+    .viz-tag:hover::after {
+      width: calc(100% - 1rem);
     }
 
     .viz-tag.active {
-      background: var(--bg);
       color: var(--fg);
-      border-color: currentColor;
+      border-color: var(--accent);
+      background: var(--bg);
+    }
+    
+    .viz-tag.active::after {
+       width: calc(100% - 1rem);
     }
 
-    .viz-tag.disabled {
-      opacity: 0.4;
-      cursor: not-allowed;
+    .viz-tag.disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* Type-specific colors applied directly to the tag */
+    .viz-tag[data-type="public"] { --tag-color: var(--type-public); }
+    .viz-tag[data-type="hybrid"] { --tag-color: var(--type-hybrid); }
+    .viz-tag[data-type="private"] { --tag-color: var(--type-private); }
+
+    .viz-tag:hover {
+      color: var(--tag-color);
+      border-color: color-mix(in srgb, var(--tag-color) 40%, var(--border));
+      background-color: color-mix(in srgb, var(--tag-color) 6%, var(--card));
     }
 
-    .viz-tag-indicator {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      flex-shrink: 0;
+    .viz-tag.active {
+      color: var(--tag-color);
+      border-color: var(--tag-color);
     }
-
-    .viz-tag[data-type="public"] .viz-tag-indicator { background: var(--type-public); }
-    .viz-tag[data-type="hybrid"] .viz-tag-indicator { background: var(--type-hybrid); }
-    .viz-tag[data-type="private"] .viz-tag-indicator { background: var(--type-private); }
-
-    .viz-tag[data-type="public"] { --hover-color: var(--type-public); }
-    .viz-tag[data-type="hybrid"] { --hover-color: var(--type-hybrid); }
-    .viz-tag[data-type="private"] { --hover-color: var(--type-private); }
-
-    .viz-tag:hover:not(.disabled) {
-      border-color: var(--hover-color);
-      color: var(--hover-color);
-    }
-
-    .viz-tag.active[data-type="public"] { border-color: var(--type-public); color: var(--type-public); }
-    .viz-tag.active[data-type="hybrid"] { border-color: var(--type-hybrid); color: var(--type-hybrid); }
-    .viz-tag.active[data-type="private"] { border-color: var(--type-private); color: var(--type-private); }
 
     .viz-tag-count {
+      font-family: 'JetBrains Mono', monospace;
       font-size: 0.65rem;
       opacity: 0.7;
       margin-left: 0.25rem;
-    }
-
-    /* Column headers inside canvas area */
-    .viz-column-headers {
-      position: absolute;
-      top: 60px;
-      left: 0;
-      right: 0;
-      height: 40px;
-      display: flex;
-      justify-content: space-around;
-      padding: 0 60px;
-      pointer-events: none;
-      z-index: 3;
-    }
-
-    .viz-column-header {
-      text-align: center;
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.125rem;
-      font-style: italic;
-      color: var(--muted);
-      opacity: 0.6;
-      transition: opacity 0.3s ease;
-    }
-
-    .viz-column-header.active {
-      opacity: 1;
-      color: var(--fg);
-    }
-
-    .viz-column-header::after {
-      content: '';
-      display: block;
-      width: 40px;
-      height: 2px;
-      margin: 0.5rem auto 0;
-      background: currentColor;
-      opacity: 0.3;
     }
   </style>
 </head>
@@ -807,19 +772,19 @@
         <p class="font-body type-secondary text-muted">Overview of Data Points</p>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="statsGrid">
-        <div class="data-card">
+        <div class="data-card" tabindex="0">
           <div class="font-display type-data-value font-medium text-fg" id="stat-actors">—</div>
           <div class="font-body type-label text-muted uppercase font-medium">Total Actors</div>
         </div>
-        <div class="data-card">
+        <div class="data-card" tabindex="0">
           <div class="font-display type-data-value font-medium text-fg" id="stat-events">—</div>
           <div class="font-body type-label text-muted uppercase font-medium">Total Events</div>
         </div>
-        <div class="data-card">
+        <div class="data-card" tabindex="0">
           <div class="font-display type-data-value font-medium text-fg" id="stat-range">—</div>
           <div class="font-body type-label text-muted uppercase font-medium">Year Span</div>
         </div>
-         <div class="data-card">
+         <div class="data-card" tabindex="0">
           <div class="font-display type-data-value font-medium text-fg" id="stat-decades">—</div>
           <div class="font-body type-label text-muted uppercase font-medium">Decades</div>
         </div>
@@ -839,20 +804,17 @@
           Each point marks a significant event—founding, transformation, or dissolution—organized by actor type across three governance categories.
         </p>
         
-        <!-- Interactive Legend Tags -->
+        <!-- Interactive Legend Tags - Dots Removed -->
         <div class="viz-controls-bar" id="vizLegend">
           <button class="viz-tag active" data-type="public" aria-pressed="true">
-            <span class="viz-tag-indicator"></span>
             <span>Public</span>
             <span class="viz-tag-count" id="count-public">0</span>
           </button>
           <button class="viz-tag active" data-type="hybrid" aria-pressed="true">
-            <span class="viz-tag-indicator"></span>
             <span>Hybrid</span>
             <span class="viz-tag-count" id="count-hybrid">0</span>
           </button>
           <button class="viz-tag active" data-type="private" aria-pressed="true">
-            <span class="viz-tag-indicator"></span>
             <span>Private</span>
             <span class="viz-tag-count" id="count-private">0</span>
           </button>
@@ -864,9 +826,7 @@
           <canvas id="viz-canvas"></canvas>
           
           <!-- Overlay Labels -->
-          <div class="canvas-label-overlay" id="canvasLabels">
-             <!-- Injected by JS -->
-          </div>
+          <div class="canvas-label-overlay" id="canvasLabels"></div>
 
           <!-- Discrete Controls -->
           <div class="canvas-controls" id="vizControls">
@@ -1249,7 +1209,7 @@
       maxDate: new Date('2025-12-31').getTime(),
       timeRange: 0,
       
-      marginTop: 60, // Space for time label
+      marginTop: 60,
       marginBottom: 60,
       marginLeft: 60,
       marginRight: 20,
@@ -1285,12 +1245,9 @@
         const container = document.getElementById('canvasLabels');
         container.innerHTML = '';
         
-        // Time Flow Label (Top Left)
         const timeFlow = document.createElement('div');
         timeFlow.className = 'canvas-time-flow';
-        timeFlow.innerHTML = `
-          <span class="time-flow-text">Time Flow</span>
-        `;
+        timeFlow.innerHTML = `<span class="time-flow-text">Time Flow</span>`;
         container.appendChild(timeFlow);
       },
 
@@ -1614,7 +1571,7 @@
         
         document.getElementById('sb-region').textContent = actor.regionOfActivity || actor.region || 'Unknown';
         document.getElementById('sb-desc').textContent = actor.description || 'No description available.';
-
+        
         const tl = document.getElementById('sb-timeline');
         tl.innerHTML = '';
 
