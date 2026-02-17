@@ -377,71 +377,134 @@
       transform: rotate(180deg);
     }
 
-    /* Elegant Column Tags (Bottom) */
-    .viz-column-tag {
+    /* Column Labels (Inside Canvas - Subtle) */
+    .column-label {
       position: absolute;
-      bottom: 24px; /* Moved to bottom */
+      bottom: 16px;
       transform: translateX(-50%);
-      text-align: center;
-      pointer-events: auto;
-      padding: 0.75rem 1.5rem;
-      background: color-mix(in srgb, var(--card) 85%, transparent);
-      backdrop-filter: blur(8px);
-      border: 1px solid var(--border);
-      border-radius: 4px;
-      box-shadow: 0 4px 16px rgba(0,0,0,0.04);
-      transition: all 0.3s ease;
-    }
-
-    .viz-column-tag:hover {
-      border-color: color-mix(in srgb, var(--accent) 50%, var(--border));
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      transform: translateX(-50%) translateY(-2px);
-    }
-
-    .tag-title {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--fg);
-      font-style: italic;
-      letter-spacing: 0.02em;
-      line-height: 1.2;
-      position: relative;
-      display: inline-block;
-      padding-bottom: 0.5rem;
-      margin-bottom: 0.25rem;
-    }
-
-    /* The Elegant Underline */
-    .tag-title::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 60%;
-      height: 2px;
-      background: var(--border);
-      transition: all 0.3s ease;
-    }
-
-    /* Color Underlines based on Type */
-    .tag-public .tag-title::after { background: var(--type-public); }
-    .tag-private .tag-title::after { background: var(--type-private); }
-    .tag-hybrid .tag-title::after { background: var(--type-hybrid); }
-
-    .viz-column-tag:hover .tag-title::after {
-      width: 100%;
-    }
-
-    .tag-meta {
-      display: block;
       font-family: 'JetBrains Mono', monospace;
       font-size: 0.625rem;
       text-transform: uppercase;
-      letter-spacing: 0.1em;
+      letter-spacing: 0.12em;
       color: var(--muted);
+      opacity: 0.5;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    /* Filter Tags Above Visualization */
+    .filter-tags-container {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .filter-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.5rem 1rem;
+      border-radius: 9999px;
+      border: 1px solid var(--border);
+      background: var(--card);
+      font-family: 'Inter', sans-serif;
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+      user-select: none;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .filter-tag::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: currentColor;
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    .filter-tag:hover {
+      border-color: var(--accent);
+      color: var(--fg);
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+    }
+
+    .filter-tag:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
+
+    .filter-tag.active {
+      border-color: currentColor;
+      color: var(--fg);
+    }
+
+    .filter-tag.active::before {
+      opacity: 0.08;
+    }
+
+    .tag-indicator {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .filter-tag:hover .tag-indicator {
+      transform: scale(1.2);
+    }
+
+    .filter-tag.active .tag-indicator {
+      box-shadow: 0 0 0 2px color-mix(in srgb, currentColor 30%, transparent);
+    }
+
+    .tag-label {
+      position: relative;
+      z-index: 1;
+    }
+
+    .tag-count {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.6875rem;
+      font-weight: 500;
+      padding: 0.125rem 0.5rem;
+      background: var(--bg-subtle);
+      border-radius: 9999px;
+      color: var(--muted);
+      transition: all 0.2s ease;
+      position: relative;
+      z-index: 1;
+    }
+
+    .filter-tag.active .tag-count {
+      background: color-mix(in srgb, currentColor 15%, var(--bg-subtle));
+      color: inherit;
+    }
+
+    /* Tag Type Colors */
+    .filter-tag[data-type="public"] { --tag-color: var(--type-public); }
+    .filter-tag[data-type="private"] { --tag-color: var(--type-private); }
+    .filter-tag[data-type="hybrid"] { --tag-color: var(--type-hybrid); }
+
+    .filter-tag .tag-indicator { background: var(--tag-color); }
+    .filter-tag[data-type="public"].active { color: var(--type-public); }
+    .filter-tag[data-type="private"].active { color: var(--type-private); }
+    .filter-tag[data-type="hybrid"].active { color: var(--type-hybrid); }
+
+    /* All Active State */
+    .filter-tag[data-type="all"] .tag-indicator {
+      background: linear-gradient(135deg, var(--type-public) 33%, var(--type-hybrid) 66%, var(--type-private) 100%);
+    }
+
+    .filter-tag[data-type="all"].active {
+      color: var(--fg);
     }
 
     /* Discrete Controls (Top Right) */
@@ -554,6 +617,16 @@
     @media (max-width: 768px) {
       .definition-lead::before { display: none; }
       .definition-lead { font-size: 1.25rem; }
+    }
+
+    /* Visualization Intro */
+    .viz-intro {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: var(--muted);
+      max-width: 58rem;
+      margin-bottom: 1.5rem;
     }
 
     /* Detail Sidebar */
@@ -783,10 +856,42 @@
     </div>
 
     <!-- [3] Visualization Section -->
-    <section class="reveal delay-4">
+    <section class="reveal delay-4" id="vizSection">
       <div class="mb-6">
         <h2 class="font-display type-section text-fg mb-1">Temporal Visualization</h2>
         <p class="font-body type-secondary text-muted">Vertical Timeline · Interactive</p>
+      </div>
+
+      <!-- Intro Paragraph -->
+      <p class="viz-intro">
+        This vertical timeline maps the lifespan and key events of registered actors across two centuries. 
+        Each column represents an actor category—public institutions, hybrid organizations, and private enterprises—allowing 
+        for comparative analysis of institutional development patterns. Use the filter tags to highlight specific categories, 
+        scroll to navigate temporally, and click any node to explore an actor's complete event history.
+      </p>
+
+      <!-- Filter Tags -->
+      <div class="filter-tags-container" id="filterTags" role="group" aria-label="Filter by actor type">
+        <button class="filter-tag active" data-type="all" aria-pressed="true">
+          <span class="tag-indicator"></span>
+          <span class="tag-label">All Actors</span>
+          <span class="tag-count" id="tag-count-all">—</span>
+        </button>
+        <button class="filter-tag" data-type="public" aria-pressed="false">
+          <span class="tag-indicator"></span>
+          <span class="tag-label">Public</span>
+          <span class="tag-count" id="tag-count-public">—</span>
+        </button>
+        <button class="filter-tag" data-type="hybrid" aria-pressed="false">
+          <span class="tag-indicator"></span>
+          <span class="tag-label">Hybrid</span>
+          <span class="tag-count" id="tag-count-hybrid">—</span>
+        </button>
+        <button class="filter-tag" data-type="private" aria-pressed="false">
+          <span class="tag-indicator"></span>
+          <span class="tag-label">Private</span>
+          <span class="tag-count" id="tag-count-private">—</span>
+        </button>
       </div>
 
       <div class="canvas-wrapper">
@@ -1064,6 +1169,7 @@
       actors: [],
       events: [],
       selectedActor: null,
+      activeFilter: 'all',
       stats: {
         totalActors: 0,
         totalEvents: 0,
@@ -1096,6 +1202,8 @@
         this.actors = rawData.actors || (Array.isArray(rawData) ? rawData : []);
         
         this.events = [];
+        this.stats.counts = { public: 0, private: 0, hybrid: 0 };
+        
         this.actors.forEach(actor => {
           if (actor.type === 'public') this.stats.counts.public++;
           else if (actor.type === 'private') this.stats.counts.private++;
@@ -1117,7 +1225,8 @@
               desc: ev.description || ev.desc || '',
               actorId: actor.id,
               actorName: actor.name,
-              actorType: actor.type
+              actorType: actor.type,
+              visible: true
             });
           });
         });
@@ -1128,6 +1237,7 @@
         this.stats.totalEvents = this.events.length;
         
         this.updateStatsUI();
+        this.updateFilterTags();
       },
 
       updateStatsUI() {
@@ -1141,7 +1251,34 @@
         document.getElementById('footerEntityCount').textContent = this.stats.totalActors;
       },
 
+      updateFilterTags() {
+        document.getElementById('tag-count-all').textContent = this.stats.totalActors;
+        document.getElementById('tag-count-public').textContent = this.stats.counts.public;
+        document.getElementById('tag-count-hybrid').textContent = this.stats.counts.hybrid;
+        document.getElementById('tag-count-private').textContent = this.stats.counts.private;
+      },
+
+      setFilter(filterType) {
+        this.activeFilter = filterType;
+        
+        this.events.forEach(ev => {
+          ev.visible = (filterType === 'all' || ev.actorType === filterType);
+        });
+
+        // Update tag states
+        document.querySelectorAll('.filter-tag').forEach(tag => {
+          const isActive = tag.dataset.type === filterType;
+          tag.classList.toggle('active', isActive);
+          tag.setAttribute('aria-pressed', isActive);
+        });
+      },
+
+      getVisibleEvents() { 
+        return this.events.filter(ev => ev.visible); 
+      },
+      
       getEvents() { return this.events; },
+      
       getActorById(id) { return this.actors.find(a => a.id === id); }
     };
 
@@ -1164,8 +1301,8 @@
       maxDate: new Date('2025-12-31').getTime(),
       timeRange: 0,
       
-      marginTop: 60, // Space for time label
-      marginBottom: 100, // Space for bottom tags
+      marginTop: 60,
+      marginBottom: 60,
       marginLeft: 60,
       marginRight: 20,
 
@@ -1203,34 +1340,25 @@
         const W = this.width - this.marginLeft - this.marginRight;
         const colW = W / 3;
 
-        // 1. Time Flow Label (Top Left)
+        // Time Flow Label (Top Left)
         const timeFlow = document.createElement('div');
         timeFlow.className = 'canvas-time-flow';
-        timeFlow.innerHTML = `
-          <span class="time-flow-text">Time Flow</span>
-        `;
+        timeFlow.innerHTML = `<span class="time-flow-text">Time Flow</span>`;
         container.appendChild(timeFlow);
 
-        // 2. Column Tags (Bottom)
+        // Subtle Column Labels (Bottom, inside canvas)
         const cols = [
-          { label: 'Public', type: 'public', x: this.marginLeft + colW * 0.5 },
-          { label: 'Hybrid', type: 'hybrid', x: this.marginLeft + colW * 1.5 },
-          { label: 'Private', type: 'private', x: this.marginLeft + colW * 2.5 }
+          { label: 'Public', x: this.marginLeft + colW * 0.5 },
+          { label: 'Hybrid', x: this.marginLeft + colW * 1.5 },
+          { label: 'Private', x: this.marginLeft + colW * 2.5 }
         ];
 
         cols.forEach(c => {
-          const div = document.createElement('div');
-          div.className = `viz-column-tag tag-${c.type}`;
-          div.style.left = `${c.x}px`;
-          
-          const count = DataModel.stats.counts[c.type] || 0;
-          
-          div.innerHTML = `
-            <div class="tag-title">${c.label}</div>
-            <span class="tag-meta">${count} Actors</span>
-          `;
-          
-          container.appendChild(div);
+          const label = document.createElement('div');
+          label.className = 'column-label';
+          label.style.left = `${c.x}px`;
+          label.textContent = c.label;
+          container.appendChild(label);
         });
       },
 
@@ -1273,6 +1401,7 @@
       draw() {
         const ctx = this.ctx;
         const colors = this.getColors();
+        const activeFilter = DataModel.activeFilter;
         
         ctx.clearRect(0, 0, this.width, this.height);
         ctx.fillStyle = colors.bg;
@@ -1281,11 +1410,22 @@
         const W = this.width - this.marginLeft - this.marginRight;
         const colW = W / 3;
 
-        // Draw Columns Background Stripes
-        ctx.fillStyle = colors.bgSubtle;
+        // Draw Columns Background Stripes (with filter awareness)
         ctx.globalAlpha = 0.3;
-        ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
-        ctx.fillRect(this.marginLeft + colW * 2, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
+        
+        if (activeFilter === 'all' || activeFilter === 'public') {
+          ctx.fillStyle = colors.public;
+          ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
+        }
+        if (activeFilter === 'all' || activeFilter === 'hybrid') {
+          ctx.fillStyle = colors.hybrid;
+          ctx.fillRect(this.marginLeft + colW, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
+        }
+        if (activeFilter === 'all' || activeFilter === 'private') {
+          ctx.fillStyle = colors.private;
+          ctx.fillRect(this.marginLeft + colW * 2, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
+        }
+        
         ctx.globalAlpha = 1.0;
 
         // Column separators
@@ -1352,6 +1492,9 @@
         let selectedPoints = [];
 
         events.forEach(ev => {
+          // Skip hidden events based on filter
+          if (!ev.visible) return;
+          
           const y = this.mapDateToY(ev.date.getTime());
           
           if (y < this.marginTop - 10 || y > this.height - this.marginBottom + 10) return;
@@ -1420,6 +1563,7 @@
         const canvas = Renderer.canvas;
         const tooltip = document.getElementById('tooltip');
 
+        // Drag/Pan
         canvas.addEventListener('mousedown', (e) => {
           if (e.button === 0) {
             Renderer.isDragging = true;
@@ -1444,6 +1588,7 @@
           canvas.style.cursor = 'ns-resize';
         });
 
+        // Click to select
         canvas.addEventListener('click', (e) => {
           const rect = canvas.getBoundingClientRect();
           const hit = this.findEvent(e.clientX - rect.left, e.clientY - rect.top);
@@ -1452,6 +1597,7 @@
           }
         });
 
+        // Wheel zoom
         canvas.addEventListener('wheel', (e) => {
           e.preventDefault();
           const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
@@ -1478,12 +1624,29 @@
           Renderer.panY = 0;
         });
 
+        // Sidebar close
         document.getElementById('close-sidebar').addEventListener('click', () => {
           this.deselectActor();
         });
 
+        // Escape key
         document.addEventListener('keydown', (e) => {
           if (e.key === 'Escape') this.deselectActor();
+        });
+
+        // Filter Tags
+        this.initFilterTags();
+      },
+
+      initFilterTags() {
+        const tags = document.querySelectorAll('.filter-tag');
+        
+        tags.forEach(tag => {
+          tag.addEventListener('click', () => {
+            const filterType = tag.dataset.type;
+            DataModel.setFilter(filterType);
+            Renderer.updateHTMLLabels();
+          });
         });
       },
 
@@ -1514,7 +1677,7 @@
       },
 
       findEvent(mx, my) {
-        const events = DataModel.getEvents();
+        const events = DataModel.getVisibleEvents();
         const radius = 10;
         
         for (let i = events.length - 1; i >= 0; i--) {
