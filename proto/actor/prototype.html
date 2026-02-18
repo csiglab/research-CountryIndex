@@ -29,6 +29,9 @@
             accent: 'var(--accent)',
             card: 'var(--card)',
             border: 'var(--border)',
+            private: 'var(--private)',
+            hybrid: 'var(--hybrid)',
+            public: 'var(--public)',
           },
           fontFamily: {
             display: ['"Cormorant Garamond"', 'Georgia', 'serif'],
@@ -48,11 +51,11 @@
       --card: #FFFFFF;
       --border: #D8E1EB;
       --bg-subtle: #F1F5F9;
-      --type-public: #2563EB;
-      --type-private: #DC2626;
-      --type-hybrid: #059669;
-      --grid-line: rgba(120, 140, 160, 0.08);
-      --grid-line-major: rgba(120, 140, 160, 0.15);
+      
+      /* Archival & Botanical Scheme - Light Mode */
+      --private: #1e3a5f;   /* Deep Navy */
+      --hybrid: #b45c07;    /* Burnt Amber */
+      --public: #166534;    /* Forest Green */
     }
 
     .dark {
@@ -63,11 +66,11 @@
       --card: #1E293B;
       --border: #334155;
       --bg-subtle: #172033;
-      --type-public: #3B82F6;
-      --type-private: #EF4444;
-      --type-hybrid: #10B981;
-      --grid-line: rgba(148, 163, 184, 0.06);
-      --grid-line-major: rgba(148, 163, 184, 0.12);
+      
+      /* Archival & Botanical Scheme - Dark Mode */
+      --private: #60a5fa;   /* Cornflower Blue */
+      --hybrid: #fbbf24;    /* Bright Amber */
+      --public: #34d399;    /* Emerald Green */
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -77,14 +80,6 @@
     ::-webkit-scrollbar-track { background: var(--bg-subtle); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-    ::selection {
-      background-color: color-mix(in srgb, var(--accent) 20%, transparent);
-      color: var(--fg);
-    }
-    .dark ::selection {
-      background-color: color-mix(in srgb, var(--accent) 30%, transparent);
-    }
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
@@ -99,32 +94,9 @@
       position: relative;
     }
 
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background-image: 
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(61, 107, 153, 0.04) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(61, 107, 153, 0.03) 0%, transparent 50%);
-      pointer-events: none;
-      z-index: 0;
-    }
+    .main-content { flex: 1 0 auto; width: 100%; position: relative; z-index: 1; }
 
-    .dark body::before {
-      background-image: 
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(147, 197, 253, 0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(147, 197, 253, 0.04) 0%, transparent 50%);
-    }
-
-    .main-content { 
-      flex: 1 0 auto; 
-      width: 100%; 
-      position: relative;
-      z-index: 1;
-    }
-    .site-footer { flex-shrink: 0; position: relative; z-index: 1; }
-
-    /* Header Styles */
+    /* Project Header */
     .project-header {
       position: sticky;
       top: 0;
@@ -132,28 +104,7 @@
       background: color-mix(in srgb, var(--card) 85%, transparent);
       border-bottom: 1px solid var(--border);
       backdrop-filter: blur(12px);
-      -webkit-backdrop-filter: blur(12px);
-      transition: box-shadow 0.3s ease, background 0.3s ease;
     }
-    
-    .project-header::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--accent), transparent);
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-    
-    .project-header.scrolled::after { opacity: 0.4; }
-    .project-header.scrolled { 
-      box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06); 
-      background: var(--card);
-    }
-    .dark .project-header.scrolled { box-shadow: 0 4px 24px rgba(0, 0, 0, 0.25); }
 
     .project-header-inner {
       max-width: 56rem;
@@ -162,232 +113,46 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1.5rem;
     }
 
-    .project-identity {
-      display: flex;
-      align-items: center;
-      gap: 0.875rem;
-      text-decoration: none;
-      transition: opacity 0.25s ease;
-    }
-    .project-identity:hover { opacity: 0.85; }
-    .project-identity:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; border-radius: 2px; }
-
+    .project-identity { display: flex; align-items: center; gap: 0.875rem; text-decoration: none; }
     .project-logo {
-      width: 38px;
-      height: 38px;
-      border-radius: 4px;
-      overflow: hidden;
-      flex-shrink: 0;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
-      border: 1px solid var(--border);
-      background: var(--bg-subtle);
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 38px; height: 38px; border-radius: 4px; border: 1px solid var(--border);
+      background: var(--bg-subtle); display: flex; align-items: center; justify-content: center;
     }
-    .project-identity:hover .project-logo { transform: scale(1.05); box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); }
+    .project-title { font-family: 'Cormorant Garamond', Georgia, serif; font-size: 1.125rem; font-weight: 500; color: var(--fg); }
+    .project-subtitle { font-family: 'JetBrains Mono', monospace; font-size: 0.625rem; color: var(--muted); letter-spacing: 0.08em; text-transform: uppercase; }
 
-    .project-title {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.125rem;
-      font-weight: 500;
-      color: var(--fg);
-      letter-spacing: 0.02em;
-      line-height: 1.2;
-    }
-
-    .project-subtitle {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.625rem;
-      color: var(--muted);
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      margin-top: 1px;
-    }
-
-    .nav-controls { display: flex; align-items: center; gap: 1.25rem; }
-
-    .breadcrumb-nav {
-      display: flex;
-      align-items: center;
-      gap: 0.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6875rem;
-      letter-spacing: 0.04em;
-    }
-
-    .breadcrumb-nav a {
-      color: var(--muted);
-      text-decoration: none;
-      padding: 0.25rem 0.5rem;
-      border-radius: 2px;
-      transition: all 0.2s ease;
-      position: relative;
-    }
-    .breadcrumb-nav a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0;
-      height: 1px;
-      background: var(--accent);
-      transition: all 0.2s ease;
-      transform: translateX(-50%);
-    }
-    .breadcrumb-nav a:hover { color: var(--fg); }
-    .breadcrumb-nav a:hover::after { width: calc(100% - 1rem); }
-    .breadcrumb-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-
-    .breadcrumb-separator { color: var(--border); font-weight: 300; user-select: none; }
-
-    .breadcrumb-current {
-      color: var(--fg);
-      font-weight: 500;
-      padding: 0.25rem 0.5rem;
-      background: var(--bg-subtle);
-      border-radius: 2px;
-      border: 1px solid var(--border);
-    }
-
-    /* Theme Toggle */
     .theme-toggle {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: var(--card);
-      color: var(--muted);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.25s ease;
-      flex-shrink: 0;
-      position: relative;
+      width: 32px; height: 32px; border-radius: 50%; border: 1px solid var(--border); background: var(--card);
+      color: var(--muted); cursor: pointer; display: flex; align-items: center; justify-content: center; position: relative;
     }
-    .theme-toggle:hover { color: var(--fg); border-color: var(--accent); transform: scale(1.05); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-    .theme-toggle:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
-    
-    .theme-toggle .icon-sun, 
-    .theme-toggle .icon-moon { 
-      position: absolute; 
-      transition: opacity 0.25s ease, transform 0.25s ease; 
-      width: 18px !important; 
-      height: 18px !important;
-    }
-
-    .theme-toggle .icon-moon { opacity: 1; transform: scale(1); }
-    .theme-toggle .icon-sun { opacity: 0; transform: scale(0.5); }
-    .dark .theme-toggle .icon-moon { opacity: 0; transform: scale(0.5); }
-    .dark .theme-toggle .icon-sun { opacity: 1; transform: scale(1); }
-
-    @media (max-width: 640px) {
-      .project-header-inner { flex-direction: column; align-items: flex-start; gap: 0.75rem; padding: 0.75rem 1rem; }
-      .nav-controls { width: 100%; justify-content: space-between; padding-top: 0.5rem; border-top: 1px solid var(--border); }
-    }
+    .theme-toggle .icon-sun, .theme-toggle .icon-moon { position: absolute; transition: opacity 0.25s ease; width: 18px; height: 18px; }
+    .theme-toggle .icon-moon { opacity: 1; } .theme-toggle .icon-sun { opacity: 0; }
+    .dark .theme-toggle .icon-moon { opacity: 0; } .dark .theme-toggle .icon-sun { opacity: 1; }
 
     /* Typography */
-    .font-display { 
-      font-family: 'Cormorant Garamond', Georgia, serif; 
-      font-feature-settings: "kern", "liga";
-    }
-    .font-body { font-family: 'Inter', system-ui, sans-serif; }
-    .font-meta { font-family: 'JetBrains Mono', monospace; }
-
+    .font-display { font-family: 'Cormorant Garamond', Georgia, serif; }
     .type-hero { font-size: 3.25rem; line-height: 1.1; letter-spacing: -0.02em; font-weight: 600; }
     @media (min-width: 768px) { .type-hero { font-size: 4rem; } }
-    .type-section { font-size: 1.5rem; line-height: 1.3; }
     
-    /* Hero Grid */
-    .hero-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 2rem;
-      margin-bottom: 2rem;
-      padding-bottom: 2rem;
-    }
-    @media (min-width: 768px) {
-      .hero-grid {
-        grid-template-columns: 1fr 1.4fr;
-        gap: 4rem;
-        align-items: start;
-      }
-    }
-
-    /* Animations */
+    /* Reveal Animations */
     .reveal {
       opacity: 0;
       transform: translateY(20px);
       transition: opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1), transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
-    
     .delay-1 { transition-delay: 0.15s; }
     .delay-2 { transition-delay: 0.3s; }
     .delay-3 { transition-delay: 0.45s; }
     .delay-4 { transition-delay: 0.6s; }
-
-    @media (prefers-reduced-motion: reduce) {
-      .reveal { opacity: 1; transform: none; transition: none; }
-    }
-
-    /* Definition Lead */
-    .definition-lead {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.35rem;
-      line-height: 1.6;
-      color: var(--fg);
-      font-weight: 400;
-      position: relative;
-      hyphens: auto;
-      max-width: 52rem;
-    }
-    
-    .definition-lead::before {
-      content: '';
-      position: absolute;
-      left: -1.5rem;
-      top: 0.25rem;
-      bottom: 0.25rem;
-      width: 2px;
-      background: var(--border);
-    }
-
-    .definition-lead:hover::before {
-      background: var(--accent);
-    }
-
-    @media (max-width: 768px) {
-      .definition-lead::before { display: none; }
-      .definition-lead { font-size: 1.25rem; }
-    }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
 
     /* Section Divider */
-    .section-divider {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 1rem;
-      margin: 2rem 0;
-    }
-    .section-divider::before, .section-divider::after {
-      content: '';
-      height: 1px;
-      flex: 1;
-      max-width: 120px;
-      background: linear-gradient(90deg, transparent, var(--border), transparent);
-    }
-    .section-divider .diamond { 
-      width: 6px; 
-      height: 6px; 
-      background: var(--border); 
-      transform: rotate(45deg); 
-    }
+    .section-divider { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 2rem 0; }
+    .section-divider::before, .section-divider::after { content: ''; height: 1px; flex: 1; max-width: 120px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
+    .section-divider .diamond { width: 6px; height: 6px; background: var(--border); transform: rotate(45deg); }
 
     /* Data Cards */
     .data-card {
@@ -396,681 +161,206 @@
       border-radius: 4px; 
       padding: 1.5rem 1rem;
       text-align: center;
-      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
-      position: relative;
+      transition: all 0.3s ease;
     }
-    
-    .data-card::before { 
-      content: ''; 
-      position: absolute; 
-      top: 0; 
-      left: 50%; 
-      transform: translateX(-50%); 
-      width: 0; 
-      height: 2px; 
-      background: var(--accent); 
-      transition: width 0.3s ease; 
-    }
-    
-    .data-card:hover::before { width: 40px; }
-    .data-card:hover { 
-      transform: translateY(-4px); 
-      box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06); 
-      border-color: var(--accent); 
-    }
+    .data-card:hover { transform: translateY(-4px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06); border-color: var(--accent); }
 
-    /* Canvas Wrapper - ENHANCED */
-    .canvas-wrapper {
-      position: relative;
+    /* VISUALIZATION STRUCTURE */
+    
+    .viz-container {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 8px;
+      border-radius: 0.75rem;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
       overflow: hidden;
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    .dark .viz-container { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
+
+    /* Grid */
+    .viz-grid {
+      display: grid;
+      grid-template-columns: 56px 1fr 50px;
     }
 
-    .canvas-wrapper::after {
-      content: 'Scroll or drag to navigate time • Click events for details';
-      position: absolute;
-      bottom: 16px;
-      left: 50%;
-      transform: translateX(-50%);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-      opacity: 0.7;
-      pointer-events: none;
-      z-index: 5;
-      padding: 6px 12px;
-      background: color-mix(in srgb, var(--card) 90%, transparent);
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      animation: affordanceFade 8s forwards 4s;
-      white-space: nowrap;
-    }
-
-    @keyframes affordanceFade {
-      0% { opacity: 0.7; }
-      100% { opacity: 0; }
-    }
-
-    .canvas-container {
+    /* Ruler */
+    .viz-time-axis-col {
       position: relative;
-      width: 100%;
-      height: 700px; 
-    }
-
-    #viz-canvas {
-      cursor: grab;
-      display: block;
-    }
-
-    #viz-canvas:active {
-      cursor: grabbing;
-    }
-
-    .canvas-future-fade {
-      position: absolute;
-      bottom: 0;
-      left: 64px;
-      right: 72px;
-      height: 80px;
-      background: linear-gradient(to top, var(--card), transparent);
-      pointer-events: none;
-      z-index: 4;
-    }
-
-    .canvas-label-overlay {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      pointer-events: none; 
-      z-index: 2;
-    }
-
-    /* Search Tools Panel - ENHANCED */
-    .search-tools-panel {
-      position: absolute;
-      top: 20px;
-      left: 64px;
-      z-index: 10;
-      pointer-events: auto;
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-
-    .search-input {
-      width: 280px;
-      height: 36px;
-      padding: 0 14px;
-      font-family: 'Inter', sans-serif;
-      font-size: 13px;
-      color: var(--fg);
-      background: color-mix(in srgb, var(--card) 95%, transparent);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      transition: all 0.2s ease;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-    }
-
-    .search-input:focus {
-      outline: none;
-      border-color: var(--accent);
-      background: var(--card);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08), 0 0 0 3px color-mix(in srgb, var(--accent) 15%, transparent);
-    }
-
-    .search-input::placeholder {
-      color: var(--muted);
-    }
-
-    .search-results {
-      position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      right: 0;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      max-height: 240px;
-      overflow-y: auto;
-      box-shadow: 0 12px 24px rgba(0,0,0,0.12);
-      display: none;
-      z-index: 20;
-    }
-
-    .search-results.visible {
-      display: block;
-    }
-
-    .search-result-item {
-      padding: 10px 14px;
-      cursor: pointer;
-      font-size: 13px;
-      border-bottom: 1px solid var(--border);
-      transition: background 0.15s ease;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .search-result-item:last-child {
-      border-bottom: none;
-    }
-
-    .search-result-item:hover {
       background: var(--bg-subtle);
+      user-select: none;
     }
 
-    .search-result-item .result-type {
-      font-size: 10px;
-      text-transform: uppercase;
-      color: var(--muted);
-      padding: 2px 6px;
-      background: var(--bg-subtle);
-      border-radius: 3px;
-      border: 1px solid var(--border);
+    /* Main Canvas */
+    .viz-main-col {
+      position: relative;
+      height: 520px;
+      background: var(--card);
     }
+    .viz-main-col canvas { display: block; width: 100%; height: 100%; }
 
-    /* Decade Links - ENHANCED */
-    .decade-links-container {
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+    /* Controls - Unified Frame */
+    .viz-control-strip {
       display: flex;
+      flex-direction: column;
       align-items: center;
-      gap: 0.5rem;
-      z-index: 10;
-      pointer-events: auto;
-      padding: 6px;
-      background: color-mix(in srgb, var(--card) 90%, transparent);
-      backdrop-filter: blur(12px);
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+      border-left: 1px solid var(--border);
+      background: var(--bg-subtle); /* Uniform gray background */
     }
 
-    .decade-link {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--muted);
-      background: transparent;
-      border: none;
-      padding: 8px 12px;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: all 0.2s ease;
+    .control-section {
+      padding: 12px 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
       position: relative;
     }
 
-    .decade-link:hover {
-      background: var(--bg-subtle);
-      color: var(--fg);
-    }
-
-    .decade-link.active {
-      background: var(--accent);
-      color: white;
-      box-shadow: 0 2px 8px color-mix(in srgb, var(--accent) 40%, transparent);
-    }
-
-    .decade-link.active::after {
+    /* Sophisticated Separator */
+    .control-section:not(:last-of-type)::after {
       content: '';
       position: absolute;
-      bottom: -20px;
+      bottom: 0;
       left: 50%;
-      transform: translateX(-50%);
-      width: 0;
-      height: 0;
-      border-left: 4px solid transparent;
-      border-right: 4px solid transparent;
-      border-top: 4px solid var(--accent);
-    }
-
-    .decade-separator {
-      width: 1px;
-      height: 16px;
+      transform: translateX(-50%) rotate(45deg);
+      width: 5px;
+      height: 5px;
       background: var(--border);
-      margin: 0 2px;
+      border-radius: 1px;
     }
 
-    /* Vertical Time Axis - ENHANCED */
-    .time-axis {
-      position: absolute;
-      left: 0;
-      top: 0;
-      bottom: 0;
-      width: 64px;
-      background: linear-gradient(to right, var(--bg-subtle), transparent);
-      border-right: 1px solid var(--border);
-      z-index: 8;
-      pointer-events: auto;
-    }
-
-    .time-axis-line {
-      position: absolute;
-      left: 48px;
-      top: 60px;
-      bottom: 60px;
-      width: 2px;
-      background: linear-gradient(to bottom, 
-        transparent 0%, 
-        var(--border) 5%, 
-        var(--border) 95%, 
-        transparent 100%
-      );
-    }
-
-    .time-axis-tick {
-      position: absolute;
-      left: 44px;
-      width: 8px;
-      height: 1px;
-      background: var(--border);
-      pointer-events: none;
-    }
-
-    .time-axis-tick.major {
-      width: 12px;
-      left: 42px;
-      height: 2px;
-      background: var(--muted);
-    }
-
-    .time-axis-label {
-      position: absolute;
-      left: 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      font-weight: 500;
-      color: var(--muted);
-      transform: translateY(-50%);
-      pointer-events: auto;
-      cursor: pointer;
-      padding: 4px 6px;
-      border-radius: 4px;
-      transition: all 0.2s ease;
-      background: color-mix(in srgb, var(--bg-subtle) 50%, transparent);
-    }
-
-    .time-axis-label:hover {
-      color: var(--fg);
-      background: var(--bg-subtle);
-      transform: translateY(-50%) scale(1.05);
-    }
-
-    .time-axis-label.major {
-      font-size: 11px;
-      color: var(--fg);
-      font-weight: 600;
-      background: var(--card);
+    /* Ghost Buttons */
+    .tool-btn {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
       border: 1px solid var(--border);
-      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-    }
-
-    /* Current Time Indicator */
-    .time-current-indicator {
-      position: absolute;
-      left: 0;
-      right: 0;
-      height: 2px;
-      background: var(--accent);
-      z-index: 7;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .time-current-indicator.visible {
-      opacity: 1;
-    }
-
-    .time-current-indicator::before {
-      content: 'NOW';
-      position: absolute;
-      right: 8px;
-      top: -10px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      font-weight: 600;
-      color: var(--accent);
-      background: var(--card);
-      padding: 2px 6px;
-      border-radius: 3px;
-      border: 1px solid var(--accent);
-    }
-
-    /* Navigation Strip - ENHANCED */
-    .nav-strip {
-      position: absolute;
-      right: 0;
-      top: 0;
-      bottom: 0;
-      width: 72px;
-      background: linear-gradient(to left, var(--bg-subtle), transparent);
-      border-left: 1px solid var(--border);
-      z-index: 8;
-      pointer-events: auto;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .nav-strip-controls {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 16px 0;
-      gap: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .nav-strip-btn {
-      width: 36px;
-      height: 36px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      background: color-mix(in srgb, var(--card) 80%, transparent);
-      backdrop-filter: blur(8px);
+      background: transparent; /* No white background */
       color: var(--muted);
       display: flex;
       align-items: center;
       justify-content: center;
+      cursor: pointer;
       transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .nav-strip-btn:hover {
-      background: var(--card);
-      color: var(--fg);
-      border-color: var(--accent);
-      transform: translateY(-1px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .nav-strip-btn:disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-      transform: none;
-      box-shadow: none;
-    }
-
-    .nav-strip-btn svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .nav-strip-divider {
-      width: 24px;
-      height: 1px;
-      background: var(--border);
-      margin: 4px 0;
-    }
-
-    /* Zoom Level Display */
-    .zoom-level-display {
+      font-size: 14px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: var(--muted);
-      text-align: center;
-      margin-top: -4px;
-      margin-bottom: 4px;
-      font-weight: 500;
     }
+    
+    .tool-btn:hover { 
+      background: var(--card); 
+      border-color: var(--accent); 
+      color: var(--accent); 
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+    
+    .tool-btn:active { transform: scale(0.95); }
 
-    /* Minimap - ENHANCED */
-    .nav-strip-minimap {
+    .minimap-wrapper {
       flex: 1;
+      width: 100%;
       position: relative;
-      display: flex;
-      flex-direction: column;
-      overflow: hidden;
-      margin: 8px;
+      margin: 6px;
       border-radius: 6px;
-      background: var(--bg-subtle);
+      background: var(--card);
       border: 1px solid var(--border);
-    }
-
-    .minimap-canvas {
-      display: block;
+      overflow: hidden;
       cursor: pointer;
-      flex: 1;
-      border-radius: 4px;
+      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
     }
 
     .minimap-viewport {
       position: absolute;
-      left: 4px;
-      right: 4px;
+      left: 2px;
+      width: calc(100% - 4px);
+      border: 1px solid var(--accent);
       background: color-mix(in srgb, var(--accent) 15%, transparent);
-      border: 2px solid var(--accent);
-      border-radius: 4px;
-      pointer-events: auto;
-      cursor: ns-resize;
-      transition: background 0.15s ease, box-shadow 0.2s ease;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border-radius: 2px;
+      pointer-events: none;
     }
 
-    .minimap-viewport:hover {
-      background: color-mix(in srgb, var(--accent) 25%, transparent);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-
-    .minimap-viewport.dragging {
-      background: color-mix(in srgb, var(--accent) 35%, transparent);
-      cursor: grabbing;
-    }
-
-    .minimap-label {
+    /* CLASSY SEARCH */
+    .viz-search-overlay {
       position: absolute;
-      left: 6px;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 10;
+      width: 240px;
+      text-align: center;
+    }
+
+    .search-label {
+      display: block;
       font-family: 'JetBrains Mono', monospace;
       font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
       color: var(--muted);
-      pointer-events: none;
-      opacity: 0.9;
-      z-index: 1;
-      font-weight: 500;
-      background: color-mix(in srgb, var(--card) 80%, transparent);
-      padding: 2px 4px;
-      border-radius: 3px;
+      margin-bottom: 6px;
+      opacity: 0.8;
     }
 
-    .minimap-label.top { top: 4px; }
-    .minimap-label.bottom { bottom: 4px; }
-
-    /* Help Modal */
-    .help-modal-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.5);
-      backdrop-filter: blur(4px);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s ease, visibility 0.3s ease;
-      z-index: 200;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-
-    .help-modal-backdrop.visible {
-      opacity: 1;
-      visibility: visible;
-    }
-
-    .help-modal {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      width: 90%;
-      max-width: 440px;
-      max-height: 85vh;
-      overflow: hidden;
-      transform: translateY(20px) scale(0.95);
-      opacity: 0;
-      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.35s ease;
-      box-shadow: 0 24px 48px rgba(0, 0, 0, 0.15);
-    }
-
-    .help-modal-backdrop.visible .help-modal {
-      transform: translateY(0) scale(1);
-      opacity: 1;
-    }
-
-    .help-modal-header {
-      padding: 1.25rem 1.5rem;
+    .search-input-line {
+      width: 100%;
+      background: transparent;
+      border: none;
       border-bottom: 1px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-
-    .help-modal-title {
       font-family: 'Cormorant Garamond', Georgia, serif;
       font-size: 1.25rem;
       font-weight: 500;
       color: var(--fg);
+      padding: 4px 0;
+      text-align: center;
+      transition: border-color 0.3s ease;
+      outline: none;
     }
 
-    .help-modal-close {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      background: transparent;
+    .search-input-line::placeholder {
       color: var(--muted);
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s ease;
+      font-style: italic;
+      font-weight: 400;
     }
 
-    .help-modal-close:hover {
-      background: var(--bg-subtle);
-      color: var(--fg);
+    .search-input-line:focus {
+      border-color: var(--accent);
     }
 
-    .help-modal-body {
-      padding: 1rem 1.5rem 1.5rem;
-      overflow-y: auto;
-    }
-
-    .help-section {
-      margin-bottom: 1.25rem;
-    }
-
-    .help-section-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.625rem;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      margin-bottom: 0.75rem;
-      padding-bottom: 0.5rem;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .help-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0.5rem 0;
-    }
-
-    .key {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      min-width: 28px;
-      height: 28px;
-      padding: 0 8px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      font-weight: 500;
-      color: var(--fg);
-      background: var(--bg-subtle);
+    .viz-legend {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: color-mix(in srgb, var(--card) 95%, transparent);
+      backdrop-filter: blur(8px);
       border: 1px solid var(--border);
       border-radius: 6px;
-      box-shadow: 0 1px 2px rgba(0,0,0,0.05);
-    }
-
-    .help-action {
+      padding: 8px 12px;
       font-family: 'Inter', sans-serif;
-      font-size: 0.8125rem;
+      font-size: 10px;
       color: var(--muted);
-    }
-
-    .help-footer {
-      padding: 0.75rem 1.5rem;
-      background: var(--bg-subtle);
-      border-top: 1px solid var(--border);
-      text-align: center;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.625rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--muted);
-    }
-
-    /* Event Type Filters - ENHANCED */
-    .filter-tags-container {
-      margin-top: 0.75rem;
+      z-index: 10;
       display: flex;
-      flex-wrap: wrap;
-      gap: 0.5rem;
-      justify-content: center;
+      gap: 10px;
     }
+    
+    .legend-item { display: flex; align-items: center; gap: 5px; }
 
-    .filter-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      padding: 0.375rem 0.75rem;
-      background: var(--bg-subtle);
+    .viz-tooltip {
+      position: absolute;
+      pointer-events: none;
+      z-index: 20;
+      background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 20px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 500;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.2s ease;
-    }
-
-    .filter-tag:hover {
-      border-color: var(--accent);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
       color: var(--fg);
-      transform: translateY(-1px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      opacity: 0;
+      transition: opacity 0.1s ease;
+      max-width: 200px;
     }
 
-    .filter-tag.active {
-      background: var(--fg);
-      color: var(--bg);
-      border-color: var(--fg);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-
-    .filter-tag::before {
-      content: '';
-      width: 6px;
-      height: 6px;
-      border-radius: 50%;
-      background: currentColor;
-      opacity: 0.5;
-    }
-
-    .filter-tag.active::before {
-      opacity: 1;
-    }
-
-    /* Sidebar */
     .sidebar-backdrop {
       position: fixed;
       inset: 0;
@@ -1081,11 +371,7 @@
       transition: opacity 0.3s ease, visibility 0.3s ease;
       z-index: 55;
     }
-
-    .sidebar-backdrop.visible {
-      opacity: 1;
-      visibility: visible;
-    }
+    .sidebar-backdrop.visible { opacity: 1; visibility: visible; }
 
     .detail-sidebar {
       position: fixed;
@@ -1100,273 +386,28 @@
       transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
       z-index: 60;
       overflow-y: auto;
-      box-shadow: -8px 0 32px rgba(0,0,0,0.12);
     }
     .detail-sidebar.open { transform: translateX(0); }
-
+    
     .sidebar-close {
       position: absolute;
       top: 1rem;
       right: 1rem;
-      width: 40px;
-      height: 40px;
+      width: 32px;
+      height: 32px;
       border-radius: 50%;
       border: 1px solid var(--border);
       background: var(--card);
-      color: var(--muted);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.2s ease;
-      z-index: 10;
-    }
-    .sidebar-close:hover { color: var(--fg); border-color: var(--accent); background: var(--bg-subtle); }
-
-    .event-item {
-      position: relative;
-      padding-left: 1.5rem;
-      transition: transform 0.2s ease;
-    }
-    
-    .event-item:hover {
-      transform: translateX(4px);
-    }
-    
-    .event-item::before {
-      content: '';
-      position: absolute;
-      left: -5px;
-      top: 8px;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      border: 2px solid var(--border);
-      background: var(--card);
-      transition: all 0.2s ease;
-    }
-    
-    .event-item:hover::before {
-      background: var(--accent);
-      border-color: var(--accent);
-      transform: scale(1.2);
-    }
-
-    /* Tooltip - ENHANCED */
-    .tooltip-box {
-      position: fixed;
-      background: var(--card);
-      border: 1px solid var(--border);
-      padding: 1rem 1.25rem;
-      pointer-events: none;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.15);
-      opacity: 0;
-      transition: opacity 0.2s ease, transform 0.2s ease;
-      z-index: 100;
-      max-width: 300px;
-      border-radius: 8px;
-      transform: translateY(4px);
-    }
-
-    .tooltip-box.visible { 
-      opacity: 1; 
-      transform: translateY(0);
-    }
-
-    .tooltip-header {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 0.5rem;
-    }
-
-    .tooltip-type-badge {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      padding: 2px 6px;
-      border-radius: 3px;
-      background: var(--bg-subtle);
       color: var(--muted);
-      font-weight: 600;
+      transition: all 0.2s;
     }
+    .sidebar-close:hover { color: var(--fg); border-color: var(--accent); }
 
-    .tooltip-actor {
-      font-family: 'Cormorant Garamond', Georgia, serif;
-      font-size: 1.25rem;
-      font-weight: 600;
-      color: var(--fg);
-      line-height: 1.3;
-      margin-bottom: 0.25rem;
-    }
-
-    .tooltip-desc {
-      font-family: 'Inter', sans-serif;
-      font-size: 0.875rem;
-      color: var(--muted);
-      line-height: 1.5;
-      margin-bottom: 0.75rem;
-    }
-
-    .tooltip-meta {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding-top: 0.75rem;
-      border-top: 1px solid var(--border);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 11px;
-      color: var(--muted);
-    }
-
-    .tooltip-date {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
-
-    /* Footer */
-    .site-footer { background: var(--card); border-top: 1px solid var(--border); }
-    .footer-muted { color: var(--muted); }
-    .footer-link { color: var(--muted); text-decoration: none; transition: color 0.2s ease; }
-    .footer-link:hover { color: var(--fg); }
-    
-    .scroll-progress {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 2px;
-      background: var(--accent);
-      z-index: 101;
-      transform-origin: left;
-      transform: scaleX(0);
-    }
-
-    #loading-indicator {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      color: var(--muted);
-      pointer-events: none;
-      transition: opacity 0.5s;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
-
-    #loading-indicator::after {
-      content: '';
-      width: 16px;
-      height: 16px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-
-    /* VIZ TAGS - ENHANCED */
-    .viz-controls-bar {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.75rem;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 0.75rem;
-      padding: 0 1rem;
-    }
-
-    .viz-tag {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      padding: 0.5rem 1rem;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 20px;
-      font-family: 'Inter', sans-serif;
-      font-size: 0.75rem;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      color: var(--muted);
-      cursor: pointer;
-      transition: all 0.25s cubic-bezier(0.22, 1, 0.36, 1);
-    }
-
-    .viz-tag:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-    }
-
-    .viz-tag.active {
-      background: var(--bg);
-      color: var(--fg);
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-
-    .viz-tag[data-type="public"] { --type-color: var(--type-public); }
-    .viz-tag[data-type="hybrid"] { --type-color: var(--type-hybrid); }
-    .viz-tag[data-type="private"] { --type-color: var(--type-private); }
-
-    .viz-tag.active[data-type="public"] { 
-      border-color: var(--type-public); 
-      color: var(--type-public);
-      background: color-mix(in srgb, var(--type-public) 8%, var(--card));
-    }
-    .viz-tag.active[data-type="hybrid"] { 
-      border-color: var(--type-hybrid); 
-      color: var(--type-hybrid);
-      background: color-mix(in srgb, var(--type-hybrid) 8%, var(--card));
-    }
-    .viz-tag.active[data-type="private"] { 
-      border-color: var(--type-private); 
-      color: var(--type-private);
-      background: color-mix(in srgb, var(--type-private) 8%, var(--card));
-    }
-
-    .viz-tag-count {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      padding: 2px 6px;
-      background: var(--bg-subtle);
-      border-radius: 10px;
-      min-width: 20px;
-      text-align: center;
-    }
-
-    .viz-tag.active .viz-tag-count {
-      background: currentColor;
-      color: var(--card);
-    }
-
-    /* Empty State */
-    .empty-state {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      text-align: center;
-      color: var(--muted);
-      font-family: 'Inter', sans-serif;
-      font-size: 14px;
-      pointer-events: none;
-      opacity: 0;
-      transition: opacity 0.3s ease;
-    }
-
-    .empty-state.visible {
-      opacity: 1;
-    }
+    .site-footer { background: var(--card); border-top: 1px solid var(--border); padding: 2rem 0; }
   </style>
 </head>
 <body>
@@ -1374,12 +415,10 @@
   <!-- Project Header -->
   <header class="project-header" id="projectHeader">
     <div class="project-header-inner">
-      <a href="../index.html" class="project-identity" aria-label="Return to Index Gentium">
+      <a href="#" class="project-identity">
         <div class="project-logo">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-            <circle cx="12" cy="12" r="10"/>
-            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
-            <path d="M2 12h20"/>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <circle cx="12" cy="12" r="10"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/><path d="M2 12h20"/>
           </svg>
         </div>
         <div>
@@ -1387,1410 +426,614 @@
           <div class="project-subtitle">Laboratorium · Arbitristae</div>
         </div>
       </a>
-
-      <div class="nav-controls">
-        <nav class="breadcrumb-nav" aria-label="Breadcrumb">
-          <a href="index.html"><span>Gentium</span></a>
-          <span class="breadcrumb-separator">/</span>
-          <span class="breadcrumb-current">Actor Space</span>
-        </nav>
-
-        <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" type="button">
-          <svg class="icon-moon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/>
-          </svg>
-          <svg class="icon-sun" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0a3.75 3.75 0 017.5 0z"/>
-          </svg>
+      <div style="display: flex; align-items: center; gap: 1.25rem;">
+        <button class="theme-toggle" id="themeToggle" type="button">
+          <svg class="icon-moon" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M21.752 15.002A9.718 9.718 0 0118 15.75c-5.385 0-9.75-4.365-9.75-9.75 0-1.33.266-2.597.748-3.752A9.753 9.753 0 003 11.25C3 16.635 7.365 21 12.75 21a9.753 9.753 0 009.002-5.998z"/></svg>
+          <svg class="icon-sun" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path d="M12 3v2.25m6.364.386l-1.591 1.591M21 12h-2.25m-.386 6.364l-1.591-1.591M12 18.75V21m-4.773-4.227l-1.591 1.591M5.25 12H3m4.227-4.773L5.636 5.636M15.75 12a3.75 3.75 0 11-7.5 0a3.75 3.75 0 017.5 0z"/></svg>
         </button>
       </div>
     </div>
   </header>
 
-  <div class="scroll-progress" id="scrollProgress" aria-hidden="true"></div>
-
   <div class="main-content w-full max-w-4xl mx-auto px-6 py-16 md:py-24">
     
-    <!-- Identity Layer -->
+    <!-- Hero -->
     <header class="hero-grid reveal">
-      <div class="identity-column">
+      <div>
         <h1 class="font-display type-hero text-fg mb-1">Actor Space</h1>
         <p class="font-mono text-sm tracking-wide text-muted mb-4" style="letter-spacing: 0.08em; text-transform: uppercase;">New Zealand, 1800–Present</p>
       </div>
-
-      <div class="context-column">
-        <div class="definition-lead text-muted">
-          A vertical temporal registry mapping the lifespans and key events of sovereign, corporate, and cultural entities. 
-          Click nodes to inspect the consolidated timeline of each actor.
-        </div>
+      <div>
+        <p class="text-muted" style="font-family: 'Cormorant Garamond', serif; font-size: 1.35rem; line-height: 1.6;">
+          A vertical temporal registry mapping the lifespans and key events of sovereign, corporate, and cultural entities.
+        </p>
       </div>
     </header>
 
-    <div class="section-divider reveal delay-1">
-      <span class="diamond"></span>
-    </div>
+    <div class="section-divider reveal delay-1"><span class="diamond"></span></div>
 
-    <!-- Vital Statistics -->
-    <section class="reveal delay-2" id="statsSection">
-      <div class="text-center mb-6">
-        <h2 class="font-display type-section text-fg mb-1">Registry Statistics</h2>
-        <p class="font-body text-sm text-muted">Overview of Data Points</p>
-      </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="statsGrid">
-        <div class="data-card" tabindex="0">
-          <div class="font-display text-2xl font-medium text-fg" id="stat-actors">—</div>
-          <div class="font-body text-xs text-muted uppercase font-medium">Total Actors</div>
-        </div>
-        <div class="data-card" tabindex="0">
-          <div class="font-display text-2xl font-medium text-fg" id="stat-events">—</div>
-          <div class="font-body text-xs text-muted uppercase font-medium">Total Events</div>
-        </div>
-        <div class="data-card" tabindex="0">
-          <div class="font-display text-2xl font-medium text-fg" id="stat-range">—</div>
-          <div class="font-body text-xs text-muted uppercase font-medium">Year Span</div>
-        </div>
-         <div class="data-card" tabindex="0">
-          <div class="font-display text-2xl font-medium text-fg" id="stat-decades">—</div>
-          <div class="font-body text-xs text-muted uppercase font-medium">Decades</div>
-        </div>
+    <!-- Stats -->
+    <section class="reveal delay-2">
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="data-card"><div class="font-display text-2xl font-medium text-fg" id="stat-actors">—</div><div class="font-body text-xs text-muted uppercase font-medium">Total Actors</div></div>
+        <div class="data-card"><div class="font-display text-2xl font-medium text-fg" id="stat-events">—</div><div class="font-body text-xs text-muted uppercase font-medium">Total Events</div></div>
+        <div class="data-card"><div class="font-display text-2xl font-medium text-fg" id="stat-range">—</div><div class="font-body text-xs text-muted uppercase font-medium">Year Span</div></div>
+        <div class="data-card"><div class="font-display text-2xl font-medium text-fg" id="stat-decades">—</div><div class="font-body text-xs text-muted uppercase font-medium">Decades</div></div>
       </div>
     </section>
 
-    <div class="section-divider reveal delay-3">
-      <span class="diamond"></span>
-    </div>
+    <div class="section-divider reveal delay-3"><span class="diamond"></span></div>
 
     <!-- Visualization Section -->
     <section class="reveal delay-4">
-      <div class="mb-6 text-center">
-        <h2 class="font-display type-section text-fg mb-2">Temporal Visualization</h2>
-        <p class="font-body text-sm text-muted max-w-2xl mx-auto mb-6">
-          Explore the chronological evolution of New Zealand's institutional actors. The vertical axis represents time flowing downward from 1800 to present.
-          Each point marks a significant event—founding, transformation, or dissolution—organized by actor type.
-        </p>
+      <div class="viz-container">
         
-        <!-- Interactive Legend Tags -->
-        <div class="viz-controls-bar" id="vizLegend">
-          <button class="viz-tag active" data-type="public" aria-pressed="true">
-            <span>Public</span>
-            <span class="viz-tag-count" id="count-public">0</span>
-          </button>
-          <button class="viz-tag active" data-type="hybrid" aria-pressed="true">
-            <span>Hybrid</span>
-            <span class="viz-tag-count" id="count-hybrid">0</span>
-          </button>
-          <button class="viz-tag active" data-type="private" aria-pressed="true">
-            <span>Private</span>
-            <span class="viz-tag-count" id="count-private">0</span>
-          </button>
-        </div>
-
-        <!-- Event Type Filters -->
-        <div class="filter-tags-container" id="eventFilters">
-          <button class="filter-tag active" data-filter="birth">Birth</button>
-          <button class="filter-tag active" data-filter="death">Death</button>
-          <button class="filter-tag active" data-filter="milestone">Milestone</button>
-          <button class="filter-tag active" data-filter="transformation">Transformation</button>
-          <button class="filter-tag active" data-filter="expansion">Expansion</button>
-          <button class="filter-tag active" data-filter="other">Other</button>
-        </div>
-      </div>
-
-      <div class="canvas-wrapper" id="canvasWrapper">
-        <div class="canvas-container">
-          <canvas id="viz-canvas"></canvas>
+        <div class="viz-grid">
           
-          <div class="canvas-future-fade"></div>
-          <div class="canvas-label-overlay" id="canvasLabels"></div>
-
-          <!-- Current Time Indicator -->
-          <div class="time-current-indicator" id="currentTimeIndicator"></div>
-
-          <!-- Time Axis - Vertical Left -->
-          <div class="time-axis" id="timeAxis">
-            <div class="time-axis-line"></div>
+          <!-- Time Ruler -->
+          <div class="viz-time-axis-col">
+            <canvas id="axisCanvas"></canvas>
           </div>
 
-          <!-- Search Tools Panel -->
-          <div class="search-tools-panel">
-            <input type="text" id="actorSearch" class="search-input" placeholder="Search actors by name..." aria-label="Search actors">
-            <div class="search-results" id="searchResults"></div>
+          <!-- Main Canvas -->
+          <div id="timelineContainer" class="viz-main-col">
+            
+            <!-- Classy Centered Search -->
+            <div class="viz-search-overlay">
+               <label class="search-label">Search Registry</label>
+               <input type="text" id="searchInput" class="search-input-line" placeholder="Type name...">
+            </div>
+
+            <canvas id="timelineCanvas"></canvas>
+            
+            <div class="viz-legend">
+              <div class="legend-item"><svg width="8" height="8" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--private)"/></svg><span>Private</span></div>
+              <div class="legend-item"><svg width="8" height="8" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="var(--hybrid)"/></svg><span>Hybrid</span></div>
+              <div class="legend-item"><svg width="8" height="8" viewBox="0 0 10 10"><polygon points="5,1 9,9 1,9" fill="var(--public)"/></svg><span>Public</span></div>
+            </div>
+
+            <div id="tooltip" class="viz-tooltip"></div>
           </div>
 
-          <!-- Decade Links -->
-          <div class="decade-links-container" id="decadeLinks">
-            <button class="decade-link" data-decade="1800">1800</button>
-            <div class="decade-separator"></div>
-            <button class="decade-link" data-decade="1850">1850</button>
-            <div class="decade-separator"></div>
-            <button class="decade-link" data-decade="1900">1900</button>
-            <div class="decade-separator"></div>
-            <button class="decade-link" data-decade="1950">1950</button>
-            <div class="decade-separator"></div>
-            <button class="decade-link" data-decade="2000">2000</button>
-          </div>
-
-          <!-- Navigation Strip -->
-          <div class="nav-strip" id="navStrip">
-            <div class="nav-strip-controls">
-              <!-- History -->
-              <button id="btn-back" class="nav-strip-btn" aria-label="Go back" title="Go Back" disabled>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>
-              </button>
-              <button id="btn-forward" class="nav-strip-btn" aria-label="Go forward" title="Go Forward" disabled>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18l6-6-6-6"/></svg>
-              </button>
-              
-              <div class="nav-strip-divider"></div>
-
-              <!-- Zoom -->
-              <button id="btn-zoom-in" class="nav-strip-btn" aria-label="Zoom In" title="Zoom In (+)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg>
-              </button>
-              <button id="btn-zoom-out" class="nav-strip-btn" aria-label="Zoom Out" title="Zoom Out (-)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/></svg>
-              </button>
-              
-              <!-- Zoom Level -->
-              <div class="zoom-level-display" id="zoomLevel">100%</div>
-
-              <button id="btn-fit-all" class="nav-strip-btn" aria-label="Fit all data" title="Fit All (F)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>
-              </button>
-              <button id="btn-reset" class="nav-strip-btn" aria-label="Reset View" title="Reset (Esc)">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4v5h5M20 20v-5h-5"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L4 4m16 16l-1.64-1.64A9 9 0 0 1 3.51 15"/></svg>
-              </button>
-              <button id="btn-help" class="nav-strip-btn" aria-label="Help" title="Help (?)" style="font-family: 'Cormorant Garamond', serif; font-weight: 600; font-style: italic;">?</button>
+          <!-- Right Strip -->
+          <div class="viz-control-strip">
+            
+            <div class="control-section">
+              <button id="btnZoomIn" class="tool-btn" title="Zoom In">+</button>
+              <button id="btnZoomOut" class="tool-btn" title="Zoom Out">−</button>
             </div>
             
-            <div class="nav-strip-minimap" id="minimapArea">
-              <canvas id="minimap-canvas" class="minimap-canvas"></canvas>
-              <div class="minimap-viewport" id="minimapViewport"></div>
-              <div class="minimap-label top" id="minimapTop">1800</div>
-              <div class="minimap-label bottom" id="minimapBottom">2027</div>
+            <div class="control-section">
+              <button id="btnReset" class="tool-btn" title="Reset View">
+                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+              </button>
+              <button id="btnFitAll" class="tool-btn" title="Fit All">
+                <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
+              </button>
             </div>
-          </div>
-          
-          <div id="loading-indicator">Loading actor-set.json</div>
-          
-          <div class="empty-state" id="emptyState">
-            No events match current filters
-          </div>
-          
-          <!-- Tooltip -->
-          <div id="tooltip" class="tooltip-box">
-            <div class="tooltip-header">
-              <span class="tooltip-type-badge" id="tt-type">Event</span>
+
+            <div class="control-section">
+              <button id="btnHelp" class="tool-btn" title="Help" style="font-family: 'Cormorant Garamond', serif; font-style: italic;">?</button>
             </div>
-            <div class="tooltip-actor" id="tt-actor">Actor Name</div>
-            <div class="tooltip-desc" id="tt-desc">Description</div>
-            <div class="tooltip-meta">
-              <span class="tooltip-date" id="tt-date">
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
-                  <line x1="16" y1="2" x2="16" y2="6"></line>
-                  <line x1="8" y1="2" x2="8" y2="6"></line>
-                  <line x1="3" y1="10" x2="21" y2="10"></line>
-                </svg>
-                <span id="tt-date-text">Date</span>
-              </span>
+
+            <div id="minimapContainer" class="minimap-wrapper">
+              <canvas id="minimapCanvas"></canvas>
+              <div id="minimapViewport" class="minimap-viewport"></div>
             </div>
+
           </div>
+
         </div>
+        <div style="height: 1px; background: var(--border);"></div>
       </div>
     </section>
 
   </div>
 
-  <!-- Sidebar Backdrop -->
+  <!-- Sidebar -->
   <div id="sidebarBackdrop" class="sidebar-backdrop"></div>
-
-  <!-- Detail Sidebar -->
   <aside id="sidebar" class="detail-sidebar">
     <button id="close-sidebar" class="sidebar-close" aria-label="Close sidebar">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-        <path d="M18 6L6 18M6 6l12 12"/>
-      </svg>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
     </button>
-    
     <div class="p-6 pt-14">
-      <div class="border-b border-[var(--border)] pb-4 mb-6">
-        <h2 class="font-display text-2xl font-medium leading-tight text-fg" id="sb-name">Actor Name</h2>
-        <p class="font-mono text-xs uppercase tracking-wider text-muted mt-2" id="sb-role">Role</p>
-      </div>
-      
-      <div class="space-y-5">
-        <div>
-          <h3 class="font-mono text-xs uppercase tracking-wider text-muted mb-1">Type</h3>
-          <p id="sb-type" class="font-body text-sm font-medium text-fg">Public</p>
-        </div>
-        <div>
-          <h3 class="font-mono text-xs uppercase tracking-wider text-muted mb-1">Region</h3>
-          <p id="sb-region" class="font-body text-sm text-fg">Region</p>
-        </div>
-        <div>
-          <h3 class="font-mono text-xs uppercase tracking-wider text-muted mb-1">Description</h3>
-          <p id="sb-desc" class="font-body text-sm text-muted italic leading-relaxed">Description text...</p>
-        </div>
-        
-        <div class="pt-4 border-t border-[var(--border)]">
-          <h3 class="font-mono text-xs uppercase tracking-wider text-muted mb-4">Event Sequence</h3>
-          <div id="sb-timeline" class="space-y-5 pl-4 border-l-2 border-[var(--border)]">
-          </div>
-        </div>
+      <h2 class="font-display text-2xl font-medium text-fg" id="sb-name">Actor Name</h2>
+      <p class="font-mono text-xs text-muted mt-1 mb-6" id="sb-role">Role</p>
+      <div class="text-sm text-muted" id="sb-desc">Description...</div>
+      <div class="mt-6 pt-4 border-t border-[var(--border)]">
+        <h3 class="font-mono text-xs uppercase text-muted mb-4">Events</h3>
+        <div id="sb-timeline" class="space-y-4"></div>
       </div>
     </div>
   </aside>
 
   <!-- Help Modal -->
-  <div class="help-modal-backdrop" id="helpModal" role="dialog" aria-modal="true">
-    <div class="help-modal">
-      <div class="help-modal-header">
-        <h2 class="help-modal-title">Keyboard Shortcuts</h2>
-        <button class="help-modal-close" id="helpModalClose" aria-label="Close">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M18 6L6 18M6 6l12 12"/>
-          </svg>
-        </button>
-      </div>
-      
-      <div class="help-modal-body">
-        <div class="help-section">
-          <div class="help-section-title">Navigation</div>
-          <div class="help-row"><span class="help-action">Pan up/down</span><span class="key">↑</span><span class="key">↓</span></div>
-          <div class="help-row"><span class="help-action">Go to start/end</span><span class="key">Home</span><span class="key">End</span></div>
-          <div class="help-row"><span class="help-action">History back/forward</span><span class="key">[</span><span class="key">]</span></div>
+  <div id="helpModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: none; justify-content: center; align-items: center;">
+     <div style="background: var(--card); padding: 1.5rem; border-radius: 8px; max-width: 300px; border: 1px solid var(--border);">
+        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
+           <h3 style="font-weight: 600;">Shortcuts</h3>
+           <button id="closeHelp" style="color: var(--muted); background: none; border: none; cursor: pointer;">✕</button>
         </div>
-
-        <div class="help-section">
-          <div class="help-section-title">Zoom</div>
-          <div class="help-row"><span class="help-action">Zoom in/out</span><span class="key">+</span><span class="key">−</span></div>
-          <div class="help-row"><span class="help-action">Fit all events</span><span class="key">F</span></div>
+        <div style="font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; display: grid; gap: 8px;">
+           <div><span style="color: var(--fg)">Scroll</span> Zoom</div>
+           <div><span style="color: var(--fg)">Drag</span> Pan</div>
         </div>
-
-        <div class="help-section">
-          <div class="help-section-title">General</div>
-          <div class="help-row"><span class="help-action">Reset view</span><span class="key">Esc</span></div>
-          <div class="help-row"><span class="help-action">Help</span><span class="key">?</span></div>
-        </div>
-      </div>
-      
-      <div class="help-footer">
-        Press <kbd class="key" style="font-size: 9px;">?</kbd> anytime to toggle this panel
-      </div>
-    </div>
+     </div>
   </div>
 
   <!-- Footer -->
-  <footer class="site-footer py-12 px-6">
-    <div class="max-w-4xl mx-auto text-center">
-      <p class="font-mono text-xs tracking-[0.15em] uppercase text-muted">Index Gentium <span>v1.3</span></p>
+  <footer class="site-footer">
+    <div class="max-w-4xl mx-auto px-6 text-center">
+      <p class="font-mono text-xs tracking-widest uppercase text-muted">Index Gentium v1.3</p>
     </div>
   </footer>
 
   <!-- Fallback Data -->
   <script type="application/json" id="fallback-data">
   [
-    {"id": "a1", "name": "New Zealand Company", "type": "private", "role": "Colonization", "regionOfActivity": "Wellington", "description": "Private British company instrumental in the early colonization of New Zealand.", "events": [{"date": "1839-05-02", "category": "birth", "description": "Established in London"}, {"date": "1841-01-22", "category": "expansion", "description": "Wellington settlement founded"}, {"date": "1858-12-31", "category": "death", "description": "Dissolution"}]},
-    {"id": "a2", "name": "Parliament of New Zealand", "type": "public", "role": "Legislature", "regionOfActivity": "Wellington", "description": "The supreme legislative body of New Zealand, established in 1854.", "events": [{"date": "1854-05-24", "category": "birth", "description": "First parliament convened"}, {"date": "1893-09-19", "category": "milestone", "description": "Women's suffrage granted"}, {"date": "1996-10-12", "category": "transformation", "description": "MMP system adopted"}]},
-    {"id": "a3", "name": "University of Otago", "type": "public", "role": "Education", "regionOfActivity": "Dunedin", "description": "Oldest university in New Zealand, founded in 1869.", "events": [{"date": "1869-01-01", "category": "birth", "description": "Founded by ordinance"}, {"date": "1871-07-05", "category": "expansion", "description": "First classes began"}]},
-    {"id": "a4", "name": "Bank of New Zealand", "type": "private", "role": "Finance", "regionOfActivity": "Auckland", "description": "One of New Zealand's largest banks, established in 1861.", "events": [{"date": "1861-07-29", "category": "birth", "description": "Founded in Auckland"}, {"date": "1945-01-01", "category": "milestone", "description": "Largest bank by assets"}]},
-    {"id": "a5", "name": "New Zealand Railways", "type": "public", "role": "Transport", "regionOfActivity": "National", "description": "National railway system.", "events": [{"date": "1863-12-31", "category": "birth", "description": "First railway opened"}, {"date": "1993-07-01", "category": "transformation", "description": "Privatized"}, {"date": "2008-07-01", "category": "transformation", "description": "Renationalized"}]},
-    {"id": "a6", "name": "Air New Zealand", "type": "hybrid", "role": "Aviation", "regionOfActivity": "National", "description": "National airline carrier.", "events": [{"date": "1940-04-26", "category": "birth", "description": "TEAL formed"}, {"date": "2001-09-13", "category": "transformation", "description": "Government bailout"}]},
-    {"id": "a7", "name": "Waitangi Tribunal", "type": "public", "role": "Justice", "regionOfActivity": "National", "description": "Permanent commission of inquiry.", "events": [{"date": "1975-10-10", "category": "birth", "description": "Established by Act of Parliament"}]},
-    {"id": "a8", "name": "Fonterra", "type": "hybrid", "role": "Dairy", "regionOfActivity": "National", "description": "New Zealand's largest dairy cooperative.", "events": [{"date": "2001-10-16", "category": "birth", "description": "Merger formed Fonterra"}]},
-    {"id": "a9", "name": "Maori King Movement", "type": "hybrid", "role": "Cultural Leadership", "regionOfActivity": "Waikato", "description": "Maori sovereignty movement.", "events": [{"date": "1858-06-02", "category": "birth", "description": "First Maori King installed"}, {"date": "1863-07-12", "category": "milestone", "description": "Waikato War invasion"}]},
-    {"id": "a10", "name": "Reserve Bank of NZ", "type": "public", "role": "Finance", "regionOfActivity": "National", "description": "Central bank of New Zealand.", "events": [{"date": "1934-08-01", "category": "birth", "description": "Established as central bank"}]}
+    {"id": "a1", "name": "New Zealand Company", "type": "private", "role": "Colonization", "regionOfActivity": "Wellington", "description": "Private British company instrumental in the early colonization.", "events": [{"date": "1839-05-02", "category": "birth", "description": "Established"}, {"date": "1858-12-31", "category": "death", "description": "Dissolution"}]},
+    {"id": "a2", "name": "Parliament of NZ", "type": "public", "role": "Legislature", "regionOfActivity": "Wellington", "description": "The supreme legislative body.", "events": [{"date": "1854-05-24", "category": "birth", "description": "First parliament"}, {"date": "1893-09-19", "category": "milestone", "description": "Women's suffrage"}]},
+    {"id": "a3", "name": "University of Otago", "type": "public", "role": "Education", "regionOfActivity": "Dunedin", "description": "Oldest university.", "events": [{"date": "1869-01-01", "category": "birth", "description": "Founded"}]},
+    {"id": "a4", "name": "Bank of NZ", "type": "private", "role": "Finance", "regionOfActivity": "Auckland", "description": "Major bank.", "events": [{"date": "1861-07-29", "category": "birth", "description": "Founded"}]},
+    {"id": "a5", "name": "NZ Railways", "type": "public", "role": "Transport", "regionOfActivity": "National", "description": "Railway system.", "events": [{"date": "1863-12-31", "category": "birth", "description": "First railway"}]},
+    {"id": "a6", "name": "Air NZ", "type": "hybrid", "role": "Aviation", "regionOfActivity": "National", "description": "National airline.", "events": [{"date": "1940-04-26", "category": "birth", "description": "TEAL formed"}]},
+    {"id": "a7", "name": "Waitangi Tribunal", "type": "public", "role": "Justice", "regionOfActivity": "National", "description": "Commission of inquiry.", "events": [{"date": "1975-10-10", "category": "birth", "description": "Established"}]},
+    {"id": "a8", "name": "Fonterra", "type": "hybrid", "role": "Dairy", "regionOfActivity": "National", "description": "Dairy cooperative.", "events": [{"date": "2001-10-16", "category": "birth", "description": "Merger"}]},
+    {"id": "a9", "name": "Maori King Movement", "type": "hybrid", "role": "Cultural", "regionOfActivity": "Waikato", "description": "Maori sovereignty.", "events": [{"date": "1858-06-02", "category": "birth", "description": "First King installed"}]},
+    {"id": "a10", "name": "Reserve Bank", "type": "public", "role": "Finance", "regionOfActivity": "National", "description": "Central bank.", "events": [{"date": "1934-08-01", "category": "birth", "description": "Established"}]}
   ]
   </script>
 
   <script>
-    // ==========================================
-    // THEME & SCROLL
-    // ==========================================
-    const themeToggle = document.getElementById('themeToggle');
-    const scrollProgress = document.getElementById('scrollProgress');
-    const projectHeader = document.getElementById('projectHeader');
-
-    themeToggle.addEventListener('click', () => {
+    // Theme Toggle
+    document.getElementById('themeToggle').addEventListener('click', () => {
       document.documentElement.classList.toggle('dark');
       localStorage.setItem('index-gentium-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
     });
 
-    window.addEventListener('scroll', () => {
-      const progress = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) || 0;
-      scrollProgress.style.transform = `scaleX(${progress})`;
-      projectHeader.classList.toggle('scrolled', window.scrollY > 10);
-    }, { passive: true });
-
-    // ==========================================
-    // REVEAL ANIMATIONS
-    // ==========================================
+    // Reveal Animations
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce').matches;
     document.querySelectorAll('.reveal').forEach(el => {
-      if (prefersReducedMotion) {
-        el.classList.add('visible');
-        return;
-      }
+      if (prefersReducedMotion) { el.classList.add('visible'); return; }
       const observer = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting) {
-          el.classList.add('visible');
-          observer.unobserve(el);
-        }
+        if (entries[0].isIntersecting) { el.classList.add('visible'); observer.unobserve(el); }
       }, { threshold: 0.1 });
       observer.observe(el);
     });
 
-    // ==========================================
-    // DATA MODEL
-    // ==========================================
+    // Data Model
     const DataModel = {
-      actors: [],
-      events: [],
-      selectedActor: null,
-      activeTypes: { public: true, private: true, hybrid: true },
-      activeFilters: new Set(['birth', 'death', 'milestone', 'transformation', 'expansion', 'other']),
-      
+      actors: [], events: [],
+      activeTypes: { private: true, hybrid: true, public: true },
+      searchQuery: '',
+
       async init() {
-        const loadingEl = document.getElementById('loading-indicator');
         try {
           const response = await fetch('actor-set.json');
-          if (!response.ok) throw new Error('Network response was not ok');
+          if (!response.ok) throw new Error('Network error');
           this.processData(await response.json());
-        } catch (error) {
-          console.warn("Using fallback data.", error);
+        } catch (e) {
           this.processData(JSON.parse(document.getElementById('fallback-data').textContent));
-        } finally {
-          loadingEl.style.opacity = '0';
-          setTimeout(() => loadingEl.style.display = 'none', 500);
         }
       },
 
-      processData(rawData) {
-        this.actors = rawData.actors || (Array.isArray(rawData) ? rawData : []);
+      processData(raw) {
+        this.actors = raw.actors || (Array.isArray(raw) ? raw : []);
         this.events = [];
-        
         this.actors.forEach(actor => {
-          if (!actor.events) return;
-          actor.events.forEach(ev => {
-            const eventDate = new Date(ev.date);
-            if (isNaN(eventDate.getTime())) return;
-
-            let category = (ev.category || 'other').toLowerCase();
-            if (!['birth', 'death', 'milestone', 'transformation', 'expansion'].includes(category)) {
-              category = 'other';
+          (actor.events || []).forEach(ev => {
+            const d = new Date(ev.date);
+            if (!isNaN(d)) {
+              this.events.push({
+                id: `${actor.id}-${ev.date}`,
+                date: d,
+                type: ev.category || 'other',
+                desc: ev.description,
+                actorId: actor.id,
+                actorName: actor.name,
+                actorType: actor.type
+              });
             }
-
-            this.events.push({
-              x: 0, y: 0,
-              date: eventDate,
-              type: category,
-              desc: ev.description || '',
-              actorId: actor.id,
-              actorName: actor.name,
-              actorType: actor.type,
-              importance: this.calculateImportance(ev, actor)
-            });
           });
         });
-
         this.events.sort((a, b) => a.date - b.date);
-        this.updateStats();
-      },
-
-      calculateImportance(ev, actor) {
-        // Calculate importance score based on event type and actor significance
-        let score = 1;
-        if (ev.category === 'birth' || ev.category === 'death') score += 2;
-        if (ev.category === 'milestone') score += 1;
-        if (actor.events && actor.events.length > 3) score += 0.5;
-        return Math.min(score, 4);
-      },
-
-      updateStats() {
         document.getElementById('stat-actors').textContent = this.actors.length;
         document.getElementById('stat-events').textContent = this.events.length;
         document.getElementById('stat-range').textContent = '227';
         document.getElementById('stat-decades').textContent = '23';
-        
-        document.getElementById('count-public').textContent = this.actors.filter(a => a.type === 'public').length;
-        document.getElementById('count-hybrid').textContent = this.actors.filter(a => a.type === 'hybrid').length;
-        document.getElementById('count-private').textContent = this.actors.filter(a => a.type === 'private').length;
       },
 
-      getEvents() {
+      getFiltered() {
+        const q = this.searchQuery.toLowerCase();
         return this.events.filter(ev => 
-          this.activeTypes[ev.actorType] && this.activeFilters.has(ev.type)
+          this.activeTypes[ev.actorType] && 
+          (!q || ev.actorName.toLowerCase().includes(q))
         );
       },
       
       getActorById(id) { return this.actors.find(a => a.id === id); }
     };
 
-    // ==========================================
-    // HISTORY & BOOKMARKS
-    // ==========================================
-    const HistoryManager = {
-      stack: [],
-      pointer: -1,
-      isNavigating: false,
-      
-      pushState(zoom, panY) {
-        if (this.isNavigating) return;
-        
-        const state = { zoom, panY };
-        if (this.pointer < this.stack.length - 1) {
-          this.stack = this.stack.slice(0, this.pointer + 1);
-        }
-        this.stack.push(state);
-        this.pointer++;
-        this.updateButtons();
-        this.updateHash(state);
-      },
-      
-      back() {
-        if (this.pointer > 0) {
-          this.pointer--;
-          this.applyState();
-        }
-      },
-      
-      forward() {
-        if (this.pointer < this.stack.length - 1) {
-          this.pointer++;
-          this.applyState();
-        }
-      },
-      
-      applyState() {
-        this.isNavigating = true;
-        const state = this.stack[this.pointer];
-        Renderer.zoom = state.zoom;
-        Renderer.panY = state.panY;
-        this.updateButtons();
-        this.updateHash(state);
-        setTimeout(() => { this.isNavigating = false; }, 100);
-      },
-      
-      updateButtons() {
-        document.getElementById('btn-back').disabled = this.pointer <= 0;
-        document.getElementById('btn-forward').disabled = this.pointer >= this.stack.length - 1;
-      },
-      
-      updateHash(state) {
-        const z = Math.round(state.zoom * 100);
-        const p = Math.round(state.panY);
-        history.replaceState(null, '', `#z=${z}&p=${p}`);
-      },
-      
-      loadFromHash() {
-        const hash = window.location.hash.slice(1);
-        const params = new URLSearchParams(hash);
-        if (params.has('z') && params.has('p')) {
-          Renderer.zoom = parseInt(params.get('z')) / 100;
-          Renderer.panY = parseInt(params.get('p'));
-          this.pushState(Renderer.zoom, Renderer.panY);
-          return true;
-        }
-        return false;
-      }
-    };
-
-    // ==========================================
-    // RENDERER - ENHANCED WITH GRID & CLUSTERING
-    // ==========================================
-    const Renderer = {
-      canvas: null,
-      ctx: null,
-      width: 0,
-      height: 0,
-      
-      zoom: 1,
-      panY: 0,
-      isDragging: false,
-      dragStartY: 0,
-      panStartY: 0,
-      
-      minDate: new Date('1800-01-01').getTime(),
-      maxDate: new Date('2027-12-31').getTime(),
-      timeRange: 0,
-      today: new Date().getTime(),
-      
-      marginTop: 60,
-      marginBottom: 60,
-      marginLeft: 64,
-      marginRight: 72,
-
-      minimapCanvas: null,
-      minimapCtx: null,
-      minimapArea: null,
-      minimapWidth: 56,
-
-      timeAxisEl: null,
-      currentTimeIndicator: null,
-
-      // Grid configuration
-      gridYears: [],
-      
-      init() {
-        this.canvas = document.getElementById('viz-canvas');
+    // Timeline Engine
+    class Timeline {
+      constructor() {
+        this.state = { zoom: 1, panY: 0 };
+        this.container = document.getElementById('timelineContainer');
+        this.canvas = document.getElementById('timelineCanvas');
         this.ctx = this.canvas.getContext('2d');
         
-        this.minimapCanvas = document.getElementById('minimap-canvas');
+        this.axisCanvas = document.getElementById('axisCanvas');
+        this.axisCtx = this.axisCanvas.getContext('2d');
+        
+        this.minimapCanvas = document.getElementById('minimapCanvas');
         this.minimapCtx = this.minimapCanvas.getContext('2d');
-        this.minimapArea = document.getElementById('minimapArea');
-        this.timeAxisEl = document.getElementById('timeAxis');
-        this.currentTimeIndicator = document.getElementById('currentTimeIndicator');
+        this.minimapContainer = document.getElementById('minimapContainer');
+
+        this.layout = { ml: 10, mt: 20, mb: 20, mr: 10, laneW: 0, cols: {} };
         
-        this.timeRange = this.maxDate - this.minDate;
+        this.lanes = {
+          private: { shape: 'circle' },
+          hybrid: { shape: 'square' },
+          public: { shape: 'triangle' }
+        };
         
-        // Generate grid years
-        for (let y = 1800; y <= 2025; y += 5) {
-          this.gridYears.push(y);
-        }
-        
+        this.hovered = null;
+        this.packed = new Map();
+        this.init();
+      }
+
+      init() {
         this.resize();
-        window.addEventListener('resize', () => this.resize());
-        
-        this.buildTimeAxis();
-        this.loop();
-      },
+        this.bindEvents();
+        this.render();
+      }
 
       resize() {
-        const container = this.canvas.parentElement;
-        this.width = container.clientWidth;
-        this.height = container.clientHeight;
-        
         const dpr = window.devicePixelRatio || 1;
-        this.canvas.width = this.width * dpr;
-        this.canvas.height = this.height * dpr;
+        
+        const rect = this.container.getBoundingClientRect();
+        this.canvas.width = rect.width * dpr;
+        this.canvas.height = rect.height * dpr;
         this.ctx.scale(dpr, dpr);
-        this.canvas.style.width = this.width + 'px';
-        this.canvas.style.height = this.height + 'px';
+        this.layout.w = rect.width;
+        this.layout.h = rect.height;
 
-        const minimapRect = this.minimapArea.getBoundingClientRect();
-        const minimapHeight = minimapRect.height;
-        
-        this.minimapCanvas.width = this.minimapWidth * dpr;
-        this.minimapCanvas.height = minimapHeight * dpr;
+        const axisRect = this.axisCanvas.parentElement.getBoundingClientRect();
+        this.axisCanvas.width = axisRect.width * dpr;
+        this.axisCanvas.height = axisRect.height * dpr;
+        this.axisCtx.scale(dpr, dpr);
+
+        const mmRect = this.minimapContainer.getBoundingClientRect();
+        this.minimapCanvas.width = mmRect.width * dpr;
+        this.minimapCanvas.height = mmRect.height * dpr;
         this.minimapCtx.scale(dpr, dpr);
-        this.minimapCanvas.style.width = this.minimapWidth + 'px';
-        this.minimapCanvas.style.height = minimapHeight + 'px';
-      },
 
-      buildTimeAxis() {
-        const axis = this.timeAxisEl;
-        const line = axis.querySelector('.time-axis-line');
-        axis.innerHTML = '';
-        axis.appendChild(line);
+        const chartW = this.layout.w - this.layout.ml - this.layout.mr;
+        this.layout.laneW = chartW / 3;
+        this.layout.cols.private = this.layout.ml;
+        this.layout.cols.hybrid = this.layout.ml + this.layout.laneW;
+        this.layout.cols.public = this.layout.ml + this.layout.laneW * 2;
+
+        this.pack();
+        this.render();
+      }
+
+      bindEvents() {
+        window.addEventListener('resize', () => this.resize());
+        this.canvas.addEventListener('wheel', e => { e.preventDefault(); this.zoom(e.deltaY > 0 ? 0.9 : 1.1); }, { passive: false });
+        this.canvas.addEventListener('mousedown', e => this.onDragStart(e));
+        this.canvas.addEventListener('mousemove', e => this.onHover(e));
+        this.canvas.addEventListener('mouseleave', () => { this.hovered = null; this.hideTooltip(); this.render(); });
+        this.canvas.addEventListener('click', () => { if(this.hovered) this.openSidebar(DataModel.getActorById(this.hovered.actorId)); });
+
+        this.minimapContainer.addEventListener('mousedown', e => this.onMinimapDragStart(e));
         
-        // Generate ticks and labels from 1800 to 2025
-        for (let year = 1800; year <= 2025; year += 25) {
-          const normalized = (new Date(year, 0, 1).getTime() - this.minDate) / this.timeRange;
-          const y = this.marginTop + normalized * (this.height - this.marginTop - this.marginBottom);
-          
-          // Tick
-          const tick = document.createElement('div');
-          tick.className = 'time-axis-tick major';
-          tick.style.top = y + 'px';
-          axis.appendChild(tick);
-          
-          // Label
-          const label = document.createElement('div');
-          label.className = 'time-axis-label major';
-          label.style.top = y + 'px';
-          label.textContent = year;
-          label.dataset.year = year;
-          label.addEventListener('click', () => Interaction.jumpToYear(year));
-          axis.appendChild(label);
-        }
+        document.getElementById('btnZoomIn').addEventListener('click', () => this.zoom(1.4));
+        document.getElementById('btnZoomOut').addEventListener('click', () => this.zoom(0.7));
+        document.getElementById('btnReset').addEventListener('click', () => { this.state.zoom = 1; this.state.panY = 0; this.render(); });
+        document.getElementById('btnFitAll').addEventListener('click', () => this.fit());
+
+        document.getElementById('btnHelp').addEventListener('click', () => { document.getElementById('helpModal').style.display = 'flex'; });
+        document.getElementById('closeHelp').addEventListener('click', () => { document.getElementById('helpModal').style.display = 'none'; });
+        document.getElementById('helpModal').addEventListener('click', (e) => { if(e.target.id === 'helpModal') e.target.style.display = 'none'; });
+
+        // Search Input
+        document.getElementById('searchInput').addEventListener('input', e => {
+          DataModel.searchQuery = e.target.value;
+          this.applyFilters();
+        });
         
-        // Add minor ticks (every 5 years)
-        for (let year = 1805; year <= 2025; year += 25) {
-          for (let offset = 0; offset < 20; offset += 5) {
-            const y = year + offset;
-            if (y % 25 === 0) continue;
-            
-            const normalized = (new Date(y, 0, 1).getTime() - this.minDate) / this.timeRange;
-            const yPos = this.marginTop + normalized * (this.height - this.marginTop - this.marginBottom);
-            
-            const tick = document.createElement('div');
-            tick.className = 'time-axis-tick';
-            tick.style.top = yPos + 'px';
-            axis.appendChild(tick);
-          }
-        }
-      },
+        document.getElementById('sidebarBackdrop').addEventListener('click', () => this.closeSidebar());
+        document.getElementById('close-sidebar').addEventListener('click', () => this.closeSidebar());
+      }
 
-      mapDateToY(timestamp) {
-        const normalized = (timestamp - this.minDate) / this.timeRange;
-        const H = this.height - this.marginTop - this.marginBottom;
-        return this.marginTop + (normalized * H * this.zoom) + this.panY;
-      },
+      applyFilters() {
+        this.pack();
+        this.render();
+      }
 
-      mapYToDate(y) {
-        const H = this.height - this.marginTop - this.marginBottom;
-        const normalized = (y - this.marginTop - this.panY) / (H * this.zoom);
-        return this.minDate + (normalized * this.timeRange);
-      },
+      yearToY(y) {
+        const range = (2025 - 1800) / this.state.zoom;
+        const center = (1800 + 2025) / 2 - this.state.panY * range;
+        return this.layout.mt + ((y - (center - range/2)) / range) * (this.layout.h - this.layout.mt - this.layout.mb);
+      }
 
-      mapTypeToX(type) {
-        const W = this.width - this.marginLeft - this.marginRight;
-        const colW = W / 3;
-        if (type === 'public') return this.marginLeft + colW * 0.5;
-        if (type === 'hybrid') return this.marginLeft + colW * 1.5;
-        return this.marginLeft + colW * 2.5;
-      },
+      pack() {
+        this.packed.clear();
+        const events = DataModel.getFiltered();
+        const groups = { private: {}, hybrid: {}, public: {} };
+        events.forEach(d => {
+          const y = d.date.getFullYear();
+          if(!groups[d.actorType][y]) groups[d.actorType][y] = [];
+          groups[d.actorType][y].push(d);
+        });
+        Object.keys(groups).forEach(type => {
+          const laneX = this.layout.cols[type] + this.layout.laneW / 2;
+          Object.keys(groups[type]).forEach(year => {
+            const evts = groups[type][year];
+            const step = Math.min(30, (this.layout.laneW - 20) / evts.length);
+            const startX = laneX - (evts.length - 1) * step / 2;
+            evts.forEach((e, i) => this.packed.set(e.id, { x: startX + i * step }));
+          });
+        });
+      }
 
-      getColors() {
+      render() {
+        this.renderAxis();
+        this.renderMain();
+        this.renderMinimap();
+      }
+
+      renderAxis() {
+        const ctx = this.axisCtx;
+        const w = this.axisCanvas.width / (window.devicePixelRatio || 1);
+        const h = this.axisCanvas.height / (window.devicePixelRatio || 1);
         const isDark = document.documentElement.classList.contains('dark');
-        return {
-          bg: isDark ? '#0B1120' : '#FFFFFF',
-          bgSubtle: isDark ? '#172033' : '#F1F5F9',
-          fg: isDark ? '#E2E8F0' : '#1A2B3C',
-          muted: isDark ? '#94A3B8' : '#5C7089',
-          border: isDark ? '#334155' : '#D8E1EB',
-          gridLine: isDark ? 'rgba(148, 163, 184, 0.06)' : 'rgba(120, 140, 160, 0.08)',
-          gridLineMajor: isDark ? 'rgba(148, 163, 184, 0.12)' : 'rgba(120, 140, 160, 0.15)',
-          public: isDark ? '#3B82F6' : '#2563EB',
-          private: isDark ? '#EF4444' : '#DC2626',
-          hybrid: isDark ? '#10B981' : '#059669'
-        };
-      },
+        
+        ctx.clearRect(0, 0, w, h);
 
-      drawShape(ctx, x, y, type, size, importance = 1) {
-        ctx.beginPath();
-        const scaledSize = size * (0.8 + importance * 0.2);
-        
-        if (type === 'public') {
-          // Circle with optional ring for importance
-          ctx.arc(x, y, scaledSize, 0, Math.PI * 2);
-          if (importance > 2) {
-            ctx.moveTo(x + scaledSize + 2, y);
-            ctx.arc(x, y, scaledSize + 2, 0, Math.PI * 2);
-          }
-        } else if (type === 'hybrid') {
-          // Diamond
-          ctx.moveTo(x, y - scaledSize);
-          ctx.lineTo(x + scaledSize, y);
-          ctx.lineTo(x, y + scaledSize);
-          ctx.lineTo(x - scaledSize, y);
-          ctx.closePath();
-        } else {
-          // Square with rounded corners for private
-          const r = 3;
-          const s = scaledSize;
-          ctx.moveTo(x - s + r, y - s);
-          ctx.lineTo(x + s - r, y - s);
-          ctx.quadraticCurveTo(x + s, y - s, x + s, y - s + r);
-          ctx.lineTo(x + s, y + s - r);
-          ctx.quadraticCurveTo(x + s, y + s, x + s - r, y + s);
-          ctx.lineTo(x - s + r, y + s);
-          ctx.quadraticCurveTo(x - s, y + s, x - s, y + s - r);
-          ctx.lineTo(x - s, y - s + r);
-          ctx.quadraticCurveTo(x - s, y - s, x - s + r, y - s);
-          ctx.closePath();
-        }
-      },
+        const textColor = isDark ? '#94a3b8' : '#64748b';
+        const tickColor = isDark ? '#475569' : '#cbd5e1';
+        const trackColor = isDark ? '#334155' : '#e2e8f0';
 
-      drawGrid(ctx, colors) {
-        const H = this.height - this.marginTop - this.marginBottom;
-        const W = this.width - this.marginLeft - this.marginRight;
-        
-        // Draw decade lines
-        for (let year = 1800; year <= 2025; year += 10) {
-          const y = this.mapDateToY(new Date(year, 0, 1).getTime());
-          if (y < this.marginTop - 10 || y > this.height - this.marginBottom + 10) continue;
-          
-          const isMajor = year % 50 === 0;
-          ctx.strokeStyle = isMajor ? colors.gridLineMajor : colors.gridLine;
-          ctx.lineWidth = isMajor ? 1 : 1;
-          ctx.setLineDash(isMajor ? [] : [4, 4]);
-          
-          ctx.beginPath();
-          ctx.moveTo(this.marginLeft, y);
-          ctx.lineTo(this.width - this.marginRight, y);
-          ctx.stroke();
-        }
-        
-        ctx.setLineDash([]);
-        
-        // Draw column separators
-        const colW = W / 3;
-        ctx.strokeStyle = colors.gridLine;
+        // Right border
+        ctx.strokeStyle = isDark ? '#334155' : '#e2e8f0';
         ctx.lineWidth = 1;
-        
-        for (let i = 1; i < 3; i++) {
-          const x = this.marginLeft + colW * i;
+        ctx.beginPath();
+        ctx.moveTo(w - 0.5, 0);
+        ctx.lineTo(w - 0.5, h);
+        ctx.stroke();
+
+        // Hairline track
+        const trackX = w - 14;
+        ctx.strokeStyle = trackColor;
+        ctx.lineWidth = 1;
+        ctx.beginPath();
+        ctx.moveTo(trackX, 24);
+        ctx.lineTo(trackX, h - 24);
+        ctx.stroke();
+
+        const range = (2025 - 1800) / this.state.zoom;
+        const center = (1800 + 2025) / 2 - this.state.panY * range;
+        const start = Math.ceil(center - range/2);
+
+        let majorStep = 25;
+        let minorStep = 5;
+        if (range < 100) { majorStep = 20; minorStep = 5; }
+        if (range < 60) { majorStep = 10; minorStep = 5; }
+        if (range < 30) { majorStep = 5; minorStep = 1; }
+
+        for (let y = Math.floor(start/minorStep)*minorStep; y < start + range; y += minorStep) {
+          const py = this.yearToY(y);
+          if (py < 20 || py > h - 20) continue;
+
+          const isMajor = y % majorStep === 0;
+          const isCentury = y % 100 === 0;
+
+          ctx.strokeStyle = tickColor;
+          ctx.lineWidth = 1;
           ctx.beginPath();
-          ctx.moveTo(x, this.marginTop);
-          ctx.lineTo(x, this.height - this.marginBottom);
-          ctx.stroke();
-        }
-      },
-
-      drawConnections(ctx, events, colors, selectedId) {
-        // Draw connections between events of the same actor
-        const actorEvents = {};
-        events.forEach(ev => {
-          if (!actorEvents[ev.actorId]) actorEvents[ev.actorId] = [];
-          actorEvents[ev.actorId].push(ev);
-        });
-        
-        Object.values(actorEvents).forEach(actorEvts => {
-          if (actorEvts.length < 2) return;
           
-          const isSelected = actorEvts[0].actorId === selectedId;
-          const alpha = selectedId ? (isSelected ? 0.4 : 0.05) : 0.15;
-          
-          ctx.strokeStyle = colors.muted;
-          ctx.lineWidth = isSelected ? 2 : 1;
-          ctx.globalAlpha = alpha;
-          
-          ctx.beginPath();
-          actorEvts.sort((a, b) => a.date - b.date);
-          ctx.moveTo(actorEvts[0].x, actorEvts[0].y);
-          
-          for (let i = 1; i < actorEvts.length; i++) {
-            ctx.lineTo(actorEvts[i].x, actorEvts[i].y);
-          }
-          
-          ctx.stroke();
-          ctx.globalAlpha = 1.0;
-        });
-      },
-
-      draw() {
-        const ctx = this.ctx;
-        const colors = this.getColors();
-        
-        ctx.clearRect(0, 0, this.width, this.height);
-        ctx.fillStyle = colors.bg;
-        ctx.fillRect(0, 0, this.width, this.height);
-
-        const W = this.width - this.marginLeft - this.marginRight;
-        const colW = W / 3;
-
-        // Draw grid first (behind everything)
-        this.drawGrid(ctx, colors);
-
-        // Column backgrounds (subtle)
-        ctx.fillStyle = colors.bgSubtle;
-        ctx.globalAlpha = 0.2;
-        ctx.fillRect(this.marginLeft, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
-        ctx.fillRect(this.marginLeft + colW * 2, this.marginTop, colW, this.height - this.marginTop - this.marginBottom);
-        ctx.globalAlpha = 1.0;
-
-        // Get and position events
-        const events = DataModel.getEvents();
-        const selectedId = DataModel.selectedActor ? DataModel.selectedActor.id : null;
-        
-        // Update empty state
-        const emptyState = document.getElementById('emptyState');
-        if (events.length === 0) {
-          emptyState.classList.add('visible');
-        } else {
-          emptyState.classList.remove('visible');
-        }
-
-        // Position events with collision detection
-        const positionedEvents = [];
-        const minDistance = 12; // Minimum pixels between events
-        
-        events.forEach(ev => {
-          const y = this.mapDateToY(ev.date.getTime());
-          if (y < this.marginTop - 20 || y > this.height - this.marginBottom + 20) return;
-
-          const x = this.mapTypeToX(ev.actorType);
-          const colIndex = ev.actorType === 'public' ? 0 : (ev.actorType === 'hybrid' ? 1 : 2);
-          
-          // Add jitter based on actor ID to prevent perfect alignment
-          const hash = ev.actorId.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0);
-          let offsetX = ((hash % 20) / 20 - 0.5) * colW * 0.6;
-          
-          // Simple collision avoidance
-          let collision = true;
-          let attempts = 0;
-          while (collision && attempts < 5) {
-            collision = false;
-            for (const pe of positionedEvents) {
-              const dx = (x + offsetX) - pe.x;
-              const dy = y - pe.y;
-              const dist = Math.sqrt(dx * dx + dy * dy);
-              if (dist < minDistance) {
-                collision = true;
-                offsetX += (dx > 0 ? 1 : -1) * 8;
-                attempts++;
-                break;
-              }
-            }
-          }
-          
-          ev.x = x + offsetX;
-          ev.y = y;
-          positionedEvents.push(ev);
-        });
-
-        // Draw connections
-        this.drawConnections(ctx, positionedEvents, colors, selectedId);
-
-        // Draw events
-        positionedEvents.forEach(ev => {
-          const isSelected = ev.actorId === selectedId;
-          const isHovered = Interaction.hoveredEvent === ev;
-          const radius = isSelected ? 8 : (isHovered ? 7 : 5);
-          const alpha = selectedId ? (isSelected ? 1.0 : 0.25) : (isHovered ? 1.0 : 0.85);
-
-          ctx.globalAlpha = alpha;
-          const evColor = ev.actorType === 'public' ? colors.public : 
-                         (ev.actorType === 'hybrid' ? colors.hybrid : colors.private);
-          ctx.fillStyle = evColor;
-          
-          this.drawShape(ctx, ev.x, ev.y, ev.actorType, radius, ev.importance);
-          ctx.fill();
-
-          // Glow effect for selected/hovered
-          if (isSelected || isHovered) {
-            ctx.shadowColor = evColor;
-            ctx.shadowBlur = isSelected ? 20 : 10;
-            ctx.fill();
-            ctx.shadowBlur = 0;
+          if (isMajor) {
+            ctx.moveTo(trackX, py);
+            ctx.lineTo(trackX - 10, py);
+            ctx.stroke();
             
-            // Ring for selected
-            if (isSelected) {
-              ctx.strokeStyle = colors.fg;
-              ctx.lineWidth = 2;
-              ctx.stroke();
-            }
-          }
-          ctx.globalAlpha = 1.0;
-        });
-
-        // Update current time indicator
-        this.updateCurrentTimeIndicator();
-
-        this.drawMinimap();
-        this.updateUI();
-      },
-
-      updateCurrentTimeIndicator() {
-        const now = new Date().getTime();
-        const y = this.mapDateToY(now);
-        const indicator = this.currentTimeIndicator;
-        
-        if (y >= this.marginTop && y <= this.height - this.marginBottom) {
-          indicator.style.top = y + 'px';
-          indicator.classList.add('visible');
-        } else {
-          indicator.classList.remove('visible');
-        }
-      },
-
-      drawMinimap() {
-        const ctx = this.minimapCtx;
-        const colors = this.getColors();
-        const minimapHeight = this.minimapCanvas.height / (window.devicePixelRatio || 1);
-        
-        ctx.clearRect(0, 0, this.minimapWidth, minimapHeight);
-
-        const events = DataModel.getEvents();
-        const contentHeight = minimapHeight - this.marginTop - this.marginBottom;
-        
-        // Draw decade backgrounds in minimap
-        for (let year = 1800; year <= 2025; year += 50) {
-          const normalized = (new Date(year, 0, 1).getTime() - this.minDate) / this.timeRange;
-          const y = this.marginTop + normalized * contentHeight;
-          ctx.fillStyle = year % 100 === 0 ? colors.gridLineMajor : colors.gridLine;
-          ctx.fillRect(0, y, this.minimapWidth, contentHeight / 20);
-        }
-        
-        // Draw events
-        events.forEach(ev => {
-          const normalized = (ev.date.getTime() - this.minDate) / this.timeRange;
-          const y = this.marginTop + normalized * contentHeight;
-          const colIndex = ev.actorType === 'public' ? 0 : (ev.actorType === 'hybrid' ? 1 : 2);
-          
-          const xPos = 8 + colIndex * 16;
-          ctx.fillStyle = colIndex === 0 ? colors.public : (colIndex === 1 ? colors.hybrid : colors.private);
-          ctx.globalAlpha = 0.8;
-          ctx.beginPath();
-          ctx.arc(xPos, y, 2, 0, Math.PI * 2);
-          ctx.fill();
-        });
-        
-        ctx.globalAlpha = 1.0;
-        this.updateMinimapViewport();
-      },
-
-      updateMinimapViewport() {
-        const viewport = document.getElementById('minimapViewport');
-        const minimapHeight = this.minimapCanvas.height / (window.devicePixelRatio || 1);
-        const contentHeight = minimapHeight - this.marginTop - this.marginBottom;
-        
-        const topDate = this.mapYToDate(this.marginTop);
-        const bottomDate = this.mapYToDate(this.height - this.marginBottom);
-        
-        const topNorm = Math.max(0, (topDate - this.minDate) / this.timeRange);
-        const bottomNorm = Math.min(1, (bottomDate - this.minDate) / this.timeRange);
-        
-        viewport.style.top = (this.marginTop + topNorm * contentHeight) + 'px';
-        viewport.style.height = Math.max(12, (bottomNorm - topNorm) * contentHeight) + 'px';
-        
-        // Update labels
-        document.getElementById('minimapTop').textContent = new Date(topDate).getFullYear();
-        document.getElementById('minimapBottom').textContent = new Date(bottomDate).getFullYear();
-      },
-
-      updateUI() {
-        // Zoom Level
-        document.getElementById('zoomLevel').textContent = Math.round(this.zoom * 100) + '%';
-        
-        // Decade Links
-        const centerYear = new Date(this.mapYToDate(this.height / 2)).getFullYear();
-        document.querySelectorAll('.decade-link').forEach(link => {
-          const decade = parseInt(link.dataset.decade);
-          link.classList.toggle('active', centerYear >= decade && centerYear < decade + 50);
-        });
-      },
-
-      loop() {
-        this.draw();
-        requestAnimationFrame(() => this.loop());
-      }
-    };
-
-    // ==========================================
-    // INTERACTION - ENHANCED
-    // ==========================================
-    const Interaction = {
-      hoveredEvent: null,
-      minimapDragging: false,
-      
-      init() {
-        const canvas = Renderer.canvas;
-        
-        // Dragging
-        canvas.addEventListener('mousedown', e => {
-          if (e.button === 0) {
-            Renderer.isDragging = true;
-            Renderer.dragStartY = e.clientY;
-            Renderer.panStartY = Renderer.panY;
-            canvas.style.cursor = 'grabbing';
-          }
-        });
-
-        window.addEventListener('mousemove', e => {
-          if (Renderer.isDragging) {
-            const dy = e.clientY - Renderer.dragStartY;
-            Renderer.panY = Renderer.panStartY + dy;
-            // Add momentum feel
-            canvas.style.cursor = 'grabbing';
-          } else if (this.minimapDragging) {
-            this.handleMinimapDrag(e.clientY);
+            ctx.font = isCentury 
+              ? '500 12px "Cormorant Garamond", Georgia, serif'
+              : '400 11px "Cormorant Garamond", Georgia, serif';
+            ctx.textAlign = 'right';
+            ctx.textBaseline = 'middle';
+            ctx.fillStyle = textColor;
+            ctx.fillText(y.toString(), trackX - 14, py);
           } else {
-            const rect = canvas.getBoundingClientRect();
-            this.handleHover(e.clientX - rect.left, e.clientY - rect.top, e.clientX, e.clientY);
-          }
-        });
-
-        window.addEventListener('mouseup', () => {
-          if (Renderer.isDragging) {
-            HistoryManager.pushState(Renderer.zoom, Renderer.panY);
-          }
-          Renderer.isDragging = false;
-          canvas.style.cursor = this.hoveredEvent ? 'pointer' : 'grab';
-          this.minimapDragging = false;
-          document.getElementById('minimapViewport').classList.remove('dragging');
-        });
-
-        // Canvas Wheel with smooth zoom
-        canvas.addEventListener('wheel', e => {
-          e.preventDefault();
-          const zoomFactor = e.deltaY > 0 ? 0.9 : 1.1;
-          this.applyZoom(zoomFactor, e.offsetY);
-        }, { passive: false });
-
-        // Click to select
-        canvas.addEventListener('click', e => {
-          if (this.hoveredEvent && !Renderer.isDragging) {
-            this.selectActor(this.hoveredEvent.actorId);
-          }
-        });
-
-        // Buttons
-        document.getElementById('btn-zoom-in').addEventListener('click', () => this.applyZoom(1.3, Renderer.height / 2));
-        document.getElementById('btn-zoom-out').addEventListener('click', () => this.applyZoom(0.7, Renderer.height / 2));
-        document.getElementById('btn-fit-all').addEventListener('click', () => this.fitAllData());
-        document.getElementById('btn-reset').addEventListener('click', () => this.resetView());
-        
-        // History
-        document.getElementById('btn-back').addEventListener('click', () => HistoryManager.back());
-        document.getElementById('btn-forward').addEventListener('click', () => HistoryManager.forward());
-
-        // Decades
-        document.querySelectorAll('.decade-link').forEach(link => {
-          link.addEventListener('click', () => this.jumpToYear(parseInt(link.dataset.decade) + 25));
-        });
-
-        // Type Filters
-        document.querySelectorAll('.viz-tag').forEach(tag => {
-          tag.addEventListener('click', () => {
-            DataModel.activeTypes[tag.dataset.type] = !DataModel.activeTypes[tag.dataset.type];
-            tag.classList.toggle('active');
-            tag.setAttribute('aria-pressed', DataModel.activeTypes[tag.dataset.type]);
-          });
-        });
-
-        // Event Filters
-        document.querySelectorAll('.filter-tag').forEach(tag => {
-          tag.addEventListener('click', () => {
-            const filter = tag.dataset.filter;
-            if (DataModel.activeFilters.has(filter)) DataModel.activeFilters.delete(filter);
-            else DataModel.activeFilters.add(filter);
-            tag.classList.toggle('active');
-          });
-        });
-
-        // Actor Search with debounce
-        const searchInput = document.getElementById('actorSearch');
-        const searchResults = document.getElementById('searchResults');
-        let searchTimeout;
-        
-        searchInput.addEventListener('input', e => {
-          clearTimeout(searchTimeout);
-          const query = e.target.value.toLowerCase().trim();
-          
-          if (!query) { 
-            searchResults.classList.remove('visible'); 
-            return; 
-          }
-          
-          searchTimeout = setTimeout(() => {
-            const matches = DataModel.actors.filter(a => 
-              a.name.toLowerCase().includes(query) ||
-              (a.role && a.role.toLowerCase().includes(query))
-            );
-            
-            if (matches.length === 0) {
-              searchResults.innerHTML = '<div class="search-result-item" style="color: var(--muted); cursor: default;">No matches found</div>';
-            } else {
-              searchResults.innerHTML = matches.slice(0, 6).map(a => 
-                `<div class="search-result-item" data-id="${a.id}">
-                  <span>${a.name}</span>
-                  <span class="result-type">${a.type}</span>
-                </div>`
-              ).join('');
-            }
-            searchResults.classList.add('visible');
-          }, 150);
-        });
-        
-        // Close search on outside click
-        document.addEventListener('click', e => {
-          if (!e.target.closest('.search-tools-panel')) {
-            searchResults.classList.remove('visible');
-          }
-        });
-        
-        searchResults.addEventListener('click', e => {
-          const item = e.target.closest('.search-result-item');
-          if (item && item.dataset.id) {
-            const actor = DataModel.getActorById(item.dataset.id);
-            if (actor && actor.events.length > 0) {
-              this.jumpToYear(new Date(actor.events[0].date).getFullYear());
-              this.selectActor(actor.id);
-            }
-            searchInput.value = '';
-            searchResults.classList.remove('visible');
-          }
-        });
-
-        // Minimap
-        this.initMinimapInteraction();
-
-        // Sidebar
-        document.getElementById('sidebarBackdrop').addEventListener('click', () => this.deselectActor());
-        document.getElementById('close-sidebar').addEventListener('click', () => this.deselectActor());
-
-        // Keyboard
-        this.initKeyboard();
-        
-        // Help
-        document.getElementById('btn-help').addEventListener('click', () => {
-          document.getElementById('helpModal').classList.add('visible');
-        });
-        document.getElementById('helpModalClose').addEventListener('click', () => {
-          document.getElementById('helpModal').classList.remove('visible');
-        });
-        document.getElementById('helpModal').addEventListener('click', e => {
-          if (e.target.id === 'helpModal') e.target.classList.remove('visible');
-        });
-      },
-
-      applyZoom(factor, pos) {
-        const date = Renderer.mapYToDate(pos);
-        const newZoom = Math.max(0.5, Math.min(20, Renderer.zoom * factor));
-        
-        // Smooth zoom transition
-        const startZoom = Renderer.zoom;
-        const startPan = Renderer.panY;
-        const targetZoom = newZoom;
-        const targetPan = pos - (pos - startPan) * (targetZoom / startZoom);
-        
-        Renderer.zoom = targetZoom;
-        Renderer.panY = targetPan;
-        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
-      },
-
-      fitAllData() {
-        const events = DataModel.getEvents();
-        if (!events.length) return;
-        let minT = Math.min(...events.map(e => e.date.getTime()));
-        let maxT = Math.max(...events.map(e => e.date.getTime()));
-        const pad = Renderer.timeRange * 0.05;
-        minT -= pad; maxT += pad;
-        
-        const H = Renderer.height - Renderer.marginTop - Renderer.marginBottom;
-        Renderer.zoom = Math.min(20, (Renderer.timeRange / (maxT - minT)) * 0.85);
-        Renderer.panY = (Renderer.marginTop + H/2) - Renderer.mapDateToY((minT + maxT)/2);
-        
-        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
-      },
-
-      resetView() {
-        Renderer.zoom = 1;
-        Renderer.panY = 0;
-        DataModel.selectedActor = null;
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarBackdrop').classList.remove('visible');
-        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
-      },
-
-      jumpToYear(y) {
-        const year = parseInt(y);
-        if (isNaN(year)) return;
-        const target = new Date(year, 5, 15).getTime();
-        const center = Renderer.height / 2;
-        
-        // Smooth scroll
-        const startPan = Renderer.panY;
-        const targetPan = center - Renderer.mapDateToY(target);
-        Renderer.panY = targetPan;
-        
-        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
-      },
-
-      initMinimapInteraction() {
-        const mm = Renderer.minimapCanvas;
-        const vp = document.getElementById('minimapViewport');
-        
-        mm.addEventListener('click', e => {
-          const rect = mm.getBoundingClientRect();
-          const h = mm.height / (window.devicePixelRatio || 1);
-          const norm = (e.clientY - rect.top - Renderer.marginTop) / (h - Renderer.marginTop - Renderer.marginBottom);
-          const targetY = Renderer.height/2 - Renderer.mapDateToY(Renderer.minDate + norm * Renderer.timeRange);
-          Renderer.panY = targetY;
-          HistoryManager.pushState(Renderer.zoom, Renderer.panY);
-        });
-        
-        vp.addEventListener('mousedown', e => {
-          e.preventDefault();
-          this.minimapDragging = true;
-          this.minimapDragStartY = e.clientY;
-          this.minimapPanStartY = Renderer.panY;
-          vp.classList.add('dragging');
-        });
-      },
-      
-      handleMinimapDrag(clientY) {
-        const dy = clientY - this.minimapDragStartY;
-        const h = Renderer.minimapCanvas.height / (window.devicePixelRatio || 1);
-        const contentH = h - Renderer.marginTop - Renderer.marginBottom;
-        const scale = ((Renderer.height - Renderer.marginTop - Renderer.marginBottom) * Renderer.zoom) / contentH;
-        Renderer.panY = this.minimapPanStartY - dy * scale;
-      },
-
-      handleHover(x, y, cx, cy) {
-        const hit = this.findEvent(x, y);
-        const tooltip = document.getElementById('tooltip');
-        
-        if (hit !== this.hoveredEvent) {
-          this.hoveredEvent = hit;
-          Renderer.canvas.style.cursor = hit ? 'pointer' : 'grab';
-        }
-
-        if (hit) {
-          // Position tooltip intelligently
-          let l = cx + 16;
-          let t = cy + 16;
-          
-          const tooltipRect = tooltip.getBoundingClientRect();
-          if (l + 300 > window.innerWidth) l = cx - 316;
-          if (t + 150 > window.innerHeight) t = cy - 166;
-          
-          tooltip.style.left = l + 'px';
-          tooltip.style.top = t + 'px';
-          tooltip.classList.add('visible');
-          
-          // Update content
-          const typeColors = {
-            birth: 'var(--type-public)',
-            death: 'var(--type-private)',
-            milestone: 'var(--accent)',
-            transformation: 'var(--type-hybrid)',
-            expansion: 'var(--type-hybrid)',
-            other: 'var(--muted)'
-          };
-          
-          document.getElementById('tt-type').textContent = hit.type;
-          document.getElementById('tt-type').style.color = typeColors[hit.type] || 'var(--muted)';
-          document.getElementById('tt-actor').textContent = hit.actorName;
-          document.getElementById('tt-desc').textContent = hit.desc || 'No description available';
-          document.getElementById('tt-date-text').textContent = hit.date.toLocaleDateString(undefined, {
-            year: 'numeric',
-            month: 'short',
-            day: 'numeric'
-          });
-        } else {
-          tooltip.classList.remove('visible');
-        }
-      },
-
-      findEvent(mx, my) {
-        const events = DataModel.getEvents();
-        let closest = null;
-        let minD = 225; // 15px radius
-        
-        for (const ev of events) {
-          if (!ev.x || !ev.y) continue;
-          const d = (ev.x - mx)**2 + (ev.y - my)**2;
-          if (d < minD) {
-            minD = d;
-            closest = ev;
+            ctx.moveTo(trackX, py);
+            ctx.lineTo(trackX - 4, py);
+            ctx.stroke();
           }
         }
-        return closest;
-      },
-
-      selectActor(id) {
-        const actor = DataModel.getActorById(id);
-        if (!actor) return;
-        
-        DataModel.selectedActor = actor;
-        document.getElementById('sidebar').classList.add('open');
-        document.getElementById('sidebarBackdrop').classList.add('visible');
-        
-        // Populate sidebar
-        document.getElementById('sb-name').textContent = actor.name;
-        document.getElementById('sb-role').textContent = actor.role || 'Unknown Role';
-        
-        const typeEl = document.getElementById('sb-type');
-        typeEl.textContent = actor.type.charAt(0).toUpperCase() + actor.type.slice(1);
-        typeEl.style.color = `var(--type-${actor.type})`;
-        
-        document.getElementById('sb-region').textContent = actor.regionOfActivity || 'National';
-        document.getElementById('sb-desc').textContent = actor.description || 'No description available.';
-        
-        const tl = document.getElementById('sb-timeline');
-        const sortedEvents = [...actor.events].sort((a, b) => new Date(a.date) - new Date(b.date));
-        
-        tl.innerHTML = sortedEvents.map((ev, idx) => {
-          const date = new Date(ev.date);
-          const isFirst = idx === 0;
-          const isLast = idx === sortedEvents.length - 1;
-          
-          return `
-            <div class="event-item" style="animation: fadeIn 0.3s ease ${idx * 0.05}s both;">
-              <div class="font-mono text-xs text-muted mb-1">
-                ${date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })}
-              </div>
-              <div class="font-body text-sm font-medium text-fg capitalize mb-1" style="color: var(--type-${ev.category === 'birth' ? 'public' : ev.category === 'death' ? 'private' : 'hybrid'})">
-                ${ev.category || 'Event'}
-              </div>
-              <div class="font-body text-sm text-muted leading-relaxed">${ev.description || ''}</div>
-            </div>
-          `;
-        }).join('');
-      },
-
-      deselectActor() {
-        DataModel.selectedActor = null;
-        document.getElementById('sidebar').classList.remove('open');
-        document.getElementById('sidebarBackdrop').classList.remove('visible');
-      },
-      
-      initKeyboard() {
-        document.addEventListener('keydown', e => {
-          if (e.target.tagName === 'INPUT') return;
-          
-          switch(e.key) {
-            case 'ArrowUp': 
-              e.preventDefault(); 
-              Renderer.panY += 60; 
-              break;
-            case 'ArrowDown': 
-              e.preventDefault(); 
-              Renderer.panY -= 60; 
-              break;
-            case '+': case '=': 
-              e.preventDefault(); 
-              this.applyZoom(1.2, Renderer.height/2); 
-              break;
-            case '-': 
-              e.preventDefault(); 
-              this.applyZoom(0.8, Renderer.height/2); 
-              break;
-            case '[': 
-              e.preventDefault(); 
-              HistoryManager.back(); 
-              break;
-            case ']': 
-              e.preventDefault(); 
-              HistoryManager.forward(); 
-              break;
-            case 'Home': 
-              e.preventDefault(); 
-              this.jumpToYear(1800); 
-              break;
-            case 'End': 
-              e.preventDefault(); 
-              this.jumpToYear(2025); 
-              break;
-            case 'Escape':
-              if (document.getElementById('helpModal').classList.contains('visible')) {
-                document.getElementById('helpModal').classList.remove('visible');
-              } else if (document.getElementById('sidebar').classList.contains('open')) {
-                this.deselectActor();
-              } else {
-                this.resetView();
-              }
-              break;
-            case 'f': case 'F':
-              e.preventDefault(); 
-              this.fitAllData(); 
-              break;
-            case '?':
-              e.preventDefault(); 
-              document.getElementById('helpModal').classList.toggle('visible'); 
-              break;
-          }
-        });
-        
-        window.addEventListener('hashchange', () => HistoryManager.loadFromHash());
       }
-    };
 
-    // ==========================================
-    // BOOT
-    // ==========================================
+      getActorColor(type) {
+        const style = getComputedStyle(document.documentElement);
+        if (type === 'private') return style.getPropertyValue('--private').trim();
+        if (type === 'hybrid') return style.getPropertyValue('--hybrid').trim();
+        return style.getPropertyValue('--public').trim();
+      }
+
+      renderMain() {
+        const ctx = this.ctx;
+        const w = this.layout.w, h = this.layout.h;
+        const events = DataModel.getFiltered();
+
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card').trim();
+        ctx.fillRect(0, 0, w, h);
+
+        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--border').trim();
+        ctx.lineWidth = 1;
+        ctx.globalAlpha = 0.3;
+        ctx.beginPath();
+        ctx.moveTo(this.layout.cols.hybrid, 0); ctx.lineTo(this.layout.cols.hybrid, h);
+        ctx.moveTo(this.layout.cols.public, 0); ctx.lineTo(this.layout.cols.public, h);
+        ctx.stroke();
+        ctx.globalAlpha = 1;
+
+        events.forEach(d => {
+          const py = this.yearToY(d.date.getFullYear());
+          if(py < -20 || py > h + 20) return;
+          const pos = this.packed.get(d.id);
+          if(!pos) return;
+          
+          const lane = this.lanes[d.actorType];
+          const isHovered = this.hovered && this.hovered.id === d.id;
+          const size = isHovered ? 7 : 5;
+
+          const color = this.getActorColor(d.actorType);
+
+          ctx.save();
+          if(isHovered) {
+            ctx.shadowColor = color;
+            ctx.shadowBlur = 12;
+          }
+          ctx.fillStyle = color;
+          ctx.globalAlpha = isHovered ? 1 : 0.85;
+
+          ctx.beginPath();
+          if(lane.shape === 'circle') ctx.arc(pos.x, py, size, 0, Math.PI*2);
+          else if(lane.shape === 'square') ctx.rect(pos.x - size, py - size, size*2, size*2);
+          else { ctx.moveTo(pos.x, py-size); ctx.lineTo(pos.x+size, py+size); ctx.lineTo(pos.x-size, py+size); ctx.closePath(); }
+          ctx.fill();
+          ctx.restore();
+        });
+      }
+
+      renderMinimap() {
+        const ctx = this.minimapCtx;
+        const w = this.minimapCanvas.width / (window.devicePixelRatio || 1);
+        const h = this.minimapCanvas.height / (window.devicePixelRatio || 1);
+        
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card').trim();
+        ctx.fillRect(0, 0, w, h);
+
+        const events = DataModel.getFiltered();
+        events.forEach(d => {
+          const py = ((d.date.getFullYear() - 1800) / 225) * h;
+          const color = this.getActorColor(d.actorType);
+          ctx.fillStyle = color;
+          ctx.globalAlpha = 0.5;
+          ctx.fillRect(w/2 - 4, py, 8, 2);
+        });
+        ctx.globalAlpha = 1;
+
+        const range = (2025 - 1800) / this.state.zoom;
+        const center = (1800 + 2025) / 2 - this.state.panY * range;
+        const top = ((center - range/2 - 1800) / 225) * h;
+        const vpH = (range / 225) * h;
+        const vp = document.getElementById('minimapViewport');
+        vp.style.top = Math.max(0, Math.min(h-10, top)) + 'px';
+        vp.style.height = Math.max(10, Math.min(h, vpH)) + 'px';
+      }
+
+      zoom(f) {
+        this.state.zoom = Math.max(1, Math.min(20, this.state.zoom * f));
+        this.render();
+      }
+
+      fit() {
+        const evs = DataModel.getFiltered();
+        if(!evs.length) return;
+        const yrs = evs.map(d => d.date.getFullYear());
+        const range = Math.max(...yrs) - Math.min(...yrs) + 20;
+        this.state.zoom = 225 / range;
+        this.render();
+      }
+
+      onDragStart(e) {
+        const startY = e.clientY;
+        const startPan = this.state.panY;
+        const onMove = (me) => {
+          this.state.panY = startPan + (startY - me.clientY) * 20 / (this.state.zoom * this.layout.h);
+          this.render();
+        };
+        const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+      }
+
+      onMinimapDragStart(e) {
+        e.preventDefault();
+        const startY = e.clientY;
+        const startPan = this.state.panY;
+        const h = this.minimapCanvas.height / (window.devicePixelRatio || 1);
+        const onMove = (me) => {
+           this.state.panY = startPan + (startY - me.clientY) * 20 / (this.state.zoom * h);
+           this.render();
+        };
+        const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+      }
+
+      onHover(e) {
+        const rect = this.canvas.getBoundingClientRect();
+        const x = e.clientX - rect.left, y = e.clientY - rect.top;
+        let found = null;
+        for(const d of DataModel.getFiltered()) {
+          const py = this.yearToY(d.date.getFullYear());
+          const pos = this.packed.get(d.id);
+          if(!pos) continue;
+          if(Math.hypot(x - pos.x, y - py) < 12) { found = d; break; }
+        }
+        if(found !== this.hovered) {
+          this.hovered = found;
+          this.canvas.style.cursor = found ? 'pointer' : 'default';
+          if(found) this.showTooltip(found, e.clientX, e.clientY);
+          else this.hideTooltip();
+          this.render();
+        }
+      }
+
+      showTooltip(d, mx, my) {
+        const el = document.getElementById('tooltip');
+        const color = this.getActorColor(d.actorType);
+        
+        el.innerHTML = `<div style="color:${color}; font-weight:600;">${d.actorName}</div><div style="font-size:10px; color:var(--muted); margin-top:4px;">${d.date.getFullYear()} — ${d.desc}</div>`;
+        const rect = this.container.getBoundingClientRect();
+        el.style.left = (mx - rect.left + 10) + 'px';
+        el.style.top = (my - rect.top + 10) + 'px';
+        el.style.opacity = 1;
+      }
+
+      hideTooltip() { document.getElementById('tooltip').style.opacity = 0; }
+
+      openSidebar(actor) {
+        if(!actor) return;
+        const sidebar = document.getElementById('sidebar');
+        document.getElementById('sb-name').textContent = actor.name;
+        document.getElementById('sb-role').textContent = actor.role;
+        document.getElementById('sb-desc').textContent = actor.description;
+        document.getElementById('sb-timeline').innerHTML = actor.events.map(e => `
+          <div class="text-xs border-l-2 border-[var(--border)] pl-3 py-1">
+            <div class="font-mono text-muted">${e.date}</div>
+            <div class="font-medium text-fg">${e.category}</div>
+            <div class="text-muted">${e.description}</div>
+          </div>
+        `).join('');
+        sidebar.classList.add('open');
+        document.getElementById('sidebarBackdrop').classList.add('visible');
+      }
+
+      closeSidebar() {
+        document.getElementById('sidebar').classList.remove('open');
+        document.getElementById('sidebarBackdrop').classList.remove('visible');
+      }
+    }
+
     window.addEventListener('DOMContentLoaded', async () => {
       await DataModel.init();
-      Renderer.init();
-      Interaction.init();
-      
-      if (!HistoryManager.loadFromHash()) {
-        HistoryManager.pushState(Renderer.zoom, Renderer.panY);
-      }
+      new Timeline();
     });
   </script>
 </body>

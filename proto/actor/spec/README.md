@@ -25,14 +25,13 @@
   * Reset
   * Fit All
   * Help
-  * Go Back
-  * Go Forward
   * Repetitive Keyword Mapping
   * Navigation using Up/Down and Vim equivalents
 
 * Filtering tools:
 
   * Integrated event search
+  * The event search must allow to search by year - (of the time line) - type of event etc. ? Does it makes sense to create a integrated search functionality?
 
 * Micro-interactions:
 
@@ -51,6 +50,8 @@
 Presentation:
 
 * Since this will be embedded in another web page, it should be centered and have approximately 20% padding/margin on the right and left, and nearly the same spacing from top to bottom.
+
+* Minimap: How the minimap should work?
 
 ## Tech Stack
 
