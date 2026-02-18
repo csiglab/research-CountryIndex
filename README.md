@@ -9,6 +9,7 @@ Country Representation:
 - Actor Set Evolution.
 - Cognitive Evolution (Using Book, and Other Media).
 - Product Space Evolution
+- Profession Space
 - Legal Evolution
 - Patent Space Visualization
 - Internation Interaction Representation
