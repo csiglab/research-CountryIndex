@@ -928,7 +928,7 @@
     // Data Loading & Rendering
     async function initPage() {
       try {
-        const response = await fetch('country.json');
+        const response = await fetch('data/country.json');
         if (!response.ok) throw new Error('Network response was not ok');
         const data = await response.json();
         renderData(data);
