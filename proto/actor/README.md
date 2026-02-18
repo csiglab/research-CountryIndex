@@ -10,11 +10,11 @@
 
 1. Sequence of Formulation -> Reformulation -> Reformulation.
 2. Solution Space
-3. Criteria
+3. Criteriav4
 4. Ranking
 5. Selection
 
-## Guidng Questions
+## Guiding  Questions
 
 1. **Temporal Visualization**
 
@@ -105,23 +105,6 @@
 8. Data Set
 
     * The actor set consists of **national actors (public and private)** ranging from hundreds to thousands.
-
-## Implementation Requirements
-
-* Style: Used an elegant classic - latin - oxford type of style.
-* Must use HTML `<canvas>` element (vanilla JS or lightweight library like p5.js if necessary)
-* The Passage of Time Must be Model in a Horizontal Line
-* Separate rendering logic from interaction logic (modular code structure)
-* Support dynamic updates when actors/events are added, removed, or modified
-* Must render hundreds → thousands of actors smoothly
-* Animations must run at ≥30 FPS for ≤1,000 actors
-* Actor Visual Encoding:
-    * Follows a classical, restrained aesthetic inspired by Oxford-style design principles.
-    * Use Event-Points: when an actor is interacted with, consolidate all associated event-points into a single visual representation of the actor.
-* Must used data from data.json - but you can create a small fake data.json.
-* The representation cannot be actor based must be event based. That Because other wise will not be scalable - We will eventually derived other visual representation - in terms of this.
-* Can use several timelines - integrated in one visualization if needed - let say one for the public sector, another for hybrid (non commercial), other for commercial, a general line for everything else.
-
 
 ## References
 
