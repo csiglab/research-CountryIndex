@@ -16,7 +16,7 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
       darkMode: 'class',
@@ -51,8 +51,8 @@
       --card: #FFFFFF;
       --border: #D8E1EB;
       --bg-subtle: #F1F5F9;
+      --panel-bg: rgba(248, 250, 252, 0.6);
       
-      /* Carbon & Ink Scheme - Light Mode */
       --private: #1a1a1a;
       --hybrid: #1a1a1a;
       --public: #666666;
@@ -66,8 +66,8 @@
       --card: #1E293B;
       --border: #334155;
       --bg-subtle: #172033;
+      --panel-bg: rgba(15, 23, 42, 0.5);
       
-      /* Carbon & Ink Scheme - Dark Mode */
       --private: #E2E8F0;
       --hybrid: #E2E8F0;
       --public: #94A3B8;
@@ -150,9 +150,26 @@
     @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; } }
 
     /* Section Divider */
-    .section-divider { display: flex; align-items: center; justify-content: center; gap: 1rem; margin: 2rem 0; }
-    .section-divider::before, .section-divider::after { content: ''; height: 1px; flex: 1; max-width: 120px; background: linear-gradient(90deg, transparent, var(--border), transparent); }
-    .section-divider .diamond { width: 6px; height: 6px; background: var(--border); transform: rotate(45deg); }
+    .section-divider { 
+      display: flex; 
+      align-items: center; 
+      justify-content: center; 
+      gap: 1rem; 
+      margin: 2rem 0; 
+    }
+    .section-divider::before, .section-divider::after { 
+      content: ''; 
+      height: 1px; 
+      flex: 1; 
+      max-width: 120px; 
+      background: linear-gradient(90deg, transparent, var(--border), transparent); 
+    }
+    .section-divider .diamond { 
+      width: 6px; 
+      height: 6px; 
+      background: var(--border); 
+      transform: rotate(45deg); 
+    }
 
     /* Data Cards */
     .data-card {
@@ -191,8 +208,20 @@
 
     .viz-time-axis-col {
       position: relative;
-      background: transparent;
+      background: var(--panel-bg);
+      backdrop-filter: blur(8px);
       user-select: none;
+    }
+
+    .viz-time-axis-col::after {
+      content: '';
+      position: absolute;
+      right: 0;
+      top: 0;
+      bottom: 0;
+      width: 16px;
+      background: linear-gradient(to left, var(--card), transparent);
+      pointer-events: none;
     }
 
     .viz-main-col {
@@ -206,32 +235,30 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      border-left: 1px solid rgba(0,0,0,0.05);
-      background: transparent;
-    }
-    .dark .viz-control-strip { border-left-color: rgba(255,255,255,0.05); }
-
-    .control-section {
-      padding: 12px 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 6px;
-      width: 100%;
+      background: var(--panel-bg);
+      backdrop-filter: blur(8px);
+      padding: 16px 0;
       position: relative;
     }
 
-    .control-section:first-of-type::after {
+    .viz-control-strip::before {
       content: '';
       position: absolute;
+      left: 0;
+      top: 0;
       bottom: 0;
-      left: 50%;
-      transform: translateX(-50%) rotate(45deg);
-      width: 5px;
-      height: 5px;
-      background: var(--border);
-      border-radius: 1px;
-      opacity: 0.5;
+      width: 16px;
+      background: linear-gradient(to right, var(--card), transparent);
+      pointer-events: none;
+    }
+
+    .toolbox-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      width: 100%;
+      padding: 8px 0;
     }
 
     .tool-btn {
@@ -242,8 +269,7 @@
       background: transparent;
       color: var(--muted);
       display: flex;
-      align-items: center;
-      justify-content: center;
+      align-items: center; justify-content: center;
       cursor: pointer;
       transition: all 0.2s ease;
       font-size: 14px;
@@ -254,46 +280,49 @@
       background: var(--card); 
       border-color: var(--accent); 
       color: var(--accent); 
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
     }
     
     .tool-btn:active { transform: scale(0.95); }
+
+    .toolbox-divider {
+      padding: 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .toolbox-divider .diamond {
+      width: 5px;
+      height: 5px;
+      background: var(--border);
+      transform: rotate(45deg);
+      opacity: 0.7;
+    }
+
+    .minimap-section {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
 
     .minimap-wrapper {
       flex: 1;
       width: 100%;
       position: relative;
-      margin: 15px 6px 6px 6px; 
+      margin: 6px; 
       border-radius: 4px;
       background: transparent;
       overflow: hidden;
       cursor: ns-resize;
     }
 
-    .minimap-wrapper::before {
-      content: '';
-      position: absolute;
-      top: 0px;
-      left: 50%;
-      transform: translateX(-50%) rotate(45deg);
-      width: 5px;
-      height: 5px;
-      background: var(--border);
-      border-radius: 1px;
-      opacity: 0.5;
-      z-index: 10;
-    }
-
-    /* SYMMETRIC MINIMAP SLIDER (SLOT DESIGN) */
     .minimap-viewport {
       position: absolute;
-      
-      /* Strict Symmetry: Centered via transform */
       left: 50%;
       transform: translateX(-50%);
-      width: 30px; /* Wider for better visibility */
-      
-      /* Aesthetics */
+      width: 30px;
       border: 1px solid var(--accent);
       background: transparent;
       border-radius: 4px;
@@ -367,23 +396,213 @@
     
     .legend-item { display: flex; align-items: center; gap: 5px; }
 
+    /* QUICK VIEW TOOLTIP */
     .viz-tooltip {
       position: absolute;
       pointer-events: none;
       z-index: 20;
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 8px 10px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
-      color: var(--fg);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
       opacity: 0;
-      transition: opacity 0.1s ease;
-      max-width: 200px;
+      transition: opacity 0.15s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 300px;
     }
 
+    .tooltip-card {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 4px; 
+      padding: 16px;
+      box-shadow: 0 10px 30px -5px rgba(0,0,0,0.08);
+      pointer-events: auto;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    .tooltip-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 15px 40px -5px rgba(0,0,0,0.12);
+      border-color: var(--accent);
+    }
+
+    .tooltip-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+    }
+
+    .tooltip-diamond {
+      width: 4px;
+      height: 4px;
+      background: var(--muted);
+      transform: rotate(45deg);
+      opacity: 0.6;
+    }
+
+    .tooltip-body {
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.95rem;
+      line-height: 1.4;
+      color: var(--fg);
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    .tooltip-actor {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-style: italic;
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    /* HELP MODAL - BENTO GRID STYLE */
+    .help-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.6);
+      backdrop-filter: blur(8px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.3s ease, visibility 0.3s ease;
+    }
+    .help-backdrop.visible { opacity: 1; visibility: visible; }
+
+    .help-modal {
+      width: 90%;
+      max-width: 640px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+      transform: scale(0.95);
+      transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+      overflow: hidden;
+    }
+    .help-backdrop.visible .help-modal { transform: scale(1); }
+
+    .help-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .help-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: var(--fg);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .help-title-icon {
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        background: var(--bg-subtle);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--accent);
+    }
+
+    .help-close {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+    .help-close:hover { background: var(--bg-subtle); color: var(--fg); border-color: var(--fg); }
+
+    .help-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1px;
+      background: var(--border); /* Acts as the border between cells */
+    }
+
+    .help-cell {
+      background: var(--card);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    
+    /* Full width cell */
+    .help-cell.col-span { grid-column: span 2; }
+
+    .help-cell-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    .help-cell-title svg { width: 14px; height: 14px; opacity: 0.7; }
+
+    .help-cell-body {
+      font-size: 0.9rem;
+      color: var(--fg);
+      line-height: 1.5;
+    }
+
+    .help-kbd {
+      display: inline-block;
+      padding: 2px 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: var(--fg);
+      font-weight: 500;
+    }
+
+    .help-legend-preview {
+      display: flex;
+      gap: 16px;
+      margin-top: 4px;
+    }
+    
+    .help-legend-item {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 0.85rem;
+        color: var(--muted);
+    }
+
+    /* Sidebar */
     .sidebar-backdrop {
       position: fixed;
       inset: 0;
@@ -501,7 +720,7 @@
           <!-- Main Canvas -->
           <div id="timelineContainer" class="viz-main-col">
             
-            <!-- Classy Centered Search -->
+            <!-- Search -->
             <div class="viz-search-overlay">
                <label class="search-label">Search Registry</label>
                <input type="text" id="searchInput" class="search-input-line" placeholder="Type name...">
@@ -509,7 +728,7 @@
 
             <canvas id="timelineCanvas"></canvas>
             
-            <!-- Updated Legend: Geometric & Monochrome -->
+            <!-- Legend -->
             <div class="viz-legend">
               <div class="legend-item">
                 <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--private)"/></svg>
@@ -531,27 +750,30 @@
           <!-- Right Strip -->
           <div class="viz-control-strip">
             
-            <div class="control-section">
+            <div class="toolbox-section">
               <button id="btnZoomIn" class="tool-btn" title="Zoom In">+</button>
               <button id="btnZoomOut" class="tool-btn" title="Zoom Out">−</button>
             </div>
+
+            <div class="toolbox-divider"><span class="diamond"></span></div>
             
-            <div class="control-section">
+            <div class="toolbox-section">
               <button id="btnReset" class="tool-btn" title="Reset View">
                 <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
               </button>
               <button id="btnFitAll" class="tool-btn" title="Fit All">
                 <svg width="12" height="12" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
               </button>
-            </div>
-
-            <div class="control-section">
               <button id="btnHelp" class="tool-btn" title="Help" style="font-family: 'Cormorant Garamond', serif; font-style: italic;">?</button>
             </div>
 
-            <div id="minimapContainer" class="minimap-wrapper">
-              <canvas id="minimapCanvas"></canvas>
-              <div id="minimapViewport" class="minimap-viewport"></div>
+            <div class="toolbox-divider"><span class="diamond"></span></div>
+
+            <div class="minimap-section">
+              <div id="minimapContainer" class="minimap-wrapper">
+                <canvas id="minimapCanvas"></canvas>
+                <div id="minimapViewport" class="minimap-viewport"></div>
+              </div>
             </div>
 
           </div>
@@ -581,17 +803,82 @@
   </aside>
 
   <!-- Help Modal -->
-  <div id="helpModal" style="position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 100; display: none; justify-content: center; align-items: center;">
-     <div style="background: var(--card); padding: 1.5rem; border-radius: 8px; max-width: 300px; border: 1px solid var(--border);">
-        <div style="display: flex; justify-content: space-between; margin-bottom: 1rem;">
-           <h3 style="font-weight: 600;">Shortcuts</h3>
-           <button id="closeHelp" style="color: var(--muted); background: none; border: none; cursor: pointer;">✕</button>
+  <div id="helpBackdrop" class="help-backdrop">
+    <div class="help-modal">
+      <div class="help-header">
+        <div class="help-title">
+          <div class="help-title-icon">
+             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><circle cx="12" cy="17" r="0.5"/></svg>
+          </div>
+          User Guide
         </div>
-        <div style="font-size: 12px; color: var(--muted); font-family: 'JetBrains Mono', monospace; display: grid; gap: 8px;">
-           <div><span style="color: var(--fg)">Scroll</span> Zoom</div>
-           <div><span style="color: var(--fg)">Drag</span> Pan</div>
+        <button id="closeHelp" class="help-close">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
+        </button>
+      </div>
+      
+      <div class="help-grid">
+        <!-- Navigation -->
+        <div class="help-cell">
+          <div class="help-cell-title">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            Navigation
+          </div>
+          <div class="help-cell-body">
+            <p style="margin-bottom: 6px;"><span class="help-kbd">Scroll</span> to zoom in/out temporally.</p>
+            <p><span class="help-kbd">Drag</span> canvas to pan through years.</p>
+          </div>
         </div>
-     </div>
+
+        <!-- Interface -->
+        <div class="help-cell">
+          <div class="help-cell-title">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h6"/></svg>
+            Interface
+          </div>
+          <div class="help-cell-body">
+            <p style="margin-bottom: 6px;"><span class="help-kbd">Search</span> filters by actor name.</p>
+            <p><span class="help-kbd">Minimap</span> indicates current viewport position.</p>
+          </div>
+        </div>
+
+        <!-- Visualization -->
+        <div class="help-cell col-span">
+          <div class="help-cell-title">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v6m0 6v10M4.22 4.22l4.24 4.24m7.08 7.08l4.24 4.24M1 12h6m6 0h10M4.22 19.78l4.24-4.24m7.08-7.08l4.24-4.24"/></svg>
+             Visualization Key
+          </div>
+          <div class="help-cell-body">
+             <p style="margin-bottom: 8px;">Each dot represents a specific event in time. Position indicates the year.</p>
+             <div class="help-legend-preview">
+               <div class="help-legend-item">
+                 <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--private)"/></svg>
+                 Private Sector
+               </div>
+               <div class="help-legend-item">
+                 <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3.5" stroke="var(--hybrid)" stroke-width="1.5" fill="none"/></svg>
+                 Hybrid Entity
+               </div>
+               <div class="help-legend-item">
+                 <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--public)"/></svg>
+                 Public Sector
+               </div>
+             </div>
+          </div>
+        </div>
+
+         <!-- Details -->
+         <div class="help-cell col-span" style="background: var(--bg-subtle);">
+          <div class="help-cell-title">
+             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+             Inspecting Data
+          </div>
+          <div class="help-cell-body" style="color: var(--muted);">
+             Hover over any event node to see details. Click to open the full Actor Profile in the sidebar.
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 
   <!-- Footer -->
@@ -698,8 +985,9 @@
 
         this.layout = { ml: 10, mt: 20, mb: 20, mr: 10, laneW: 0, cols: {} };
         
-        this.hovered = null;
+        this.hoveredEvents = [];
         this.packed = new Map();
+        this.isTooltipHovered = false;
         this.init();
       }
 
@@ -744,9 +1032,37 @@
         this.canvas.addEventListener('wheel', e => { e.preventDefault(); this.zoom(e.deltaY > 0 ? 0.9 : 1.1); }, { passive: false });
         this.canvas.addEventListener('mousedown', e => this.onDragStart(e));
         this.canvas.addEventListener('mousemove', e => this.onHover(e));
-        this.canvas.addEventListener('mouseleave', () => { this.hovered = null; this.hideTooltip(); this.render(); });
-        this.canvas.addEventListener('click', () => { if(this.hovered) this.openSidebar(DataModel.getActorById(this.hovered.actorId)); });
+        
+        this.canvas.addEventListener('mouseleave', () => {
+          setTimeout(() => {
+            if (!this.isTooltipHovered) {
+              this.hoveredEvents = []; 
+              this.hideTooltip(); 
+              this.render();
+            }
+          }, 50);
+        });
+        
+        const tooltipEl = document.getElementById('tooltip');
+        tooltipEl.addEventListener('mouseenter', () => { this.isTooltipHovered = true; });
+        tooltipEl.addEventListener('mouseleave', () => {
+          this.isTooltipHovered = false;
+          this.hoveredEvents = [];
+          this.hideTooltip();
+          this.render();
+        });
 
+        this.canvas.addEventListener('click', () => {
+          if(this.hoveredEvents.length > 0) {
+            this.openSidebar(DataModel.getActorById(this.hoveredEvents[0].actorId));
+          }
+        });
+
+        document.getElementById('searchInput').addEventListener('input', e => {
+          DataModel.searchQuery = e.target.value;
+          this.applyFilters();
+        });
+        
         this.minimapContainer.addEventListener('mousedown', e => this.onMinimapDragStart(e));
         
         document.getElementById('btnZoomIn').addEventListener('click', () => this.zoom(1.4));
@@ -754,15 +1070,20 @@
         document.getElementById('btnReset').addEventListener('click', () => { this.state.zoom = 1; this.state.panY = 0; this.render(); });
         document.getElementById('btnFitAll').addEventListener('click', () => this.fit());
 
-        document.getElementById('btnHelp').addEventListener('click', () => { document.getElementById('helpModal').style.display = 'flex'; });
-        document.getElementById('closeHelp').addEventListener('click', () => { document.getElementById('helpModal').style.display = 'none'; });
-        document.getElementById('helpModal').addEventListener('click', (e) => { if(e.target.id === 'helpModal') e.target.style.display = 'none'; });
-
-        // Search Input
-        document.getElementById('searchInput').addEventListener('input', e => {
-          DataModel.searchQuery = e.target.value;
-          this.applyFilters();
+        // Help Modal Logic
+        const helpBackdrop = document.getElementById('helpBackdrop');
+        document.getElementById('btnHelp').addEventListener('click', () => { 
+            helpBackdrop.classList.add('visible'); 
         });
+        
+        document.getElementById('closeHelp').addEventListener('click', () => { 
+            helpBackdrop.classList.remove('visible'); 
+        });
+        
+        helpBackdrop.addEventListener('click', (e) => { 
+            if(e.target === helpBackdrop) helpBackdrop.classList.remove('visible'); 
+        });
+
         
         document.getElementById('sidebarBackdrop').addEventListener('click', () => this.closeSidebar());
         document.getElementById('close-sidebar').addEventListener('click', () => this.closeSidebar());
@@ -813,8 +1134,9 @@
         
         ctx.clearRect(0, 0, w, h);
 
-        const textColor = isDark ? '#94a3b8' : '#64748b';
-        const tickColor = isDark ? '#475569' : '#cbd5e1';
+        const textColor = isDark ? '#94a3b8' : '#475569';
+        const tickColor = isDark ? '#64748b' : '#94a3b8';
+        const majorTickColor = isDark ? '#94a3b8' : '#64748b';
 
         const range = (2025 - 1800) / this.state.zoom;
         const center = (1800 + 2025) / 2 - this.state.panY * range;
@@ -835,26 +1157,29 @@
           const isMajor = y % majorStep === 0;
           const isCentury = y % 100 === 0;
 
-          ctx.strokeStyle = tickColor;
           ctx.lineWidth = 1;
           ctx.beginPath();
           
           if (isMajor) {
+            ctx.strokeStyle = majorTickColor;
             ctx.moveTo(tickAnchorX, py);
-            ctx.lineTo(tickAnchorX + 8, py);
+            ctx.lineTo(tickAnchorX + 10, py);
             ctx.stroke();
             
             ctx.font = isCentury 
-              ? '500 12px "Cormorant Garamond", Georgia, serif'
-              : '400 11px "Cormorant Garamond", Georgia, serif';
+              ? '600 12px "Cormorant Garamond", Georgia, serif'
+              : '500 11px "Cormorant Garamond", Georgia, serif';
             ctx.textAlign = 'right';
             ctx.textBaseline = 'middle';
-            ctx.fillStyle = textColor;
+            ctx.fillStyle = isCentury ? (isDark ? '#e2e8f0' : '#334155') : textColor;
             ctx.fillText(y.toString(), tickAnchorX - 6, py);
           } else {
-            ctx.moveTo(tickAnchorX + 3, py);
-            ctx.lineTo(tickAnchorX + 6, py);
+            ctx.strokeStyle = tickColor;
+            ctx.globalAlpha = 0.5;
+            ctx.moveTo(tickAnchorX + 4, py);
+            ctx.lineTo(tickAnchorX + 7, py);
             ctx.stroke();
+            ctx.globalAlpha = 1;
           }
         }
       }
@@ -866,7 +1191,6 @@
         return style.getPropertyValue('--public').trim();
       }
 
-      // "Archival Ink" Drawing Method
       _drawNode(ctx, x, y, type, color, isHovered) {
         const radius = isHovered ? 5.5 : 4; 
         
@@ -910,7 +1234,6 @@
 
         ctx.clearRect(0, 0, w, h);
 
-        // Grid lines - subtle
         const style = getComputedStyle(document.documentElement);
         ctx.strokeStyle = style.getPropertyValue('--border').trim();
         ctx.lineWidth = 1;
@@ -927,7 +1250,7 @@
           const pos = this.packed.get(d.id);
           if(!pos) return;
           
-          const isHovered = this.hovered && this.hovered.id === d.id;
+          const isHovered = this.hoveredEvents.some(he => he.id === d.id);
           const color = this.getActorColor(d.actorType);
 
           this._drawNode(ctx, pos.x, py, d.actorType, color, isHovered);
@@ -941,10 +1264,7 @@
         
         ctx.clearRect(0, 0, w, h);
 
-        // Draw data points as CENTERED DOTS
         const events = DataModel.getFiltered();
-        
-        // Calculate exact center
         const centerX = w / 2;
         
         events.forEach(d => {
@@ -953,14 +1273,12 @@
           ctx.fillStyle = color;
           ctx.globalAlpha = 0.6;
           
-          // Draw centered dot
           ctx.beginPath();
           ctx.arc(centerX, py, 3, 0, Math.PI * 2); 
           ctx.fill();
         });
         ctx.globalAlpha = 1;
 
-        // Calculate Viewport Position
         const range = (2025 - 1800) / this.state.zoom;
         const centerYear = (1800 + 2025) / 2 - this.state.panY * range;
         const totalRange = 225;
@@ -1026,36 +1344,88 @@
       onHover(e) {
         const rect = this.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left, y = e.clientY - rect.top;
-        let found = null;
-        const hitRadius = 12; 
+        const hitRadius = 15; 
         
+        const found = [];
         for(const d of DataModel.getFiltered()) {
           const py = this.yearToY(d.date.getFullYear());
           const pos = this.packed.get(d.id);
           if(!pos) continue;
-          if(Math.hypot(x - pos.x, y - py) < hitRadius) { found = d; break; }
+          const dist = Math.hypot(x - pos.x, y - py);
+          if(dist < hitRadius) {
+            found.push({ ...d, dist: dist, x: pos.x, py: py });
+          }
         }
-        if(found !== this.hovered) {
-          this.hovered = found;
-          this.canvas.style.cursor = found ? 'pointer' : 'default';
-          if(found) this.showTooltip(found, e.clientX, e.clientY);
+        
+        found.sort((a, b) => a.dist - b.dist);
+        
+        const currentIds = this.hoveredEvents.map(e => e.id).sort().join(',');
+        const newIds = found.map(e => e.id).sort().join(',');
+
+        if(currentIds !== newIds) {
+          this.hoveredEvents = found;
+          this.canvas.style.cursor = found.length ? 'pointer' : 'default';
+          if(found.length) this.showTooltip(found, e.clientX, e.clientY);
           else this.hideTooltip();
           this.render();
         }
       }
 
-      showTooltip(d, mx, my) {
+      showTooltip(events, mx, my) {
         const el = document.getElementById('tooltip');
-        const color = this.getActorColor(d.actorType);
-        
-        el.innerHTML = `<div style="color:${color}; font-weight:600;">${d.actorName}</div><div style="font-size:10px; color:var(--muted); margin-top:4px;">${d.date.getFullYear()} — ${d.desc}</div>`;
         const rect = this.container.getBoundingClientRect();
-        el.style.left = (mx - rect.left + 10) + 'px';
-        el.style.top = (my - rect.top + 10) + 'px';
+        
+        // Generate HTML
+        const cardsHtml = events.map(d => {
+          return `
+            <div class="tooltip-card" onclick="timeline.openSidebar(DataModel.getActorById('${d.actorId}'))">
+              <div class="tooltip-header">
+                <span>${d.date.getFullYear()}</span>
+                <div class="tooltip-diamond"></div>
+                <span>${d.type}</span>
+              </div>
+              <div class="tooltip-body">${d.desc}</div>
+              <div class="tooltip-actor">${d.actorName}</div>
+            </div>
+          `;
+        }).join('');
+
+        el.innerHTML = cardsHtml;
+        
+        // Smart Positioning
+        const tooltipWidth = 300;
+        const padding = 15;
+        const containerWidth = this.layout.w;
+
+        let left = mx - rect.left + padding;
+        let top = my - rect.top + padding;
+
+        if (left + tooltipWidth + padding > containerWidth) {
+           left = (mx - rect.left) - tooltipWidth - padding;
+        }
+
+        const estimatedHeight = (events.length * 130) + 20; 
+        if (top + estimatedHeight > this.layout.h) {
+           const shift = (top + estimatedHeight) - this.layout.h;
+           top -= shift;
+        }
+        
+        if(top < 0) top = 10;
+
+        el.style.left = left + 'px';
+        el.style.top = top + 'px';
         el.style.opacity = 1;
       }
 
-      hideTooltip() { document.getElementById('tooltip').style.opacity = 0; }
+      hideTooltip() { 
+        const el = document.getElementById('tooltip');
+        el.style.opacity = 0; 
+        setTimeout(() => {
+           if(el.style.opacity === '0') {
+             el.innerHTML = '';
+           }
+        }, 150);
+      }
 
       openSidebar(actor) {
         if(!actor) return;
@@ -1066,7 +1436,7 @@
         document.getElementById('sb-timeline').innerHTML = actor.events.map(e => `
           <div class="text-xs border-l-2 border-[var(--border)] pl-3 py-1">
             <div class="font-mono text-muted">${e.date}</div>
-            <div class="font-medium text-fg">${e.category}</div>
+            <div class="font-weight text-fg">${e.category}</div>
             <div class="text-muted">${e.description}</div>
           </div>
         `).join('');
@@ -1080,9 +1450,10 @@
       }
     }
 
+    let timeline;
     window.addEventListener('DOMContentLoaded', async () => {
       await DataModel.init();
-      const timeline = new Timeline();
+      timeline = new Timeline();
 
       // Theme Toggle with Redraw
       document.getElementById('themeToggle').addEventListener('click', () => {
