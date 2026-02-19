@@ -52,10 +52,10 @@
       --border: #D8E1EB;
       --bg-subtle: #F1F5F9;
       
-      /* Archival & Botanical Scheme - Light Mode */
-      --private: #1e3a5f;   /* Deep Navy */
-      --hybrid: #b45c07;    /* Burnt Amber */
-      --public: #166534;    /* Forest Green */
+      /* Carbon & Ink Scheme - Light Mode */
+      --private: #1a1a1a;
+      --hybrid: #1a1a1a;
+      --public: #666666;
     }
 
     .dark {
@@ -67,10 +67,10 @@
       --border: #334155;
       --bg-subtle: #172033;
       
-      /* Archival & Botanical Scheme - Dark Mode */
-      --private: #60a5fa;   /* Cornflower Blue */
-      --hybrid: #fbbf24;    /* Bright Amber */
-      --public: #34d399;    /* Emerald Green */
+      /* Carbon & Ink Scheme - Dark Mode */
+      --private: #E2E8F0;
+      --hybrid: #E2E8F0;
+      --public: #94A3B8;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -168,43 +168,48 @@
     /* VISUALIZATION STRUCTURE */
     
     .viz-container {
-      background: var(--card);
+      position: relative;
       border: 1px solid var(--border);
       border-radius: 0.75rem;
       box-shadow: 0 25px 50px -12px rgba(0,0,0,0.1);
       overflow: hidden;
+      background: linear-gradient(to right, 
+        var(--bg-subtle) 0%, 
+        var(--card) 10%, 
+        var(--card) 90%, 
+        var(--bg-subtle) 100%
+      );
     }
     .dark .viz-container { box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); }
 
-    /* Grid */
     .viz-grid {
       display: grid;
-      grid-template-columns: 56px 1fr 50px;
+      grid-template-columns: 50px 1fr 50px;
+      position: relative;
+      z-index: 1;
     }
 
-    /* Ruler */
     .viz-time-axis-col {
       position: relative;
-      background: var(--bg-subtle);
+      background: transparent;
       user-select: none;
     }
 
-    /* Main Canvas */
     .viz-main-col {
       position: relative;
-      height: 520px;
-      background: var(--card);
+      height: 520px; 
+      background: transparent;
     }
     .viz-main-col canvas { display: block; width: 100%; height: 100%; }
 
-    /* Controls - Unified Frame */
     .viz-control-strip {
       display: flex;
       flex-direction: column;
       align-items: center;
-      border-left: 1px solid var(--border);
-      background: var(--bg-subtle); /* Uniform gray background */
+      border-left: 1px solid rgba(0,0,0,0.05);
+      background: transparent;
     }
+    .dark .viz-control-strip { border-left-color: rgba(255,255,255,0.05); }
 
     .control-section {
       padding: 12px 0;
@@ -216,8 +221,7 @@
       position: relative;
     }
 
-    /* Sophisticated Separator */
-    .control-section:not(:last-of-type)::after {
+    .control-section:first-of-type::after {
       content: '';
       position: absolute;
       bottom: 0;
@@ -227,15 +231,15 @@
       height: 5px;
       background: var(--border);
       border-radius: 1px;
+      opacity: 0.5;
     }
 
-    /* Ghost Buttons */
     .tool-btn {
       width: 30px;
       height: 30px;
       border-radius: 50%;
       border: 1px solid var(--border);
-      background: transparent; /* No white background */
+      background: transparent;
       color: var(--muted);
       display: flex;
       align-items: center;
@@ -259,23 +263,42 @@
       flex: 1;
       width: 100%;
       position: relative;
-      margin: 6px;
-      border-radius: 6px;
-      background: var(--card);
-      border: 1px solid var(--border);
+      margin: 15px 6px 6px 6px; 
+      border-radius: 4px;
+      background: transparent;
       overflow: hidden;
-      cursor: pointer;
-      box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
+      cursor: ns-resize;
     }
 
+    .minimap-wrapper::before {
+      content: '';
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%) rotate(45deg);
+      width: 5px;
+      height: 5px;
+      background: var(--border);
+      border-radius: 1px;
+      opacity: 0.5;
+      z-index: 10;
+    }
+
+    /* SYMMETRIC MINIMAP SLIDER (SLOT DESIGN) */
     .minimap-viewport {
       position: absolute;
-      left: 2px;
-      width: calc(100% - 4px);
+      
+      /* Strict Symmetry: Centered via transform */
+      left: 50%;
+      transform: translateX(-50%);
+      width: 30px; /* Wider for better visibility */
+      
+      /* Aesthetics */
       border: 1px solid var(--accent);
-      background: color-mix(in srgb, var(--accent) 15%, transparent);
-      border-radius: 2px;
+      background: transparent;
+      border-radius: 4px;
       pointer-events: none;
+      transition: top 0.05s linear;
     }
 
     /* CLASSY SEARCH */
@@ -486,10 +509,20 @@
 
             <canvas id="timelineCanvas"></canvas>
             
+            <!-- Updated Legend: Geometric & Monochrome -->
             <div class="viz-legend">
-              <div class="legend-item"><svg width="8" height="8" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--private)"/></svg><span>Private</span></div>
-              <div class="legend-item"><svg width="8" height="8" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="var(--hybrid)"/></svg><span>Hybrid</span></div>
-              <div class="legend-item"><svg width="8" height="8" viewBox="0 0 10 10"><polygon points="5,1 9,9 1,9" fill="var(--public)"/></svg><span>Public</span></div>
+              <div class="legend-item">
+                <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--private)"/></svg>
+                <span>Private</span>
+              </div>
+              <div class="legend-item">
+                <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3.5" stroke="var(--hybrid)" stroke-width="1.5" fill="none"/></svg>
+                <span>Hybrid</span>
+              </div>
+              <div class="legend-item">
+                <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--public)"/></svg>
+                <span>Public</span>
+              </div>
             </div>
 
             <div id="tooltip" class="viz-tooltip"></div>
@@ -585,12 +618,6 @@
   </script>
 
   <script>
-    // Theme Toggle
-    document.getElementById('themeToggle').addEventListener('click', () => {
-      document.documentElement.classList.toggle('dark');
-      localStorage.setItem('index-gentium-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
-    });
-
     // Reveal Animations
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce').matches;
     document.querySelectorAll('.reveal').forEach(el => {
@@ -670,12 +697,6 @@
         this.minimapContainer = document.getElementById('minimapContainer');
 
         this.layout = { ml: 10, mt: 20, mb: 20, mr: 10, laneW: 0, cols: {} };
-        
-        this.lanes = {
-          private: { shape: 'circle' },
-          hybrid: { shape: 'square' },
-          public: { shape: 'triangle' }
-        };
         
         this.hovered = null;
         this.packed = new Map();
@@ -794,24 +815,6 @@
 
         const textColor = isDark ? '#94a3b8' : '#64748b';
         const tickColor = isDark ? '#475569' : '#cbd5e1';
-        const trackColor = isDark ? '#334155' : '#e2e8f0';
-
-        // Right border
-        ctx.strokeStyle = isDark ? '#334155' : '#e2e8f0';
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(w - 0.5, 0);
-        ctx.lineTo(w - 0.5, h);
-        ctx.stroke();
-
-        // Hairline track
-        const trackX = w - 14;
-        ctx.strokeStyle = trackColor;
-        ctx.lineWidth = 1;
-        ctx.beginPath();
-        ctx.moveTo(trackX, 24);
-        ctx.lineTo(trackX, h - 24);
-        ctx.stroke();
 
         const range = (2025 - 1800) / this.state.zoom;
         const center = (1800 + 2025) / 2 - this.state.panY * range;
@@ -822,6 +825,8 @@
         if (range < 100) { majorStep = 20; minorStep = 5; }
         if (range < 60) { majorStep = 10; minorStep = 5; }
         if (range < 30) { majorStep = 5; minorStep = 1; }
+
+        const tickAnchorX = 30; 
 
         for (let y = Math.floor(start/minorStep)*minorStep; y < start + range; y += minorStep) {
           const py = this.yearToY(y);
@@ -835,8 +840,8 @@
           ctx.beginPath();
           
           if (isMajor) {
-            ctx.moveTo(trackX, py);
-            ctx.lineTo(trackX - 10, py);
+            ctx.moveTo(tickAnchorX, py);
+            ctx.lineTo(tickAnchorX + 8, py);
             ctx.stroke();
             
             ctx.font = isCentury 
@@ -845,10 +850,10 @@
             ctx.textAlign = 'right';
             ctx.textBaseline = 'middle';
             ctx.fillStyle = textColor;
-            ctx.fillText(y.toString(), trackX - 14, py);
+            ctx.fillText(y.toString(), tickAnchorX - 6, py);
           } else {
-            ctx.moveTo(trackX, py);
-            ctx.lineTo(trackX - 4, py);
+            ctx.moveTo(tickAnchorX + 3, py);
+            ctx.lineTo(tickAnchorX + 6, py);
             ctx.stroke();
           }
         }
@@ -861,18 +866,55 @@
         return style.getPropertyValue('--public').trim();
       }
 
+      // "Archival Ink" Drawing Method
+      _drawNode(ctx, x, y, type, color, isHovered) {
+        const radius = isHovered ? 5.5 : 4; 
+        
+        ctx.save();
+
+        if (isHovered) {
+            ctx.strokeStyle = color;
+            ctx.lineWidth = 1;
+            ctx.globalAlpha = 0.3;
+            ctx.beginPath();
+            ctx.arc(x, y, radius + 4, 0, Math.PI * 2);
+            ctx.stroke();
+            ctx.globalAlpha = 1;
+        }
+
+        ctx.fillStyle = color;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+
+        if (type === 'private') {
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fill();
+        } else if (type === 'hybrid') {
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.stroke();
+        } else {
+          ctx.beginPath();
+          ctx.arc(x, y, radius, 0, Math.PI * 2);
+          ctx.fill();
+        }
+
+        ctx.restore();
+      }
+
       renderMain() {
         const ctx = this.ctx;
         const w = this.layout.w, h = this.layout.h;
         const events = DataModel.getFiltered();
 
         ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card').trim();
-        ctx.fillRect(0, 0, w, h);
 
-        ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--border').trim();
+        // Grid lines - subtle
+        const style = getComputedStyle(document.documentElement);
+        ctx.strokeStyle = style.getPropertyValue('--border').trim();
         ctx.lineWidth = 1;
-        ctx.globalAlpha = 0.3;
+        ctx.globalAlpha = 0.15; 
         ctx.beginPath();
         ctx.moveTo(this.layout.cols.hybrid, 0); ctx.lineTo(this.layout.cols.hybrid, h);
         ctx.moveTo(this.layout.cols.public, 0); ctx.lineTo(this.layout.cols.public, h);
@@ -885,26 +927,10 @@
           const pos = this.packed.get(d.id);
           if(!pos) return;
           
-          const lane = this.lanes[d.actorType];
           const isHovered = this.hovered && this.hovered.id === d.id;
-          const size = isHovered ? 7 : 5;
-
           const color = this.getActorColor(d.actorType);
 
-          ctx.save();
-          if(isHovered) {
-            ctx.shadowColor = color;
-            ctx.shadowBlur = 12;
-          }
-          ctx.fillStyle = color;
-          ctx.globalAlpha = isHovered ? 1 : 0.85;
-
-          ctx.beginPath();
-          if(lane.shape === 'circle') ctx.arc(pos.x, py, size, 0, Math.PI*2);
-          else if(lane.shape === 'square') ctx.rect(pos.x - size, py - size, size*2, size*2);
-          else { ctx.moveTo(pos.x, py-size); ctx.lineTo(pos.x+size, py+size); ctx.lineTo(pos.x-size, py+size); ctx.closePath(); }
-          ctx.fill();
-          ctx.restore();
+          this._drawNode(ctx, pos.x, py, d.actorType, color, isHovered);
         });
       }
 
@@ -914,26 +940,41 @@
         const h = this.minimapCanvas.height / (window.devicePixelRatio || 1);
         
         ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = getComputedStyle(document.documentElement).getPropertyValue('--card').trim();
-        ctx.fillRect(0, 0, w, h);
 
+        // Draw data points as CENTERED DOTS
         const events = DataModel.getFiltered();
+        
+        // Calculate exact center
+        const centerX = w / 2;
+        
         events.forEach(d => {
           const py = ((d.date.getFullYear() - 1800) / 225) * h;
           const color = this.getActorColor(d.actorType);
           ctx.fillStyle = color;
-          ctx.globalAlpha = 0.5;
-          ctx.fillRect(w/2 - 4, py, 8, 2);
+          ctx.globalAlpha = 0.6;
+          
+          // Draw centered dot
+          ctx.beginPath();
+          ctx.arc(centerX, py, 3, 0, Math.PI * 2); 
+          ctx.fill();
         });
         ctx.globalAlpha = 1;
 
+        // Calculate Viewport Position
         const range = (2025 - 1800) / this.state.zoom;
-        const center = (1800 + 2025) / 2 - this.state.panY * range;
-        const top = ((center - range/2 - 1800) / 225) * h;
-        const vpH = (range / 225) * h;
+        const centerYear = (1800 + 2025) / 2 - this.state.panY * range;
+        const totalRange = 225;
+        const centerPos = ((centerYear - 1800) / totalRange) * h;
+        
+        const vpHeight = 40;
+        const topBuffer = 10; 
+        
+        let vpTop = centerPos - (vpHeight / 2);
+        vpTop = Math.max(topBuffer, Math.min(h - vpHeight, vpTop));
+
         const vp = document.getElementById('minimapViewport');
-        vp.style.top = Math.max(0, Math.min(h-10, top)) + 'px';
-        vp.style.height = Math.max(10, Math.min(h, vpH)) + 'px';
+        vp.style.top = vpTop + 'px';
+        vp.style.height = vpHeight + 'px';
       }
 
       zoom(f) {
@@ -964,14 +1005,20 @@
 
       onMinimapDragStart(e) {
         e.preventDefault();
-        const startY = e.clientY;
-        const startPan = this.state.panY;
         const h = this.minimapCanvas.height / (window.devicePixelRatio || 1);
+        
         const onMove = (me) => {
-           this.state.panY = startPan + (startY - me.clientY) * 20 / (this.state.zoom * h);
+           const rect = this.minimapContainer.getBoundingClientRect();
+           const mouseY = me.clientY - rect.top;
+           const mouseRatio = Math.max(0, Math.min(1, mouseY / h));
+           const targetYear = 1800 + (mouseRatio * 225);
+           const range = (2025 - 1800) / this.state.zoom;
+           this.state.panY = (1912.5 - targetYear) / range;
            this.render();
         };
+        
         const onUp = () => { window.removeEventListener('mousemove', onMove); window.removeEventListener('mouseup', onUp); };
+        onMove(e);
         window.addEventListener('mousemove', onMove);
         window.addEventListener('mouseup', onUp);
       }
@@ -980,11 +1027,13 @@
         const rect = this.canvas.getBoundingClientRect();
         const x = e.clientX - rect.left, y = e.clientY - rect.top;
         let found = null;
+        const hitRadius = 12; 
+        
         for(const d of DataModel.getFiltered()) {
           const py = this.yearToY(d.date.getFullYear());
           const pos = this.packed.get(d.id);
           if(!pos) continue;
-          if(Math.hypot(x - pos.x, y - py) < 12) { found = d; break; }
+          if(Math.hypot(x - pos.x, y - py) < hitRadius) { found = d; break; }
         }
         if(found !== this.hovered) {
           this.hovered = found;
@@ -1033,7 +1082,14 @@
 
     window.addEventListener('DOMContentLoaded', async () => {
       await DataModel.init();
-      new Timeline();
+      const timeline = new Timeline();
+
+      // Theme Toggle with Redraw
+      document.getElementById('themeToggle').addEventListener('click', () => {
+        document.documentElement.classList.toggle('dark');
+        localStorage.setItem('index-gentium-theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
+        timeline.render();
+      });
     });
   </script>
 </body>
