@@ -39,17 +39,17 @@
   </script>
   <style>
     :root {
-      --bg: #FAFBFC;
-      --fg: #1A2B3C;
-      --muted: #5C7089;
-      --accent: #3D6B99;
+      --bg: #F8FAFC;
+      --fg: #0F172A;
+      --muted: #475569;
+      --accent: #2563EB;
       --card: #FFFFFF;
-      --border: #D8E1EB;
+      --border: #CBD5E1;
       --bg-subtle: #F1F5F9;
       --panel-bg: rgba(248, 250, 252, 0.6);
-      --private: #1a1a1a;
-      --hybrid: #1a1a1a;
-      --public: #666666;
+      --private: #0F172A;
+      --hybrid: #0F172A;
+      --public: #64748B;
     }
 
     .dark {
@@ -100,8 +100,8 @@
       position: fixed;
       top: 0; left: 0; right: 0; bottom: 0;
       background-image: 
-        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(61, 107, 153, 0.04) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(61, 107, 153, 0.03) 0%, transparent 50%);
+        radial-gradient(ellipse 80% 50% at 50% -10%, rgba(37, 99, 235, 0.06) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 40% at 80% 100%, rgba(37, 99, 235, 0.04) 0%, transparent 50%);
       pointer-events: none;
       z-index: 0;
     }
@@ -199,9 +199,10 @@
       display: flex;
       align-items: center;
       gap: 0.5rem;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 0.6875rem;
-      letter-spacing: 0.04em;
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 0.75rem;
+      font-weight: 500;
+      letter-spacing: 0.01em;
     }
 
     .breadcrumb-nav a {
@@ -217,7 +218,6 @@
 
     .breadcrumb-current {
       color: var(--fg);
-      font-weight: 500;
       padding: 0.25rem 0.5rem;
       background: var(--bg-subtle);
       border-radius: 2px;
@@ -273,10 +273,13 @@
     .reveal.visible #statsGrid .data-card:nth-child(2) { transition-delay: 0.15s; }
     .reveal.visible #statsGrid .data-card:nth-child(3) { transition-delay: 0.25s; }
     .reveal.visible #statsGrid .data-card:nth-child(4) { transition-delay: 0.35s; }
+    .reveal.visible #statsGrid .data-card:nth-child(5) { transition-delay: 0.45s; }
+    .reveal.visible #statsGrid .data-card:nth-child(6) { transition-delay: 0.55s; }
 
     .delay-1 { transition-delay: 0.15s; }
-    .delay-2 { transition-delay: 0.3s; }
+    .delay-2 { transition-delay: 0.3s }
     .delay-3 { transition-delay: 0.45s; }
+    .delay-4 { transition-delay: 0.6s; }
 
     @media (prefers-reduced-motion: reduce) {
       .reveal, #statsGrid .data-card { opacity: 1; transform: none; transition: none; }
@@ -302,23 +305,6 @@
     @media (min-width: 768px) {
       .hero-grid { grid-template-columns: 1fr 1.4fr; gap: 4rem; align-items: start; }
     }
-
-    /* Flag */
-    .flag-link {
-      display: inline-block;
-      text-decoration: none;
-      transition: opacity 0.25s ease;
-    }
-    .flag-link:hover { opacity: 0.85; }
-
-    .flag-icon-large {
-      font-size: 3.5rem;
-      line-height: 1;
-      display: block;
-      filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.06));
-      transition: transform 0.3s ease;
-    }
-    .flag-link:hover .flag-icon-large { transform: scale(1.05); }
 
     /* Year markers */
     .year-markers {
@@ -426,7 +412,7 @@
     /* Section Header for Viz */
     .viz-section-header {
       text-align: center;
-      margin-bottom: 4rem; /* Whitespace separation */
+      margin-bottom: 3rem;
     }
 
     .viz-section-header h2 {
@@ -434,7 +420,7 @@
       font-size: 1.75rem;
       font-weight: 500;
       color: var(--fg);
-      margin-bottom: 1.5rem;
+      margin-bottom: 0.75rem;
       letter-spacing: -0.01em;
     }
 
@@ -443,23 +429,7 @@
       display: inline-block;
       max-width: 48rem;
       text-align: left;
-      padding-left: 1.25rem;
     }
-
-    /* .viz-description-block::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 0.25rem;
-      bottom: 0.25rem;
-      width: 2px;
-      background: var(--border);
-      transition: background 0.3s ease;
-    } */
-
-    /* .viz-description-block:hover::before {
-      background: var(--accent);
-    } */
 
     .viz-description-block p {
       font-family: 'Inter', system-ui, sans-serif;
@@ -491,6 +461,7 @@
       background: var(--panel-bg);
       backdrop-filter: blur(8px);
       user-select: none;
+      height: 100%;
     }
 
     .viz-time-axis-col::after {
@@ -504,9 +475,10 @@
       pointer-events: none;
     }
 
+    /* CHANGED: Height increased from 520px to 562px */
     .viz-main-col {
       position: relative;
-      height: 520px;
+      height: 562px;
       background: transparent;
     }
     .viz-main-col canvas { display: block; width: 100%; height: 100%; }
@@ -519,6 +491,7 @@
       backdrop-filter: blur(8px);
       padding: 16px 0;
       position: relative;
+      height: 100%;
     }
 
     .viz-control-strip::before {
@@ -623,6 +596,7 @@
     .search-input-line::placeholder { color: var(--muted); font-style: italic; font-weight: 400; }
     .search-input-line:focus { border-color: var(--accent); }
 
+    /* Legend */
     .viz-legend {
       position: absolute;
       top: 12px;
@@ -937,10 +911,6 @@
     <header class="hero-grid reveal">
       <div class="identity-column">
         
-        <!-- <a href="index.html" class="flag-link" aria-label="Return to Index">
-          <span class="flag-icon-large" aria-hidden="true">🇳🇿</span>
-        </a> -->
-        
         <h1 class="font-display type-hero font-medium text-fg mb-1">Actor Space</h1>
 
         <p class="font-display type-section italic text-muted">New Zealand</p>
@@ -975,7 +945,8 @@
         <h2 class="font-display type-section text-fg mb-1">Overview</h2>
         <p class="font-body text-xs text-muted uppercase font-medium">Vital Statistics</p>
       </div>
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-3" id="statsGrid">
+      <!-- Grid: 2 cols mobile, 3 cols tablet, 6 cols desktop -->
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-3" id="statsGrid">
         <div class="data-card" tabindex="0">
           <div class="font-display text-2xl font-medium text-fg" id="stat-actors">—</div>
           <div class="font-body text-[10px] text-muted uppercase font-medium">Total Actors</div>
@@ -992,11 +963,25 @@
           <div class="font-display text-2xl font-medium text-fg" id="stat-decades">—</div>
           <div class="font-body text-[10px] text-muted uppercase font-medium">Decades</div>
         </div>
+        <div class="data-card" tabindex="0">
+          <div class="font-display text-2xl font-medium text-fg" id="stat-roles">—</div>
+          <div class="font-body text-[10px] text-muted uppercase font-medium">Roles Covered</div>
+        </div>
+        <!-- New Card: Regions -->
+        <div class="data-card" tabindex="0">
+          <div class="font-display text-2xl font-medium text-fg" id="stat-regions">—</div>
+          <div class="font-body text-[10px] text-muted uppercase font-medium">Active Regions</div>
+        </div>
       </div>
     </section>
 
+    <!-- Diamond Divider -->
+    <div class="section-divider reveal delay-3">
+      <span class="diamond"></span>
+    </div>
+
     <!-- Visualization Section -->
-    <section class="reveal delay-3 mt-16">
+    <section class="reveal delay-4">
       
       <div class="viz-section-header">
         <h2>Actor Evolution</h2>
@@ -1020,6 +1005,22 @@
             <div class="viz-search-overlay">
                <label class="search-label">Search Registry</label>
                <input type="text" id="searchInput" class="search-input-line" placeholder="Type name...">
+            </div>
+
+            <!-- Legend -->
+            <div class="viz-legend">
+              <div class="legend-item">
+                <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--private)"/></svg>
+                <span>Private</span>
+              </div>
+              <div class="legend-item">
+                <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3.5" stroke="var(--hybrid)" stroke-width="1.5" fill="none"/></svg>
+                <span>Hybrid</span>
+              </div>
+              <div class="legend-item">
+                <svg width="10" height="10" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="var(--public)"/></svg>
+                <span>Public</span>
+              </div>
             </div>
 
             <canvas id="timelineCanvas"></canvas>
@@ -1126,18 +1127,21 @@
              Visualization Key
           </div>
           <div class="help-cell-body">
-             <p style="margin-bottom: 8px;">Each dot represents a specific event in time. Position indicates the year.</p>
+             <p style="margin-bottom: 8px;">Each shape represents a specific event in time. Position indicates the year.</p>
              <div style="display: flex; gap: 16px; margin-top: 4px;">
+               <!-- Private: Circle -->
                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted);">
                  <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--private)"/></svg>
                  Private Sector
                </div>
+               <!-- Hybrid: Ring -->
                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted);">
                  <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="3.5" stroke="var(--hybrid)" stroke-width="1.5" fill="none"/></svg>
                  Hybrid Entity
                </div>
+               <!-- Public: Square -->
                <div style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; color: var(--muted);">
-                 <svg width="10" height="10" viewBox="0 0 10 10"><circle cx="5" cy="5" r="4" fill="var(--public)"/></svg>
+                 <svg width="10" height="10" viewBox="0 0 10 10"><rect x="1" y="1" width="8" height="8" fill="var(--public)"/></svg>
                  Public Sector
                </div>
              </div>
@@ -1307,10 +1311,19 @@
         });
         this.events.sort((a, b) => a.date - b.date);
         
+        // Update Stats
         document.getElementById('stat-actors').textContent = this.actors.length;
         document.getElementById('stat-events').textContent = this.events.length;
         document.getElementById('stat-range').textContent = '225';
         document.getElementById('stat-decades').textContent = '23';
+
+        // Calculate unique roles
+        const roles = new Set(this.actors.map(a => a.role).filter(Boolean));
+        document.getElementById('stat-roles').textContent = roles.size;
+
+        // Calculate unique regions
+        const regions = new Set(this.actors.map(a => a.regionOfActivity).filter(Boolean));
+        document.getElementById('stat-regions').textContent = regions.size;
       },
 
       getFiltered() {
@@ -1565,10 +1578,8 @@
           ctx.beginPath();
           ctx.arc(x, y, radius, 0, Math.PI * 2);
           ctx.stroke();
-        } else {
-          ctx.beginPath();
-          ctx.arc(x, y, radius, 0, Math.PI * 2);
-          ctx.fill();
+        } else if (type === 'public') {
+          ctx.fillRect(x - radius, y - radius, radius * 2, radius * 2);
         }
 
         ctx.restore();
@@ -1620,9 +1631,13 @@
           ctx.fillStyle = color;
           ctx.globalAlpha = 0.6;
           
-          ctx.beginPath();
-          ctx.arc(centerX, py, 3, 0, Math.PI * 2); 
-          ctx.fill();
+          if(d.actorType === 'public') {
+             ctx.fillRect(centerX - 1.5, py - 1.5, 3, 3);
+          } else {
+             ctx.beginPath();
+             ctx.arc(centerX, py, 2, 0, Math.PI * 2); 
+             ctx.fill();
+          }
         });
         ctx.globalAlpha = 1;
 
@@ -1764,7 +1779,7 @@
 
       hideTooltip() { 
         const el = document.getElementById('tooltip');
-        el.style.opacity = 0; 
+        el.style.opacity = 0;
         setTimeout(() => {
            if(el.style.opacity === '0') {
              el.innerHTML = '';
