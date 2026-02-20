@@ -28,6 +28,19 @@
   * Repetitive Keyword Mapping
   * Navigation using Up/Down and Vim equivalents
 
+* **Keyboard Navigation**: I cannot interact with the visualization via keyboard. I cannot zoom, pan, or select actors. The entire "Visualization" section is a black hole for keyboard focus.
+
+  * Navigation up    (add also vim up)
+  * Navigation down (add also vim down)
+  * Zoom In
+  * Zoom Out
+  * Reset
+  * Fit All
+  * Help
+  * Go to year x (that is type `1234` -> move to that year).
+  * 
+
+
 * Search tool: 
   * Integrated event search
   * The event search must allow to search by year - (of the time line) - type of event etc. ? Does it makes sense to create a integrated search functionality?

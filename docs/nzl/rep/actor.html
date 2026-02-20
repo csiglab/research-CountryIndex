@@ -1328,8 +1328,8 @@
           <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Status</p>
           <div class="space-y-1.5 font-mono text-xs">
             <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Progress</span>
-              <span class="font-medium tabular-nums footer-value">...</span>
+              <span class="footer-muted">Entity Code</span>
+              <span class="font-medium tabular-nums footer-value">NZL-ACT</span>
             </div>
             <div class="flex justify-center md:justify-end items-baseline gap-3">
               <span class="footer-muted">Region</span>
@@ -1409,7 +1409,7 @@
 
       async init() {
         try {
-          const response = await fetch('actor-set.json');
+          const response = await fetch('../data/actor.json');
           if (!response.ok) throw new Error('Network error');
           this.processData(await response.json());
         } catch (e) {

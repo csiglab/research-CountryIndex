@@ -2,9 +2,12 @@
   "metadata": {
     "source": "Historical records, public archives, and biographical sources",
     "lastUpdated": "2026-02-16",
-    "description": "Comprehensive dataset of New Zealand actors (organizations and individuals) in a social region with key events since 1800."
+    "description": "Comprehensive dataset of New Zealand actors (organizations and individuals) in a social region with key events since 1800.",
+    "socialRegion": "New Zealand",
+    "region" : "Oceania"
+
+    "introduction": "A representation of the evolution of key actors and their principal events within the social region known as New Zealand. This study aims to develop a highly granular view of the dynamics structuring that social region, tracing the formation, transformation, and dissolution of sovereign, corporate, and cultural entities across two centuries."
   },
-  "region": "New Zealand",
   "actors": [
     {
       "id": "a1",
