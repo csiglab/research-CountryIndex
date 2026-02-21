@@ -1024,7 +1024,7 @@
       
       data.works.forEach(work => {
         const isActive = work.status === 'active';
-        const tagType = isActive ? 'a' : 'div';
+        const tagType = 'a';
         const card = document.createElement(tagType);
 
         card.className = 'entity-card group';
@@ -1037,6 +1037,8 @@
           card.setAttribute('target', '_blank');
           card.setAttribute('aria-label', `View ${work.title} dataset`);
         } else {
+          card.setAttribute('href', work.link || '#');
+          card.setAttribute('target', '_blank');
           card.setAttribute('aria-disabled', 'true');
           card.setAttribute('role', 'article');
         }
@@ -1045,9 +1047,7 @@
         const typeIconSvg = typeIcons[work.type] || typeIcons['Temporal'];
         const statusText = isActive ? 'Active' : 'Pending';
 
-        const ctaHtml = isActive 
-          ? `<span class="card-cta type-secondary">View<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>`
-          : `<span class="font-meta type-meta text-muted uppercase">Coming MMXXV</span>`;
+        const ctaHtml =  `<span class="card-cta type-secondary">View<svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>`;
 
         card.innerHTML = `
           <div class="card-preview">${previewSvg}</div>
