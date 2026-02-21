@@ -3,7 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>New Zealand Actor Space · Index Gentium</title>
+  <!-- Dynamic Title will be injected here -->
+  <title id="docTitle">Actor Space · Index Gentium</title>
   <script>
     (function() {
       const theme = localStorage.getItem('index-gentium-theme') || 
@@ -970,9 +971,9 @@
     <header class="hero-grid reveal">
       <div class="identity-column">
         
-        <h1 class="font-display type-hero font-medium text-fg mb-1">Actor Space</h1>
+        <h1 id="mainTitle" class="font-display type-hero font-medium text-fg mb-1">Actor Space</h1>
 
-        <p class="font-display type-section italic text-muted">New Zealand</p>
+        <p id="heroRegion" class="font-display type-section italic text-muted">Loading...</p>
         
         <div class="flex flex-wrap gap-2 mt-4">
           <span class="tag-pill">Temporal</span>
@@ -982,8 +983,8 @@
       </div>
 
       <div class="context-column">
-        <div class="definition-lead text-muted">
-          A representation of the evolution of key actors and their principal events within the social region known as New Zealand. This study aims to develop a highly granular view of the dynamics structuring that social region, tracing the formation, transformation, and dissolution of sovereign, corporate, and cultural entities across two centuries.
+        <div id="introText" class="definition-lead text-muted">
+          Loading introduction...
         </div>
       </div>
     </header>
@@ -1328,16 +1329,20 @@
           <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Status</p>
           <div class="space-y-1.5 font-mono text-xs">
             <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Progress</span>
-              <span class="font-medium tabular-nums footer-value">...</span>
+              <span class="footer-muted">Peer Review</span>
+              <span id="footerPeerReview" class="font-medium tabular-nums footer-value">...</span>
+            </div>
+            <div class="flex justify-center md:justify-end items-baseline gap-3">
+              <span class="footer-muted">Evidence</span>
+              <span id="footerConfidence" class="font-medium tabular-nums footer-value">...</span>
             </div>
             <div class="flex justify-center md:justify-end items-baseline gap-3">
               <span class="footer-muted">Region</span>
-              <span class="font-medium footer-value">Oceania</span>
+              <span id="footerRegion" class="font-medium footer-value">...</span>
             </div>
             <div class="flex justify-center md:justify-end items-baseline gap-3">
               <span class="footer-muted">Last Revised</span>
-              <span class="footer-value">2025.01</span>
+              <span id="footerLastRevised" class="footer-value">...</span>
             </div>
           </div>
         </div>
@@ -1409,7 +1414,7 @@
 
       async init() {
         try {
-          const response = await fetch('actor-set.json');
+          const response = await fetch('../data/actor.json');
           if (!response.ok) throw new Error('Network error');
           this.processData(await response.json());
         } catch (e) {
@@ -1418,6 +1423,51 @@
       },
 
       processData(raw) {
+        // --- Dynamic Metadata Injection ---
+        const meta = raw.metadata || raw; 
+
+        // 1. Title and Hero Country Name
+        if (meta.country) {
+          document.getElementById('docTitle').textContent = meta.flag  +  ' ' +  meta.country + ' Actor Space · Index Gentium';
+          document.getElementById('heroRegion').textContent = meta.country;
+        }
+
+        // 2. Introduction Text
+        if (meta.introduction) {
+          document.getElementById('introText').textContent = meta.introduction;
+        }
+
+        // 3. Footer Status Fields
+        // Handle JSON typo "peerReview'" by checking both keys
+        const peerReview = meta.peerReview || meta["peerReview'"]; 
+        if (peerReview) {
+          document.getElementById('footerPeerReview').textContent = peerReview;
+        }
+
+        if (meta.evidenceConfidence) {
+          document.getElementById('footerConfidence').textContent = meta.evidenceConfidence;
+        }
+        
+        if (meta.region) {
+          document.getElementById('footerRegion').textContent = meta.region;
+        }
+
+        if (meta.lastUpdated) {
+          // Parse "2026-02-16" to "2026.02" format
+          try {
+            const d = new Date(meta.lastUpdated);
+            if (!isNaN(d)) {
+              const formatted = d.getFullYear() + '.' + String(d.getMonth() + 1).padStart(2, '0');
+              document.getElementById('footerLastRevised').textContent = formatted;
+            } else {
+              document.getElementById('footerLastRevised').textContent = meta.lastUpdated;
+            }
+          } catch {
+            document.getElementById('footerLastRevised').textContent = meta.lastUpdated;
+          }
+        }
+        // -----------------------------------
+
         this.actors = raw.actors || (Array.isArray(raw) ? raw : []);
         this.events = [];
         this.actors.forEach(actor => {
@@ -1440,8 +1490,14 @@
         
         document.getElementById('stat-actors').textContent = this.actors.length;
         document.getElementById('stat-events').textContent = this.events.length;
-        document.getElementById('stat-range').textContent = '225';
-        document.getElementById('stat-decades').textContent = '23';
+        
+        if (this.events.length > 0) {
+           const minYear = this.events[0].date.getFullYear();
+           const maxYear = this.events[this.events.length - 1].date.getFullYear();
+           const range = maxYear - minYear;
+           document.getElementById('stat-range').textContent = range;
+           document.getElementById('stat-decades').textContent = Math.ceil(range / 10);
+        }
 
         const roles = new Set(this.actors.map(a => a.role).filter(Boolean));
         document.getElementById('stat-roles').textContent = roles.size;

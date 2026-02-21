@@ -106,6 +106,11 @@
 
     * The actor set consists of **national actors (public and private)** ranging from hundreds to thousands.
 
+## Data
+
+- Evidence Confidence: High / Medium / Provisional.
+- Peer Review: Internal / External / None
+
 ## References
 
 * [viz-country-institutional-evolution](https://github.com/csiglab/viz-country-institutional-evolution)
