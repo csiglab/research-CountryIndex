@@ -116,6 +116,15 @@
       "icon": "🇦🇷",
       "description": "A South American country with a strong agricultural sector, significant natural resources, and a diversified industrial base, marked by recurring macroeconomic volatility.",
       "link": "https://bremontix.xyz/lab/research/country/arg/index.html"
+    },
+    {
+      "alpha_3_code": "DOM",
+      "name": "Dominican Republic",
+      "region": "Caribbean",
+      "tags": ["Caribbean", "Emerging", "Agri-Industrial"],
+      "icon": "🇩🇴",
+      "description": "A Caribbean nation with a strong agricultural sector, growing industrial base, and a dynamic services sector, marked by steady economic growth and occasional macroeconomic volatility.",
+      "link": "https://bremontix.xyz/lab/research/country/dom/index.html"
     }
   ]
 }
