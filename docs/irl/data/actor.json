@@ -16,7 +16,7 @@
         {
             "id": "soc_01",
             "name": "The Royal Dublin Society (RDS)",
-            "type": "philanthropic",
+            "type": "research",
             "role": "Agricultural and Industrial Development",
             "regionOfActivity": "National",
             "description": "Founded to promote agriculture, arts, and industry in Ireland; a key driver of early modernization and scientific application.",
@@ -7574,6 +7574,142 @@
                     "description": "Institute established in Dublin to conduct rigorous economic and social research for Ireland’s policy system."
                 }
             ]
-        }
+        },
+
+    {
+        "id": "res_101",
+        "name": "Royal Irish Academy",
+        "type": "academy",
+        "role": "Scientific Research and Scholarly Development",
+        "regionOfActivity": "National",
+        "description": "Ireland’s national academy promoting research and scholarship in the sciences, humanities, and social sciences.",
+        "events": [
+            {
+                "date": "1785-01-01",
+                "category": "founding",
+                "description": "Academy established in Dublin to advance science, literature, and antiquarian studies in Ireland."
+            },
+            {
+                "date": "1831-01-01",
+                "category": "institutional_change",
+                "description": "Granted Royal Charter, formally recognizing the academy as Ireland’s national learned society."
+            }
+        ]
+    },
+    {
+        "id": "res_102",
+        "name": "Dublin Society for Improving Husbandry, Manufactures and other Useful Arts",
+        "type": "scientific_society",
+        "role": "Technical Diffusion and Agricultural Improvement",
+        "regionOfActivity": "National",
+        "description": "Early Irish institution promoting agricultural modernization, manufacturing improvement, and diffusion of useful technical knowledge.",
+        "events": [
+            {
+                "date": "1731-01-01",
+                "category": "founding",
+                "description": "Society founded in Dublin to promote improvements in agriculture, manufacturing, and practical arts."
+            },
+            {
+                "date": "1820-01-01",
+                "category": "renaming",
+                "description": "Institution became widely known as the Royal Dublin Society (RDS)."
+            },
+            {
+                "date": "1903-01-01",
+                "category": "institutional_change",
+                "description": "Agricultural functions transferred to the newly created Department of Agriculture and Technical Instruction."
+            }
+        ]
+    },
+    {
+        "id": "res_103",
+        "name": "Geological Survey Ireland",
+        "type": "government_research_agency",
+        "role": "Geological Research and Resource Survey",
+        "regionOfActivity": "National",
+        "description": "State scientific agency responsible for geological mapping, mineral exploration research, and geoscience data infrastructure.",
+        "events": [
+            {
+                "date": "1845-01-01",
+                "category": "founding",
+                "description": "Geological Survey established as part of the British Geological Survey to map Ireland’s geology."
+            },
+            {
+                "date": "1922-12-06",
+                "category": "institutional_change",
+                "description": "Survey transferred to the administration of the Irish Free State following independence."
+            },
+            {
+                "date": "2015-01-01",
+                "category": "restructuring",
+                "description": "Integrated into the Department of Communications, Climate Action and Environment as a national geoscience agency."
+            }
+        ]
+    },
+    {
+        "id": "res_104",
+        "name": "IDA Ireland",
+        "type": "development_agency",
+        "role": "Industrial Development and Foreign Direct Investment Promotion",
+        "regionOfActivity": "National",
+        "description": "Irish government agency responsible for attracting foreign direct investment and promoting industrial development.",
+        "events": [
+            {
+                "date": "1949-01-01",
+                "category": "founding",
+                "description": "Industrial Development Authority established to promote industrialization and economic development."
+            },
+            {
+                "date": "1969-01-01",
+                "category": "institutional_change",
+                "description": "IDA granted greater autonomy and expanded powers to attract multinational investment."
+            },
+            {
+                "date": "1994-01-01",
+                "category": "restructuring",
+                "description": "IDA split into IDA Ireland (FDI promotion) and Enterprise Ireland (domestic enterprise development)."
+            }
+        ]
+    },
+    {
+        "id": "res_105",
+        "name": "AnCO (Industrial Training Authority)",
+        "type": "training_authority",
+        "role": "Industrial Skills Development and Workforce Training",
+        "regionOfActivity": "National",
+        "description": "State authority responsible for developing technical skills and vocational training programs for Ireland’s industrial workforce.",
+        "events": [
+            {
+                "date": "1967-01-01",
+                "category": "founding",
+                "description": "Industrial Training Authority established to support vocational and technical training for industrial development."
+            },
+            {
+                "date": "1987-01-01",
+                "category": "termination",
+                "description": "Authority dissolved and merged with the National Manpower Service to form FÁS."
+            }
+        ]
+    },
+    {
+        "id": "res_106",
+        "name": "Teagasc",
+        "type": "research_and_extension_agency",
+        "role": "Agricultural Research and Technology Extension",
+        "regionOfActivity": "National",
+        "description": "State agency responsible for agricultural research, advisory services, and technical training for the Irish farming sector.",
+        "events": [
+            {
+                "date": "1988-01-01",
+                "category": "founding",
+                "description": "Agency established through the amalgamation of the Agricultural Institute and ACOT (Agricultural Advisory Service)."
+            },
+            {
+                "date": "1988-01-01",
+                "category": "merger",
+                "description": "Formed by merging An Foras Talúntais (Agricultural Institute) and ACOT (Agricultural Advisory Service)."
+            }
+        ]
+    }
     ]
 }
