@@ -59,10 +59,10 @@
     {
       "id": "actor_set_evolution",
       "type": "Temporal",
-      "status": "pending",
+      "status": "active",
       "title": "Actor Set Evolution of China",
       "description": "Temporal mapping of China’s actor space from imperial dynasties and bureaucratic elites to revolutionary transformation under the Chinese Communist Party, followed by reform-era technocratic governance and contemporary state-capitalist institutional structures.",
-      "link": null
+      "link": "rep/actor.html"
     },
     {
       "id": "industrial_technology_network",
