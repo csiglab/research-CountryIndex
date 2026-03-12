@@ -72,7 +72,7 @@
     "region": "South America",
     "lastRevised": "2025-01-16",
     "links": [
-      { "label": "Index Gentium", "href": "https://bremontix.xyz/lab/research/country/" },
+      { "label": "About", "href": "../about.html" },
       { "label": "Methodology", "href": "../methodology.html" },
       { "label": "Contact", "href": "../contact.html" }
     ]

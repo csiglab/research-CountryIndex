@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Methodology · Index Gentium</title>
+  <title>About · Index Gentium</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -40,9 +40,6 @@
       --border: #D8E1EB;
       --status-pending: #8A9FB0;
       --bg-subtle: #F1F5F9;
-      --type-temporal: #6B4C9A;
-      --type-spatial: #2D7D9A;
-      --type-network: #9A6B4C;
     }
 
     .dark {
@@ -54,9 +51,6 @@
       --border: #334155;
       --status-pending: #64748B;
       --bg-subtle: #172033;
-      --type-temporal: #A78BFA;
-      --type-spatial: #22D3EE;
-      --type-network: #FBBF24;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -67,10 +61,6 @@
     ::-webkit-scrollbar-track { background: var(--bg-subtle); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--muted); }
-
-    /* Custom Text Selection */
-    ::selection { background-color: color-mix(in srgb, var(--accent) 20%, transparent); color: var(--fg); }
-    .dark ::selection { background-color: color-mix(in srgb, var(--accent) 30%, transparent); }
 
     body {
       font-family: 'Inter', system-ui, sans-serif;
@@ -201,25 +191,11 @@
       padding: 0.25rem 0.5rem;
       border-radius: 2px;
       transition: all 0.2s ease;
-      position: relative;
-    }
-    .breadcrumb-nav a::after {
-      content: '';
-      position: absolute;
-      bottom: 0;
-      left: 50%;
-      width: 0;
-      height: 1px;
-      background: var(--accent);
-      transition: all 0.2s ease;
-      transform: translateX(-50%);
     }
     .breadcrumb-nav a:hover { color: var(--fg); }
-    .breadcrumb-nav a:hover::after { width: calc(100% - 1rem); }
     .breadcrumb-nav a:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
 
     .breadcrumb-separator { color: var(--border); font-weight: 300; user-select: none; }
-
     .breadcrumb-current {
       color: var(--fg);
       font-weight: 500;
@@ -269,43 +245,12 @@
     }
     .reveal.visible { opacity: 1; transform: translateY(0); }
     
-    #representationGrid .method-card,
-    #techniqueGrid .method-card {
-      opacity: 0;
-      transform: translateY(20px);
-      transition: 
-        opacity 0.6s cubic-bezier(0.22, 1, 0.36, 1), 
-        transform 0.6s cubic-bezier(0.22, 1, 0.36, 1),
-        border-color 0.3s ease, 
-        box-shadow 0.3s ease;
-    }
-
-    .reveal.visible #representationGrid .method-card,
-    .reveal.visible #techniqueGrid .method-card {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .reveal.visible #representationGrid .method-card:nth-child(1) { transition-delay: 0.05s; }
-    .reveal.visible #representationGrid .method-card:nth-child(2) { transition-delay: 0.1s; }
-    .reveal.visible #representationGrid .method-card:nth-child(3) { transition-delay: 0.15s; }
-    .reveal.visible #representationGrid .method-card:nth-child(4) { transition-delay: 0.2s; }
-    .reveal.visible #representationGrid .method-card:nth-child(5) { transition-delay: 0.25s; }
-    .reveal.visible #representationGrid .method-card:nth-child(6) { transition-delay: 0.3s; }
-    .reveal.visible #representationGrid .method-card:nth-child(7) { transition-delay: 0.35s; }
-    .reveal.visible #representationGrid .method-card:nth-child(8) { transition-delay: 0.4s; }
-
-    .reveal.visible #techniqueGrid .method-card:nth-child(1) { transition-delay: 0.1s; }
-    .reveal.visible #techniqueGrid .method-card:nth-child(2) { transition-delay: 0.2s; }
-    .reveal.visible #techniqueGrid .method-card:nth-child(3) { transition-delay: 0.3s; }
-    .reveal.visible #techniqueGrid .method-card:nth-child(4) { transition-delay: 0.4s; }
-
     .delay-1 { transition-delay: 0.15s; }
     .delay-2 { transition-delay: 0.3s; }
     .delay-3 { transition-delay: 0.45s; }
 
     @media (prefers-reduced-motion: reduce) {
-      .reveal, .method-card { opacity: 1; transform: none; transition: none; }
+      .reveal { opacity: 1; transform: none; transition: none; }
     }
 
     /* Typography */
@@ -317,12 +262,10 @@
     @media (min-width: 768px) { .type-hero { font-size: 4rem; } }
     .type-section { font-size: 1.5rem; line-height: 1.3; }
     .type-card-title { font-size: 1.25rem; line-height: 1.3; }
-    .type-data-value { font-size: 2rem; line-height: 1; }
     .type-body { font-size: 1rem; line-height: 1.75; letter-spacing: 0.01em; }
     .type-secondary { font-size: 0.875rem; line-height: 1.5; }
     .type-label { font-size: 0.75rem; line-height: 1.4; letter-spacing: 0.05em; }
-    .type-meta { font-size: 0.7rem; line-height: 1.4; }
-
+    
     /* Section Divider */
     .section-divider {
       display: flex;
@@ -360,7 +303,7 @@
       bottom: 0.25rem;
       width: 2px;
       background: var(--border);
-      transition: background 0.3s ease, height 0.3s ease;
+      transition: background 0.3s ease;
     }
     .definition-lead:hover::before { background: var(--accent); }
 
@@ -369,76 +312,29 @@
       .definition-lead { font-size: 1.25rem; }
     }
 
-    /* Principle Highlight Box */
-    .principle-box {
-      background: var(--bg-subtle);
-      border: 1px solid var(--border);
-      border-left: 3px solid var(--accent);
-      border-radius: 4px;
-      padding: 1.5rem;
-      margin: 2rem 0;
-      font-style: italic;
-      color: var(--muted);
-    }
-    
-    /* Method Cards */
-    .method-card {
+    /* Info Card */
+    .info-card {
       background: var(--card);
       border: 1px solid var(--border);
-      border-radius: 4px; 
+      border-radius: 4px;
       padding: 1.5rem;
-      transition: all 0.3s cubic-bezier(0.22, 1, 0.36, 1);
       height: 100%;
-      display: flex;
-      flex-direction: column;
-      position: relative;
+      transition: border-color 0.3s ease, transform 0.3s ease;
     }
     
-    .method-card::before { 
-      content: ''; 
-      position: absolute; 
-      top: 0; 
-      left: 0; 
-      width: 0; 
-      height: 2px; 
-      background: var(--accent); 
-      transition: width 0.3s ease; 
+    .info-card:hover {
+      border-color: var(--accent);
+      transform: translateY(-2px);
     }
-    
-    .method-card:hover::before { width: 100%; }
-    .method-card:hover { transform: translateY(-3px); box-shadow: 0 12px 24px -8px rgba(0,0,0,0.06); border-color: var(--accent); }
-    
-    .method-card-header {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-      margin-bottom: 1rem;
-    }
-    
-    .method-icon {
-      width: 32px;
-      height: 32px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+
+    .info-icon {
+      width: 24px;
+      height: 24px;
       color: var(--accent);
       opacity: 0.8;
-    }
-
-    .method-list {
-      list-style: none;
-      margin-top: 0.5rem;
-      padding-left: 0.5rem;
-      border-left: 1px solid var(--border);
+      margin-bottom: 0.75rem;
     }
     
-    .method-list li {
-      font-size: 0.8125rem;
-      color: var(--muted);
-      margin-bottom: 0.25rem;
-      font-family: 'JetBrains Mono', monospace;
-    }
-
     /* Footer */
     .site-footer { background: var(--card); border-top: 1px solid var(--border); }
     .footer-identity { color: var(--fg); }
@@ -448,7 +344,6 @@
     .footer-link { 
       color: var(--muted); 
       transition: color 0.2s ease; 
-      position: relative;
       text-decoration: none;
     }
     .footer-link:hover { color: var(--fg); }
@@ -488,7 +383,7 @@
         <nav class="breadcrumb-nav" aria-label="Breadcrumb">
           <a href="index.html"><span>Gentium</span></a>
           <span class="breadcrumb-separator">/</span>
-          <span class="breadcrumb-current">Methodology</span>
+          <span class="breadcrumb-current">About</span>
         </nav>
 
         <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode" type="button">
@@ -509,14 +404,14 @@
     
     <!-- [1] Hero Section -->
     <header class="mb-12 reveal">
-      <h1 class="font-display type-hero font-medium text-fg mb-2">Methodology</h1>
-      <p class="font-display type-section italic text-muted">Structura & Ratio</p>
+      <h1 class="font-display type-hero font-medium text-fg mb-2">De Origine</h1>
+      <p class="font-display type-section italic text-muted">On the Nature of the Project</p>
     </header>
 
-    <!-- [2] Objective Section -->
-    <section class="reveal delay-1">
-      <div class="definition-lead text-muted mb-8">
-        The goal of the Country Index is to construct a comprehensive, multi-dimensional representation of sovereign entities. This is achieved by decomposing national complexity into distinct analytical spaces—legal, economic, physical, and social—thereby rendering the dynamics of states intelligible and comparable.
+    <!-- [2] Intro Text -->
+    <section class="reveal delay-1 mb-12">
+      <div class="definition-lead text-muted">
+        The <strong class="text-fg font-medium">Index Gentium</strong> is a systematic effort to construct a comprehensive, multi-dimensional representation of sovereign entities. It serves as a public utility for structured inquiry, designed to render the complexity of nations into intelligible, comparable, and actionable data.
       </div>
     </section>
 
@@ -524,232 +419,76 @@
       <span class="diamond"></span>
     </div>
 
-    <!-- [3] Representation Spaces ("What?") -->
-    <section class="reveal delay-2">
-      <div class="text-center mb-8">
-        <h2 class="font-display type-section text-fg mb-1">The Object of Inquiry</h2>
-        <p class="font-body type-secondary text-muted">Representation Spaces</p>
-      </div>
+    <!-- [3] Mission Grid -->
+    <section class="grid grid-cols-1 md:grid-cols-3 gap-5 reveal delay-2 mb-12">
       
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="representationGrid">
-        
-        <!-- Product Space -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path d="M3 3v18h18"/>
-                <path d="M7 16l4-4 4 4 5-6"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Product Space</h3>
-          </div>
-          <p class="font-body type-secondary text-muted">Mapping the landscape of economic production, industrial complexity, and export capabilities.</p>
-        </div>
-
-        <!-- Legal Space -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path d="M12 2L20 6v6c0 5.5-3.8 10.7-8 12-4.2-1.3-8-6.5-8-12V6l8-4z"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Legal Space</h3>
-          </div>
-          <p class="font-body type-secondary text-muted">Codifying the regulatory frameworks, legislative structures, and juridical constraints.</p>
-        </div>
-
-        <!-- Technique Space -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <circle cx="12" cy="12" r="3"/>
-                <path d="M12 1v4m0 14v4M4.22 4.22l2.83 2.83m9.9 9.9l2.83 2.83M1 12h4m14 0h4M4.22 19.78l2.83-2.83m9.9-9.9l2.83-2.83"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Technique Space</h3>
-          </div>
-          <p class="font-body type-secondary text-muted">Inventory of available methodologies, tools, and productive capabilities.</p>
-        </div>
-
-        <!-- Physical Substrate -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Physical Substrate</h3>
-          </div>
-          <p class="font-body type-secondary text-muted mb-3">The material foundations upon which society rests.</p>
-          <ul class="method-list">
-            <li>Environmental Representation</li>
-            <li>Public Infrastructure Representation</li>
-          </ul>
-        </div>
-
-        <!-- Actor Set -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-                <circle cx="9" cy="7" r="4"/>
-                <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Actor Set</h3>
-          </div>
-          <p class="font-body type-secondary text-muted mb-3">Agents operating within the defined spaces.</p>
-          <ul class="method-list">
-            <li>Human Actors</li>
-            <li>Public Organizations</li>
-            <li>Non-Public Non-Profit Organizations</li>
-            <li>Profit Organizations</li>
-          </ul>
-        </div>
-
-        <!-- Cultural & Security -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
-                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Cultural Representation</h3>
-          </div>
-          <p class="font-body type-secondary text-muted">Norms, values, shared narratives, and collective identity structures.</p>
-        </div>
-
-        <!-- Security Representation -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
-                <path d="M7 11V7a5 5 0 0110 0v4"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Security Representation</h3>
-          </div>
-          <p class="font-body type-secondary text-muted">Threat landscapes, defense capabilities, and stability metrics.</p>
-        </div>
-
-        <!-- External Interactions -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <circle cx="12" cy="12" r="10"/>
-                <line x1="2" y1="12" x2="22" y2="12"/>
-                <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">External Interactions</h3>
-          </div>
-          <p class="font-body type-secondary text-muted">Diplomatic relations, trade flows, and transnational linkages.</p>
-        </div>
-
+      <!-- Vision -->
+      <div class="info-card">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"/>
+          <path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+        </svg>
+        <h3 class="font-display text-lg font-medium text-fg mb-2">The Vision</h3>
+        <p class="font-body text-sm text-muted leading-relaxed">
+          To establish a "Lingua Franca" for sovereign data—unifying disparate datasets into a coherent architectural model that supports deep analysis and cross-border comparison.
+        </p>
       </div>
+
+      <!-- The Challenge -->
+      <div class="info-card">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5m.75-9l3-3 2.148 2.148A12.061 12.061 0 0116.5 7.605"/>
+        </svg>
+        <h3 class="font-display text-lg font-medium text-fg mb-2">The Challenge</h3>
+        <p class="font-body text-sm text-muted leading-relaxed">
+          Information regarding nations is often siloed, unstructured, or locked behind proprietary barriers. The Index breaks these walls through open, inference-driven methodologies.
+        </p>
+      </div>
+
+      <!-- The Laboratory -->
+      <div class="info-card">
+        <svg class="info-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714c0 .597.237 1.17.659 1.591L19.8 15.3M14.25 3.104c.251.023.501.05.75.082M19.8 15.3l-1.57.393A9.065 9.065 0 0112 15a9.065 9.065 0 00-6.23.693L5 14.5m14.8.8l1.402 1.402c1.232 1.232.65 3.318-1.067 3.611A48.309 48.309 0 0112 21c-2.773 0-5.491-.235-8.135-.687-1.718-.293-2.3-2.379-1.067-3.61L5 14.5"/>
+        </svg>
+        <h3 class="font-display text-lg font-medium text-fg mb-2">The Laboratory</h3>
+        <p class="font-body text-sm text-muted leading-relaxed">
+          Maintained by <em>Arbitristae</em>—independent researchers and engineers dedicated to building instruments of clarity for the public good.
+        </p>
+      </div>
+
     </section>
 
     <div class="section-divider reveal delay-2">
       <span class="diamond"></span>
     </div>
 
-    <!-- [4] Guiding Principles -->
+    <!-- [4] Architecture Section -->
     <section class="reveal delay-3">
       <div class="text-center mb-8">
-        <h2 class="font-display type-section text-fg mb-1">Guiding Principles</h2>
-        <p class="font-body type-secondary text-muted">Inference & Data</p>
+        <h2 class="font-display type-section text-fg mb-1">The Architecture</h2>
+        <p class="font-body type-secondary text-muted">Structural Integrity</p>
       </div>
 
-      <div class="principle-box">
-        <p class="font-body type-body text-fg/80">
-          "Use representation forms that can be powered by large-scale data inference—taking raw data such as laws, regulations, or records, and inferring structured metrics from them."
-        </p>
-      </div>
-    </section>
-
-    <div class="section-divider reveal delay-3">
-      <span class="diamond"></span>
-    </div>
-
-    <!-- [5] Representation Techniques ("How?") -->
-    <section class="reveal delay-4">
-      <div class="text-center mb-8">
-        <h2 class="font-display type-section text-fg mb-1">Analytical Techniques</h2>
-        <p class="font-body type-secondary text-muted">Representation Forms</p>
-      </div>
-
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-5" id="techniqueGrid">
-        
-        <!-- Event Representation -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Actor Set Event Representation</h3>
+      <div class="bg-card border border-border rounded-sm p-8 shadow-sm">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+          <div>
+            <p class="font-body text-muted leading-relaxed mb-4">
+              The project is constructed upon a robust framework of <strong class="text-fg font-medium">Representation Spaces</strong>. We do not merely list statistics; we map the relationships between Legal, Economic, and Physical realities.
+            </p>
+            <p class="font-body text-muted leading-relaxed">
+              By defining clear <strong class="text-fg font-medium">Technique Spaces</strong>, we ensure that every data point is derived from a reproducible, transparent methodology—bridging the gap between raw data and structured intelligence.
+            </p>
           </div>
-          <p class="font-body type-secondary text-muted">Chronological mapping of discrete actions taken by identified agents within the system.</p>
-        </div>
-
-        <!-- State Snapshot -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
-                <line x1="3" y1="9" x2="21" y2="9"/>
-                <line x1="9" y1="21" x2="9" y2="9"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">State Snapshot Representation</h3>
+          <div class="font-mono text-xs text-muted border-l border-border pl-4">
+            <p class="mb-2">/* Core Dependencies */</p>
+            <p class="text-fg">const SPACES = [</p>
+            <p class="pl-4">"Product Space",</p>
+            <p class="pl-4">"Legal Space",</p>
+            <p class="pl-4">"Actor Set",</p>
+            <p class="pl-4">"Physical Substrate"</p>
+            <p>];</p>
           </div>
-          <p class="font-body type-secondary text-muted">Cross-sectional analysis capturing the static condition of variables at a specific point in time.</p>
         </div>
-
-        <!-- Technique -> Product Matrix -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <rect x="3" y="3" width="7" height="7"/>
-                <rect x="14" y="3" width="7" height="7"/>
-                <rect x="14" y="14" width="7" height="7"/>
-                <rect x="3" y="14" width="7" height="7"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Technique → Product Matrix</h3>
-          </div>
-          <p class="font-body type-secondary text-muted">Mapping productive capabilities against outputs to identify industrial requirements and opportunities.</p>
-        </div>
-
-        <!-- Infrastructure Graph -->
-        <div class="method-card">
-          <div class="method-card-header">
-            <div class="method-icon">
-              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-                <circle cx="5" cy="6" r="3"/>
-                <circle cx="19" cy="6" r="3"/>
-                <circle cx="12" cy="18" r="3"/>
-                <line x1="5" y1="9" x2="12" y2="15"/>
-                <line x1="19" y1="9" x2="12" y2="15"/>
-              </svg>
-            </div>
-            <h3 class="font-display type-card-title font-medium text-fg">Infrastructure Graph</h3>
-          </div>
-          <p class="font-body type-secondary text-muted">Topological representation of critical systems, nodes, and the logistical connections between them.</p>
-        </div>
-
       </div>
     </section>
 
@@ -779,12 +518,12 @@
           <p class="font-mono text-[10px] tracking-[0.2em] uppercase mb-3 footer-label">Status</p>
           <div class="space-y-1.5 font-mono text-xs">
             <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Revision</span>
-              <span class="footer-value" id="footerRevision">v1.0</span>
+              <span class="footer-muted">Status</span>
+              <span class="footer-value">Operational</span>
             </div>
             <div class="flex justify-center md:justify-end items-baseline gap-3">
-              <span class="footer-muted">Updated</span>
-              <span class="footer-value" id="footerDate">—</span>
+              <span class="footer-muted">Version</span>
+              <span class="footer-value">v1.2</span>
             </div>
           </div>
         </div>
@@ -830,11 +569,6 @@
 
     window.addEventListener('scroll', updateScrollProgress, { passive: true });
     updateScrollProgress();
-
-    // Set current date
-    const dateEl = document.getElementById('footerDate');
-    const today = new Date();
-    dateEl.textContent = today.toISOString().split('T')[0];
 
     // Reveal Animation
     const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce').matches;

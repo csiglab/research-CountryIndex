@@ -86,7 +86,7 @@
     "region": "Southeast Asia",
     "lastRevised": "2026-02-15",
     "links": [
-      { "label": "Index Gentium", "href": "https://bremontix.xyz/lab/research/country/" },
+      { "label": "About", "href": "../about.html" },
       { "label": "Methodology", "href": "../methodology.html" },
       { "label": "Contact", "href": "../contact.html" }
     ]
