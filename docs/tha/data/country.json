@@ -62,7 +62,7 @@
       "status": "pending",
       "title": "Actor Set Evolution of Thailand",
       "description": "Temporal mapping of Thailand’s actor space from monarchical-administrative structures and military influence to export-oriented industrialization, business conglomerates, and contemporary regulatory institutions.",
-      "link": null
+      "link": "rep/actor.html"
     },
     {
       "id": "industrial_and_trade_network",
@@ -70,7 +70,7 @@
       "status": "active",
       "title": "Industrial and Trade Network Structure",
       "description": "Network analysis of Thailand’s automotive clusters, electronics manufacturing, agro-industrial exports, and integration into ASEAN and global production networks.",
-      "link": null
+      "link": "../pending.html?back=tha/index.html"
     },
     {
       "id": "regional_spatial_structure",

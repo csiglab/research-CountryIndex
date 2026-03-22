@@ -62,7 +62,7 @@
       "status": "pending",
       "title": "Actor Set Evolution of India",
       "description": "Temporal mapping of India’s actor space from colonial administration and nationalist movements to post-independence state-building, economic liberalization (post-1991), and contemporary public-private institutional configurations.",
-      "link": null
+      "link": "rep/actor.html"
     },
     {
       "id": "federal_spatial_structure",
@@ -70,7 +70,7 @@
       "status": "pending",
       "title": "Federal Spatial-Administrative Structure",
       "description": "Geospatial representation of states and union territories, demographic density gradients, industrial corridors, and regional development asymmetries.",
-      "link": null
+      "link": "../pending.html?back=ind/index.html"
     },
     {
       "id": "technology_and_services_network",
