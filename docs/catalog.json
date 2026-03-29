@@ -195,6 +195,20 @@
       "icon": "🇨🇳",
       "description": "A large East Asian party-state that has transformed since the late 20th century into the world’s leading manufacturing economy and a major technological power, with strong state coordination across industry, finance, and innovation systems.",
       "link": "https://bremontix.xyz/lab/research/country/chn/index.html"
+    },
+    {
+      "alpha_3_code": "HKG",
+      "name": "Hong Kong",
+      "region": "East Asia",
+      "tags": [
+        "East Asia",
+        "Financial Hub",
+        "Service-Based",
+        "Innovation Gateway"
+      ],
+      "icon": "🇭🇰",
+      "description": "A highly developed Special Administrative Region of China, serving as a global financial center and trade hub. Hong Kong is characterized by a service-oriented economy, advanced infrastructure, and a unique position linking mainland China with international markets, fostering innovation and business activity.",
+      "link": "https://bremontix.xyz/lab/research/country/hkg/index.html"
     }
   ]
 }
